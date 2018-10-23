@@ -1,0 +1,2 @@
+# wasm
+Golang wasm library
