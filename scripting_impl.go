@@ -1,0 +1,184 @@
+// +build js,wasm
+
+package wasm
+
+import (
+	"syscall/js"
+)
+
+// -------------8<---------------------------------------
+
+type htmlScriptElementImpl struct {
+	*htmlElementImpl
+}
+
+func newHTMLScriptElement(v js.Value) HTMLScriptElement {
+	if isNil(v) {
+		return nil
+	}
+
+	return &htmlScriptElementImpl{
+		htmlElementImpl: newHTMLElementImpl(v),
+	}
+}
+
+func (p *htmlScriptElementImpl) Src() string {
+	return p.Get("src").String()
+}
+
+func (p *htmlScriptElementImpl) SetSrc(src string) {
+	p.Set("src", src)
+}
+
+func (p *htmlScriptElementImpl) Type() string {
+	return p.Get("type").String()
+}
+
+func (p *htmlScriptElementImpl) SetType(t string) {
+	p.Set("type", t)
+}
+
+func (p *htmlScriptElementImpl) Charset() string {
+	return p.Get("charset").String()
+}
+
+func (p *htmlScriptElementImpl) SetCharset(charset string) {
+	p.Set("charset", charset)
+}
+
+func (p *htmlScriptElementImpl) Async() bool {
+	return p.Get("async").Bool()
+}
+
+func (p *htmlScriptElementImpl) SetAsync(async bool) {
+	p.Set("async", async)
+}
+
+func (p *htmlScriptElementImpl) Defer() bool {
+	return p.Get("defer").Bool()
+}
+
+func (p *htmlScriptElementImpl) SetDefer(d bool) {
+	p.Set("defer", d)
+}
+
+func (p *htmlScriptElementImpl) CrossOrigin() string {
+	return p.Get("crossOrigin").String()
+}
+
+func (p *htmlScriptElementImpl) SetCrossOrigin(co string) {
+	p.Set("crossOrigin", co)
+}
+
+func (p *htmlScriptElementImpl) Text() string {
+	return p.Get("text").String()
+}
+
+func (p *htmlScriptElementImpl) SetText(t string) {
+	p.Set("text", t)
+}
+
+func (p *htmlScriptElementImpl) Nonce() string {
+	return p.Get("nonce").String()
+}
+
+func (p *htmlScriptElementImpl) SetNonce(n string) {
+	p.Set("nonce", n)
+}
+
+// -------------8<---------------------------------------
+
+type htmlTemplateElementImpl struct {
+	*htmlElementImpl
+}
+
+func newHTMLTemplateElement(v js.Value) HTMLTemplateElement {
+	if isNil(v) {
+		return nil
+	}
+
+	return &htmlTemplateElementImpl{
+		htmlElementImpl: newHTMLElementImpl(v),
+	}
+}
+
+func (p *htmlTemplateElementImpl) Content() DocumentFragment {
+	return newDocumentFragment(p.Get("content"))
+}
+
+// -------------8<---------------------------------------
+
+type htmlCanvasElementImpl struct {
+	*htmlElementImpl
+}
+
+func newHTMLCanvasElement(v js.Value) HTMLCanvasElement {
+	if isNil(v) {
+		return nil
+	}
+
+	return &htmlCanvasElementImpl{
+		htmlElementImpl: newHTMLElementImpl(v),
+	}
+}
+
+func (p *htmlCanvasElementImpl) Width() int {
+	return p.Get("width").Int()
+}
+func (p *htmlCanvasElementImpl) SetWidth(w int) {
+	p.Set("width", w)
+}
+
+func (p *htmlCanvasElementImpl) Height() int {
+	return p.Get("height").Int()
+}
+
+func (p *htmlCanvasElementImpl) SetHeight(h int) {
+	p.Set("height", h)
+}
+
+func (p *htmlCanvasElementImpl) Context(ctxId string, args ...interface{}) RenderingContext {
+	// TODO
+	return nil
+}
+
+func (p *htmlCanvasElementImpl) ProbablySupportsContext(ctxId string, args ...interface{}) bool {
+	// TODO
+	return p.Call("probablySupportsContext", ctxId).Bool()
+}
+
+func (p *htmlCanvasElementImpl) ToDataURL(args ...interface{}) string {
+	switch len(args) {
+	case 1:
+		if typ, ok := args[0].(string); ok { // type
+			return p.Call("toDataURL", typ).String()
+		}
+	case 2:
+		if typ, ok := args[0].(string); ok { // type
+			if quality, ok := args[1].(float64); ok { //quality
+				return p.Call("toDataURL", typ, quality).String()
+			}
+		}
+	}
+
+	return p.Call("toDataURL").String()
+}
+
+func (p *htmlCanvasElementImpl) ToBlob(cb BlobCallback, args ...interface{}) {
+	switch len(args) {
+	case 1:
+		if typ, ok := args[0].(string); ok { // type
+			p.Call("toBlob", cb.jsCallback(), typ)
+		}
+	case 2:
+		if typ, ok := args[0].(string); ok { // type
+			if quality, ok := args[1].(float64); ok { //quality
+				p.Call("toBlob", cb.jsCallback(), typ, quality)
+			}
+		}
+	default:
+		p.Call("toBlob", cb.jsCallback())
+	}
+}
+
+// -------------8<---------------------------------------
