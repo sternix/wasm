@@ -35,7 +35,6 @@ type promiseImpl struct {
 	*objectImpl
 }
 
-// KEEP
 func newPromiseImpl(v js.Value) *promiseImpl {
 	if isNil(v) {
 		return nil

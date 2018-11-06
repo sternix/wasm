@@ -248,7 +248,6 @@ func newCanvasDrawingStyles(v js.Value) CanvasDrawingStyles {
 	return nil
 }
 
-// KEEP
 func newCanvasDrawingStylesImpl(v js.Value) *canvasDrawingStylesImpl {
 	if isNil(v) {
 		return nil
@@ -341,7 +340,6 @@ func newCanvasPathMethods(v js.Value) CanvasPathMethods {
 	return nil
 }
 
-// KEEP
 func newCanvasPathMethodsImpl(v js.Value) *canvasPathMethodsImpl {
 	if isNil(v) {
 		return nil

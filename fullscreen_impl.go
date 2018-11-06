@@ -14,7 +14,6 @@ type partialElementFullscreenImpl struct {
 	js.Value
 }
 
-// KEEP
 func newpartialElementFullscreenImpl(v js.Value) *partialElementFullscreenImpl {
 	if isNil(v) {
 		return nil
@@ -44,7 +43,6 @@ type partialDocumentFullscreenImpl struct {
 	js.Value
 }
 
-// KEEP
 func newpartialDocumentFullscreenImpl(v js.Value) *partialDocumentFullscreenImpl {
 	if isNil(v) {
 		return nil

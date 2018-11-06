@@ -44,7 +44,6 @@ type navigatorIDImpl struct {
 	js.Value
 }
 
-// KEEP
 func newNavigatorIDImpl(v js.Value) *navigatorIDImpl {
 	if isNil(v) {
 		return nil
@@ -87,7 +86,6 @@ type navigatorLanguageImpl struct {
 	js.Value
 }
 
-// KEEP
 func newNavigatorLanguageImpl(v js.Value) *navigatorLanguageImpl {
 	if isNil(v) {
 		return nil
@@ -122,7 +120,6 @@ type navigatorContentUtilsImpl struct {
 	js.Value
 }
 
-// KEEP
 func newNavigatorContentUtilsImpl(v js.Value) *navigatorContentUtilsImpl {
 	if isNil(v) {
 		return nil
@@ -165,7 +162,6 @@ type navigatorCookiesImpl struct {
 	js.Value
 }
 
-// KEEP
 func newNavigatorCookiesImpl(v js.Value) *navigatorCookiesImpl {
 	if isNil(v) {
 		return nil

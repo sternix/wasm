@@ -223,7 +223,6 @@ func newHTMLTableCellElement(v js.Value) HTMLTableCellElement {
 	return nil
 }
 
-// KEEP
 func newHTMLTableCellElementImpl(v js.Value) *htmlTableCellElementImpl {
 	if isNil(v) {
 		return nil

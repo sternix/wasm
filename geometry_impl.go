@@ -104,7 +104,6 @@ func newDOMPointReadOnly(v js.Value) DOMPointReadOnly {
 	return nil
 }
 
-// KEEP
 func newDOMPointReadOnlyImpl(v js.Value) *domPointReadOnlyImpl {
 	if isNil(v) {
 		return nil
@@ -180,7 +179,6 @@ func newDOMRectReadOnly(v js.Value) DOMRectReadOnly {
 	return nil
 }
 
-// KEEP
 func newDOMRectReadOnlyImpl(v js.Value) *domRectReadOnlyImpl {
 	if isNil(v) {
 		return nil
@@ -272,7 +270,6 @@ func newDOMMatrixReadOnly(v js.Value) DOMMatrixReadOnly {
 	return nil
 }
 
-// KEEP
 func newDOMMatrixReadOnlyImpl(v js.Value) *domMatrixReadOnlyImpl {
 	if isNil(v) {
 		return nil

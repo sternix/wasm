@@ -37,7 +37,6 @@ func newWorkerGlobalScope(v js.Value) WorkerGlobalScope {
 	return nil
 }
 
-// KEEP
 func newWorkerGlobalScopeImpl(v js.Value) *workerGlobalScopeImpl {
 	if isNil(v) {
 		return nil
@@ -233,7 +232,6 @@ func newAbstractWorker(v js.Value) AbstractWorker {
 	return nil
 }
 
-// KEEP
 func newAbstractWorkerImpl(v js.Value) *abstractWorkerImpl {
 	if isNil(v) {
 		return nil
@@ -316,7 +314,6 @@ type navigatorConcurrentHardwareImpl struct {
 	js.Value
 }
 
-// KEEP
 func newNavigatorConcurrentHardwareImpl(v js.Value) *navigatorConcurrentHardwareImpl {
 	if isNil(v) {
 		return nil
@@ -366,7 +363,6 @@ func newWorkerLocation(v js.Value) WorkerLocation {
 	return nil
 }
 
-// KEEP
 func newWorkerLocationImpl(v js.Value) *workerLocationImpl {
 	if isNil(v) {
 		return nil

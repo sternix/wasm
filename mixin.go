@@ -57,7 +57,6 @@ type nonElementParentNodeImpl struct {
 	js.Value
 }
 
-// KEEP
 func newNonElementParentNodeImpl(v js.Value) *nonElementParentNodeImpl {
 	if isNil(v) {
 		return nil
@@ -80,7 +79,6 @@ type nonDocumentTypeChildNodeImpl struct {
 	js.Value
 }
 
-// KEEP
 func newNonDocumentTypeChildNodeImpl(v js.Value) *nonDocumentTypeChildNodeImpl {
 	if isNil(v) {
 		return nil
@@ -112,7 +110,6 @@ func newChildNode(v js.Value) ChildNode {
 	return nil
 }
 
-// KEEP
 func newChildNodeImpl(v js.Value) *childNodeImpl {
 	if isNil(v) {
 		return nil
@@ -182,7 +179,6 @@ type documentOrShadowRootImpl struct {
 	*objectImpl
 }
 
-// KEEP
 func newDocumentOrShadowRootImpl(v js.Value) *documentOrShadowRootImpl {
 	if isNil(v) {
 		return nil
@@ -212,7 +208,6 @@ func newSlotable(v js.Value) Slotable {
 }
 */
 
-// KEEP
 func newSlotableImpl(v js.Value) *slotableImpl {
 	if isNil(v) {
 		return nil
@@ -235,7 +230,6 @@ type parentNodeImpl struct {
 	js.Value
 }
 
-// KEEP
 func newParentNodeImpl(v js.Value) *parentNodeImpl {
 	if isNil(v) {
 		return nil

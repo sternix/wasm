@@ -19,7 +19,6 @@ func newIDBRequest(v js.Value) IDBRequest {
 	return nil
 }
 
-// KEEP
 func newIDBRequestImpl(v js.Value) *idbRequestImpl {
 	if isNil(v) {
 		return nil
@@ -575,7 +574,6 @@ func newIDBCursor(v js.Value) IDBCursor {
 	return nil
 }
 
-// KEEP
 func newIDBCursorImpl(v js.Value) *idbCursorImpl {
 	if isNil(v) {
 		return nil

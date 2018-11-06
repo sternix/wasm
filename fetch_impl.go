@@ -74,7 +74,6 @@ func newBody(v js.Value) Body {
 	return nil
 }
 
-// KEEP
 func newBodyImpl(v js.Value) *bodyImpl {
 	if isNil(v) {
 		return nil

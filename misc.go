@@ -34,7 +34,6 @@ type objectImpl struct {
 	js.Value
 }
 
-// KEEP
 func newObjectImpl(v js.Value) *objectImpl {
 	if isNil(v) {
 		return nil

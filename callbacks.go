@@ -62,7 +62,6 @@ type callbackImpl struct {
 	cb js.Callback
 }
 
-// KEEP
 func newCallbackImpl() *callbackImpl {
 	return &callbackImpl{}
 }

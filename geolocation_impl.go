@@ -15,7 +15,6 @@ type partialNavigatorGeolocationImpl struct {
 	js.Value
 }
 
-// KEEP
 func newpartialNavigatorGeolocationImpl(v js.Value) *partialNavigatorGeolocationImpl {
 	if isNil(v) {
 		return nil

@@ -134,7 +134,6 @@ type touchEventHandlersImpl struct {
 	js.Value
 }
 
-// KEEP
 func newTouchEventHandlersImpl(v js.Value) *touchEventHandlersImpl {
 	if isNil(v) {
 		return nil

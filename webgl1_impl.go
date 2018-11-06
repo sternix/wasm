@@ -19,7 +19,6 @@ func newWebGLObject(v js.Value) WebGLObject {
 	return nil
 }
 
-// KEEP
 func newWebGLObjectImpl(v js.Value) *webGLObjectImpl {
 	if isNil(v) {
 		return nil
@@ -241,7 +240,6 @@ type webGLRenderingContextBaseImpl struct {
 	*objectImpl
 }
 
-// KEEP
 func newWebGLRenderingContextBaseImpl(v js.Value) *webGLRenderingContextBaseImpl {
 	if isNil(v) {
 		return nil

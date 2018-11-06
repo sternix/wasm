@@ -14,7 +14,6 @@ type partialClipboardImpl struct {
 	js.Value
 }
 
-// KEEP
 func newpartialClipboardImpl(v js.Value) *partialClipboardImpl {
 	if isNil(v) {
 		return nil

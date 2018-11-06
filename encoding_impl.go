@@ -19,7 +19,6 @@ func newTextDecoderCommon(v js.Value) TextDecoderCommon {
 	return nil
 }
 
-// KEEP
 func newTextDecoderCommonImpl(v js.Value) *textDecoderCommonImpl {
 	if isNil(v) {
 		return nil
@@ -88,7 +87,6 @@ func newTextEncoderCommon(v js.Value) TextEncoderCommon {
 	return nil
 }
 
-// KEEP
 func newTextEncoderCommonImpl(v js.Value) *textEncoderCommonImpl {
 	if isNil(v) {
 		return nil
@@ -140,7 +138,6 @@ func newGenericTransformStream(v js.Value) GenericTransformStream {
 	return nil
 }
 
-// KEEP
 func newGenericTransformStreamImpl(v js.Value) *genericTransformStreamImpl {
 	if isNil(v) {
 		return nil

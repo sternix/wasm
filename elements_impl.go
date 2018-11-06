@@ -92,7 +92,6 @@ func newLinkStyle(v js.Value) LinkStyle {
 	return nil
 }
 
-// KEEP
 func newLinkStyleImpl(v js.Value) *linkStyleImpl {
 	if isNil(v) {
 		return nil
@@ -500,7 +499,6 @@ func newHTMLHyperlinkElementUtils(v js.Value) HTMLHyperlinkElementUtils {
 	return nil
 }
 
-// KEEP
 func newHTMLHyperlinkElementUtilsImpl(v js.Value) *htmlHyperlinkElementUtilsImpl {
 	if isNil(v) {
 		return nil
@@ -1659,7 +1657,6 @@ func newHTMLMediaElement(v js.Value) HTMLMediaElement {
 	return nil
 }
 
-// KEEP
 func newHTMLMediaElementImpl(v js.Value) *htmlMediaElementImpl {
 	if isNil(v) {
 		return nil

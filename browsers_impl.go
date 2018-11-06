@@ -64,7 +64,6 @@ func newWindow(v js.Value) Window {
 	return nil
 }
 
-// KEEP
 func newWindowImpl(v js.Value) *windowImpl {
 	if isNil(v) {
 		return nil
@@ -639,7 +638,6 @@ func newNavigatorOnLine(v js.Value) NavigatorOnLine {
 	return nil
 }
 
-// KEEP
 func newNavigatorOnLineImpl(v js.Value) *navigatorOnLineImpl {
 	if isNil(v) {
 		return nil

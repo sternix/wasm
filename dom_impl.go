@@ -25,7 +25,6 @@ func newDocument(v js.Value) Document {
 	return nil
 }
 
-// KEEP
 func newDocumentImpl(v js.Value) *documentImpl {
 	if isNil(v) {
 		return nil
@@ -370,7 +369,6 @@ func newRange(v js.Value) Range {
 	return nil
 }
 
-// KEEP
 func newRangeImpl(v js.Value) *rangeImpl {
 	if isNil(v) {
 		return nil
@@ -499,7 +497,6 @@ func newAbstractRange(v js.Value) AbstractRange {
 	return nil
 }
 
-// KEEP
 func newAbstractRangeImpl(v js.Value) *abstractRangeImpl {
 	if isNil(v) {
 		return nil
@@ -614,7 +611,6 @@ func newText(v js.Value) Text {
 	return nil
 }
 
-// KEEP
 func newTextImpl(v js.Value) *textImpl {
 	if isNil(v) {
 		return nil
@@ -654,7 +650,6 @@ func newCharacterData(v js.Value) CharacterData {
 	return nil
 }
 
-// KEEP
 func newCharacterDataImpl(v js.Value) *characterDataImpl {
 	if isNil(v) {
 		return nil
@@ -744,7 +739,6 @@ func newNode(v js.Value) Node {
 	return nil
 }
 
-// KEEP
 func newNodeImpl(v js.Value) *nodeImpl {
 	if isNil(v) {
 		return nil
@@ -907,7 +901,6 @@ func newElement(v js.Value) Element {
 	return nil
 }
 
-// KEEP
 func newElementImpl(v js.Value) *elementImpl {
 	if isNil(v) {
 		return nil
@@ -1205,7 +1198,6 @@ func newDocumentFragment(v js.Value) DocumentFragment {
 	return nil
 }
 
-// KEEP
 func newDocumentFragmentImpl(v js.Value) *documentFragmentImpl {
 	if isNil(v) {
 		return nil
@@ -1407,7 +1399,6 @@ func newHTMLCollection(v js.Value) HTMLCollection {
 	return nil
 }
 
-// KEEP
 func newHTMLCollectionImpl(v js.Value) *htmlCollectionImpl {
 	if isNil(v) {
 		return nil
@@ -1536,7 +1527,6 @@ func newpartialDocument(v js.Value) partialDocument {
 	return nil
 }
 
-// KEEP
 func newpartialDocumentImpl(v js.Value) *partialDocumentImpl {
 	if isNil(v) {
 		return nil
@@ -1807,7 +1797,6 @@ func newHTMLElement(v js.Value) HTMLElement {
 	return nil
 }
 
-// KEEP
 func newHTMLElementImpl(v js.Value) *htmlElementImpl {
 	if isNil(v) {
 		return nil
@@ -2012,7 +2001,6 @@ func newNodeList(v js.Value) NodeList {
 	return nil
 }
 
-// KEEP
 func newNodeListImpl(v js.Value) *nodeListImpl {
 	if isNil(v) {
 		return nil

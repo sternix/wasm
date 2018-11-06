@@ -134,7 +134,6 @@ func newEventTarget(v js.Value) EventTarget {
 	return nil
 }
 
-// KEEP
 func newEventTargetImpl(v js.Value) *eventTargetImpl {
 	if isNil(v) {
 		return nil
@@ -171,7 +170,6 @@ func newEvent(v js.Value) Event {
 	return nil
 }
 
-// KEEP
 func newEventImpl(v js.Value) *eventImpl {
 	if isNil(v) {
 		return nil
@@ -299,7 +297,6 @@ type globalEventHandlersImpl struct {
 	*touchEventHandlersImpl
 }
 
-// KEEP
 func newGlobalEventHandlersImpl(v js.Value) *globalEventHandlersImpl {
 	if isNil(v) {
 		return nil
@@ -566,7 +563,6 @@ type documentAndElementEventHandlersImpl struct {
 	js.Value
 }
 
-// KEEP
 func newDocumentAndElementEventHandlersImpl(v js.Value) *documentAndElementEventHandlersImpl {
 	if isNil(v) {
 		return nil
@@ -596,7 +592,6 @@ type windowOrWorkerGlobalScopeImpl struct {
 	js.Value
 }
 
-// KEEP
 func newWindowOrWorkerGlobalScopeImpl(v js.Value) *windowOrWorkerGlobalScopeImpl {
 	if isNil(v) {
 		return nil
@@ -655,7 +650,6 @@ type windowEventHandlersImpl struct {
 	js.Value
 }
 
-// KEEP
 func newWindowEventHandlersImpl(v js.Value) *windowEventHandlersImpl {
 	if isNil(v) {
 		return nil
@@ -743,7 +737,6 @@ func newUIEvent(v js.Value) UIEvent {
 	return nil
 }
 
-// KEEP
 func newUIEventImpl(v js.Value) *uiEventImpl {
 	if isNil(v) {
 		return nil
@@ -775,7 +768,6 @@ func newMouseEvent(v js.Value) MouseEvent {
 	return nil
 }
 
-// KEEP
 func newMouseEventImpl(v js.Value) *mouseEventImpl {
 	if isNil(v) {
 		return nil
