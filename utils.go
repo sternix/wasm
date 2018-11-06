@@ -43,7 +43,7 @@ func JSType(v js.Value) string {
 // -------------8<---------------------------------------
 
 func valueOf(x interface{}) interface{} {
-	if v, ok := x.(JSValuer); ok {
+	if v, ok := x.(Wrapper); ok {
 		return v.JSValue()
 	}
 
