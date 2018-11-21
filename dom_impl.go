@@ -484,6 +484,10 @@ func (p *rangeImpl) BoundingClientRect() DOMRect {
 	return newDOMRect(p.Call("getBoundingClientRect"))
 }
 
+func (p *rangeImpl) CreateContextualFragment(fragment string) DocumentFragment {
+	return newDocumentFragmentImpl(p.Call("createContextualFragment", fragment))
+}
+
 // -------------8<---------------------------------------
 
 type abstractRangeImpl struct {
@@ -1149,6 +1153,26 @@ func (p *elementImpl) OnFullscreenChange(fn func(Event)) EventHandler {
 
 func (p *elementImpl) OnFullscreenError(fn func(Event)) EventHandler {
 	return p.On("fullscreenerror", fn)
+}
+
+func (p *elementImpl) InnerHTML() string {
+	return p.Get("innerHTML").String()
+}
+
+func (p *elementImpl) SetInnerHTML(html string) {
+	p.Set("innerHTML", html)
+}
+
+func (p *elementImpl) OuterHTML() string {
+	return p.Get("outerHTML").String()
+}
+
+func (p *elementImpl) SetOuterHTML(html string) {
+	p.Set("outerHTML", html)
+}
+
+func (p *elementImpl) InsertAdjacentHTML(position string, text string) {
+	p.Call("insertAdjacentHTML", position, text)
 }
 
 func (p *elementImpl) JSValue() js.Value {
@@ -2029,6 +2053,45 @@ func (p *nodeListImpl) Items() []Node {
 
 // -------------8<---------------------------------------
 
+type domParserImpl struct {
+	js.Value
+}
+
+func newDOMParserImpl(v js.Value) DOMParser {
+	if isNil(v) {
+		return nil
+	}
+
+	return &domParserImpl{
+		Value: v,
+	}
+}
+
+func (p *domParserImpl) ParseFromString(str string, typ SupportedType) Document {
+	return newDocumentImpl(p.Call("parseFromString", str, string(typ)))
+}
+
+// -------------8<---------------------------------------
+
+type xmlSerializerImpl struct {
+	js.Value
+}
+
+func newXMLSerializerImpl(v js.Value) XMLSerializer {
+	if isNil(v) {
+		return nil
+	}
+	return &xmlSerializerImpl{
+		Value: v,
+	}
+}
+
+func (p *xmlSerializerImpl) SerializeToString(node Node) string {
+	return p.Call("serializeToString", node.JSValue()).String()
+}
+
+// -------------8<---------------------------------------
+
 func NewMutationObserver(cb MutationCallback) MutationObserver {
 	jsMutationObserver := js.Global().Get("MutationObserver")
 	if isNil(jsMutationObserver) {
@@ -2036,6 +2099,28 @@ func NewMutationObserver(cb MutationCallback) MutationObserver {
 	}
 
 	return newMutationObserver(jsMutationObserver.New(cb.jsCallback()))
+}
+
+// -------------8<---------------------------------------
+
+func NewDOMParser() DOMParser {
+	v := js.Global().Get("DOMParser")
+	if isNil(v) {
+		return nil
+	}
+
+	return newDOMParserImpl(v)
+}
+
+// -------------8<---------------------------------------
+
+func NewXMLSerializer() XMLSerializer {
+	v := js.Global().Get("XMLSerializer")
+	if isNil(v) {
+		return nil
+	}
+
+	return newXMLSerializerImpl(v)
 }
 
 // -------------8<---------------------------------------

@@ -117,6 +117,9 @@ type (
 		// partials
 		ClientRects() []DOMRect
 		BoundingClientRect() DOMRect
+
+		// https://www.w3.org/TR/DOM-Parsing/
+		CreateContextualFragment(string) DocumentFragment
 	}
 
 	// https://dom.spec.whatwg.org/#abstractrange
@@ -293,6 +296,13 @@ type (
 		ClientLeft() int
 		ClientWidth() int
 		ClientHeight() int
+
+		// https://www.w3.org/TR/DOM-Parsing/
+		InnerHTML() string
+		SetInnerHTML(string)
+		OuterHTML() string
+		SetOuterHTML(string)
+		InsertAdjacentHTML(string, string)
 	}
 
 	// https://dom.spec.whatwg.org/#dictdef-shadowrootinit
@@ -527,6 +537,16 @@ type (
 		Length() int
 		Items() []Node
 	}
+
+	// https://www.w3.org/TR/DOM-Parsing/
+	DOMParser interface {
+		ParseFromString(string, SupportedType) Document
+	}
+
+	// https://www.w3.org/TR/DOM-Parsing/
+	XMLSerializer interface {
+		SerializeToString(Node) string
+	}
 )
 
 type NodeType int
@@ -603,4 +623,15 @@ const (
 	ScrollBehaviorAuto    ScrollBehavior = "auto"
 	ScrollBehaviorInstant ScrollBehavior = "instant"
 	ScrollBehaviorSmooth  ScrollBehavior = "smooth"
+)
+
+// https://www.w3.org/TR/DOM-Parsing/
+type SupportedType string
+
+const (
+	SupportedType_Text_HTML             SupportedType = "text/html"
+	SupportedType_Text_XML              SupportedType = "text/xml"
+	SupportedType_Application_XML       SupportedType = "application/xml"
+	SupportedType_Application_XHTML_XML SupportedType = "application/xhtml+xml"
+	SupportedType_Image_SVG_XML         SupportedType = "image/svg+xml"
 )
