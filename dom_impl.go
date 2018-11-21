@@ -13,8 +13,8 @@ type documentImpl struct {
 	*nonElementParentNodeImpl
 	*documentOrShadowRootImpl
 	*parentNodeImpl
-	*partialDocumentImpl
-	*partialDocumentFullscreenImpl
+	*globalEventHandlersImpl
+	*documentAndElementEventHandlersImpl
 	js.Value
 }
 
@@ -31,13 +31,13 @@ func newDocumentImpl(v js.Value) *documentImpl {
 	}
 
 	return &documentImpl{
-		nodeImpl:                      newNodeImpl(v),
-		nonElementParentNodeImpl:      newNonElementParentNodeImpl(v),
-		documentOrShadowRootImpl:      newDocumentOrShadowRootImpl(v),
-		parentNodeImpl:                newParentNodeImpl(v),
-		partialDocumentImpl:           newpartialDocumentImpl(v),
-		partialDocumentFullscreenImpl: newpartialDocumentFullscreenImpl(v),
-		Value:                         v,
+		nodeImpl:                            newNodeImpl(v),
+		nonElementParentNodeImpl:            newNonElementParentNodeImpl(v),
+		documentOrShadowRootImpl:            newDocumentOrShadowRootImpl(v),
+		parentNodeImpl:                      newParentNodeImpl(v),
+		globalEventHandlersImpl:             newGlobalEventHandlersImpl(v),
+		documentAndElementEventHandlersImpl: newDocumentAndElementEventHandlersImpl(v),
+		Value:                               v,
 	}
 }
 
@@ -171,8 +171,248 @@ func (p *documentImpl) CreateTreeWalker(node Node, whatToShow NodeFilterShow, fi
 	}
 }
 
-func (p *documentImpl) JSValue() js.Value {
-	return p.Value
+func (p *documentImpl) FullscreenEnabled() bool {
+	return p.Get("fullscreenEnabled").Bool()
+}
+
+func (p *documentImpl) ExitFullscreen() Promise {
+	return newPromiseImpl(p.Call("exitFullscreen"))
+}
+
+func (p *documentImpl) OnFullscreenChange(fn func(Event)) EventHandler {
+	return p.On("fullscreenchange", fn)
+}
+
+func (p *documentImpl) OnFullscreenError(fn func(Event)) EventHandler {
+	return p.On("fullscreenerror", fn)
+}
+
+func (p *documentImpl) Location() Location {
+	return newLocation(p.Get("location"))
+}
+
+func (p *documentImpl) Domain() string {
+	return p.Get("domain").String()
+}
+
+func (p *documentImpl) SetDomain(domain string) {
+	p.Set("domain", domain)
+}
+
+func (p *documentImpl) Referrer() string {
+	return p.Get("referrer").String()
+}
+
+func (p *documentImpl) Cookie() string {
+	return p.Get("cookie").String()
+}
+
+func (p *documentImpl) SetCookie(cookie string) {
+	p.Set("cookie", cookie)
+}
+
+func (p *documentImpl) LastModified() string {
+	return p.Get("lastModified").String()
+}
+
+func (p *documentImpl) ReadyState() DocumentReadyState {
+	return DocumentReadyState(p.Get("readyState").String())
+}
+
+/*
+func (p *documentImpl) ByName(string) js.Value {
+
+}
+*/
+
+func (p *documentImpl) Title() string {
+	return p.Get("title").String()
+}
+
+func (p *documentImpl) SetTitle(title string) {
+	p.Set("title", title)
+}
+
+func (p *documentImpl) Dir() string {
+	return p.Get("dir").String()
+}
+
+func (p *documentImpl) SetDir(dir string) {
+	p.Set("dir", dir)
+}
+
+func (p *documentImpl) Body() HTMLBodyElement {
+	return newHTMLBodyElement(p.Get("body"))
+}
+
+func (p *documentImpl) SetBody(body HTMLBodyElement) {
+	p.Set("body", body.JSValue())
+}
+
+func (p *documentImpl) Head() HTMLHeadElement {
+	return newHTMLHeadElement(p.Get("head"))
+}
+
+func (p *documentImpl) Images() HTMLCollection {
+	return newHTMLCollection(p.Get("images"))
+}
+
+func (p *documentImpl) Embeds() HTMLCollection {
+	return newHTMLCollection(p.Get("embeds"))
+}
+
+func (p *documentImpl) Plugins() HTMLCollection {
+	return newHTMLCollection(p.Get("plugins"))
+}
+
+func (p *documentImpl) Links() HTMLCollection {
+	return newHTMLCollection(p.Get("links"))
+}
+
+func (p *documentImpl) Forms() HTMLCollection {
+	return newHTMLCollection(p.Get("forms"))
+}
+
+func (p *documentImpl) Scripts() HTMLCollection {
+	return newHTMLCollection(p.Get("scripts"))
+}
+
+func (p *documentImpl) ElementsByName(name string) []Node {
+	return nodeListToSlice(p.Call("getElementsByName", name))
+}
+
+func (p *documentImpl) CurrentScript() HTMLOrSVGScriptElement {
+	return newHTMLOrSVGScriptElement(p.Get("currentScript"))
+}
+
+func (p *documentImpl) Open(args ...string) Document {
+	switch len(args) {
+	case 1:
+		return newDocument(p.Call("open", args[0]))
+	case 2:
+		return newDocument(p.Call("open", args[0], args[1]))
+	default:
+		return newDocument(p.Call("open"))
+	}
+}
+
+func (p *documentImpl) OpenURL(url string, name string, features string, replace ...bool) WindowProxy {
+	switch len(replace) {
+	case 0:
+		return newWindowProxy(p.Call("open", url, name, features))
+	default:
+		return newWindowProxy(p.Call("open", url, name, features, replace[0]))
+	}
+}
+
+func (p *documentImpl) Close() {
+	p.Call("close")
+}
+
+func (p *documentImpl) Write(text ...string) {
+	if len(text) > 0 {
+		var params []interface{}
+		for _, v := range text {
+			params = append(params, v)
+		}
+		p.Call("write", params...)
+	}
+}
+
+func (p *documentImpl) WriteLn(text ...string) {
+	if len(text) > 0 {
+		var params []interface{}
+		for _, v := range text {
+			params = append(params, v)
+		}
+		p.Call("writeln", params...)
+	}
+}
+
+func (p *documentImpl) DefaultView() WindowProxy {
+	return newWindowProxy(p.Get("defaultView"))
+}
+
+func (p *documentImpl) ActiveElement() Element {
+	return newElement(p.Get("activeElement"))
+}
+
+func (p *documentImpl) HasFocus() bool {
+	return p.Call("hasFocus").Bool()
+}
+
+func (p *documentImpl) DesignMode() string {
+	return p.Get("designMode").String()
+}
+
+func (p *documentImpl) SetDesignMode(mode string) {
+	p.Set("designMode", mode)
+}
+
+func (p *documentImpl) ExecCommand(commandId string, args ...interface{}) bool {
+	switch len(args) {
+	case 1:
+		if showUI, ok := args[0].(bool); ok {
+			return p.Call("execCommand", commandId, showUI).Bool()
+		}
+	case 2:
+		if showUI, ok := args[0].(bool); ok {
+			if value, ok := args[1].(string); ok {
+				return p.Call("execCommand", commandId, showUI, value).Bool()
+			}
+		}
+	}
+
+	return p.Call("execCommand", commandId).Bool()
+}
+
+func (p *documentImpl) QueryCommandEnabled(commandId string) bool {
+	return p.Call("queryCommandEnabled", commandId).Bool()
+}
+
+func (p *documentImpl) QueryCommandIndeterm(commandId string) bool {
+	return p.Call("queryCommandIndeterm", commandId).Bool()
+}
+
+func (p *documentImpl) QueryCommandState(commandId string) bool {
+	return p.Call("queryCommandState", commandId).Bool()
+}
+
+func (p *documentImpl) QueryCommandSupported(commandId string) bool {
+	return p.Call("queryCommandSupported", commandId).Bool()
+}
+
+func (p *documentImpl) QueryCommandValue(commandId string) string {
+	return p.Call("queryCommandValue", commandId).String()
+}
+
+func (p *documentImpl) OnReadyStateChange(fn func(Event)) EventHandler {
+	return On("readystatechange", fn)
+}
+
+func (p *documentImpl) ElementFromPoint(x float64, y float64) Element {
+	return newElement(p.Call("elementFromPoint", x, y))
+}
+
+func (p *documentImpl) ElementsFromPoint(x float64, y float64) []Element {
+	var ret []Element
+
+	sl := arrayToSlice(p.Call("elementsFromPoint", x, y))
+	if sl != nil {
+		for _, v := range sl {
+			ret = append(ret, newElement(v))
+		}
+	}
+
+	return ret
+}
+
+func (p *documentImpl) CaretPositionFromPoint(x float64, y float64) CaretPosition {
+	return newCaretPosition(p.Call("caretPositionFromPoint", x, y))
+}
+
+func (p *documentImpl) ScrollingElement() Element {
+	return newElement(p.Get("scrollingElement"))
 }
 
 // -------------8<---------------------------------------
@@ -528,10 +768,6 @@ func (p *abstractRangeImpl) EndOffset() int {
 
 func (p *abstractRangeImpl) Collapsed() bool {
 	return p.Get("collapsed").Bool()
-}
-
-func (p *abstractRangeImpl) JSValue() js.Value {
-	return p.Value
 }
 
 // -------------8<---------------------------------------
@@ -894,7 +1130,6 @@ type elementImpl struct {
 	*nonDocumentTypeChildNodeImpl
 	*childNodeImpl
 	*slotableImpl
-	*partialElementFullscreenImpl
 	js.Value
 }
 
@@ -916,7 +1151,6 @@ func newElementImpl(v js.Value) *elementImpl {
 		nonDocumentTypeChildNodeImpl: newNonDocumentTypeChildNodeImpl(v),
 		childNodeImpl:                newChildNodeImpl(v),
 		slotableImpl:                 newSlotableImpl(v),
-		partialElementFullscreenImpl: newpartialElementFullscreenImpl(v),
 		Value:                        v,
 	}
 }
@@ -1175,8 +1409,16 @@ func (p *elementImpl) InsertAdjacentHTML(position string, text string) {
 	p.Call("insertAdjacentHTML", position, text)
 }
 
-func (p *elementImpl) JSValue() js.Value {
-	return p.Value
+func (p *elementImpl) RequestFullscreen(...FullscreenOptions) Promise {
+	return newPromiseImpl(p.Call("requestFullscreen"))
+}
+
+func (p *elementImpl) OnFullScreenChange(fn func(Event)) EventHandler {
+	return p.On("fullscreenchange", fn)
+}
+
+func (p *elementImpl) OnFullScreenError(fn func(Event)) EventHandler {
+	return p.On("fullscreenerror", fn)
 }
 
 // -------------8<---------------------------------------
@@ -1243,7 +1485,7 @@ func newDOMTokenList(v js.Value) DOMTokenList {
 		return nil
 	}
 	return &domTokenListImpl{
-		v,
+		Value: v,
 	}
 }
 
@@ -1538,260 +1780,6 @@ func (p *mutationObserverImpl) TakeRecords() []MutationRecord {
 
 // -------------8<---------------------------------------
 
-type partialDocumentImpl struct {
-	*globalEventHandlersImpl
-	*documentAndElementEventHandlersImpl
-	js.Value
-}
-
-func newpartialDocument(v js.Value) partialDocument {
-	if p := newpartialDocumentImpl(v); p != nil {
-		return p
-	}
-	return nil
-}
-
-func newpartialDocumentImpl(v js.Value) *partialDocumentImpl {
-	if isNil(v) {
-		return nil
-	}
-	return &partialDocumentImpl{
-		globalEventHandlersImpl:             newGlobalEventHandlersImpl(v),
-		documentAndElementEventHandlersImpl: newDocumentAndElementEventHandlersImpl(v),
-		Value:                               v,
-	}
-}
-
-func (p *partialDocumentImpl) Location() Location {
-	return newLocation(p.Get("location"))
-}
-
-func (p *partialDocumentImpl) Domain() string {
-	return p.Get("domain").String()
-}
-
-func (p *partialDocumentImpl) SetDomain(domain string) {
-	p.Set("domain", domain)
-}
-
-func (p *partialDocumentImpl) Referrer() string {
-	return p.Get("referrer").String()
-}
-
-func (p *partialDocumentImpl) Cookie() string {
-	return p.Get("cookie").String()
-}
-
-func (p *partialDocumentImpl) SetCookie(cookie string) {
-	p.Set("cookie", cookie)
-}
-
-func (p *partialDocumentImpl) LastModified() string {
-	return p.Get("lastModified").String()
-}
-
-func (p *partialDocumentImpl) ReadyState() DocumentReadyState {
-	return DocumentReadyState(p.Get("readyState").String())
-}
-
-/*
-func (p *partialDocumentImpl) ByName(string) js.Value {
-
-}
-*/
-
-func (p *partialDocumentImpl) Title() string {
-	return p.Get("title").String()
-}
-
-func (p *partialDocumentImpl) SetTitle(title string) {
-	p.Set("title", title)
-}
-
-func (p *partialDocumentImpl) Dir() string {
-	return p.Get("dir").String()
-}
-
-func (p *partialDocumentImpl) SetDir(dir string) {
-	p.Set("dir", dir)
-}
-
-func (p *partialDocumentImpl) Body() HTMLBodyElement {
-	return newHTMLBodyElement(p.Get("body"))
-}
-
-func (p *partialDocumentImpl) SetBody(body HTMLBodyElement) {
-	p.Set("body", body.JSValue())
-}
-
-func (p *partialDocumentImpl) Head() HTMLHeadElement {
-	return newHTMLHeadElement(p.Get("head"))
-}
-
-func (p *partialDocumentImpl) Images() HTMLCollection {
-	return newHTMLCollection(p.Get("images"))
-}
-
-func (p *partialDocumentImpl) Embeds() HTMLCollection {
-	return newHTMLCollection(p.Get("embeds"))
-}
-
-func (p *partialDocumentImpl) Plugins() HTMLCollection {
-	return newHTMLCollection(p.Get("plugins"))
-}
-
-func (p *partialDocumentImpl) Links() HTMLCollection {
-	return newHTMLCollection(p.Get("links"))
-}
-
-func (p *partialDocumentImpl) Forms() HTMLCollection {
-	return newHTMLCollection(p.Get("forms"))
-}
-
-func (p *partialDocumentImpl) Scripts() HTMLCollection {
-	return newHTMLCollection(p.Get("scripts"))
-}
-
-func (p *partialDocumentImpl) ElementsByName(name string) []Node {
-	return nodeListToSlice(p.Call("getElementsByName", name))
-}
-
-func (p *partialDocumentImpl) CurrentScript() HTMLOrSVGScriptElement {
-	return newHTMLOrSVGScriptElement(p.Get("currentScript"))
-}
-
-func (p *partialDocumentImpl) Open(args ...string) Document {
-	switch len(args) {
-	case 1:
-		return newDocument(p.Call("open", args[0]))
-	case 2:
-		return newDocument(p.Call("open", args[0], args[1]))
-	default:
-		return newDocument(p.Call("open"))
-	}
-}
-
-func (p *partialDocumentImpl) OpenURL(url string, name string, features string, replace ...bool) WindowProxy {
-	switch len(replace) {
-	case 0:
-		return newWindowProxy(p.Call("open", url, name, features))
-	default:
-		return newWindowProxy(p.Call("open", url, name, features, replace[0]))
-	}
-}
-
-func (p *partialDocumentImpl) Close() {
-	p.Call("close")
-}
-
-func (p *partialDocumentImpl) Write(text ...string) {
-	if len(text) > 0 {
-		var params []interface{}
-		for _, v := range text {
-			params = append(params, v)
-		}
-		p.Call("write", params...)
-	}
-}
-
-func (p *partialDocumentImpl) WriteLn(text ...string) {
-	if len(text) > 0 {
-		var params []interface{}
-		for _, v := range text {
-			params = append(params, v)
-		}
-		p.Call("writeln", params...)
-	}
-}
-
-func (p *partialDocumentImpl) DefaultView() WindowProxy {
-	return newWindowProxy(p.Get("defaultView"))
-}
-
-func (p *partialDocumentImpl) ActiveElement() Element {
-	return newElement(p.Get("activeElement"))
-}
-
-func (p *partialDocumentImpl) HasFocus() bool {
-	return p.Call("hasFocus").Bool()
-}
-
-func (p *partialDocumentImpl) DesignMode() string {
-	return p.Get("designMode").String()
-}
-
-func (p *partialDocumentImpl) SetDesignMode(mode string) {
-	p.Set("designMode", mode)
-}
-
-func (p *partialDocumentImpl) ExecCommand(commandId string, args ...interface{}) bool {
-	switch len(args) {
-	case 1:
-		if showUI, ok := args[0].(bool); ok {
-			return p.Call("execCommand", commandId, showUI).Bool()
-		}
-	case 2:
-		if showUI, ok := args[0].(bool); ok {
-			if value, ok := args[1].(string); ok {
-				return p.Call("execCommand", commandId, showUI, value).Bool()
-			}
-		}
-	}
-
-	return p.Call("execCommand", commandId).Bool()
-}
-
-func (p *partialDocumentImpl) QueryCommandEnabled(commandId string) bool {
-	return p.Call("queryCommandEnabled", commandId).Bool()
-}
-
-func (p *partialDocumentImpl) QueryCommandIndeterm(commandId string) bool {
-	return p.Call("queryCommandIndeterm", commandId).Bool()
-}
-
-func (p *partialDocumentImpl) QueryCommandState(commandId string) bool {
-	return p.Call("queryCommandState", commandId).Bool()
-}
-
-func (p *partialDocumentImpl) QueryCommandSupported(commandId string) bool {
-	return p.Call("queryCommandSupported", commandId).Bool()
-}
-
-func (p *partialDocumentImpl) QueryCommandValue(commandId string) string {
-	return p.Call("queryCommandValue", commandId).String()
-}
-
-func (p *partialDocumentImpl) OnReadyStateChange(fn func(Event)) EventHandler {
-	return On("readystatechange", fn)
-}
-
-func (p *partialDocumentImpl) ElementFromPoint(x float64, y float64) Element {
-	return newElement(p.Call("elementFromPoint", x, y))
-}
-
-func (p *partialDocumentImpl) ElementsFromPoint(x float64, y float64) []Element {
-	var ret []Element
-
-	sl := arrayToSlice(p.Call("elementsFromPoint", x, y))
-	if sl != nil {
-		for _, v := range sl {
-			ret = append(ret, newElement(v))
-		}
-	}
-
-	return ret
-}
-
-func (p *partialDocumentImpl) CaretPositionFromPoint(x float64, y float64) CaretPosition {
-	return newCaretPosition(p.Call("caretPositionFromPoint", x, y))
-}
-
-func (p *partialDocumentImpl) ScrollingElement() Element {
-	return newElement(p.Get("scrollingElement"))
-}
-
-// -------------8<---------------------------------------
-
 type htmlUnknownElementImpl struct {
 	*htmlElementImpl
 }
@@ -1966,10 +1954,6 @@ func (p *htmlElementImpl) OffsetWidth() int {
 
 func (p *htmlElementImpl) OffsetHeight() int {
 	return p.Get("offsetHeight").Int()
-}
-
-func (p *htmlElementImpl) JSValue() js.Value {
-	return p.Value
 }
 
 // -------------8<---------------------------------------

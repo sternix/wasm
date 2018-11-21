@@ -13,8 +13,6 @@ type (
 		NonElementParentNode
 		DocumentOrShadowRoot
 		ParentNode
-		partialDocument
-		partialDocumentFullscreen
 
 		Implementation() DOMImplementation
 		URL() string
@@ -42,6 +40,64 @@ type (
 		CreateRange() Range
 		CreateNodeIterator(Node, NodeFilterShow, ...NodeFilter) NodeIterator
 		CreateTreeWalker(Node, NodeFilterShow, ...NodeFilter) TreeWalker
+
+		// https://fullscreen.spec.whatwg.org/
+		FullscreenEnabled() bool
+		ExitFullscreen() Promise // Promise<void>
+		OnFullscreenChange(func(Event)) EventHandler
+		OnFullscreenError(func(Event)) EventHandler
+
+		// https://www.w3.org/TR/html52/dom.html#elementdef-document
+		GlobalEventHandlers
+		DocumentAndElementEventHandlers
+
+		Location() Location
+		Domain() string
+		SetDomain(string)
+		Referrer() string
+		Cookie() string
+		SetCookie(string)
+		LastModified() string
+		ReadyState() DocumentReadyState
+		//ByName(string) js.Value // ???
+		Title() string
+		SetTitle(string)
+		Dir() string
+		SetDir(string)
+		Body() HTMLBodyElement
+		SetBody(HTMLBodyElement)
+		Head() HTMLHeadElement
+		Images() HTMLCollection
+		Embeds() HTMLCollection
+		Plugins() HTMLCollection
+		Links() HTMLCollection
+		Forms() HTMLCollection
+		Scripts() HTMLCollection
+		ElementsByName(string) []Node
+		CurrentScript() HTMLOrSVGScriptElement
+		Open(...string) Document
+		OpenURL(string, string, string, ...bool) WindowProxy
+		Close()
+		Write(...string)
+		WriteLn(...string)
+		DefaultView() WindowProxy
+		ActiveElement() Element
+		HasFocus() bool
+		DesignMode() string
+		SetDesignMode(string)
+		ExecCommand(string, ...interface{}) bool
+		QueryCommandEnabled(string) bool
+		QueryCommandIndeterm(string) bool
+		QueryCommandState(string) bool
+		QueryCommandSupported(string) bool
+		QueryCommandValue(string) string
+		OnReadyStateChange(func(Event)) EventHandler
+
+		// https://www.w3.org/TR/cssom-view-1/#extensions-to-the-document-interface
+		ElementFromPoint(float64, float64) Element
+		ElementsFromPoint(float64, float64) []Element
+		CaretPositionFromPoint(float64, float64) CaretPosition
+		ScrollingElement() Element
 	}
 
 	// https://dom.spec.whatwg.org/#domimplementation
@@ -120,7 +176,6 @@ type (
 		IntersectsNode(Node) bool
 
 		// https://www.w3.org/TR/cssom-view-1/#extensions-to-the-range-interface
-		// partials
 		ClientRects() []DOMRect
 		BoundingClientRect() DOMRect
 
@@ -249,7 +304,6 @@ type (
 		NonDocumentTypeChildNode
 		ChildNode
 		Slotable
-		partialElementFullscreen
 
 		NamespaceURI() string
 		Prefix() string
@@ -311,6 +365,11 @@ type (
 		OuterHTML() string
 		SetOuterHTML(string)
 		InsertAdjacentHTML(string, string)
+
+		// https://fullscreen.spec.whatwg.org/
+		RequestFullscreen(...FullscreenOptions) Promise
+		OnFullScreenChange(func(Event)) EventHandler
+		OnFullScreenError(func(Event)) EventHandler
 	}
 
 	// https://dom.spec.whatwg.org/#dictdef-shadowrootinit
@@ -422,62 +481,6 @@ type (
 
 		Left float64 `json:"left"`
 		Top  float64 `json:"top"`
-	}
-
-	// https://www.w3.org/TR/html52/dom.html#elementdef-document
-	partialDocument interface {
-		//Document
-		GlobalEventHandlers
-		DocumentAndElementEventHandlers
-
-		Location() Location
-		Domain() string
-		SetDomain(string)
-		Referrer() string
-		Cookie() string
-		SetCookie(string)
-		LastModified() string
-		ReadyState() DocumentReadyState
-		//ByName(string) js.Value // ???
-		Title() string
-		SetTitle(string)
-		Dir() string
-		SetDir(string)
-		Body() HTMLBodyElement
-		SetBody(HTMLBodyElement)
-		Head() HTMLHeadElement
-		Images() HTMLCollection
-		Embeds() HTMLCollection
-		Plugins() HTMLCollection
-		Links() HTMLCollection
-		Forms() HTMLCollection
-		Scripts() HTMLCollection
-		ElementsByName(string) []Node
-		CurrentScript() HTMLOrSVGScriptElement
-		Open(...string) Document
-		OpenURL(string, string, string, ...bool) WindowProxy
-		Close()
-		Write(...string)
-		WriteLn(...string)
-		DefaultView() WindowProxy
-		ActiveElement() Element
-		HasFocus() bool
-		DesignMode() string
-		SetDesignMode(string)
-		ExecCommand(string, ...interface{}) bool
-		QueryCommandEnabled(string) bool
-		QueryCommandIndeterm(string) bool
-		QueryCommandState(string) bool
-		QueryCommandSupported(string) bool
-		QueryCommandValue(string) string
-		OnReadyStateChange(func(Event)) EventHandler
-
-		// https://www.w3.org/TR/cssom-view-1/#extensions-to-the-document-interface
-		// partials
-		ElementFromPoint(float64, float64) Element
-		ElementsFromPoint(float64, float64) []Element
-		CaretPositionFromPoint(float64, float64) CaretPosition
-		ScrollingElement() Element
 	}
 
 	// https://www.w3.org/TR/html52/dom.html#typedefdef-htmlorsvgscriptelement

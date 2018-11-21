@@ -66,6 +66,7 @@ func NewMediaStream(args ...interface{}) MediaStream {
 type htmlBodyElementImpl struct {
 	*htmlElementImpl
 	*windowEventHandlersImpl
+	js.Value
 }
 
 func newHTMLBodyElement(v js.Value) HTMLBodyElement {
@@ -76,6 +77,7 @@ func newHTMLBodyElement(v js.Value) HTMLBodyElement {
 	return &htmlBodyElementImpl{
 		htmlElementImpl:         newHTMLElementImpl(v),
 		windowEventHandlersImpl: newWindowEventHandlersImpl(v),
+		Value:                   v,
 	}
 }
 
@@ -484,10 +486,6 @@ func (p *htmlAnchorElementImpl) ReferrerPolicy() string {
 
 func (p *htmlAnchorElementImpl) SetReferrerPolicy(policy string) {
 	p.Set("referrerPolicy", policy)
-}
-
-func (p *htmlAnchorElementImpl) JSValue() js.Value {
-	return p.Value
 }
 
 // -------------8<---------------------------------------
@@ -1647,10 +1645,6 @@ func (p *htmlAreaElementImpl) ReferrerPolicy() string {
 
 func (p *htmlAreaElementImpl) SetReferrerPolicy(policy string) {
 	p.Set("referrerPolicy", policy)
-}
-
-func (p *htmlAreaElementImpl) JSValue() js.Value {
-	return p.Value
 }
 
 // -------------8<---------------------------------------

@@ -96,10 +96,6 @@ func (p *promiseImpl) Resolve(arg interface{}) Promise {
 	return newPromiseImpl(v)
 }
 
-func (p *promiseImpl) JSValue() js.Value {
-	return p.Value
-}
-
 // -------------8<---------------------------------------
 
 type ArrayBufferPromise struct {

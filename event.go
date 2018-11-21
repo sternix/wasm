@@ -193,7 +193,6 @@ type (
 		ClearInterval(int)
 		QueueMicrotask(VoidFunction)
 
-		// partial interface
 		// https://www.w3.org/TR/IndexedDB/#idbfactory
 		IndexedDB() IDBFactory
 

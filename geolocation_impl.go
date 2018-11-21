@@ -9,28 +9,6 @@ import (
 
 // -------------8<---------------------------------------
 
-var _ partialNavigatorGeolocation = &partialNavigatorGeolocationImpl{}
-
-type partialNavigatorGeolocationImpl struct {
-	js.Value
-}
-
-func newpartialNavigatorGeolocationImpl(v js.Value) *partialNavigatorGeolocationImpl {
-	if isNil(v) {
-		return nil
-	}
-
-	return &partialNavigatorGeolocationImpl{
-		Value: v,
-	}
-}
-
-func (p *partialNavigatorGeolocationImpl) Geolocation() Geolocation {
-	return newGeolocation(p.Get("geolocation"))
-}
-
-// -------------8<---------------------------------------
-
 type geolocationImpl struct {
 	js.Value
 }

@@ -68,10 +68,6 @@ func (p *messagePortImpl) OnMessageError(fn func(Event)) EventHandler {
 	return p.On("messageerror", fn)
 }
 
-func (p *messagePortImpl) JSValue() js.Value {
-	return p.Value
-}
-
 // -------------8<---------------------------------------
 
 type broadcastChannelImpl struct {

@@ -9,11 +9,6 @@ import (
 // https://w3c.github.io/geolocation-api/#idl-index
 
 type (
-	// https://w3c.github.io/geolocation-api/#dom-navigator
-	partialNavigatorGeolocation interface {
-		Geolocation() Geolocation
-	}
-
 	// https://w3c.github.io/geolocation-api/#dom-geolocation
 	Geolocation interface {
 		CurrentPosition(PositionCallback, ...interface{})

@@ -102,15 +102,20 @@ type (
 
 	// https://www.w3.org/TR/2dcontext/#canvasgradient
 	CanvasGradient interface {
+		js.Wrapper
+
 		AddColorStop(float64, string)
 	}
 
 	// https://www.w3.org/TR/2dcontext/#canvaspattern
 	CanvasPattern interface {
+		js.Wrapper
 	}
 
 	// https://www.w3.org/TR/2dcontext/#textmetrics
 	TextMetrics interface {
+		js.Wrapper
+
 		Width() float64
 	}
 

@@ -295,3 +295,19 @@ func (p *parentNodeImpl) QuerySelectorAll(selectors string) []Node {
 }
 
 // -------------8<---------------------------------------
+
+type FullscreenOptions struct {
+	NavigationUI FullscreenNavigationUI `json:"navigationUI"`
+}
+
+// -------------8<---------------------------------------
+
+type FullscreenNavigationUI string
+
+const (
+	FullscreenNavigationUIAuto FullscreenNavigationUI = "auto"
+	FullscreenNavigationUIShow FullscreenNavigationUI = "show"
+	FullscreenNavigationUIHide FullscreenNavigationUI = "hide"
+)
+
+// -------------8<---------------------------------------

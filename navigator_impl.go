@@ -15,8 +15,7 @@ type navigatorImpl struct {
 	*navigatorContentUtilsImpl
 	*navigatorCookiesImpl
 	*navigatorConcurrentHardwareImpl
-	*partialNavigatorGeolocationImpl
-	partialClipboard
+	js.Value
 }
 
 func newNavigator(v js.Value) Navigator {
@@ -31,9 +30,16 @@ func newNavigator(v js.Value) Navigator {
 		navigatorContentUtilsImpl:       newNavigatorContentUtilsImpl(v),
 		navigatorCookiesImpl:            newNavigatorCookiesImpl(v),
 		navigatorConcurrentHardwareImpl: newNavigatorConcurrentHardwareImpl(v),
-		partialNavigatorGeolocationImpl: newpartialNavigatorGeolocationImpl(v),
-		partialClipboard:                newpartialClipboardImpl(v),
+		Value:                           v,
 	}
+}
+
+func (p *navigatorImpl) Geolocation() Geolocation {
+	return newGeolocation(p.Get("geolocation"))
+}
+
+func (p *navigatorImpl) Clipboard() Clipboard {
+	return newClipboard(p.Get("clipboard"))
 }
 
 // -------------8<---------------------------------------

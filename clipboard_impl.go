@@ -8,28 +8,6 @@ import (
 
 // -------------8<---------------------------------------
 
-var _ partialClipboard = &partialClipboardImpl{}
-
-type partialClipboardImpl struct {
-	js.Value
-}
-
-func newpartialClipboardImpl(v js.Value) *partialClipboardImpl {
-	if isNil(v) {
-		return nil
-	}
-
-	return &partialClipboardImpl{
-		Value: v,
-	}
-}
-
-func (p *partialClipboardImpl) Clipboard() Clipboard {
-	return newClipboard(p.Get("clipboard"))
-}
-
-// -------------8<---------------------------------------
-
 type clipboardImpl struct {
 	*eventTargetImpl
 }

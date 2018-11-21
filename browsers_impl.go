@@ -385,10 +385,6 @@ func (p *windowImpl) DevicePixelRatio() float64 {
 	return p.Get("devicePixelRatio").Float()
 }
 
-func (p *windowImpl) JSValue() js.Value {
-	return p.Value
-}
-
 // -------------8<---------------------------------------
 
 type barPropImpl struct {
@@ -413,7 +409,6 @@ func (p *barPropImpl) Visible() bool {
 
 type locationImpl struct {
 	*workerLocationImpl
-	js.Value
 }
 
 func newLocation(v js.Value) Location {
@@ -422,7 +417,6 @@ func newLocation(v js.Value) Location {
 	}
 	return &locationImpl{
 		workerLocationImpl: newWorkerLocationImpl(v),
-		Value:              v,
 	}
 }
 

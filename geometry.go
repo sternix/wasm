@@ -11,6 +11,8 @@ import (
 type (
 	// https://www.w3.org/TR/geometry-1/#dom-dompointreadonly
 	DOMPointReadOnly interface {
+		js.Wrapper
+
 		X() float64
 		Y() float64
 		Z() float64
@@ -38,6 +40,8 @@ type (
 
 	// https://www.w3.org/TR/geometry-1/#dom-domrectreadonly
 	DOMRectReadOnly interface {
+		js.Wrapper
+
 		X() float64
 		Y() float64
 		Width() float64
@@ -58,6 +62,8 @@ type (
 
 	// https://www.w3.org/TR/geometry-1/#dom-domquad
 	DOMQuad interface {
+		js.Wrapper
+
 		P1() DOMPoint
 		P2() DOMPoint
 		P3() DOMPoint
@@ -67,6 +73,8 @@ type (
 
 	// https://www.w3.org/TR/geometry-1/#dom-dommatrixreadonly
 	DOMMatrixReadOnly interface {
+		js.Wrapper
+
 		A() float64
 		B() float64
 		C() float64
@@ -108,7 +116,6 @@ type (
 		TransformPoint(...DOMPointInit) DOMPoint
 		ToFloat32Array() []float32 //Float32Array
 		ToFloat64Array() []float64 // Float64Array
-		JSValue() js.Value
 		String() string
 	}
 
@@ -144,7 +151,9 @@ type (
 	}
 
 	// typedef (Text or Element or CSSPseudoElement or Document) GeometryNode
-	GeometryNode interface{}
+	GeometryNode interface {
+		js.Wrapper
+	}
 )
 
 type CSSBoxType string

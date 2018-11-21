@@ -30,10 +30,6 @@ func (p *fileImpl) LastModified() int {
 	return p.Get("lastModified").Int()
 }
 
-func (p *fileImpl) JSValue() js.Value {
-	return p.Value
-}
-
 // -------------8<---------------------------------------
 
 type blobImpl struct {
@@ -80,10 +76,6 @@ func (p *blobImpl) Slice(args ...interface{}) Blob {
 	}
 	// wrong parameter count or parameter not given
 	return newBlob(p.Call("slice"))
-}
-
-func (p *blobImpl) JSValue() js.Value {
-	return p.Value
 }
 
 // -------------8<---------------------------------------

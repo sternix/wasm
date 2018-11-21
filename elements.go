@@ -247,7 +247,6 @@ type (
 		ReferrerPolicy() string
 		SetReferrerPolicy(string)
 
-		// partial
 		X() int
 		Y() int
 	}

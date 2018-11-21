@@ -17,10 +17,6 @@ type (
 		ClipboardData() DataTransfer
 	}
 
-	partialClipboard interface {
-		Clipboard() Clipboard
-	}
-
 	Clipboard interface {
 		EventTarget
 

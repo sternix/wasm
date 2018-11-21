@@ -9,10 +9,11 @@ import (
 
 type (
 	Callback interface {
+		js.Wrapper
+
 		Release()
 		jsCallback() js.Callback
 		jsFunc(js.Value, []js.Value) interface{}
-		JSValue() js.Value
 	}
 
 	// for SetTimeout and SetInterval
@@ -59,7 +60,7 @@ type (
 // -------------8<---------------------------------------
 
 type callbackImpl struct {
-	cb js.Callback
+	js.Callback
 }
 
 func newCallbackImpl() *callbackImpl {
@@ -67,17 +68,13 @@ func newCallbackImpl() *callbackImpl {
 }
 
 func (p *callbackImpl) Release() {
-	if !isNil(p.cb.Value) {
-		p.cb.Release()
+	if !isNil(p.Callback.Value) {
+		p.Callback.Release()
 	}
 }
 
 func (p *callbackImpl) jsCallback() js.Callback {
-	return p.cb
-}
-
-func (p *callbackImpl) JSValue() js.Value {
-	return p.cb.Value
+	return p.Callback
 }
 
 // -------------8<---------------------------------------
@@ -89,7 +86,7 @@ func NewTimerCallback(fn func(...interface{}), args ...interface{}) TimerCallbac
 		args:         args,
 	}
 
-	h.cb = js.NewCallback(h.jsFunc)
+	h.Callback = js.NewCallback(h.jsFunc)
 	return h
 }
 
@@ -112,7 +109,7 @@ func NewFrameRequestCallback(fn func(time.Time)) FrameRequestCallback {
 		fn:           fn,
 	}
 
-	h.cb = js.NewCallback(h.jsFunc)
+	h.Callback = js.NewCallback(h.jsFunc)
 	return h
 }
 
@@ -134,7 +131,7 @@ func NewBlobCallback(fn func(Blob)) BlobCallback {
 		fn:           fn,
 	}
 
-	cb.cb = js.NewCallback(cb.jsFunc)
+	cb.Callback = js.NewCallback(cb.jsFunc)
 	return cb
 }
 
@@ -160,7 +157,7 @@ func NewMutationCallback(fn func([]MutationRecord, MutationObserver)) MutationCa
 		fn:           fn,
 	}
 
-	cb.cb = js.NewCallback(cb.jsFunc)
+	cb.Callback = js.NewCallback(cb.jsFunc)
 	return cb
 }
 
@@ -184,7 +181,7 @@ func NewPositionCallback(fn func(Position)) PositionCallback {
 		fn:           fn,
 	}
 
-	cb.cb = js.NewCallback(cb.jsFunc)
+	cb.Callback = js.NewCallback(cb.jsFunc)
 	return cb
 }
 
@@ -208,7 +205,7 @@ func NewPositionErrorCallback(fn func(PositionError)) PositionErrorCallback {
 		fn:           fn,
 	}
 
-	cb.cb = js.NewCallback(cb.jsFunc)
+	cb.Callback = js.NewCallback(cb.jsFunc)
 	return cb
 }
 
@@ -232,7 +229,7 @@ func NewFunctionStringCallback(fn func(string)) FunctionStringCallback {
 		fn:           fn,
 	}
 
-	cb.cb = js.NewCallback(cb.jsFunc)
+	cb.Callback = js.NewCallback(cb.jsFunc)
 	return cb
 }
 
@@ -256,7 +253,7 @@ func NewVoidFunction(fn func()) VoidFunction {
 		fn:           fn,
 	}
 
-	cb.cb = js.NewCallback(cb.jsFunc)
+	cb.Callback = js.NewCallback(cb.jsFunc)
 	return cb
 }
 

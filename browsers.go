@@ -2,6 +2,10 @@
 
 package wasm
 
+import (
+	"syscall/js"
+)
+
 type (
 	// https://www.w3.org/TR/html52/browsers.html#the-window-object
 	Window interface {
@@ -11,7 +15,6 @@ type (
 		WindowEventHandlers
 
 		Console() Console
-
 		Window() WindowProxy
 		Self() WindowProxy
 		Document() Document
@@ -48,7 +51,6 @@ type (
 		CancelAnimationFrame(int)
 
 		// https://www.w3.org/TR/cssom-view-1/#extensions-to-the-window-interface
-		// partials
 		MatchMedia(string) MediaQueryList
 		Screen() Screen
 		MoveTo(int, int)
@@ -73,6 +75,8 @@ type (
 
 	// https://www.w3.org/TR/html52/browsers.html#barprop
 	BarProp interface {
+		js.Wrapper
+
 		Visible() bool
 	}
 
@@ -101,6 +105,8 @@ type (
 
 	// https://www.w3.org/TR/html52/browsers.html#history
 	History interface {
+		js.Wrapper
+
 		Length() int
 		ScrollRestoration() ScrollRestorationType
 		SetScrollRestoration(ScrollRestorationType)

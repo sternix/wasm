@@ -11,8 +11,12 @@ type (
 		NavigatorContentUtils
 		NavigatorCookies
 		NavigatorConcurrentHardware //5.3
-		partialNavigatorGeolocation
-		partialClipboard
+
+		// https://w3c.github.io/geolocation-api/#idl-index
+		Geolocation() Geolocation
+
+		// https://w3c.github.io/clipboard-apis/#idl-index
+		Clipboard() Clipboard
 	}
 
 	// https://www.w3.org/TR/html52/webappapis.html#navigatorid
