@@ -7,8 +7,6 @@ package wasm
 type (
 	// https://drafts.csswg.org/cssom-view/#screen
 	Screen interface {
-		Object
-
 		AvailWidth() int
 		AvailHeight() int
 		Width() int
@@ -44,8 +42,6 @@ type (
 
 	// https://www.w3.org/TR/cssom-view-1/#caretposition
 	CaretPosition interface {
-		Object
-
 		OffsetNode() Node
 		Offset() int
 		ClientRect() DOMRect

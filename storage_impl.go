@@ -25,7 +25,7 @@ func NewStorageEvent(typ string, sei ...StorageEventInit) StorageEvent {
 // -------------8<---------------------------------------
 
 type storageImpl struct {
-	*objectImpl
+	js.Value
 }
 
 func newStorage(v js.Value) Storage {
@@ -34,7 +34,7 @@ func newStorage(v js.Value) Storage {
 	}
 
 	return &storageImpl{
-		objectImpl: newObjectImpl(v),
+		Value: v,
 	}
 }
 

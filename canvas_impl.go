@@ -446,7 +446,7 @@ func (p *textMetricsImpl) Width() float64 {
 // -------------8<---------------------------------------
 
 type imageDataImpl struct {
-	*objectImpl
+	js.Value
 }
 
 func newImageData(v js.Value) ImageData {
@@ -455,7 +455,7 @@ func newImageData(v js.Value) ImageData {
 	}
 
 	return &imageDataImpl{
-		objectImpl: newObjectImpl(v),
+		Value: v,
 	}
 }
 

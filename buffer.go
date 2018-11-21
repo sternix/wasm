@@ -9,17 +9,17 @@ import (
 type (
 	// https://heycam.github.io/webidl/#BufferSource
 	BufferSource interface {
-		Object
+		js.Wrapper
 	}
 
 	// https://heycam.github.io/webidl/#ArrayBufferView
 	ArrayBufferView interface {
-		Object
+		js.Wrapper
 	}
 
 	// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer
 	ArrayBuffer interface {
-		Object
+		js.Wrapper
 
 		ByteLength() int
 		IsView(arg interface{}) bool
@@ -29,7 +29,7 @@ type (
 
 	// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DataView
 	DataView interface {
-		Object
+		js.Wrapper
 
 		Buffer() ArrayBuffer
 		ByteLength() int
@@ -54,8 +54,7 @@ type (
 
 	// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8ClampedArray
 	Uint8ClampedArray interface {
-		Object
-
+		js.Wrapper
 		// from , of
 	}
 )
@@ -90,7 +89,7 @@ func NewDataView(buf ArrayBuffer, args ...int) DataView {
 // -------------8<---------------------------------------
 
 type arrayBufferViewImpl struct {
-	*objectImpl
+	js.Value
 }
 
 func newArrayBufferView(v js.Value) ArrayBufferView {
@@ -99,14 +98,14 @@ func newArrayBufferView(v js.Value) ArrayBufferView {
 	}
 
 	return &arrayBufferViewImpl{
-		objectImpl: newObjectImpl(v),
+		Value: v,
 	}
 }
 
 // -------------8<---------------------------------------
 
 type arrayBufferImpl struct {
-	*objectImpl
+	js.Value
 }
 
 func newArrayBuffer(v js.Value) ArrayBuffer {
@@ -115,7 +114,7 @@ func newArrayBuffer(v js.Value) ArrayBuffer {
 	}
 
 	return &arrayBufferImpl{
-		objectImpl: newObjectImpl(v),
+		Value: v,
 	}
 }
 
@@ -147,7 +146,7 @@ func (p *arrayBufferImpl) ToByteSlice() []byte {
 // -------------8<---------------------------------------
 
 type dataViewImpl struct {
-	*objectImpl
+	js.Value
 }
 
 func newDataView(v js.Value) DataView {
@@ -156,7 +155,7 @@ func newDataView(v js.Value) DataView {
 	}
 
 	return &dataViewImpl{
-		objectImpl: newObjectImpl(v),
+		Value: v,
 	}
 }
 
@@ -239,7 +238,7 @@ func (p *dataViewImpl) SetFloat64(v float64) {
 // -------------8<---------------------------------------
 
 type bufferSourceImpl struct {
-	*objectImpl
+	js.Value
 }
 
 func newBufferSource(v js.Value) BufferSource {
@@ -248,7 +247,7 @@ func newBufferSource(v js.Value) BufferSource {
 	}
 
 	return &bufferSourceImpl{
-		objectImpl: newObjectImpl(v),
+		Value: v,
 	}
 }
 

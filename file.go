@@ -2,10 +2,14 @@
 
 package wasm
 
+import (
+	"syscall/js"
+)
+
 type (
 	// https://www.w3.org/TR/FileAPI/#dfn-file
 	File interface {
-		Object
+		js.Wrapper
 
 		Name() string
 		LastModified() int
@@ -13,7 +17,7 @@ type (
 
 	// https://www.w3.org/TR/FileAPI/#dfn-Blob
 	Blob interface {
-		Object
+		js.Wrapper
 
 		Size() int
 		Type() string
@@ -21,7 +25,9 @@ type (
 	}
 
 	// https://www.w3.org/TR/FileAPI/#typedefdef-blobpart
-	BlobPart interface{} // typedef (BufferSource or Blob or USVString) BlobPart;
+	BlobPart interface {
+		js.Wrapper
+	} // typedef (BufferSource or Blob or USVString) BlobPart;
 
 	// https://w3c.github.io/FileAPI/#dfn-BlobPropertyBag
 	BlobPropertyBag struct {
@@ -40,6 +46,7 @@ type (
 	// https://www.w3.org/TR/FileAPI/#dfn-filereader
 	FileReader interface {
 		EventTarget
+
 		ReadAsArrayBuffer(Blob)
 		ReadAsBinaryString(Blob)
 		ReadAsText(Blob, ...string)
@@ -61,6 +68,8 @@ type (
 
 	// https://www.w3.org/TR/FileAPI/#dfn-FileReaderSync
 	FileReaderSync interface {
+		js.Wrapper
+
 		ReadAsArrayBuffer(Blob) ArrayBuffer
 		ReadAsBinaryString(Blob) string
 		ReadAsText(Blob, ...string) string

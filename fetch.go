@@ -14,7 +14,7 @@ type (
 	HeadersInit interface{}
 
 	Headers interface {
-		Object
+		js.Wrapper
 
 		Append(string, string)
 		Delete(string)

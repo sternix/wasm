@@ -2,6 +2,10 @@
 
 package wasm
 
+import (
+	"syscall/js"
+)
+
 type (
 	// https://html.spec.whatwg.org/multipage/scripting.html#htmlslotelement
 	HTMLSlotElement interface {
@@ -20,7 +24,7 @@ type (
 
 	// https://html.spec.whatwg.org/multipage/dom.html#htmlorsvgelement
 	HTMLOrSVGElement interface {
-		Object
+		js.Wrapper
 
 		DataSet() map[string]string // DomStringMap = map[string]string
 		Nonce() string
@@ -38,7 +42,7 @@ type (
 
 	// https://html.spec.whatwg.org/multipage/interaction.html#elementcontenteditable
 	ElementContentEditable interface {
-		Object
+		js.Wrapper
 
 		ContentEditable() string
 		SetContentEditable(string)
@@ -57,7 +61,7 @@ type (
 
 	// https://dom.spec.whatwg.org/#abortcontroller
 	AbortController interface {
-		Object
+		js.Wrapper
 
 		Signal() AbortSignal
 		Abort()

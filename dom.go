@@ -2,6 +2,10 @@
 
 package wasm
 
+import (
+	"syscall/js"
+)
+
 type (
 	// https://dom.spec.whatwg.org/#document
 	Document interface {
@@ -42,6 +46,8 @@ type (
 
 	// https://dom.spec.whatwg.org/#domimplementation
 	DOMImplementation interface {
+		js.Wrapper
+
 		CreateDocumentType(string, string, string) DocumentType
 		CreateDocument(string, string, ...DocumentType) XMLDocument
 		CreateHTMLDocument(...string) Document
@@ -70,7 +76,7 @@ type (
 
 	// https://dom.spec.whatwg.org/#callbackdef-nodefilter
 	NodeFilter interface {
-		Object
+		js.Wrapper
 
 		AcceptNode(Node) NodeFilterResult
 	}
@@ -124,7 +130,7 @@ type (
 
 	// https://dom.spec.whatwg.org/#abstractrange
 	AbstractRange interface {
-		Object
+		js.Wrapper
 
 		StartContainer() Node
 		StartOffset() int
@@ -142,6 +148,7 @@ type (
 	// https://dom.spec.whatwg.org/#processinginstruction
 	ProcessingInstruction interface {
 		CharacterData
+
 		Target() string
 	}
 
@@ -168,6 +175,7 @@ type (
 	CharacterData interface {
 		NonDocumentTypeChildNode
 		ChildNode
+
 		Data() string
 		SetData(string)
 		Length() int

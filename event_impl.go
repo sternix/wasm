@@ -124,7 +124,7 @@ func NewErrorEvent(typ string, eei ...ErrorEventInit) ErrorEvent {
 // -------------8<---------------------------------------
 
 type eventTargetImpl struct {
-	*objectImpl
+	js.Value
 }
 
 func newEventTarget(v js.Value) EventTarget {
@@ -140,7 +140,7 @@ func newEventTargetImpl(v js.Value) *eventTargetImpl {
 	}
 
 	return &eventTargetImpl{
-		objectImpl: newObjectImpl(v),
+		Value: v,
 	}
 }
 
@@ -160,7 +160,7 @@ func (p *eventTargetImpl) On(event string, fn func(ev Event)) EventHandler {
 // -------------8<---------------------------------------
 
 type eventImpl struct {
-	*objectImpl
+	js.Value
 }
 
 func newEvent(v js.Value) Event {
@@ -176,7 +176,7 @@ func newEventImpl(v js.Value) *eventImpl {
 	}
 
 	return &eventImpl{
-		objectImpl: newObjectImpl(v),
+		Value: v,
 	}
 }
 

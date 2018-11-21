@@ -3,6 +3,7 @@
 package wasm
 
 import (
+	"syscall/js"
 	"time"
 )
 
@@ -21,7 +22,7 @@ type (
 
 	// https://www.w3.org/TR/cssom-1/#stylesheet
 	StyleSheet interface {
-		Object
+		js.Wrapper
 
 		Type() string
 		Href() string
@@ -583,7 +584,7 @@ type (
 	// https://www.w3.org/TR/html52/semantics-embedded-content.html#typedefdef-mediaprovider
 	// typedef (MediaStream or MediaSource or Blob) MediaProvider;
 	MediaProvider interface {
-		Object
+		js.Wrapper
 	}
 
 	// https://www.w3.org/TR/media-source/#idl-def-mediasource

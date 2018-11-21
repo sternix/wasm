@@ -2,13 +2,17 @@
 
 package wasm
 
+import (
+	"syscall/js"
+)
+
 // EXPERIMENTAL
 
 // https://streams.spec.whatwg.org/
 
 type (
 	ReadableStream interface {
-		Object
+		js.Wrapper
 
 		Locked() bool
 		Cancel(string) Promise // Promise<reason>
@@ -25,7 +29,7 @@ type (
 	}
 
 	GenericReader interface {
-		Object
+		js.Wrapper
 
 		Closed() Promise
 		Cancel(string) Promise // Promise<reason>
@@ -47,7 +51,7 @@ type (
 	}
 
 	WritableStream interface {
-		Object
+		js.Wrapper
 
 		Locked() bool
 		Abort(string) Promise // Promise<reason>

@@ -293,7 +293,7 @@ func (p *treeWalkerImpl) NextNode() Node {
 // -------------8<---------------------------------------
 
 type nodeFilterImpl struct {
-	*objectImpl
+	js.Value
 }
 
 func newNodeFilter(v js.Value) NodeFilter {
@@ -301,7 +301,7 @@ func newNodeFilter(v js.Value) NodeFilter {
 		return nil
 	}
 	return &nodeFilterImpl{
-		objectImpl: newObjectImpl(v),
+		Value: v,
 	}
 }
 
@@ -491,7 +491,7 @@ func (p *rangeImpl) CreateContextualFragment(fragment string) DocumentFragment {
 // -------------8<---------------------------------------
 
 type abstractRangeImpl struct {
-	*objectImpl
+	js.Value
 }
 
 func newAbstractRange(v js.Value) AbstractRange {
@@ -506,7 +506,7 @@ func newAbstractRangeImpl(v js.Value) *abstractRangeImpl {
 		return nil
 	}
 	return &abstractRangeImpl{
-		objectImpl: newObjectImpl(v),
+		Value: v,
 	}
 }
 
@@ -2003,7 +2003,7 @@ func (p *domStringMapImpl) Delete(name string) {
 // -------------8<---------------------------------------
 
 type htmlOrSVGScriptElementImpl struct {
-	*objectImpl
+	js.Value
 }
 
 func newHTMLOrSVGScriptElement(v js.Value) HTMLOrSVGScriptElement {
@@ -2012,7 +2012,7 @@ func newHTMLOrSVGScriptElement(v js.Value) HTMLOrSVGScriptElement {
 	}
 
 	return &htmlOrSVGScriptElementImpl{
-		objectImpl: newObjectImpl(v),
+		Value: v,
 	}
 }
 

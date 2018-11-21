@@ -113,7 +113,7 @@ func (p *linkStyleImpl) SetSheet(sheet StyleSheet) {
 // -------------8<---------------------------------------
 
 type styleSheetImpl struct {
-	*objectImpl
+	js.Value
 }
 
 func newStyleSheet(v js.Value) StyleSheet {
@@ -122,7 +122,7 @@ func newStyleSheet(v js.Value) StyleSheet {
 	}
 
 	return &styleSheetImpl{
-		objectImpl: newObjectImpl(v),
+		Value: v,
 	}
 }
 
@@ -2126,7 +2126,7 @@ func (p *mediaErrorImpl) Code() MediaErrorCode {
 // -------------8<---------------------------------------
 
 type mediaProviderImpl struct {
-	*objectImpl
+	js.Value
 }
 
 func newMediaProvider(v js.Value) MediaProvider {
@@ -2135,7 +2135,7 @@ func newMediaProvider(v js.Value) MediaProvider {
 	}
 
 	return &mediaProviderImpl{
-		objectImpl: newObjectImpl(v),
+		Value: v,
 	}
 }
 

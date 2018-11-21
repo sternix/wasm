@@ -9,7 +9,7 @@ import (
 // -------------8<---------------------------------------
 
 type webGLObjectImpl struct {
-	*objectImpl
+	js.Value
 }
 
 func newWebGLObject(v js.Value) WebGLObject {
@@ -25,7 +25,7 @@ func newWebGLObjectImpl(v js.Value) *webGLObjectImpl {
 	}
 
 	return &webGLObjectImpl{
-		objectImpl: newObjectImpl(v),
+		Value: v,
 	}
 }
 
@@ -128,7 +128,7 @@ func newWebGLTexture(v js.Value) WebGLTexture {
 // -------------8<---------------------------------------
 
 type webGLUniformLocationImpl struct {
-	*objectImpl
+	js.Value
 }
 
 func newWebGLUniformLocation(v js.Value) WebGLUniformLocation {
@@ -137,14 +137,14 @@ func newWebGLUniformLocation(v js.Value) WebGLUniformLocation {
 	}
 
 	return &webGLUniformLocationImpl{
-		objectImpl: newObjectImpl(v),
+		Value: v,
 	}
 }
 
 // -------------8<---------------------------------------
 
 type webGLActiveInfoImpl struct {
-	*objectImpl
+	js.Value
 }
 
 func newWebGLActiveInfo(v js.Value) WebGLActiveInfo {
@@ -153,7 +153,7 @@ func newWebGLActiveInfo(v js.Value) WebGLActiveInfo {
 	}
 
 	return &webGLActiveInfoImpl{
-		objectImpl: newObjectImpl(v),
+		Value: v,
 	}
 }
 
@@ -172,7 +172,7 @@ func (p *webGLActiveInfoImpl) Name() string {
 // -------------8<---------------------------------------
 
 type webGLShaderPrecisionFormatImpl struct {
-	*objectImpl
+	js.Value
 }
 
 func newWebGLShaderPrecisionFormat(v js.Value) WebGLShaderPrecisionFormat {
@@ -181,7 +181,7 @@ func newWebGLShaderPrecisionFormat(v js.Value) WebGLShaderPrecisionFormat {
 	}
 
 	return &webGLShaderPrecisionFormatImpl{
-		objectImpl: newObjectImpl(v),
+		Value: v,
 	}
 }
 
@@ -219,7 +219,7 @@ func newWebGLContextAttributes(v js.Value) WebGLContextAttributes {
 // -------------8<---------------------------------------
 
 type texImageSourceImpl struct {
-	*objectImpl
+	js.Value
 }
 
 func newTexImageSource(v js.Value) TexImageSource {
@@ -228,7 +228,7 @@ func newTexImageSource(v js.Value) TexImageSource {
 	}
 
 	return &texImageSourceImpl{
-		objectImpl: newObjectImpl(v),
+		Value: v,
 	}
 }
 
@@ -237,7 +237,7 @@ func newTexImageSource(v js.Value) TexImageSource {
 var _ WebGLRenderingContextBase = &webGLRenderingContextBaseImpl{}
 
 type webGLRenderingContextBaseImpl struct {
-	*objectImpl
+	js.Value
 }
 
 func newWebGLRenderingContextBaseImpl(v js.Value) *webGLRenderingContextBaseImpl {
@@ -246,7 +246,7 @@ func newWebGLRenderingContextBaseImpl(v js.Value) *webGLRenderingContextBaseImpl
 	}
 
 	return &webGLRenderingContextBaseImpl{
-		objectImpl: newObjectImpl(v),
+		Value: v,
 	}
 }
 

@@ -9,7 +9,7 @@ import (
 // -------------8<---------------------------------------
 
 type textDecoderCommonImpl struct {
-	*objectImpl
+	js.Value
 }
 
 func newTextDecoderCommon(v js.Value) TextDecoderCommon {
@@ -25,7 +25,7 @@ func newTextDecoderCommonImpl(v js.Value) *textDecoderCommonImpl {
 	}
 
 	return &textDecoderCommonImpl{
-		objectImpl: newObjectImpl(v),
+		Value: v,
 	}
 }
 
@@ -77,7 +77,7 @@ func (p *textDecoderImpl) Decode(args ...interface{}) string {
 // -------------8<---------------------------------------
 
 type textEncoderCommonImpl struct {
-	*objectImpl
+	js.Value
 }
 
 func newTextEncoderCommon(v js.Value) TextEncoderCommon {
@@ -93,7 +93,7 @@ func newTextEncoderCommonImpl(v js.Value) *textEncoderCommonImpl {
 	}
 
 	return &textEncoderCommonImpl{
-		objectImpl: newObjectImpl(v),
+		Value: v,
 	}
 }
 
@@ -128,7 +128,7 @@ func (p *textEncoderImpl) Encode(input ...string) []byte {
 // -------------8<---------------------------------------
 
 type genericTransformStreamImpl struct {
-	*objectImpl
+	js.Value
 }
 
 func newGenericTransformStream(v js.Value) GenericTransformStream {
@@ -144,7 +144,7 @@ func newGenericTransformStreamImpl(v js.Value) *genericTransformStreamImpl {
 	}
 
 	return &genericTransformStreamImpl{
-		objectImpl: newObjectImpl(v),
+		Value: v,
 	}
 }
 

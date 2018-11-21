@@ -9,7 +9,7 @@ import (
 // -------------8<---------------------------------------
 
 type dataTransferImpl struct {
-	*objectImpl
+	js.Value
 }
 
 func newDataTransfer(v js.Value) DataTransfer {
@@ -18,7 +18,7 @@ func newDataTransfer(v js.Value) DataTransfer {
 	}
 
 	return &dataTransferImpl{
-		objectImpl: newObjectImpl(v),
+		Value: v,
 	}
 }
 

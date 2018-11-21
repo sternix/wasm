@@ -220,7 +220,7 @@ func (p *messageEventImpl) InitMessageEvent(typ string, args ...interface{}) {
 // -------------8<---------------------------------------
 
 type messageEventSourceImpl struct {
-	*objectImpl
+	js.Value
 }
 
 func newMessageEventSource(v js.Value) MessageEventSource {
@@ -229,7 +229,7 @@ func newMessageEventSource(v js.Value) MessageEventSource {
 	}
 
 	return &messageEventSourceImpl{
-		objectImpl: newObjectImpl(v),
+		Value: v,
 	}
 }
 

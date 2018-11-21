@@ -2,6 +2,10 @@
 
 package wasm
 
+import (
+	"syscall/js"
+)
+
 type (
 
 	// https://html.spec.whatwg.org/multipage/web-messaging.html#messagechannel
@@ -59,6 +63,6 @@ type (
 	// https://html.spec.whatwg.org/multipage/comms.html#messageeventsource
 	// typedef (WindowProxy or MessagePort or ServiceWorker) MessageEventSource;
 	MessageEventSource interface {
-		Object
+		js.Wrapper
 	}
 )

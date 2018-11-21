@@ -9,7 +9,7 @@ import (
 type (
 	// typedef (HTMLImageElement or HTMLVideoElement or HTMLCanvasElement) CanvasImageSource;
 	CanvasImageSource interface {
-		JSValue() js.Value
+		js.Wrapper
 	}
 
 	// https://www.w3.org/TR/2dcontext/#canvasrenderingcontext2d
@@ -122,7 +122,7 @@ type (
 
 	// https://www.w3.org/TR/2dcontext/#imagedata
 	ImageData interface {
-		Object
+		js.Wrapper
 
 		Width() int
 		Height() int

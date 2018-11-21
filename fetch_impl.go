@@ -9,7 +9,7 @@ import (
 // -------------8<---------------------------------------
 
 type headersImpl struct {
-	*objectImpl
+	js.Value
 }
 
 func newHeaders(v js.Value) Headers {
@@ -18,7 +18,7 @@ func newHeaders(v js.Value) Headers {
 	}
 
 	return &headersImpl{
-		objectImpl: newObjectImpl(v),
+		Value: v,
 	}
 }
 
@@ -64,7 +64,7 @@ func (p *headersImpl) Entries() map[string]string {
 // -------------8<---------------------------------------
 
 type bodyImpl struct {
-	*objectImpl
+	js.Value
 }
 
 func newBody(v js.Value) Body {
@@ -80,7 +80,7 @@ func newBodyImpl(v js.Value) *bodyImpl {
 	}
 
 	return &bodyImpl{
-		objectImpl: newObjectImpl(v),
+		Value: v,
 	}
 }
 

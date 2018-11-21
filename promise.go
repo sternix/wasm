@@ -20,7 +20,7 @@ const (
 var _ Promise = &promiseImpl{}
 
 type Promise interface {
-	Object
+	js.Wrapper
 
 	All(...js.Callback) Promise
 	Then(js.Callback, ...js.Callback) Promise
@@ -32,7 +32,7 @@ type Promise interface {
 }
 
 type promiseImpl struct {
-	*objectImpl
+	js.Value
 }
 
 func newPromiseImpl(v js.Value) *promiseImpl {
@@ -41,7 +41,7 @@ func newPromiseImpl(v js.Value) *promiseImpl {
 	}
 
 	return &promiseImpl{
-		objectImpl: newObjectImpl(v),
+		Value: v,
 	}
 }
 
@@ -94,6 +94,10 @@ func (p *promiseImpl) Resolve(arg interface{}) Promise {
 		panic("Wrong parameter type for Promise.Resolve")
 	}
 	return newPromiseImpl(v)
+}
+
+func (p *promiseImpl) JSValue() js.Value {
+	return p.Value
 }
 
 // -------------8<---------------------------------------

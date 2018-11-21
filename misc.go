@@ -8,14 +8,8 @@ import (
 )
 
 type (
-	Object interface {
-		js.Wrapper
-	}
-
 	// https://heycam.github.io/webidl/#idl-DOMException
 	DOMException interface {
-		Object
-
 		Name() string
 		Message() string
 		Code() DOMError
@@ -24,30 +18,8 @@ type (
 
 // -------------8<---------------------------------------
 
-var _ Object = &objectImpl{}
-
-type objectImpl struct {
-	js.Value
-}
-
-func newObjectImpl(v js.Value) *objectImpl {
-	if isNil(v) {
-		return nil
-	}
-
-	return &objectImpl{
-		Value: v,
-	}
-}
-
-func (p *objectImpl) JSValue() js.Value {
-	return p.Value
-}
-
-// -------------8<---------------------------------------
-
 type domExceptionImpl struct {
-	*objectImpl
+	js.Value
 }
 
 func newDOMException(v js.Value) DOMException {
@@ -56,7 +28,7 @@ func newDOMException(v js.Value) DOMException {
 	}
 
 	return &domExceptionImpl{
-		objectImpl: newObjectImpl(v),
+		Value: v,
 	}
 }
 

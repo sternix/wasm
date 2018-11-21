@@ -9,7 +9,7 @@ import (
 // -------------8<---------------------------------------
 
 type screenImpl struct {
-	*objectImpl
+	js.Value
 }
 
 func newScreen(v js.Value) Screen {
@@ -18,7 +18,7 @@ func newScreen(v js.Value) Screen {
 	}
 
 	return &screenImpl{
-		objectImpl: newObjectImpl(v),
+		Value: v,
 	}
 }
 
@@ -77,7 +77,7 @@ func (p *mediaQueryListImpl) OnChange(fn func(Event)) EventHandler {
 // -------------8<---------------------------------------
 
 type caretPositionImpl struct {
-	*objectImpl
+	js.Value
 }
 
 func newCaretPosition(v js.Value) CaretPosition {
@@ -86,7 +86,7 @@ func newCaretPosition(v js.Value) CaretPosition {
 	}
 
 	return &caretPositionImpl{
-		objectImpl: newObjectImpl(v),
+		Value: v,
 	}
 }
 

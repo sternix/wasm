@@ -3,6 +3,7 @@
 package wasm
 
 import (
+	"syscall/js"
 	"time"
 )
 
@@ -18,14 +19,14 @@ type (
 	}
 
 	EventTarget interface {
-		Object
+		js.Wrapper
 
 		On(string, func(ev Event)) EventHandler
 	}
 
 	// https://dom.spec.whatwg.org/#event
 	Event interface {
-		Object
+		js.Wrapper
 
 		Type() string
 		Target() EventTarget

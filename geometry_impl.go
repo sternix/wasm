@@ -224,7 +224,7 @@ func (p *domRectReadOnlyImpl) Left() float64 {
 // -------------8<---------------------------------------
 
 type domQuadImpl struct {
-	*objectImpl
+	js.Value
 }
 
 func newDOMQuad(v js.Value) DOMQuad {
@@ -233,7 +233,7 @@ func newDOMQuad(v js.Value) DOMQuad {
 	}
 
 	return &domQuadImpl{
-		objectImpl: newObjectImpl(v),
+		Value: v,
 	}
 }
 
@@ -260,7 +260,7 @@ func (p *domQuadImpl) Bounds() DOMRectReadOnly {
 // -------------8<---------------------------------------
 
 type domMatrixReadOnlyImpl struct {
-	*objectImpl
+	js.Value
 }
 
 func newDOMMatrixReadOnly(v js.Value) DOMMatrixReadOnly {
@@ -276,7 +276,7 @@ func newDOMMatrixReadOnlyImpl(v js.Value) *domMatrixReadOnlyImpl {
 	}
 
 	return &domMatrixReadOnlyImpl{
-		objectImpl: newObjectImpl(v),
+		Value: v,
 	}
 }
 

@@ -46,7 +46,7 @@ func (p *htmlSlotElementImpl) AssignedElements(options ...AssignedNodesOptions) 
 // -------------8<---------------------------------------
 
 type htmlOrSVGElementImpl struct {
-	*objectImpl
+	js.Value
 }
 
 func newHTMLOrSVGElement(v js.Value) HTMLOrSVGElement {
@@ -54,7 +54,7 @@ func newHTMLOrSVGElement(v js.Value) HTMLOrSVGElement {
 		return nil
 	}
 	return &htmlOrSVGElementImpl{
-		objectImpl: newObjectImpl(v),
+		Value: v,
 	}
 }
 
@@ -93,7 +93,7 @@ func (p *htmlOrSVGElementImpl) Blur() {
 // -------------8<---------------------------------------
 
 type elementContentEditableImpl struct {
-	*objectImpl
+	js.Value
 }
 
 func newElementContentEditable(v js.Value) ElementContentEditable {
@@ -101,7 +101,7 @@ func newElementContentEditable(v js.Value) ElementContentEditable {
 		return nil
 	}
 	return &elementContentEditableImpl{
-		objectImpl: newObjectImpl(v),
+		Value: v,
 	}
 }
 
@@ -152,7 +152,7 @@ func (p *abortSignalImpl) OnAbort(fn func(Event)) EventHandler {
 // -------------8<---------------------------------------
 
 type abortControllerImpl struct {
-	*objectImpl
+	js.Value
 }
 
 func newAbortController(v js.Value) AbortController {
@@ -160,7 +160,7 @@ func newAbortController(v js.Value) AbortController {
 		return nil
 	}
 	return &abortControllerImpl{
-		objectImpl: newObjectImpl(v),
+		Value: v,
 	}
 }
 

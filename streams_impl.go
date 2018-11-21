@@ -9,7 +9,7 @@ import (
 // -------------8<---------------------------------------
 
 type readableStreamImpl struct {
-	*objectImpl
+	js.Value
 }
 
 func newReadableStream(v js.Value) ReadableStream {
@@ -18,7 +18,7 @@ func newReadableStream(v js.Value) ReadableStream {
 	}
 
 	return &readableStreamImpl{
-		objectImpl: newObjectImpl(v),
+		Value: v,
 	}
 }
 
@@ -53,7 +53,7 @@ func (p *readableStreamImpl) Tee() {
 // -------------8<---------------------------------------
 
 type writableStreamImpl struct {
-	*objectImpl
+	js.Value
 }
 
 func newWritableStream(v js.Value) WritableStream {
@@ -62,7 +62,7 @@ func newWritableStream(v js.Value) WritableStream {
 	}
 
 	return &writableStreamImpl{
-		objectImpl: newObjectImpl(v),
+		Value: v,
 	}
 }
 

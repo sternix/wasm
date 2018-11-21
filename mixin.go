@@ -176,7 +176,7 @@ func (p *childNodeImpl) Remove() {
 var _ DocumentOrShadowRoot = &documentOrShadowRootImpl{}
 
 type documentOrShadowRootImpl struct {
-	*objectImpl
+	js.Value
 }
 
 func newDocumentOrShadowRootImpl(v js.Value) *documentOrShadowRootImpl {
@@ -185,7 +185,7 @@ func newDocumentOrShadowRootImpl(v js.Value) *documentOrShadowRootImpl {
 	}
 
 	return &documentOrShadowRootImpl{
-		objectImpl: newObjectImpl(v),
+		Value: v,
 	}
 }
 

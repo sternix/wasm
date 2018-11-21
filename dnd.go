@@ -2,10 +2,14 @@
 
 package wasm
 
+import (
+	"syscall/js"
+)
+
 type (
 	// https://www.w3.org/TR/html52/editing.html#datatransfer
 	DataTransfer interface {
-		Object
+		js.Wrapper
 
 		DropEffect() string
 		SetDropEffect(string)
@@ -22,6 +26,8 @@ type (
 
 	// https://www.w3.org/TR/html52/editing.html#datatransferitemlist
 	DataTransferItemList interface {
+		js.Wrapper
+
 		Length() int
 		Index(int) DataTransferItem // Get
 		Add(string, string) DataTransferItem
@@ -32,6 +38,8 @@ type (
 
 	// https://www.w3.org/TR/html52/editing.html#datatransferitem
 	DataTransferItem interface {
+		js.Wrapper
+
 		Kind() string
 		Type() string
 		AsString(FunctionStringCallback)

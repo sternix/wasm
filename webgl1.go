@@ -2,6 +2,10 @@
 
 package wasm
 
+import (
+	"syscall/js"
+)
+
 // https://www.khronos.org/registry/webgl/specs/latest/1.0/
 
 type (
@@ -17,7 +21,7 @@ type (
 	}
 
 	WebGLObject interface {
-		Object
+		js.Wrapper
 	}
 
 	WebGLBuffer interface {
@@ -45,11 +49,11 @@ type (
 	}
 
 	WebGLUniformLocation interface {
-		Object
+		js.Wrapper
 	}
 
 	WebGLActiveInfo interface {
-		Object
+		js.Wrapper
 
 		Size() int
 		Type() GLenum
@@ -57,7 +61,7 @@ type (
 	}
 
 	WebGLShaderPrecisionFormat interface {
-		Object
+		js.Wrapper
 
 		RangeMin() int
 		RangeMax() int
@@ -72,11 +76,12 @@ type (
 		         HTMLVideoElement) TexImageSource;
 	*/
 	TexImageSource interface {
-		Object
+		js.Wrapper
 	}
 
 	WebGLRenderingContextBase interface {
-		Object
+		js.Wrapper
+
 		Canvas() HTMLCanvasElement
 		DrawingBufferWidth() int
 		drawingBufferHeight() int
