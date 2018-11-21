@@ -152,7 +152,7 @@ func (p *idbFactoryImpl) DeleteDatabase(name string) IDBOpenDBRequest {
 }
 
 func (p *idbFactoryImpl) Cmp(first interface{}, second interface{}) int {
-	return p.Call("cmp", valueOf(first), valueOf(second)).Int()
+	return p.Call("cmp", first, second).Int()
 }
 
 // -------------8<---------------------------------------
@@ -270,23 +270,23 @@ func (p *idbObjectStoreImpl) AutoIncrement() bool {
 func (p *idbObjectStoreImpl) Put(value interface{}, key ...interface{}) IDBRequest {
 	switch len(key) {
 	case 0:
-		return newIDBRequest(p.Call("put", valueOf(value)))
+		return newIDBRequest(p.Call("put", value))
 	default:
-		return newIDBRequest(p.Call("put", valueOf(value), valueOf(key[0])))
+		return newIDBRequest(p.Call("put", value, key[0]))
 	}
 }
 
 func (p *idbObjectStoreImpl) Add(value interface{}, key ...interface{}) IDBRequest {
 	switch len(key) {
 	case 0:
-		return newIDBRequest(p.Call("add", valueOf(value)))
+		return newIDBRequest(p.Call("add", value))
 	default:
-		return newIDBRequest(p.Call("add", valueOf(value), valueOf(key[0])))
+		return newIDBRequest(p.Call("add", value, key[0]))
 	}
 }
 
 func (p *idbObjectStoreImpl) Delete(query interface{}) IDBRequest {
-	return newIDBRequest(p.Call("delete", valueOf(query)))
+	return newIDBRequest(p.Call("delete", query))
 }
 
 func (p *idbObjectStoreImpl) Clear() IDBRequest {
@@ -294,20 +294,20 @@ func (p *idbObjectStoreImpl) Clear() IDBRequest {
 }
 
 func (p *idbObjectStoreImpl) Get(query interface{}) IDBRequest {
-	return newIDBRequest(p.Call("get", valueOf(query)))
+	return newIDBRequest(p.Call("get", query))
 }
 
 func (p *idbObjectStoreImpl) Key(query interface{}) IDBRequest {
-	return newIDBRequest(p.Call("getKey", valueOf(query)))
+	return newIDBRequest(p.Call("getKey", query))
 }
 
 func (p *idbObjectStoreImpl) All(args ...interface{}) IDBRequest {
 	switch len(args) {
 	case 1:
-		return newIDBRequest(p.Call("getAll", valueOf(args[0])))
+		return newIDBRequest(p.Call("getAll", args[0]))
 	case 2:
 		if count, ok := args[1].(int); ok {
-			return newIDBRequest(p.Call("getAll", valueOf(args[0]), count))
+			return newIDBRequest(p.Call("getAll", args[0], count))
 		}
 	}
 
@@ -317,10 +317,10 @@ func (p *idbObjectStoreImpl) All(args ...interface{}) IDBRequest {
 func (p *idbObjectStoreImpl) AllKeys(args ...interface{}) IDBRequest {
 	switch len(args) {
 	case 1:
-		return newIDBRequest(p.Call("getAllKeys", valueOf(args[0])))
+		return newIDBRequest(p.Call("getAllKeys", args[0]))
 	case 2:
 		if count, ok := args[1].(int); ok {
-			return newIDBRequest(p.Call("getAllKeys", valueOf(args[0]), count))
+			return newIDBRequest(p.Call("getAllKeys", args[0], count))
 		}
 	}
 
@@ -332,17 +332,17 @@ func (p *idbObjectStoreImpl) Count(query ...interface{}) IDBRequest {
 	case 0:
 		return newIDBRequest(p.Call("count"))
 	default:
-		return newIDBRequest(p.Call("count", valueOf(query[0])))
+		return newIDBRequest(p.Call("count", query[0]))
 	}
 }
 
 func (p *idbObjectStoreImpl) OpenCursor(args ...interface{}) IDBRequest {
 	switch len(args) {
 	case 1:
-		return newIDBRequest(p.Call("openCursor", valueOf(args[0])))
+		return newIDBRequest(p.Call("openCursor", args[0]))
 	case 2:
 		if direction, ok := args[1].(IDBCursorDirection); ok {
-			return newIDBRequest(p.Call("openCursor", valueOf(args[0]), string(direction)))
+			return newIDBRequest(p.Call("openCursor", args[0], string(direction)))
 		}
 	}
 
@@ -352,10 +352,10 @@ func (p *idbObjectStoreImpl) OpenCursor(args ...interface{}) IDBRequest {
 func (p *idbObjectStoreImpl) OpenKeyCursor(args ...interface{}) IDBRequest {
 	switch len(args) {
 	case 1:
-		return newIDBRequest(p.Call("openKeyCursor", valueOf(args[0])))
+		return newIDBRequest(p.Call("openKeyCursor", args[0]))
 	case 2:
 		if direction, ok := args[1].(IDBCursorDirection); ok {
-			return newIDBRequest(p.Call("openKeyCursor", valueOf(args[0]), string(direction)))
+			return newIDBRequest(p.Call("openKeyCursor", args[0], string(direction)))
 		}
 	}
 
@@ -420,20 +420,20 @@ func (p *idbIndexImpl) Unique() bool {
 }
 
 func (p *idbIndexImpl) Get(query interface{}) IDBRequest {
-	return newIDBRequest(p.Call("get", valueOf(query)))
+	return newIDBRequest(p.Call("get", query))
 }
 
 func (p *idbIndexImpl) Key(query interface{}) IDBRequest {
-	return newIDBRequest(p.Call("getKey", valueOf(query)))
+	return newIDBRequest(p.Call("getKey", query))
 }
 
 func (p *idbIndexImpl) All(args ...interface{}) IDBRequest {
 	switch len(args) {
 	case 1:
-		return newIDBRequest(p.Call("getAll", valueOf(args[0])))
+		return newIDBRequest(p.Call("getAll", args[0]))
 	case 2:
 		if count, ok := args[1].(int); ok {
-			return newIDBRequest(p.Call("getAll", valueOf(args[0]), count))
+			return newIDBRequest(p.Call("getAll", args[0], count))
 		}
 	}
 
@@ -443,10 +443,10 @@ func (p *idbIndexImpl) All(args ...interface{}) IDBRequest {
 func (p *idbIndexImpl) AllKeys(args ...interface{}) IDBRequest {
 	switch len(args) {
 	case 1:
-		return newIDBRequest(p.Call("getAllKeys", valueOf(args[0])))
+		return newIDBRequest(p.Call("getAllKeys", args[0]))
 	case 2:
 		if count, ok := args[1].(int); ok {
-			return newIDBRequest(p.Call("getAllKeys", valueOf(args[0]), count))
+			return newIDBRequest(p.Call("getAllKeys", args[0], count))
 		}
 	}
 
@@ -458,17 +458,17 @@ func (p *idbIndexImpl) Count(query ...interface{}) IDBRequest {
 	case 0:
 		return newIDBRequest(p.Call("count"))
 	default:
-		return newIDBRequest(p.Call("count", valueOf(query[0])))
+		return newIDBRequest(p.Call("count", query[0]))
 	}
 }
 
 func (p *idbIndexImpl) OpenCursor(args ...interface{}) IDBRequest {
 	switch len(args) {
 	case 1:
-		return newIDBRequest(p.Call("openCursor", valueOf(args[0])))
+		return newIDBRequest(p.Call("openCursor", args[0]))
 	case 2:
 		if direction, ok := args[1].(IDBCursorDirection); ok {
-			return newIDBRequest(p.Call("openCursor", valueOf(args[0]), string(direction)))
+			return newIDBRequest(p.Call("openCursor", args[0], string(direction)))
 		}
 	}
 
@@ -478,10 +478,10 @@ func (p *idbIndexImpl) OpenCursor(args ...interface{}) IDBRequest {
 func (p *idbIndexImpl) OpenKeyCursor(args ...interface{}) IDBRequest {
 	switch len(args) {
 	case 1:
-		return newIDBRequest(p.Call("openKeyCursor", valueOf(args[0])))
+		return newIDBRequest(p.Call("openKeyCursor", args[0]))
 	case 2:
 		if direction, ok := args[1].(IDBCursorDirection); ok {
-			return newIDBRequest(p.Call("openKeyCursor", valueOf(args[0]), string(direction)))
+			return newIDBRequest(p.Call("openKeyCursor", args[0], string(direction)))
 		}
 	}
 
@@ -522,16 +522,16 @@ func (p *idbKeyRangeImpl) UpperOpen() bool {
 
 //static
 func (p *idbKeyRangeImpl) Only(value interface{}) IDBKeyRange {
-	return newIDBKeyRange(p.Call("only", valueOf(value)))
+	return newIDBKeyRange(p.Call("only", value))
 }
 
 //static
 func (p *idbKeyRangeImpl) LowerBound(lower interface{}, open ...bool) IDBKeyRange {
 	switch len(open) {
 	case 0:
-		return newIDBKeyRange(p.Call("lowerBound", valueOf(lower)))
+		return newIDBKeyRange(p.Call("lowerBound", lower))
 	default:
-		return newIDBKeyRange(p.Call("lowerBound", valueOf(lower), open[0]))
+		return newIDBKeyRange(p.Call("lowerBound", lower, open[0]))
 	}
 }
 
@@ -539,9 +539,9 @@ func (p *idbKeyRangeImpl) LowerBound(lower interface{}, open ...bool) IDBKeyRang
 func (p *idbKeyRangeImpl) UpperBound(upper interface{}, open ...bool) IDBKeyRange {
 	switch len(open) {
 	case 0:
-		return newIDBKeyRange(p.Call("upperBound", valueOf(upper)))
+		return newIDBKeyRange(p.Call("upperBound", upper))
 	default:
-		return newIDBKeyRange(p.Call("upperBound", valueOf(upper), open[0]))
+		return newIDBKeyRange(p.Call("upperBound", upper, open[0]))
 	}
 }
 
@@ -549,16 +549,16 @@ func (p *idbKeyRangeImpl) UpperBound(upper interface{}, open ...bool) IDBKeyRang
 func (p *idbKeyRangeImpl) Bound(lower interface{}, upper interface{}, open ...bool) IDBKeyRange {
 	switch len(open) {
 	case 1:
-		return newIDBKeyRange(p.Call("bound", valueOf(lower), valueOf(upper), open[0]))
+		return newIDBKeyRange(p.Call("bound", lower, upper, open[0]))
 	case 2:
-		return newIDBKeyRange(p.Call("bound", valueOf(lower), valueOf(upper), open[0], open[1]))
+		return newIDBKeyRange(p.Call("bound", lower, upper, open[0], open[1]))
 	default:
-		return newIDBKeyRange(p.Call("bound", valueOf(lower), valueOf(upper)))
+		return newIDBKeyRange(p.Call("bound", lower, upper))
 	}
 }
 
 func (p *idbKeyRangeImpl) Includes(key interface{}) bool {
-	return p.Call("_includes", valueOf(key)).Bool()
+	return p.Call("_includes", key).Bool()
 }
 
 // -------------8<---------------------------------------
@@ -609,16 +609,16 @@ func (p *idbCursorImpl) Continue(key ...interface{}) {
 	case 0:
 		p.Call("continue")
 	default:
-		p.Call("continue", valueOf(key[0]))
+		p.Call("continue", key[0])
 	}
 }
 
 func (p *idbCursorImpl) ContinuePrimaryKey(key interface{}, primaryKey interface{}) {
-	p.Call("continuePrimaryKey", valueOf(key), valueOf(primaryKey))
+	p.Call("continuePrimaryKey", key, primaryKey)
 }
 
 func (p *idbCursorImpl) Update(value interface{}) IDBRequest {
-	return newIDBRequest(p.Call("update", valueOf(value)))
+	return newIDBRequest(p.Call("update", value))
 }
 
 func (p *idbCursorImpl) Delete() IDBRequest {

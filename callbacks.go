@@ -11,7 +11,7 @@ type (
 	Callback interface {
 		Release()
 		jsCallback() js.Callback
-		jsFunc([]js.Value)
+		jsFunc(js.Value, []js.Value) interface{}
 		JSValue() js.Value
 	}
 
@@ -99,8 +99,9 @@ type timerCallbackImpl struct {
 	args []interface{}
 }
 
-func (p *timerCallbackImpl) jsFunc(args []js.Value) {
+func (p *timerCallbackImpl) jsFunc(this js.Value, args []js.Value) interface{} {
 	p.fn(p.args...)
+	return nil
 }
 
 // -------------8<---------------------------------------
@@ -120,8 +121,9 @@ type frameRequestCallbackImpl struct {
 	fn func(time.Time)
 }
 
-func (p *frameRequestCallbackImpl) jsFunc(args []js.Value) {
+func (p *frameRequestCallbackImpl) jsFunc(this js.Value, args []js.Value) interface{} {
 	p.fn(highResTimeStampToTime(args[0]))
+	return nil
 }
 
 // -------------8<---------------------------------------
@@ -141,12 +143,13 @@ type blobCallbackImpl struct {
 	fn func(Blob)
 }
 
-func (p *blobCallbackImpl) jsFunc(args []js.Value) {
+func (p *blobCallbackImpl) jsFunc(this js.Value, args []js.Value) interface{} {
 	if len(args) == 1 {
 		p.fn(newBlob(args[0]))
 	} else {
 		p.fn(nil)
 	}
+	return nil
 }
 
 // -------------8<---------------------------------------
@@ -166,10 +169,11 @@ type mutationCallbackImpl struct {
 	fn func([]MutationRecord, MutationObserver)
 }
 
-func (p *mutationCallbackImpl) jsFunc(args []js.Value) {
+func (p *mutationCallbackImpl) jsFunc(this js.Value, args []js.Value) interface{} {
 	if len(args) == 2 {
 		p.fn(mutationRecordSequenceToSlice(args[0]), newMutationObserver(args[1]))
 	}
+	return nil
 }
 
 // -------------8<---------------------------------------
@@ -189,10 +193,11 @@ type positionCallbackImpl struct {
 	fn func(Position)
 }
 
-func (p *positionCallbackImpl) jsFunc(args []js.Value) {
+func (p *positionCallbackImpl) jsFunc(this js.Value, args []js.Value) interface{} {
 	if len(args) == 1 {
 		p.fn(newPosition(args[0]))
 	}
+	return nil
 }
 
 // -------------8<---------------------------------------
@@ -212,10 +217,11 @@ type positionErrorCallbackImpl struct {
 	fn func(PositionError)
 }
 
-func (p *positionErrorCallbackImpl) jsFunc(args []js.Value) {
+func (p *positionErrorCallbackImpl) jsFunc(this js.Value, args []js.Value) interface{} {
 	if len(args) == 1 {
 		p.fn(newPositionError(args[0]))
 	}
+	return nil
 }
 
 // -------------8<---------------------------------------
@@ -235,10 +241,11 @@ type functionStringCallbackImpl struct {
 	fn func(string)
 }
 
-func (p *functionStringCallbackImpl) jsFunc(args []js.Value) {
+func (p *functionStringCallbackImpl) jsFunc(this js.Value, args []js.Value) interface{} {
 	if len(args) == 1 {
 		p.fn(args[0].String())
 	}
+	return nil
 }
 
 // -------------8<---------------------------------------
@@ -258,8 +265,9 @@ type voidFunctionImpl struct {
 	fn func()
 }
 
-func (p *voidFunctionImpl) jsFunc([]js.Value) {
+func (p *voidFunctionImpl) jsFunc(this js.Value, args []js.Value) interface{} {
 	p.fn()
+	return nil
 }
 
 // -------------8<---------------------------------------

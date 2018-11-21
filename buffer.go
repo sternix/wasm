@@ -124,7 +124,7 @@ func (p *arrayBufferImpl) ByteLength() int {
 }
 
 func (p *arrayBufferImpl) IsView(arg interface{}) bool {
-	if jv, ok := arg.(Wrapper); ok {
+	if jv, ok := arg.(js.Wrapper); ok {
 		return p.Call("isView", jv.JSValue()).Bool()
 	}
 

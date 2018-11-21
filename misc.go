@@ -8,12 +8,8 @@ import (
 )
 
 type (
-	Wrapper interface {
-		JSValue() js.Value
-	}
-
 	Object interface {
-		Wrapper
+		js.Wrapper
 	}
 
 	// https://heycam.github.io/webidl/#idl-DOMException

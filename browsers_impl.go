@@ -526,18 +526,18 @@ func (p *historyImpl) Forward() {
 func (p *historyImpl) PushState(data interface{}, title string, url ...string) {
 	switch len(url) {
 	case 0:
-		p.Call("pushState", valueOf(data), title)
+		p.Call("pushState", data, title)
 	default:
-		p.Call("pushState", valueOf(data), title, url[0])
+		p.Call("pushState", data, title, url[0])
 	}
 }
 
 func (p *historyImpl) ReplaceState(data interface{}, title string, url ...string) {
 	switch len(url) {
 	case 0:
-		p.Call("replaceState", valueOf(data), title)
+		p.Call("replaceState", data, title)
 	default:
-		p.Call("replaceState", valueOf(data), title, url[0])
+		p.Call("replaceState", data, title, url[0])
 	}
 }
 

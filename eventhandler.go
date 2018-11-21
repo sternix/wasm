@@ -18,8 +18,11 @@ func (p *eventHandlerImpl) Type() string {
 	return p.typ
 }
 
-func (p *eventHandlerImpl) jsFunc(v js.Value) {
-	p.Handle(wrapEvent(v))
+func (p *eventHandlerImpl) jsFunc(this js.Value, args []js.Value) interface{} {
+	if len(args) > 0 {
+		p.Handle(wrapEvent(args[0]))
+	}
+	return nil
 }
 
 func (p *eventHandlerImpl) Handle(event Event) {
@@ -39,17 +42,13 @@ func (p *eventHandlerImpl) Dispatch() bool {
 	return js.Global().Get("dispatchEvent").Invoke(p.jsCb).Bool()
 }
 
-func EventHandlerFunc(typ string, fn func(Event), flag ...js.EventCallbackFlag) EventHandler {
+func EventHandlerFunc(typ string, fn func(Event)) EventHandler {
 	eh := &eventHandlerImpl{
 		fn:  fn,
 		typ: typ,
 	}
 
-	if len(flag) > 0 {
-		eh.jsCb = js.NewEventCallback(flag[0], eh.jsFunc)
-	} else {
-		eh.jsCb = js.NewEventCallback(0, eh.jsFunc)
-	}
+	eh.jsCb = js.NewCallback(eh.jsFunc)
 
 	js.Global().Get("addEventListener").Invoke(typ, eh.jsCb)
 	return eh
@@ -68,8 +67,11 @@ func (p *elementEventHandlerImpl) Type() string {
 	return p.typ
 }
 
-func (p *elementEventHandlerImpl) jsFunc(v js.Value) {
-	p.Handle(wrapEvent(v))
+func (p *elementEventHandlerImpl) jsFunc(this js.Value, args []js.Value) interface{} {
+	if len(args) > 0 {
+		p.Handle(wrapEvent(args[0]))
+	}
+	return nil
 }
 
 func (p *elementEventHandlerImpl) Handle(event Event) {

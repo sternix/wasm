@@ -1944,6 +1944,10 @@ func (p *htmlElementImpl) OffsetHeight() int {
 	return p.Get("offsetHeight").Int()
 }
 
+func (p *htmlElementImpl) JSValue() js.Value {
+	return p.Value
+}
+
 // -------------8<---------------------------------------
 
 type domStringMapImpl struct {

@@ -117,7 +117,7 @@ func (p *consoleImpl) Dir(item interface{}, options ...interface{}) {
 	case 0:
 		p.Call("dir", item)
 	default:
-		p.Call("dir", item, valueOf(options[0]))
+		p.Call("dir", item, options[0])
 	}
 }
 

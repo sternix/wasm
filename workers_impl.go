@@ -120,7 +120,7 @@ func (p *dedicatedWorkerGlobalScopeImpl) Name() string {
 }
 
 func (p *dedicatedWorkerGlobalScopeImpl) PostMessage(message interface{}) {
-	p.Call("postMessage", valueOf(message))
+	p.Call("postMessage", message)
 }
 
 func (p *dedicatedWorkerGlobalScopeImpl) OnMessage(fn func(Event)) EventHandler {
@@ -271,7 +271,7 @@ func (p *workerImpl) Terminate() {
 }
 
 func (p *workerImpl) PostMessage(message interface{}) {
-	p.Call("postMessage", valueOf(message))
+	p.Call("postMessage", message)
 }
 
 func (p *workerImpl) OnMessage(fn func(Event)) EventHandler {

@@ -151,7 +151,7 @@ func (p *eventTargetImpl) On(event string, fn func(ev Event)) EventHandler {
 		typ:   event,
 	}
 
-	eh.jsCb = js.NewEventCallback(0, eh.jsFunc)
+	eh.jsCb = js.NewCallback(eh.jsFunc)
 	p.Call("addEventListener", event, eh.jsCb)
 
 	return eh
@@ -283,7 +283,7 @@ func (p *customEventImpl) InitCustomEvent(typ string, args ...interface{}) {
 	case 3:
 		if bubbles, ok := args[0].(bool); ok {
 			if cancelable, ok := args[1].(bool); ok {
-				p.Call("initCustomEvent", typ, bubbles, cancelable, valueOf(args[2]))
+				p.Call("initCustomEvent", typ, bubbles, cancelable, args[2])
 			}
 		}
 	}

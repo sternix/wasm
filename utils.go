@@ -42,16 +42,6 @@ func JSType(v js.Value) string {
 
 // -------------8<---------------------------------------
 
-func valueOf(x interface{}) interface{} {
-	if v, ok := x.(Wrapper); ok {
-		return v.JSValue()
-	}
-
-	return x
-}
-
-// -------------8<---------------------------------------
-
 // TODO use map[string]interface{}
 // convert structs to js.Value
 

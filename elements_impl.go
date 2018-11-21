@@ -486,6 +486,10 @@ func (p *htmlAnchorElementImpl) SetReferrerPolicy(policy string) {
 	p.Set("referrerPolicy", policy)
 }
 
+func (p *htmlAnchorElementImpl) JSValue() js.Value {
+	return p.Value
+}
+
 // -------------8<---------------------------------------
 
 type htmlHyperlinkElementUtilsImpl struct {
@@ -1565,6 +1569,7 @@ func newHTMLAreaElement(v js.Value) HTMLAreaElement {
 	return &htmlAreaElementImpl{
 		htmlElementImpl:               newHTMLElementImpl(v),
 		htmlHyperlinkElementUtilsImpl: newHTMLHyperlinkElementUtilsImpl(v),
+		Value:                         v,
 	}
 }
 
@@ -1642,6 +1647,10 @@ func (p *htmlAreaElementImpl) ReferrerPolicy() string {
 
 func (p *htmlAreaElementImpl) SetReferrerPolicy(policy string) {
 	p.Set("referrerPolicy", policy)
+}
+
+func (p *htmlAreaElementImpl) JSValue() js.Value {
+	return p.Value
 }
 
 // -------------8<---------------------------------------

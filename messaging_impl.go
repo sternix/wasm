@@ -49,7 +49,7 @@ func newMessagePort(v js.Value) MessagePort {
 // TODO optional sequence<object> transfer = [] omitted
 func (p *messagePortImpl) PostMessage(message interface{}) {
 	//XXX: panicable
-	p.Call("postMessage", valueOf(message))
+	p.Call("postMessage", message)
 }
 
 func (p *messagePortImpl) Start() {
@@ -93,7 +93,7 @@ func (p *broadcastChannelImpl) Name() string {
 }
 
 func (p *broadcastChannelImpl) PostMessage(message interface{}) {
-	p.Call("postMessage", valueOf(message))
+	p.Call("postMessage", message)
 }
 
 func (p *broadcastChannelImpl) Close() {
@@ -181,14 +181,14 @@ func (p *messageEventImpl) InitMessageEvent(typ string, args ...interface{}) {
 	case 3:
 		if bubbles, ok := args[0].(bool); ok {
 			if cancelable, ok := args[1].(bool); ok {
-				p.Call("initMessageEvent", typ, bubbles, cancelable, valueOf(args[2]))
+				p.Call("initMessageEvent", typ, bubbles, cancelable, args[2])
 			}
 		}
 	case 4:
 		if bubbles, ok := args[0].(bool); ok {
 			if cancelable, ok := args[1].(bool); ok {
 				if origin, ok := args[3].(string); ok {
-					p.Call("initMessageEvent", typ, bubbles, cancelable, valueOf(args[2]), origin)
+					p.Call("initMessageEvent", typ, bubbles, cancelable, args[2], origin)
 				}
 			}
 		}
@@ -197,7 +197,7 @@ func (p *messageEventImpl) InitMessageEvent(typ string, args ...interface{}) {
 			if cancelable, ok := args[1].(bool); ok {
 				if origin, ok := args[3].(string); ok {
 					if lastEventId, ok := args[4].(string); ok {
-						p.Call("initMessageEvent", typ, bubbles, cancelable, valueOf(args[2]), origin, lastEventId)
+						p.Call("initMessageEvent", typ, bubbles, cancelable, args[2], origin, lastEventId)
 					}
 				}
 			}
@@ -208,7 +208,7 @@ func (p *messageEventImpl) InitMessageEvent(typ string, args ...interface{}) {
 				if origin, ok := args[3].(string); ok {
 					if lastEventId, ok := args[4].(string); ok {
 						if source, ok := args[5].(MessageEventSource); ok {
-							p.Call("initMessageEvent", typ, bubbles, cancelable, valueOf(args[2]), origin, lastEventId, source.JSValue())
+							p.Call("initMessageEvent", typ, bubbles, cancelable, args[2], origin, lastEventId, source.JSValue())
 						}
 					}
 				}

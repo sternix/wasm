@@ -194,6 +194,10 @@ func (p *htmlLinkElementImpl) SetReferrerPolicy(referrerPolicy string) {
 	p.Set("referrerPolicy", referrerPolicy)
 }
 
+func (p *htmlLinkElementImpl) JSValue() js.Value {
+	return p.Value
+}
+
 // -------------8<---------------------------------------
 
 type htmlMetaElementImpl struct {
@@ -276,6 +280,10 @@ func (p *htmlStyleElementImpl) Type() string {
 
 func (p *htmlStyleElementImpl) SetType(typ string) {
 	p.Set("type", typ)
+}
+
+func (p *htmlStyleElementImpl) JSValue() js.Value {
+	return p.Value
 }
 
 // -------------8<---------------------------------------
