@@ -126,13 +126,6 @@ type (
 		SetState(interface{})
 	}
 
-	// https://www.w3.org/TR/html52/browsers.html#dictdef-popstateeventinit
-	PopStateEventInit struct {
-		EventInit
-
-		State interface{} `json:"state"`
-	}
-
 	// https://www.w3.org/TR/html52/browsers.html#hashchangeevent
 	HashChangeEvent interface {
 		Event
@@ -141,26 +134,11 @@ type (
 		NewURL() string
 	}
 
-	// https://www.w3.org/TR/html52/browsers.html#dictdef-hashchangeeventinit
-	HashChangeEventInit struct {
-		EventInit
-
-		OldUrl string `json:"oldURL"`
-		NewURL string `json:"newURL"`
-	}
-
 	// https://www.w3.org/TR/html52/browsers.html#pagetransitionevent
 	PageTransitionEvent interface {
 		Event
 
 		Persisted() bool
-	}
-
-	// https://www.w3.org/TR/html52/browsers.html#dictdef-pagetransitioneventinit
-	PageTransitionEventInit struct {
-		EventInit
-
-		Persisted bool `json:"persisted"`
 	}
 
 	// https://www.w3.org/TR/html52/browsers.html#beforeunloadevent
@@ -176,6 +154,55 @@ type (
 		OnLine() bool
 	}
 )
+
+// -------------8<---------------------------------------
+
+// https://www.w3.org/TR/html52/browsers.html#dictdef-popstateeventinit
+type PopStateEventInit struct {
+	EventInit
+
+	State interface{} `json:"state"`
+}
+
+func (p PopStateEventInit) toMap() map[string]interface{} {
+	m := p.EventInit.toMap()
+	m["state"] = p.State
+	return m
+}
+
+// -------------8<---------------------------------------
+
+// https://www.w3.org/TR/html52/browsers.html#dictdef-hashchangeeventinit
+type HashChangeEventInit struct {
+	EventInit
+
+	OldUrl string `json:"oldURL"`
+	NewURL string `json:"newURL"`
+}
+
+func (p HashChangeEventInit) toMap() map[string]interface{} {
+	m := p.EventInit.toMap()
+	m["oldURL"] = p.OldUrl
+	m["newURL"] = p.NewURL
+	return m
+}
+
+// -------------8<---------------------------------------
+
+// https://www.w3.org/TR/html52/browsers.html#dictdef-pagetransitioneventinit
+type PageTransitionEventInit struct {
+	EventInit
+
+	Persisted bool `json:"persisted"`
+}
+
+func (p PageTransitionEventInit) toMap() map[string]interface{} {
+	m := p.EventInit.toMap()
+	m["persisted"] = p.Persisted
+	return m
+}
+
+// -------------8<---------------------------------------
 
 type ScrollRestorationType string
 

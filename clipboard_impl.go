@@ -73,5 +73,3 @@ func NewClipboardEvent(typ string, eventInitDict ...ClipboardEventInit) Clipboar
 		return newClipboardEvent(jsClipboardEvent.New(typ, toJSONObject(eventInitDict[0])))
 	}
 }
-
-// -------------8<---------------------------------------

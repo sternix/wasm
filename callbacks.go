@@ -103,7 +103,7 @@ func (p *timerCallbackImpl) jsFunc(this js.Value, args []js.Value) interface{} {
 
 // -------------8<---------------------------------------
 
-func NewFrameRequestCallback(fn func(time.Time)) FrameRequestCallback {
+func NewFrameRequestCallback(fn func(FrameRequestCallback, time.Time)) FrameRequestCallback {
 	h := &frameRequestCallbackImpl{
 		callbackImpl: newCallbackImpl(),
 		fn:           fn,
@@ -115,11 +115,11 @@ func NewFrameRequestCallback(fn func(time.Time)) FrameRequestCallback {
 
 type frameRequestCallbackImpl struct {
 	*callbackImpl
-	fn func(time.Time)
+	fn func(FrameRequestCallback, time.Time)
 }
 
 func (p *frameRequestCallbackImpl) jsFunc(this js.Value, args []js.Value) interface{} {
-	p.fn(highResTimeStampToTime(args[0]))
+	p.fn(p, highResTimeStampToTime(args[0]))
 	return nil
 }
 

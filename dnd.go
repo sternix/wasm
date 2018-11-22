@@ -52,11 +52,19 @@ type (
 
 		DataTransfer() DataTransfer
 	}
-
-	// https://www.w3.org/TR/html52/editing.html#dictdef-drageventinit
-	DragEventInit struct {
-		MouseEventInit
-
-		DataTransfer DataTransfer `json:"dataTransfer"`
-	}
 )
+
+// -------------8<---------------------------------------
+
+// https://www.w3.org/TR/html52/editing.html#dictdef-drageventinit
+type DragEventInit struct {
+	MouseEventInit
+
+	DataTransfer DataTransfer `json:"dataTransfer"`
+}
+
+func (p DragEventInit) toMap() map[string]interface{} {
+	m := p.MouseEventInit.toMap()
+	m["dataTransfer"] = p.DataTransfer.JSValue()
+	return m
+}

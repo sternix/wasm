@@ -44,13 +44,6 @@ type (
 		TimeStamp() time.Time
 	}
 
-	// https://dom.spec.whatwg.org/#dictdef-eventinit
-	EventInit struct {
-		Bubbles    bool `json:"bubbles"`
-		Cancelable bool `json:"cancelable"`
-		Composed   bool `json:"composed"`
-	}
-
 	// https://dom.spec.whatwg.org/#customevent
 	CustomEvent interface {
 		Event
@@ -392,6 +385,21 @@ type (
 		Error    string `json:"error"` // any
 	}
 )
+
+// https://dom.spec.whatwg.org/#dictdef-eventinit
+type EventInit struct {
+	Bubbles    bool `json:"bubbles"`
+	Cancelable bool `json:"cancelable"`
+	Composed   bool `json:"composed"`
+}
+
+func (p EventInit) toMap() map[string]interface{} {
+	m := make(map[string]interface{})
+	m["bubbles"] = p.Bubbles
+	m["cancelable"] = p.Cancelable
+	m["composed"] = p.Composed
+	return m
+}
 
 type WheelEventDeltaMode int
 

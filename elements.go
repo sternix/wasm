@@ -671,122 +671,6 @@ type (
 		//  Promise<void> applyConstraints(optional MediaTrackConstraints constraints);
 		OnOverConstrained(func(Event)) EventHandler
 	}
-
-	// https://www.w3.org/TR/mediacapture-streams/#dom-mediatrackconstraints
-	MediaTrackConstraints struct {
-		MediaTrackConstraintSet
-
-		Advanced []MediaTrackConstraintSet `json:"advanced"`
-	}
-
-	// https://www.w3.org/TR/mediacapture-streams/#dom-mediatrackcapabilities
-	MediaTrackCapabilities struct {
-		Width            LongRange   `json:"width"`
-		Heigth           LongRange   `json:"height"`
-		AspectRatio      DoubleRange `json:"aspectRatio"`
-		FrameRate        DoubleRange `json:"frameRate"`
-		FacingMode       []string    `json:"facingMode"`
-		Volume           DoubleRange `json:"volume"`
-		SampleRate       LongRange   `json:"sampleRate"`
-		SampleSize       LongRange   `json:"sampleSize"`
-		EchoCancellation []bool      `json:"echoCancellation"`
-		AutoGainControl  []bool      `json:"autoGainControl"`
-		NoiseSuppression []bool      `json:"noiseSuppression"`
-		Latency          DoubleRange `json:"latency"`
-		ChannelCount     LongRange   `json:"channelCount"`
-		DeviceId         string      `json:"deviceId"`
-		GroupId          string      `json:"groupId"`
-	}
-
-	// https://www.w3.org/TR/mediacapture-streams/#dom-mediatrackconstraintset
-	MediaTrackConstraintSet struct {
-		Width            ConstrainLong      `json:"width"`
-		Height           ConstrainLong      `json:"height"`
-		AspectRatio      ConstrainDouble    `json:"aspectRatio"`
-		FrameRate        ConstrainDouble    `json:"frameRate"`
-		FacingMode       ConstrainDOMString `json:"facingMode"`
-		Volume           ConstrainDouble    `json:"volume"`
-		SampleRate       ConstrainLong      `json:"sampleRate"`
-		SampleSize       ConstrainLong      `json:"sampleSize"`
-		EchoCancellation ConstrainBoolean   `json:"echoCancellation"`
-		AutoGainControl  ConstrainBoolean   `json:"autoGainControl"`
-		NoiseSuppression ConstrainBoolean   `json:"noiseSuppression"`
-		Latency          ConstrainDouble    `json:"latency"`
-		ChannelCount     ConstrainLong      `json:"channelCount"`
-		DeviceId         ConstrainDOMString `json:"deviceId"`
-		GroupId          ConstrainDOMString `json:"groupId"`
-	}
-
-	// https://www.w3.org/TR/mediacapture-streams/#dom-mediatracksettings
-	MediaTrackSettings struct {
-		Width            int     `json:"width"`
-		Height           int     `json:"height"`
-		AspectRatio      float64 `json:"aspectRatio"`
-		FrameRate        float64 `json:"frameRate"`
-		FacingMode       string  `json:"facingMode"`
-		Volume           float64 `json:"volume"`
-		SampleRate       int     `json:"sampleRate"`
-		SampleSize       int     `json:"sampleSize"`
-		EchoCancellation bool    `json:"echoCancellation"`
-		AutoGainControl  bool    `json:"autoGainControl"`
-		NoiseSuppression bool    `json:"noiseSuppression"`
-		Latency          float64 `json:"latency"`
-		ChannelCount     int     `json:"channelCount"`
-		DeviceId         string  `json:"deviceId"`
-		GroupId          string  `json:"groupId"`
-	}
-
-	// https://www.w3.org/TR/mediacapture-streams/#dom-longrange
-	LongRange struct {
-		Max int `json:"max"`
-		Min int `json:"min"`
-	}
-
-	// https://www.w3.org/TR/mediacapture-streams/#dom-doublerange
-	DoubleRange struct {
-		Max float64 `json:"max"`
-		Min float64 `json:"min"`
-	}
-
-	// https://www.w3.org/TR/mediacapture-streams/#dom-constrainlongrange
-	ConstrainLongRange struct {
-		LongRange
-
-		Exact int `json:"exact"`
-		Ideal int `json:"ideal"`
-	}
-
-	// https://www.w3.org/TR/mediacapture-streams/#dom-constrainlong
-	ConstrainLong ConstrainLongRange
-
-	// https://www.w3.org/TR/mediacapture-streams/#dom-constraindoublerange
-	ConstrainDoubleRange struct {
-		DoubleRange
-
-		Exact float64 `json:"exact"`
-		Ideal float64 `json:"ideal"`
-	}
-
-	// https://www.w3.org/TR/mediacapture-streams/#dom-constraindouble
-	ConstrainDouble ConstrainDoubleRange
-
-	// https://www.w3.org/TR/mediacapture-streams/#dom-constraindomstringparameters
-	ConstrainDOMStringParameters struct {
-		Exact string `json:"exact"`
-		Ideal string `json:"ideal"`
-	}
-
-	// https://www.w3.org/TR/mediacapture-streams/#dom-constraindomstring
-	ConstrainDOMString ConstrainDOMStringParameters
-
-	// https://www.w3.org/TR/mediacapture-streams/#dom-constrainbooleanparameters
-	ConstrainBooleanParameters struct {
-		Exact bool `json:"exact"`
-		Ideal bool `json:"ideal"`
-	}
-
-	// https://www.w3.org/TR/mediacapture-streams/#dom-constrainboolean
-	ConstrainBoolean ConstrainBooleanParameters
 )
 
 type MediaStreamTrackState string
@@ -873,3 +757,147 @@ const (
 	AppendModeSegments AppendMode = "segments"
 	AppendModeSequence AppendMode = "sequence"
 )
+
+// -------------8<---------------------------------------
+
+// https://www.w3.org/TR/mediacapture-streams/#dom-mediatrackconstraints
+type MediaTrackConstraints struct {
+	MediaTrackConstraintSet
+
+	Advanced []MediaTrackConstraintSet `json:"advanced"`
+}
+
+// -------------8<---------------------------------------
+
+// https://www.w3.org/TR/mediacapture-streams/#dom-mediatrackcapabilities
+type MediaTrackCapabilities struct {
+	Width            LongRange   `json:"width"`
+	Heigth           LongRange   `json:"height"`
+	AspectRatio      DoubleRange `json:"aspectRatio"`
+	FrameRate        DoubleRange `json:"frameRate"`
+	FacingMode       []string    `json:"facingMode"`
+	Volume           DoubleRange `json:"volume"`
+	SampleRate       LongRange   `json:"sampleRate"`
+	SampleSize       LongRange   `json:"sampleSize"`
+	EchoCancellation []bool      `json:"echoCancellation"`
+	AutoGainControl  []bool      `json:"autoGainControl"`
+	NoiseSuppression []bool      `json:"noiseSuppression"`
+	Latency          DoubleRange `json:"latency"`
+	ChannelCount     LongRange   `json:"channelCount"`
+	DeviceId         string      `json:"deviceId"`
+	GroupId          string      `json:"groupId"`
+}
+
+// -------------8<---------------------------------------
+
+// https://www.w3.org/TR/mediacapture-streams/#dom-mediatrackconstraintset
+type MediaTrackConstraintSet struct {
+	Width            ConstrainLong      `json:"width"`
+	Height           ConstrainLong      `json:"height"`
+	AspectRatio      ConstrainDouble    `json:"aspectRatio"`
+	FrameRate        ConstrainDouble    `json:"frameRate"`
+	FacingMode       ConstrainDOMString `json:"facingMode"`
+	Volume           ConstrainDouble    `json:"volume"`
+	SampleRate       ConstrainLong      `json:"sampleRate"`
+	SampleSize       ConstrainLong      `json:"sampleSize"`
+	EchoCancellation ConstrainBoolean   `json:"echoCancellation"`
+	AutoGainControl  ConstrainBoolean   `json:"autoGainControl"`
+	NoiseSuppression ConstrainBoolean   `json:"noiseSuppression"`
+	Latency          ConstrainDouble    `json:"latency"`
+	ChannelCount     ConstrainLong      `json:"channelCount"`
+	DeviceId         ConstrainDOMString `json:"deviceId"`
+	GroupId          ConstrainDOMString `json:"groupId"`
+}
+
+// -------------8<---------------------------------------
+
+// https://www.w3.org/TR/mediacapture-streams/#dom-mediatracksettings
+type MediaTrackSettings struct {
+	Width            int     `json:"width"`
+	Height           int     `json:"height"`
+	AspectRatio      float64 `json:"aspectRatio"`
+	FrameRate        float64 `json:"frameRate"`
+	FacingMode       string  `json:"facingMode"`
+	Volume           float64 `json:"volume"`
+	SampleRate       int     `json:"sampleRate"`
+	SampleSize       int     `json:"sampleSize"`
+	EchoCancellation bool    `json:"echoCancellation"`
+	AutoGainControl  bool    `json:"autoGainControl"`
+	NoiseSuppression bool    `json:"noiseSuppression"`
+	Latency          float64 `json:"latency"`
+	ChannelCount     int     `json:"channelCount"`
+	DeviceId         string  `json:"deviceId"`
+	GroupId          string  `json:"groupId"`
+}
+
+// -------------8<---------------------------------------
+
+// https://www.w3.org/TR/mediacapture-streams/#dom-longrange
+type LongRange struct {
+	Max int `json:"max"`
+	Min int `json:"min"`
+}
+
+// -------------8<---------------------------------------
+
+// https://www.w3.org/TR/mediacapture-streams/#dom-doublerange
+type DoubleRange struct {
+	Max float64 `json:"max"`
+	Min float64 `json:"min"`
+}
+
+// -------------8<---------------------------------------
+
+// https://www.w3.org/TR/mediacapture-streams/#dom-constrainlongrange
+type ConstrainLongRange struct {
+	LongRange
+
+	Exact int `json:"exact"`
+	Ideal int `json:"ideal"`
+}
+
+// -------------8<---------------------------------------
+
+// https://www.w3.org/TR/mediacapture-streams/#dom-constrainlong
+type ConstrainLong ConstrainLongRange
+
+// -------------8<---------------------------------------
+
+// https://www.w3.org/TR/mediacapture-streams/#dom-constraindoublerange
+type ConstrainDoubleRange struct {
+	DoubleRange
+
+	Exact float64 `json:"exact"`
+	Ideal float64 `json:"ideal"`
+}
+
+// -------------8<---------------------------------------
+
+// https://www.w3.org/TR/mediacapture-streams/#dom-constraindouble
+type ConstrainDouble ConstrainDoubleRange
+
+// -------------8<---------------------------------------
+
+// https://www.w3.org/TR/mediacapture-streams/#dom-constraindomstringparameters
+type ConstrainDOMStringParameters struct {
+	Exact string `json:"exact"`
+	Ideal string `json:"ideal"`
+}
+
+// -------------8<---------------------------------------
+
+// https://www.w3.org/TR/mediacapture-streams/#dom-constraindomstring
+type ConstrainDOMString ConstrainDOMStringParameters
+
+// -------------8<---------------------------------------
+
+// https://www.w3.org/TR/mediacapture-streams/#dom-constrainbooleanparameters
+type ConstrainBooleanParameters struct {
+	Exact bool `json:"exact"`
+	Ideal bool `json:"ideal"`
+}
+
+// -------------8<---------------------------------------
+
+// https://www.w3.org/TR/mediacapture-streams/#dom-constrainboolean
+type ConstrainBoolean ConstrainBooleanParameters

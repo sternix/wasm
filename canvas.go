@@ -119,12 +119,6 @@ type (
 		Width() float64
 	}
 
-	// https://www.w3.org/TR/2dcontext/#hitregionoptions
-	HitRegionOptions struct {
-		Id      string  `json:"id"`
-		Control Element `json:"control"`
-	}
-
 	// https://www.w3.org/TR/2dcontext/#imagedata
 	ImageData interface {
 		js.Wrapper
@@ -134,6 +128,19 @@ type (
 		Data() []byte // TODO Uint8ClampedArray
 	}
 )
+
+// https://www.w3.org/TR/2dcontext/#hitregionoptions
+type HitRegionOptions struct {
+	Id      string  `json:"id"`
+	Control Element `json:"control"`
+}
+
+func (p HitRegionOptions) toMap() map[string]interface{} {
+	m := make(map[string]interface{})
+	m["id"] = p.Id
+	m["control"] = p.Control.JSValue()
+	return m
+}
 
 // helpers for known types
 // https://www.w3.org/TR/2dcontext/#dom-context-2d-globalcompositeoperation

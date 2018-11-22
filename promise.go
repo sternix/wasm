@@ -17,6 +17,35 @@ const (
 )
 */
 
+func Await(v js.Value) (result js.Value, ok bool) {
+	if v.Type() != js.TypeObject || v.Get("then").Type() != js.TypeFunction {
+		return v, true
+
+	}
+
+	done := make(chan struct{})
+
+	onResolve := js.NewCallback(func(this js.Value, args []js.Value) interface{} {
+		result = args[0]
+		ok = true
+		close(done)
+		return nil
+	})
+	defer onResolve.Release()
+
+	onReject := js.NewCallback(func(this js.Value, args []js.Value) interface{} {
+		result = args[0]
+		ok = false
+		close(done)
+		return nil
+	})
+	defer onReject.Release()
+
+	v.Call("then", onResolve, onReject)
+	<-done
+	return
+}
+
 var _ Promise = &promiseImpl{}
 
 type Promise interface {

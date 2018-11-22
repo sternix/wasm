@@ -241,11 +241,6 @@ type (
 		Replace(int, int, string)
 	}
 
-	// https://dom.spec.whatwg.org/#dictdef-elementcreationoptions
-	ElementCreationOptions struct {
-		Is string `json:"is"`
-	}
-
 	// https://dom.spec.whatwg.org/#documenttype
 	DocumentType interface {
 		Node
@@ -290,11 +285,6 @@ type (
 		AppendChild(Node) Node
 		ReplaceChild(Node, Node) Node
 		RemoveChild(Node) Node
-	}
-
-	// https://dom.spec.whatwg.org/#dictdef-getrootnodeoptions
-	RootNodeOptions struct {
-		Composed bool `json:"composed"`
 	}
 
 	// https://dom.spec.whatwg.org/#element
@@ -370,11 +360,6 @@ type (
 		RequestFullscreen(...FullscreenOptions) Promise
 		OnFullScreenChange(func(Event)) EventHandler
 		OnFullScreenError(func(Event)) EventHandler
-	}
-
-	// https://dom.spec.whatwg.org/#dictdef-shadowrootinit
-	ShadowRootInit struct {
-		Mode ShadowRootMode `json:"mode"`
 	}
 
 	// https://dom.spec.whatwg.org/#shadowroot
@@ -457,30 +442,6 @@ type (
 		Observe(Node, ...MutationObserverInit)
 		Disconnect()
 		TakeRecords() []MutationRecord
-	}
-
-	// https://dom.spec.whatwg.org/#dictdef-mutationobserverinit
-	MutationObserverInit struct {
-		ChildList             bool     `json:"childList"`
-		Attributes            bool     `json:"attributes"`
-		CharacterData         bool     `json:"characterData"`
-		SubTree               bool     `json:"subtree"`
-		AttributeOldValue     bool     `json:"attributeOldValue"`
-		CharacterDataOldValue bool     `json:"characterDataOldValue"`
-		AttributeFilter       []string `json:"attributeFilter"`
-	}
-
-	// https://www.w3.org/TR/cssom-view-1/#dictdef-scrolloptions
-	ScrollOptions struct {
-		Behavior ScrollBehavior `json:"behavior"`
-	}
-
-	// https://www.w3.org/TR/cssom-view-1/#dictdef-scrolltooptions
-	ScrollToOptions struct {
-		ScrollOptions
-
-		Left float64 `json:"left"`
-		Top  float64 `json:"top"`
 	}
 
 	// https://www.w3.org/TR/html52/dom.html#typedefdef-htmlorsvgscriptelement
@@ -646,3 +607,97 @@ const (
 	SupportedType_Application_XHTML_XML SupportedType = "application/xhtml+xml"
 	SupportedType_Image_SVG_XML         SupportedType = "image/svg+xml"
 )
+
+// -------------8<---------------------------------------
+
+// https://dom.spec.whatwg.org/#dictdef-elementcreationoptions
+type ElementCreationOptions struct {
+	Is string `json:"is"`
+}
+
+func (p ElementCreationOptions) toMap() map[string]interface{} {
+	m := make(map[string]interface{})
+	m["is"] = p.Is
+	return m
+}
+
+// -------------8<---------------------------------------
+
+// https://dom.spec.whatwg.org/#dictdef-getrootnodeoptions
+type RootNodeOptions struct {
+	Composed bool `json:"composed"`
+}
+
+func (p RootNodeOptions) toMap() map[string]interface{} {
+	m := make(map[string]interface{})
+	m["composed"] = p.Composed
+	return m
+}
+
+// -------------8<---------------------------------------
+
+// https://dom.spec.whatwg.org/#dictdef-shadowrootinit
+type ShadowRootInit struct {
+	Mode ShadowRootMode `json:"mode"`
+}
+
+func (p ShadowRootInit) toMap() map[string]interface{} {
+	m := make(map[string]interface{})
+	m["mode"] = p.Mode
+	return m
+}
+
+// -------------8<---------------------------------------
+
+// https://dom.spec.whatwg.org/#dictdef-mutationobserverinit
+type MutationObserverInit struct {
+	ChildList             bool     `json:"childList"`
+	Attributes            bool     `json:"attributes"`
+	CharacterData         bool     `json:"characterData"`
+	SubTree               bool     `json:"subtree"`
+	AttributeOldValue     bool     `json:"attributeOldValue"`
+	CharacterDataOldValue bool     `json:"characterDataOldValue"`
+	AttributeFilter       []string `json:"attributeFilter"`
+}
+
+func (p MutationObserverInit) toMap() map[string]interface{} {
+	m := make(map[string]interface{})
+	m["childList"] = p.ChildList
+	m["attributes"] = p.Attributes
+	m["characterData"] = p.CharacterData
+	m["subtree"] = p.SubTree
+	m["attributeOldValue"] = p.AttributeOldValue
+	m["characterDataOldValue"] = p.CharacterDataOldValue
+	m["attributeFilter"] = stringSliceToJsArray(p.AttributeFilter)
+	return m
+}
+
+// -------------8<---------------------------------------
+
+// https://www.w3.org/TR/cssom-view-1/#dictdef-scrolloptions
+type ScrollOptions struct {
+	Behavior ScrollBehavior `json:"behavior"`
+}
+
+func (p ScrollOptions) toMap() map[string]interface{} {
+	m := make(map[string]interface{})
+	m["behavior"] = string(p.Behavior)
+	return m
+}
+
+// -------------8<---------------------------------------
+
+// https://www.w3.org/TR/cssom-view-1/#dictdef-scrolltooptions
+type ScrollToOptions struct {
+	ScrollOptions
+
+	Left float64 `json:"left"`
+	Top  float64 `json:"top"`
+}
+
+func (p ScrollToOptions) toMap() map[string]interface{} {
+	m := p.ScrollOptions.toMap()
+	m["left"] = p.Left
+	m["top"] = p.Top
+	return m
+}

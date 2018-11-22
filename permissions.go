@@ -8,11 +8,15 @@ package wasm
 TODO
 */
 
-type (
-	PermissionDescriptor struct {
-		Name PermissionName `json:"name"`
-	}
-)
+type PermissionDescriptor struct {
+	Name PermissionName `json:"name"`
+}
+
+func (p PermissionDescriptor) toMap() map[string]interface{} {
+	m := make(map[string]interface{})
+	m["name"] = string(p.Name)
+	return m
+}
 
 type PermissionName string
 
@@ -32,5 +36,4 @@ const (
 	PermissionNameAccelerometer      PermissionName = "accelerometer"
 	PermissionNameGyroscope          PermissionName = "gyroscope"
 	PermissionNameMagnetometer       PermissionName = "magnetometer"
-	PermissionNameClipboard          PermissionName = "clipboard"
 )

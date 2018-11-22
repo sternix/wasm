@@ -259,7 +259,7 @@ func (p *windowImpl) Print() {
 }
 
 func (p *windowImpl) RequestAnimationFrame(cb FrameRequestCallback) int {
-	return p.Call("requestAnimationFrame", cb.jsCallback).Int()
+	return p.Call("requestAnimationFrame", cb.jsCallback()).Int()
 }
 
 func (p *windowImpl) CancelAnimationFrame(handle int) {
