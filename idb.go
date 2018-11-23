@@ -2,6 +2,10 @@
 
 package wasm
 
+import (
+	"syscall/js"
+)
+
 type (
 	// https://www.w3.org/TR/IndexedDB/#idbrequest
 	IDBRequest interface {
@@ -35,12 +39,6 @@ type (
 		NewVersion() int
 	}
 
-	// https://www.w3.org/TR/IndexedDB/#dictdef-idbversionchangeeventinit
-	IDBVersionChangeEventInit struct {
-		OldVersion int `json:"oldVersion"`
-		NewVersion int `json:"newVersion"` // default null
-	}
-
 	// https://www.w3.org/TR/IndexedDB/#idbfactory
 	IDBFactory interface {
 		Open(string, ...int) IDBOpenDBRequest
@@ -65,12 +63,6 @@ type (
 		OnVersionchange(func(Event)) EventHandler
 	}
 
-	// https://www.w3.org/TR/IndexedDB/#dictdef-idbobjectstoreparameters
-	IDBObjectStoreParameters struct {
-		KeyPath       []string `json:"keyPath"`
-		AutoIncrement bool     `json:"autoIncrement"`
-	}
-
 	// https://www.w3.org/TR/IndexedDB/#idbobjectstore
 	IDBObjectStore interface {
 		Name() string
@@ -93,12 +85,6 @@ type (
 		Index(string) IDBIndex
 		CreateIndex(string, string, ...IDBIndexParameters) IDBIndex
 		DeleteIndex(string)
-	}
-
-	// https://www.w3.org/TR/IndexedDB/#dictdef-idbindexparameters
-	IDBIndexParameters struct {
-		Unique     bool `json:"unique"`
-		MultiEntry bool `json:"multiEntry"`
 	}
 
 	// https://www.w3.org/TR/IndexedDB/#idbindex
@@ -196,3 +182,48 @@ const (
 	IDBTransactionModeReadWrite     IDBTransactionMode = "readwrite"
 	IDBTransactionModeVersionChange IDBTransactionMode = "versionchange"
 )
+
+// -------------8<---------------------------------------
+
+// https://www.w3.org/TR/IndexedDB/#dictdef-idbversionchangeeventinit
+type IDBVersionChangeEventInit struct {
+	OldVersion int `json:"oldVersion"`
+	NewVersion int `json:"newVersion"` // default null
+}
+
+func (p IDBVersionChangeEventInit) toDict() js.Value {
+	o := jsObject.New()
+	o.Set("oldVersion", p.OldVersion)
+	o.Set("newVersion", p.NewVersion)
+	return o
+}
+
+// -------------8<---------------------------------------
+
+// https://www.w3.org/TR/IndexedDB/#dictdef-idbobjectstoreparameters
+type IDBObjectStoreParameters struct {
+	KeyPath       []string `json:"keyPath"`
+	AutoIncrement bool     `json:"autoIncrement"`
+}
+
+func (p IDBObjectStoreParameters) toDict() js.Value {
+	o := jsObject.New()
+	o.Set("keyPath", stringSliceToJsArray(p.KeyPath))
+	o.Set("autoIncrement", p.AutoIncrement)
+	return o
+}
+
+// -------------8<---------------------------------------
+
+// https://www.w3.org/TR/IndexedDB/#dictdef-idbindexparameters
+type IDBIndexParameters struct {
+	Unique     bool `json:"unique"`
+	MultiEntry bool `json:"multiEntry"`
+}
+
+func (p IDBIndexParameters) toDict() js.Value {
+	o := jsObject.New()
+	o.Set("unique", p.Unique)
+	o.Set("multiEntry", p.MultiEntry)
+	return o
+}

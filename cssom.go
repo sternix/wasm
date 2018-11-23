@@ -2,6 +2,10 @@
 
 package wasm
 
+import (
+	"syscall/js"
+)
+
 // https://www.w3.org/TR/cssom-view-1/#idl-index
 
 type (
@@ -60,11 +64,11 @@ type ScrollIntoViewOptions struct {
 	Inline ScrollLogicalPosition `json:"inline"` // default "center"
 }
 
-func (p ScrollIntoViewOptions) toMap() map[string]interface{} {
-	m := p.ScrollOptions.toMap()
-	m["block"] = string(p.Block)
-	m["inline"] = string(p.Inline)
-	return m
+func (p ScrollIntoViewOptions) toDict() js.Value {
+	o := p.ScrollOptions.toDict()
+	o.Set("block", string(p.Block))
+	o.Set("inline", string(p.Inline))
+	return o
 }
 
 // -------------8<---------------------------------------
@@ -77,9 +81,9 @@ type MediaQueryListEventInit struct {
 	Matches bool   `json:"matches"`
 }
 
-func (p MediaQueryListEventInit) toMap() map[string]interface{} {
-	m := p.EventInit.toMap()
-	m["media"] = p.Media
-	m["matches"] = p.Matches
-	return m
+func (p MediaQueryListEventInit) toDict() js.Value {
+	o := p.EventInit.toDict()
+	o.Set("media", p.Media)
+	o.Set("matches", p.Matches)
+	return o
 }

@@ -2,6 +2,10 @@
 
 package wasm
 
+import (
+	"syscall/js"
+)
+
 type (
 	// https://w3c.github.io/workers/#workerglobalscope0
 	WorkerGlobalScope interface {
@@ -73,13 +77,6 @@ type (
 		OnMessageError(func(Event)) EventHandler
 	}
 
-	// https://w3c.github.io/workers/#dictdef-workeroptions
-	WorkerOptions struct {
-		Type        WorkerType         `json:"type" // default classic`
-		Credentials RequestCredentials `json:"credentials"` // default omit
-		Name        string             `json:"name"`
-	}
-
 	// https://w3c.github.io/workers/#sharedworker
 	SharedWorker interface {
 		EventTarget
@@ -122,3 +119,20 @@ const (
 	WorkerTypeClassic WorkerType = "classic"
 	WorkerTypeModule  WorkerType = "module"
 )
+
+// -------------8<---------------------------------------
+
+// https://w3c.github.io/workers/#dictdef-workeroptions
+type WorkerOptions struct {
+	Type        WorkerType         `json:"type" // default classic`
+	Credentials RequestCredentials `json:"credentials"` // default omit
+	Name        string             `json:"name"`
+}
+
+func (p WorkerOptions) toDict() js.Value {
+	o := jsObject.New()
+	o.Set("type", string(p.Type))
+	o.Set("credentials", string(p.Credentials))
+	o.Set("name", p.Name)
+	return o
+}

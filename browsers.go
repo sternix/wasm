@@ -155,55 +155,6 @@ type (
 	}
 )
 
-// -------------8<---------------------------------------
-
-// https://www.w3.org/TR/html52/browsers.html#dictdef-popstateeventinit
-type PopStateEventInit struct {
-	EventInit
-
-	State interface{} `json:"state"`
-}
-
-func (p PopStateEventInit) toMap() map[string]interface{} {
-	m := p.EventInit.toMap()
-	m["state"] = p.State
-	return m
-}
-
-// -------------8<---------------------------------------
-
-// https://www.w3.org/TR/html52/browsers.html#dictdef-hashchangeeventinit
-type HashChangeEventInit struct {
-	EventInit
-
-	OldUrl string `json:"oldURL"`
-	NewURL string `json:"newURL"`
-}
-
-func (p HashChangeEventInit) toMap() map[string]interface{} {
-	m := p.EventInit.toMap()
-	m["oldURL"] = p.OldUrl
-	m["newURL"] = p.NewURL
-	return m
-}
-
-// -------------8<---------------------------------------
-
-// https://www.w3.org/TR/html52/browsers.html#dictdef-pagetransitioneventinit
-type PageTransitionEventInit struct {
-	EventInit
-
-	Persisted bool `json:"persisted"`
-}
-
-func (p PageTransitionEventInit) toMap() map[string]interface{} {
-	m := p.EventInit.toMap()
-	m["persisted"] = p.Persisted
-	return m
-}
-
-// -------------8<---------------------------------------
-
 type ScrollRestorationType string
 
 const (
@@ -218,3 +169,52 @@ const (
 	DocumentReadyStateInteractive DocumentReadyState = "interactive"
 	DocumentReadyStateComplete    DocumentReadyState = "complete"
 )
+
+// -------------8<---------------------------------------
+
+// https://www.w3.org/TR/html52/browsers.html#dictdef-popstateeventinit
+type PopStateEventInit struct {
+	EventInit
+
+	State interface{} `json:"state"`
+}
+
+func (p PopStateEventInit) toDict() js.Value {
+	o := p.EventInit.toDict()
+	o.Set("state", p.State)
+	return o
+}
+
+// -------------8<---------------------------------------
+
+// https://www.w3.org/TR/html52/browsers.html#dictdef-hashchangeeventinit
+type HashChangeEventInit struct {
+	EventInit
+
+	OldUrl string `json:"oldURL"`
+	NewURL string `json:"newURL"`
+}
+
+func (p HashChangeEventInit) toDict() js.Value {
+	o := p.EventInit.toDict()
+	o.Set("oldURL", p.OldUrl)
+	o.Set("newURL", p.NewURL)
+	return o
+}
+
+// -------------8<---------------------------------------
+
+// https://www.w3.org/TR/html52/browsers.html#dictdef-pagetransitioneventinit
+type PageTransitionEventInit struct {
+	EventInit
+
+	Persisted bool `json:"persisted"`
+}
+
+func (p PageTransitionEventInit) toDict() js.Value {
+	o := p.EventInit.toDict()
+	o.Set("persisted", p.Persisted)
+	return o
+}
+
+// -------------8<---------------------------------------

@@ -8,14 +8,18 @@ package wasm
 TODO
 */
 
+import (
+	"syscall/js"
+)
+
 type PermissionDescriptor struct {
 	Name PermissionName `json:"name"`
 }
 
-func (p PermissionDescriptor) toMap() map[string]interface{} {
-	m := make(map[string]interface{})
-	m["name"] = string(p.Name)
-	return m
+func (p PermissionDescriptor) toDict() js.Value {
+	o := jsObject.New()
+	o.Set("name", string(p.Name))
+	return o
 }
 
 type PermissionName string

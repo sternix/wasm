@@ -393,12 +393,12 @@ type EventInit struct {
 	Composed   bool `json:"composed"`
 }
 
-func (p EventInit) toMap() map[string]interface{} {
-	m := make(map[string]interface{})
-	m["bubbles"] = p.Bubbles
-	m["cancelable"] = p.Cancelable
-	m["composed"] = p.Composed
-	return m
+func (p EventInit) toDict() js.Value {
+	o := jsObject.New()
+	o.Set("bubbles", p.Bubbles)
+	o.Set("cancelable", p.Cancelable)
+	o.Set("composed", p.Composed)
+	return o
 }
 
 type WheelEventDeltaMode int

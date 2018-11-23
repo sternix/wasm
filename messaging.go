@@ -49,20 +49,32 @@ type (
 		InitMessageEvent(string, ...interface{})
 	}
 
-	// https://html.spec.whatwg.org/multipage/comms.html#messageeventinit
-	MessageEventInit struct {
-		EventInit
-
-		Data        interface{}        `json:"data"`
-		Origin      string             `json:"origin"`
-		LastEventId string             `json:"lastEventId"`
-		Source      MessageEventSource `json:"source"`
-		Ports       []MessagePort      `json:"ports"`
-	}
-
 	// https://html.spec.whatwg.org/multipage/comms.html#messageeventsource
 	// typedef (WindowProxy or MessagePort or ServiceWorker) MessageEventSource;
 	MessageEventSource interface {
 		js.Wrapper
 	}
 )
+
+// -------------8<---------------------------------------
+
+// https://html.spec.whatwg.org/multipage/comms.html#messageeventinit
+type MessageEventInit struct {
+	EventInit
+
+	Data        interface{}        `json:"data"`
+	Origin      string             `json:"origin"`
+	LastEventId string             `json:"lastEventId"`
+	Source      MessageEventSource `json:"source"`
+	Ports       []MessagePort      `json:"ports"`
+}
+
+func (p MessageEventInit) toDict() js.Value {
+	o := p.EventInit.toDict()
+	o.Set("data", p.Data)
+	o.Set("origin", p.Origin)
+	o.Set("lastEventId", p.LastEventId)
+	o.Set("source", p.Source.JSValue())
+	o.Set("ports", messagePortSliceToJsArray(p.Ports))
+	return o
+}

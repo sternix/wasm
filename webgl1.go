@@ -9,17 +9,6 @@ import (
 // https://www.khronos.org/registry/webgl/specs/latest/1.0/
 
 type (
-	WebGLContextAttributes struct {
-		Alpha                        bool                 `json:"alpha"`
-		Depth                        bool                 `json:"depth"`
-		Stencil                      bool                 `json:"stencil"`
-		Antialias                    bool                 `json:"antialias"`
-		PremultipliedAlpha           bool                 `json:"premultipliedAlpha"`
-		PreserveDrawingBuffer        bool                 `json:"preserveDrawingBuffer"`
-		PowerPreference              WebGLPowerPreference `json:"powerPreference"`
-		FailIfMajorPerformanceCaveat bool                 `json:"failIfMajorPerformanceCaveat"`
-	}
-
 	WebGLObject interface {
 		js.Wrapper
 	}
@@ -238,3 +227,29 @@ const (
 	WebGLPowerPreferenceLowPower        WebGLPowerPreference = "low-power"
 	WebGLPowerPreferenceHighPerformance WebGLPowerPreference = "high-performance"
 )
+
+// -------------8<---------------------------------------
+
+type WebGLContextAttributes struct {
+	Alpha                        bool                 `json:"alpha"`
+	Depth                        bool                 `json:"depth"`
+	Stencil                      bool                 `json:"stencil"`
+	Antialias                    bool                 `json:"antialias"`
+	PremultipliedAlpha           bool                 `json:"premultipliedAlpha"`
+	PreserveDrawingBuffer        bool                 `json:"preserveDrawingBuffer"`
+	PowerPreference              WebGLPowerPreference `json:"powerPreference"`
+	FailIfMajorPerformanceCaveat bool                 `json:"failIfMajorPerformanceCaveat"`
+}
+
+func (p WebGLContextAttributes) toDict() js.Value {
+	o := jsObject.New()
+	o.Set("alpha", p.Alpha)
+	o.Set("depth", p.Depth)
+	o.Set("stencil", p.Stencil)
+	o.Set("antialias", p.Antialias)
+	o.Set("premultipliedAlpha", p.PremultipliedAlpha)
+	o.Set("preserveDrawingBuffer", p.PreserveDrawingBuffer)
+	o.Set("powerPreference", p.PowerPreference)
+	o.Set("failIfMajorPerformanceCaveat", p.FailIfMajorPerformanceCaveat)
+	return o
+}

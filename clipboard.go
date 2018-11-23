@@ -2,6 +2,10 @@
 
 package wasm
 
+import (
+	"syscall/js"
+)
+
 // https://w3c.github.io/clipboard-apis/#idl-index
 
 type (
@@ -29,10 +33,10 @@ type ClipboardPermissionDescriptor struct {
 	AllowWithoutGesture bool `json:"allowWithoutGesture"`
 }
 
-func (p ClipboardPermissionDescriptor) toMap() map[string]interface{} {
-	m := p.PermissionDescriptor.toMap()
-	m["allowWithoutGesture"] = p.AllowWithoutGesture
-	return m
+func (p ClipboardPermissionDescriptor) toDict() js.Value {
+	o := p.PermissionDescriptor.toDict()
+	o.Set("allowWithoutGesture", p.AllowWithoutGesture)
+	return o
 }
 
 // -------------8<---------------------------------------
@@ -43,10 +47,10 @@ type ClipboardEventInit struct {
 	ClipboardData DataTransfer `json:"clipboardData"`
 }
 
-func (p ClipboardEventInit) toMap() map[string]interface{} {
-	m := p.EventInit.toMap()
-	m["clipboardData"] = p.ClipboardData.JSValue()
-	return m
+func (p ClipboardEventInit) toDict() js.Value {
+	o := p.EventInit.toDict()
+	o.Set("clipboardData", p.ClipboardData.JSValue())
+	return o
 }
 
 // -------------8<---------------------------------------

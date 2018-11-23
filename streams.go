@@ -22,12 +22,6 @@ type (
 		Tee()
 	}
 
-	PipeToOptions struct {
-		PreventClose  bool `json:"preventClose"`
-		PreventAbort  bool `json:"preventAbort"`
-		PreventCancel bool `json:"preventCancel"`
-	}
-
 	GenericReader interface {
 		js.Wrapper
 
@@ -43,11 +37,6 @@ type (
 
 	ReadableStreamBYOBReader interface {
 		GenericReader
-	}
-
-	TransformStream struct {
-		Readable ReadableStream `json:"writable"`
-		Writable WritableStream `json:"readable"`
 	}
 
 	WritableStream interface {
@@ -70,5 +59,36 @@ type (
 )
 
 func NewReadableStream() ReadableStream {
+	// TODO
 	return nil
+}
+
+// -------------8<---------------------------------------
+
+type PipeToOptions struct {
+	PreventClose  bool `json:"preventClose"`
+	PreventAbort  bool `json:"preventAbort"`
+	PreventCancel bool `json:"preventCancel"`
+}
+
+func (p PipeToOptions) toDict() js.Value {
+	o := jsObject.New()
+	o.Set("preventClose", p.PreventClose)
+	o.Set("preventAbort", p.PreventAbort)
+	o.Set("preventCancel", p.PreventCancel)
+	return o
+}
+
+// -------------8<---------------------------------------
+
+type TransformStream struct {
+	Readable ReadableStream `json:"writable"`
+	Writable WritableStream `json:"readable"`
+}
+
+func (p TransformStream) toDict() js.Value {
+	o := jsObject.New()
+	o.Set("writable", p.Readable.JSValue())
+	o.Set("readable", p.Writable.JSValue())
+	return o
 }

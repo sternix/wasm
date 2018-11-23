@@ -135,11 +135,11 @@ type HitRegionOptions struct {
 	Control Element `json:"control"`
 }
 
-func (p HitRegionOptions) toMap() map[string]interface{} {
-	m := make(map[string]interface{})
-	m["id"] = p.Id
-	m["control"] = p.Control.JSValue()
-	return m
+func (p HitRegionOptions) toDict() js.Value {
+	o := jsObject.New()
+	o.Set("id", p.Id)
+	o.Set("control", p.Control.JSValue())
+	return o
 }
 
 // helpers for known types

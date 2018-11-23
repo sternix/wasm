@@ -2,10 +2,16 @@
 
 package wasm
 
+import (
+	"syscall/js"
+)
+
 type (
 
 	// https://www.w3.org/TR/webstorage/#storage-0
 	Storage interface {
+		js.Wrapper
+
 		Length() int
 		Key(int) string
 		Item(string) string
@@ -34,15 +40,27 @@ type (
 		Url() string
 		StorageArea() Storage
 	}
-
-	// https://www.w3.org/TR/webstorage/#storageeventinit
-	StorageEventInit struct {
-		EventInit
-
-		Key         string  `json:"key"`
-		OldValue    string  `json:"oldValue"`
-		NewValue    string  `json:"newValue"`
-		Url         string  `json:"url"`
-		StorageArea Storage `json:"storageArea"`
-	}
 )
+
+// -------------8<---------------------------------------
+
+// https://www.w3.org/TR/webstorage/#storageeventinit
+type StorageEventInit struct {
+	EventInit
+
+	Key         string  `json:"key"`
+	OldValue    string  `json:"oldValue"`
+	NewValue    string  `json:"newValue"`
+	Url         string  `json:"url"`
+	StorageArea Storage `json:"storageArea"`
+}
+
+func (p StorageEventInit) toDict() js.Value {
+	o := p.EventInit.toDict()
+	o.Set("key", p.Key)
+	o.Set("oldValue", p.OldValue)
+	o.Set("newValue", p.NewValue)
+	o.Set("url", p.Url)
+	o.Set("storageArea", p.StorageArea.JSValue())
+	return o
+}

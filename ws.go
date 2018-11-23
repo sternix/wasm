@@ -2,6 +2,10 @@
 
 package wasm
 
+import (
+	"syscall/js"
+)
+
 type (
 	// https://html.spec.whatwg.org/multipage/web-sockets.html#websocket
 	WebSocket interface {
@@ -30,13 +34,6 @@ type (
 		Code() int
 		Reason() string
 	}
-
-	// https://html.spec.whatwg.org/multipage/web-sockets.html#closeeventinit
-	CloseEventInit struct {
-		WasClean bool   `json:"wasClean"` //false
-		Code     int    `json:"code"`     // 0
-		Reason   string `json:"reason"`
-	}
 )
 
 type BinaryType string
@@ -54,3 +51,20 @@ const (
 	WebSocketReadyStateClosing    WebSocketReadyState = 2
 	WebSocketReadyStateClosed     WebSocketReadyState = 3
 )
+
+// -------------8<---------------------------------------
+
+// https://html.spec.whatwg.org/multipage/web-sockets.html#closeeventinit
+type CloseEventInit struct {
+	WasClean bool   `json:"wasClean"` //false
+	Code     int    `json:"code"`     // 0
+	Reason   string `json:"reason"`
+}
+
+func (p CloseEventInit) toDict() js.Value {
+	o := jsObject.New()
+	o.Set("wasClean", p.WasClean)
+	o.Set("code", p.Code)
+	o.Set("reason", p.Reason)
+	return o
+}

@@ -615,10 +615,10 @@ type ElementCreationOptions struct {
 	Is string `json:"is"`
 }
 
-func (p ElementCreationOptions) toMap() map[string]interface{} {
-	m := make(map[string]interface{})
-	m["is"] = p.Is
-	return m
+func (p ElementCreationOptions) toDict() js.Value {
+	o := jsObject.New()
+	o.Set("is", p.Is)
+	return o
 }
 
 // -------------8<---------------------------------------
@@ -628,10 +628,10 @@ type RootNodeOptions struct {
 	Composed bool `json:"composed"`
 }
 
-func (p RootNodeOptions) toMap() map[string]interface{} {
-	m := make(map[string]interface{})
-	m["composed"] = p.Composed
-	return m
+func (p RootNodeOptions) toDict() js.Value {
+	o := jsObject.New()
+	o.Set("composed", p.Composed)
+	return o
 }
 
 // -------------8<---------------------------------------
@@ -641,10 +641,10 @@ type ShadowRootInit struct {
 	Mode ShadowRootMode `json:"mode"`
 }
 
-func (p ShadowRootInit) toMap() map[string]interface{} {
-	m := make(map[string]interface{})
-	m["mode"] = p.Mode
-	return m
+func (p ShadowRootInit) toDict() js.Value {
+	o := jsObject.New()
+	o.Set("mode", p.Mode)
+	return o
 }
 
 // -------------8<---------------------------------------
@@ -660,16 +660,16 @@ type MutationObserverInit struct {
 	AttributeFilter       []string `json:"attributeFilter"`
 }
 
-func (p MutationObserverInit) toMap() map[string]interface{} {
-	m := make(map[string]interface{})
-	m["childList"] = p.ChildList
-	m["attributes"] = p.Attributes
-	m["characterData"] = p.CharacterData
-	m["subtree"] = p.SubTree
-	m["attributeOldValue"] = p.AttributeOldValue
-	m["characterDataOldValue"] = p.CharacterDataOldValue
-	m["attributeFilter"] = stringSliceToJsArray(p.AttributeFilter)
-	return m
+func (p MutationObserverInit) toDict() js.Value {
+	o := jsObject.New()
+	o.Set("childList", p.ChildList)
+	o.Set("attributes", p.Attributes)
+	o.Set("characterData", p.CharacterData)
+	o.Set("subtree", p.SubTree)
+	o.Set("attributeOldValue", p.AttributeOldValue)
+	o.Set("characterDataOldValue", p.CharacterDataOldValue)
+	o.Set("attributeFilter", stringSliceToJsArray(p.AttributeFilter))
+	return o
 }
 
 // -------------8<---------------------------------------
@@ -679,10 +679,10 @@ type ScrollOptions struct {
 	Behavior ScrollBehavior `json:"behavior"`
 }
 
-func (p ScrollOptions) toMap() map[string]interface{} {
-	m := make(map[string]interface{})
-	m["behavior"] = string(p.Behavior)
-	return m
+func (p ScrollOptions) toDict() js.Value {
+	o := jsObject.New()
+	o.Set("behavior", string(p.Behavior))
+	return o
 }
 
 // -------------8<---------------------------------------
@@ -695,9 +695,9 @@ type ScrollToOptions struct {
 	Top  float64 `json:"top"`
 }
 
-func (p ScrollToOptions) toMap() map[string]interface{} {
-	m := p.ScrollOptions.toMap()
-	m["left"] = p.Left
-	m["top"] = p.Top
-	return m
+func (p ScrollToOptions) toDict() js.Value {
+	o := p.ScrollOptions.toDict()
+	o.Set("left", p.Left)
+	o.Set("top", p.Top)
+	return o
 }

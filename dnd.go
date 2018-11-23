@@ -63,8 +63,8 @@ type DragEventInit struct {
 	DataTransfer DataTransfer `json:"dataTransfer"`
 }
 
-func (p DragEventInit) toMap() map[string]interface{} {
-	m := p.MouseEventInit.toMap()
-	m["dataTransfer"] = p.DataTransfer.JSValue()
-	return m
+func (p DragEventInit) toDict() js.Value {
+	o := p.MouseEventInit.toDict()
+	o.Set("dataTransfer", p.DataTransfer.JSValue())
+	return o
 }
