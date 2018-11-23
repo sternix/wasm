@@ -3,7 +3,6 @@
 package wasm
 
 import (
-	"encoding/json"
 	"errors"
 	"syscall/js"
 	"time"
@@ -14,7 +13,6 @@ import (
 var (
 	errUnsupporttedType = errors.New("Unsupported Type")
 	errInvalidType      = errors.New("Invalid Type")
-	jsJSON              = js.Global().Get("JSON")
 	jsArray             = js.Global().Get("Array")
 	jsObject            = js.Global().Get("Object")
 	jsTypeFunc          = jsObject.Get("prototype").Get("toString")
@@ -23,10 +21,8 @@ var (
 	jsWindowProxy = js.Global()
 	jsMessagePort = js.Global().Get("MessagePort")
 	jsUint8Array  = js.Global().Get("Uint8Array")
-
 	//jsUint8ClampedArray = js.Global().Get("Uint8ClampedArray")
 	//jsBufferSource      = js.Global().Get("BufferSource") --> typedef
-
 )
 
 // -------------8<---------------------------------------
@@ -38,20 +34,6 @@ func JSType(v js.Value) string {
 	}
 
 	return v.Type().String()
-}
-
-// -------------8<---------------------------------------
-
-// TODO use map[string]interface{}
-// convert structs to js.Value
-
-func toJSONObject(t interface{}) js.Value {
-	data, err := json.Marshal(t)
-	if err != nil {
-		panic(err)
-	}
-
-	return jsJSON.Call("parse", string(data))
 }
 
 // -------------8<---------------------------------------
@@ -181,6 +163,18 @@ func floatSliceToJsArray(sl []float64) js.Value {
 
 	for i, f := range sl {
 		obj.SetIndex(i, f)
+	}
+
+	return obj
+}
+
+// -------------8<---------------------------------------
+
+func boolSliceToJsArray(sl []bool) js.Value {
+	obj := jsArray.New(len(sl))
+
+	for i, b := range sl {
+		obj.SetIndex(i, b)
 	}
 
 	return obj

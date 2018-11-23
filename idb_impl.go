@@ -203,7 +203,7 @@ func (p *idbDatabaseImpl) CreateObjectStore(name string, options ...IDBObjectSto
 	case 0:
 		return newIDBObjectStore(p.Call("createObjectStore", name))
 	default:
-		return newIDBObjectStore(p.Call("createObjectStore", name, toJSONObject(options[0])))
+		return newIDBObjectStore(p.Call("createObjectStore", name, options[0].toDict()))
 	}
 }
 
@@ -371,7 +371,7 @@ func (p *idbObjectStoreImpl) CreateIndex(name string, keyPath string, options ..
 	case 0:
 		return newIDBIndex(p.Call("createIndex", name, keyPath))
 	default:
-		return newIDBIndex(p.Call("createIndex", name, keyPath, toJSONObject(options[0])))
+		return newIDBIndex(p.Call("createIndex", name, keyPath, options[0].toDict()))
 	}
 }
 
@@ -725,6 +725,6 @@ func NewIDBVersionChangeEvent(typ string, vce ...IDBVersionChangeEventInit) IDBV
 	case 0:
 		return newIDBVersionChangeEvent(jsIDBVersionChangeEvent.New(typ))
 	default:
-		return newIDBVersionChangeEvent(jsIDBVersionChangeEvent.New(typ, toJSONObject(vce[0])))
+		return newIDBVersionChangeEvent(jsIDBVersionChangeEvent.New(typ, vce[0].toDict()))
 	}
 }

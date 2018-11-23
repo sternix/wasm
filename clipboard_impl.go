@@ -70,6 +70,6 @@ func NewClipboardEvent(typ string, eventInitDict ...ClipboardEventInit) Clipboar
 	case 0:
 		return newClipboardEvent(jsClipboardEvent.New(typ))
 	default:
-		return newClipboardEvent(jsClipboardEvent.New(typ, toJSONObject(eventInitDict[0])))
+		return newClipboardEvent(jsClipboardEvent.New(typ, eventInitDict[0].toDict()))
 	}
 }

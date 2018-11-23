@@ -34,7 +34,7 @@ func NewCloseEvent(typ string, cei ...CloseEventInit) CloseEvent {
 	case 0:
 		return newCloseEvent(jsCloseEvent.New(typ))
 	default:
-		return newCloseEvent(jsCloseEvent.New(typ, toJSONObject(cei[0])))
+		return newCloseEvent(jsCloseEvent.New(typ, cei[0].toDict()))
 	}
 }
 

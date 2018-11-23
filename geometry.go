@@ -25,14 +25,6 @@ type (
 		DOMPointReadOnly
 	}
 
-	// https://www.w3.org/TR/geometry-1/#dictdef-dompointinit
-	DOMPointInit struct {
-		X float64 `json:"x"`
-		Y float64 `json:"y"`
-		Z float64 `json:"z"`
-		W float64 `json:"w"` //default 1
-	}
-
 	// https://www.w3.org/TR/geometry-1/#dom-domrect
 	DOMRect interface {
 		DOMRectReadOnly
@@ -50,14 +42,6 @@ type (
 		Right() float64
 		Bottom() float64
 		Left() float64
-	}
-
-	// https://www.w3.org/TR/geometry-1/#dictdef-domrectinit
-	DOMRectInit struct {
-		X      float64 `json:"x"`
-		Y      float64 `json:"y"`
-		Width  float64 `json:"width"`
-		Height float64 `json:"height"`
 	}
 
 	// https://www.w3.org/TR/geometry-1/#dom-domquad
@@ -138,18 +122,6 @@ type (
 		SetMatrixValue(string) DOMMatrix
 	}
 
-	// https://drafts.csswg.org/cssom-view/#dictdef-boxquadoptions
-	BoxQuadOptions struct {
-		Box        CSSBoxType   `json:"box"` // default "border"
-		RelativeTo GeometryNode `json:"relativeTo"`
-	}
-
-	// https://drafts.csswg.org/cssom-view/#dictdef-convertcoordinateoptions
-	ConvertCoordinateOptions struct {
-		FromBox CSSBoxType `json:"fromBox"` // default "border"
-		ToBox   CSSBoxType `json:"toBox"`   // default "border"
-	}
-
 	// typedef (Text or Element or CSSPseudoElement or Document) GeometryNode
 	GeometryNode interface {
 		js.Wrapper
@@ -164,3 +136,70 @@ const (
 	CSSBoxTypePadding CSSBoxType = "padding"
 	CSSBoxTypeContent CSSBoxType = "content"
 )
+
+// -------------8<---------------------------------------
+
+// https://www.w3.org/TR/geometry-1/#dictdef-dompointinit
+type DOMPointInit struct {
+	X float64 `json:"x"`
+	Y float64 `json:"y"`
+	Z float64 `json:"z"`
+	W float64 `json:"w"` //default 1
+}
+
+func (p DOMPointInit) toDict() js.Value {
+	o := jsObject.New()
+	o.Set("x", p.X)
+	o.Set("y", p.Y)
+	o.Set("z", p.Z)
+	o.Set("w", p.W)
+	return o
+}
+
+// -------------8<---------------------------------------
+
+// https://www.w3.org/TR/geometry-1/#dictdef-domrectinit
+type DOMRectInit struct {
+	X      float64 `json:"x"`
+	Y      float64 `json:"y"`
+	Width  float64 `json:"width"`
+	Height float64 `json:"height"`
+}
+
+func (p DOMRectInit) toDict() js.Value {
+	o := jsObject.New()
+	o.Set("x", p.X)
+	o.Set("y", p.Y)
+	o.Set("width", p.Width)
+	o.Set("height", p.Height)
+	return o
+}
+
+// -------------8<---------------------------------------
+
+// https://drafts.csswg.org/cssom-view/#dictdef-boxquadoptions
+type BoxQuadOptions struct {
+	Box        CSSBoxType   `json:"box"` // default "border"
+	RelativeTo GeometryNode `json:"relativeTo"`
+}
+
+func (p BoxQuadOptions) toDict() js.Value {
+	o := jsObject.New()
+	o.Set("box", string(p.Box))
+	o.Set("relativeTo", p.RelativeTo.JSValue())
+	return o
+}
+
+// -------------8<---------------------------------------
+// https://drafts.csswg.org/cssom-view/#dictdef-convertcoordinateoptions
+type ConvertCoordinateOptions struct {
+	FromBox CSSBoxType `json:"fromBox"` // default "border"
+	ToBox   CSSBoxType `json:"toBox"`   // default "border"
+}
+
+func (p ConvertCoordinateOptions) toDict() js.Value {
+	o := jsObject.New()
+	o.Set("fromBox", string(p.FromBox))
+	o.Set("toBox", string(p.ToBox))
+	return o
+}

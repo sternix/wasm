@@ -788,6 +788,26 @@ type MediaTrackCapabilities struct {
 	GroupId          string      `json:"groupId"`
 }
 
+func (p MediaTrackCapabilities) toDict() js.Value {
+	o := jsObject.New()
+	o.Set("width", p.Width.toDict())
+	o.Set("height", p.Heigth.toDict())
+	o.Set("aspectRatio", p.AspectRatio.toDict())
+	o.Set("frameRate", p.FrameRate.toDict())
+	o.Set("facingMode", stringSliceToJsArray(p.FacingMode))
+	o.Set("volume", p.Volume.toDict())
+	o.Set("sampleRate", p.SampleRate.toDict())
+	o.Set("sampleSize", p.SampleSize.toDict())
+	o.Set("echoCancellation", boolSliceToJsArray(p.EchoCancellation))
+	o.Set("autoGainControl", boolSliceToJsArray(p.AutoGainControl))
+	o.Set("noiseSuppression", boolSliceToJsArray(p.NoiseSuppression))
+	o.Set("latency", p.Latency.toDict())
+	o.Set("channelCount", p.ChannelCount.toDict())
+	o.Set("deviceId", p.DeviceId)
+	o.Set("groupId", p.GroupId)
+	return o
+}
+
 // -------------8<---------------------------------------
 
 // https://www.w3.org/TR/mediacapture-streams/#dom-mediatrackconstraintset
@@ -807,6 +827,26 @@ type MediaTrackConstraintSet struct {
 	ChannelCount     ConstrainLong      `json:"channelCount"`
 	DeviceId         ConstrainDOMString `json:"deviceId"`
 	GroupId          ConstrainDOMString `json:"groupId"`
+}
+
+func (p MediaTrackConstraintSet) toDict() js.Value {
+	o := jsObject.New()
+	o.Set("width", p.Width.toDict())
+	o.Set("height", p.Height.toDict())
+	o.Set("aspectRatio", p.AspectRatio.toDict())
+	o.Set("frameRate", p.FrameRate.toDict())
+	o.Set("facingMode", p.FacingMode.toDict())
+	o.Set("volume", p.Volume.toDict())
+	o.Set("sampleRate", p.SampleRate.toDict())
+	o.Set("sampleSize", p.SampleSize.toDict())
+	o.Set("echoCancellation", p.EchoCancellation.toDict())
+	o.Set("autoGainControl", p.AutoGainControl.toDict())
+	o.Set("noiseSuppression", p.NoiseSuppression.toDict())
+	o.Set("latency", p.Latency.toDict())
+	o.Set("channelCount", p.ChannelCount.toDict())
+	o.Set("deviceId", p.DeviceId.toDict())
+	o.Set("groupId", p.GroupId.toDict())
+	return o
 }
 
 // -------------8<---------------------------------------
@@ -830,12 +870,39 @@ type MediaTrackSettings struct {
 	GroupId          string  `json:"groupId"`
 }
 
+func (p MediaTrackSettings) toDict() js.Value {
+	o := jsObject.New()
+	o.Set("width", p.Width)
+	o.Set("height", p.Height)
+	o.Set("aspectRatio", p.AspectRatio)
+	o.Set("frameRate", p.FrameRate)
+	o.Set("facingMode", p.FacingMode)
+	o.Set("volume", p.Volume)
+	o.Set("sampleRate", p.SampleRate)
+	o.Set("sampleSize", p.SampleSize)
+	o.Set("echoCancellation", p.EchoCancellation)
+	o.Set("autoGainControl", p.AutoGainControl)
+	o.Set("noiseSuppression", p.NoiseSuppression)
+	o.Set("latency", p.Latency)
+	o.Set("channelCount", p.ChannelCount)
+	o.Set("deviceId", p.DeviceId)
+	o.Set("groupId", p.GroupId)
+	return o
+}
+
 // -------------8<---------------------------------------
 
 // https://www.w3.org/TR/mediacapture-streams/#dom-longrange
 type LongRange struct {
 	Max int `json:"max"`
 	Min int `json:"min"`
+}
+
+func (p LongRange) toDict() js.Value {
+	o := jsObject.New()
+	o.Set("max", p.Max)
+	o.Set("min", p.Min)
+	return o
 }
 
 // -------------8<---------------------------------------
@@ -846,6 +913,13 @@ type DoubleRange struct {
 	Min float64 `json:"min"`
 }
 
+func (p DoubleRange) toDict() js.Value {
+	o := jsObject.New()
+	o.Set("max", p.Max)
+	o.Set("min", p.Min)
+	return o
+}
+
 // -------------8<---------------------------------------
 
 // https://www.w3.org/TR/mediacapture-streams/#dom-constrainlongrange
@@ -854,6 +928,13 @@ type ConstrainLongRange struct {
 
 	Exact int `json:"exact"`
 	Ideal int `json:"ideal"`
+}
+
+func (p ConstrainLongRange) toDict() js.Value {
+	o := p.LongRange.toDict()
+	o.Set("exact", p.Exact)
+	o.Set("ideal", p.Ideal)
+	return o
 }
 
 // -------------8<---------------------------------------
@@ -871,10 +952,20 @@ type ConstrainDoubleRange struct {
 	Ideal float64 `json:"ideal"`
 }
 
+func (p ConstrainDoubleRange) toDict() js.Value {
+	o := p.DoubleRange.toDict()
+	o.Set("exact", p.Exact)
+	o.Set("ideal", p.Ideal)
+	return o
+}
+
 // -------------8<---------------------------------------
 
 // https://www.w3.org/TR/mediacapture-streams/#dom-constraindouble
-type ConstrainDouble ConstrainDoubleRange
+/*
+typedef (double or ConstrainDoubleRange) ConstrainDouble;
+*/
+type ConstrainDouble = ConstrainDoubleRange
 
 // -------------8<---------------------------------------
 
@@ -884,10 +975,20 @@ type ConstrainDOMStringParameters struct {
 	Ideal string `json:"ideal"`
 }
 
+func (p ConstrainDOMStringParameters) toDict() js.Value {
+	o := jsObject.New()
+	o.Set("exact", p.Exact)
+	o.Set("ideal", p.Ideal)
+	return o
+}
+
 // -------------8<---------------------------------------
 
 // https://www.w3.org/TR/mediacapture-streams/#dom-constraindomstring
-type ConstrainDOMString ConstrainDOMStringParameters
+/*
+typedef (DOMString or sequence<DOMString> or ConstrainDOMStringParameters) ConstrainDOMString;
+*/
+type ConstrainDOMString = ConstrainDOMStringParameters
 
 // -------------8<---------------------------------------
 
@@ -897,7 +998,17 @@ type ConstrainBooleanParameters struct {
 	Ideal bool `json:"ideal"`
 }
 
+func (p ConstrainBooleanParameters) toDict() js.Value {
+	o := jsObject.New()
+	o.Set("exact", p.Exact)
+	o.Set("ideal", p.Ideal)
+	return o
+}
+
 // -------------8<---------------------------------------
 
 // https://www.w3.org/TR/mediacapture-streams/#dom-constrainboolean
-type ConstrainBoolean ConstrainBooleanParameters
+/*
+typedef (boolean or ConstrainBooleanParameters) ConstrainBoolean;
+*/
+type ConstrainBoolean = ConstrainBooleanParameters

@@ -15,7 +15,7 @@ func NewPopStateEvent(typ string, p ...PopStateEventInit) PopStateEvent {
 	}
 
 	if len(p) > 0 {
-		return newPopStateEvent(jsPopStateEvent.New(typ, toJSONObject(p[0])))
+		return newPopStateEvent(jsPopStateEvent.New(typ, p[0].toDict()))
 	}
 
 	return newPopStateEvent(jsPopStateEvent.New(typ))
@@ -28,7 +28,7 @@ func NewHashChangeEvent(typ string, p ...HashChangeEventInit) HashChangeEvent {
 	}
 
 	if len(p) > 0 {
-		return newHashChangeEvent(jsHashChangeEvent.New(typ, toJSONObject(p[0])))
+		return newHashChangeEvent(jsHashChangeEvent.New(typ, p[0].toDict()))
 	}
 
 	return newHashChangeEvent(jsHashChangeEvent.New(typ))
@@ -41,7 +41,7 @@ func NewPageTransitionEvent(typ string, p ...PageTransitionEventInit) PageTransi
 	}
 
 	if len(p) > 0 {
-		return newPageTransitionEvent(jsPageTransitionEvent.New(typ, toJSONObject(p[0])))
+		return newPageTransitionEvent(jsPageTransitionEvent.New(typ, p[0].toDict()))
 	}
 
 	return newPageTransitionEvent(jsPageTransitionEvent.New(typ))
@@ -320,7 +320,7 @@ func (p *windowImpl) Scroll(args ...interface{}) {
 		p.Call("scroll")
 	case 1:
 		if options, ok := args[0].(ScrollToOptions); ok {
-			p.Call("scroll", toJSONObject(options))
+			p.Call("scroll", options.toDict())
 		}
 	case 2:
 		if x, ok := args[0].(float64); ok {
@@ -337,7 +337,7 @@ func (p *windowImpl) ScrollTo(args ...interface{}) {
 		p.Call("scrollTo")
 	case 1:
 		if options, ok := args[0].(ScrollToOptions); ok {
-			p.Call("scrollTo", toJSONObject(options))
+			p.Call("scrollTo", options.toDict())
 		}
 	case 2:
 		if x, ok := args[0].(float64); ok {
@@ -354,7 +354,7 @@ func (p *windowImpl) ScrollBy(args ...interface{}) {
 		p.Call("scrollBy")
 	case 1:
 		if options, ok := args[0].(ScrollToOptions); ok {
-			p.Call("scrollBy", toJSONObject(options))
+			p.Call("scrollBy", options.toDict())
 		}
 	case 2:
 		if x, ok := args[0].(float64); ok {

@@ -95,7 +95,7 @@ func (p *documentImpl) CreateElement(localName string, options ...ElementCreatio
 	case 0:
 		return wrapElement(p.Call("createElement", localName))
 	default:
-		return wrapElement(p.Call("createElement", localName, toJSONObject(options[0])))
+		return wrapElement(p.Call("createElement", localName, options[0].toDict()))
 	}
 }
 
@@ -104,7 +104,7 @@ func (p *documentImpl) CreateElementNS(namespace string, qualifiedName string, o
 	case 0:
 		return wrapElement(p.Call("createElementNS", namespace, qualifiedName))
 	default:
-		return wrapElement(p.Call("createElementNS", namespace, qualifiedName, toJSONObject(options[0])))
+		return wrapElement(p.Call("createElementNS", namespace, qualifiedName, options[0].toDict()))
 	}
 }
 
@@ -1010,7 +1010,7 @@ func (p *nodeImpl) OwnerDocument() Document {
 
 func (p *nodeImpl) RootNode(options ...RootNodeOptions) Node {
 	if len(options) > 0 {
-		return newNode(p.Call("getRootNode", toJSONObject(options[0])))
+		return newNode(p.Call("getRootNode", options[0].toDict()))
 	}
 
 	return newNode(p.Call("getRootNode"))
@@ -1271,7 +1271,7 @@ func (p *elementImpl) RemoveAttributeNode(attr Attr) Attr {
 }
 
 func (p *elementImpl) AttachShadow(si ShadowRootInit) ShadowRoot {
-	return newShadowRoot(p.Call("attachShadow", toJSONObject(si)))
+	return newShadowRoot(p.Call("attachShadow", si.toDict()))
 }
 
 func (p *elementImpl) ShadowRoot() ShadowRoot {
@@ -1324,21 +1324,21 @@ func (p *elementImpl) ScrollIntoView(arg ...interface{}) {
 		case bool:
 			p.Call("scrollIntoView", x)
 		case ScrollIntoViewOptions:
-			p.Call("scrollIntoView", toJSONObject(x))
+			p.Call("scrollIntoView", x.toDict())
 		}
 	}
 }
 
 func (p *elementImpl) Scroll(options ScrollToOptions) {
-	p.Call("scroll", toJSONObject(options))
+	p.Call("scroll", options.toDict())
 }
 
 func (p *elementImpl) ScrollTo(options ScrollToOptions) {
-	p.Call("scrollTo", toJSONObject(options))
+	p.Call("scrollTo", options.toDict())
 }
 
 func (p *elementImpl) ScrollBy(options ScrollToOptions) {
-	p.Call("scrollBy", toJSONObject(options))
+	p.Call("scrollBy", options.toDict())
 }
 
 func (p *elementImpl) ScrollTop() float64 {
@@ -1757,7 +1757,7 @@ func (p *mutationObserverImpl) Observe(target Node, options ...MutationObserverI
 	case 0:
 		p.Call("observe", target.JSValue())
 	default:
-		p.Call("observe", target.JSValue(), toJSONObject(options[0]))
+		p.Call("observe", target.JSValue(), options[0].toDict())
 	}
 }
 

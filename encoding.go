@@ -2,6 +2,10 @@
 
 package wasm
 
+import (
+	"syscall/js"
+)
+
 // https://encoding.spec.whatwg.org/#idl-index
 
 type (
@@ -9,15 +13,6 @@ type (
 		Encoding() string
 		Fatal() bool
 		IgnoreBOM() bool
-	}
-
-	TextDecoderOptions struct {
-		Fatal     bool `json:"fatal"`
-		IgnoreBOM bool `json:"ignoreBOM"`
-	}
-
-	TextDecodeOptions struct {
-		Stream bool `json:"stream"`
 	}
 
 	TextDecoder interface {
@@ -50,3 +45,29 @@ type (
 		GenericTransformStream
 	}
 )
+
+// -------------8<---------------------------------------
+
+type TextDecoderOptions struct {
+	Fatal     bool `json:"fatal"`
+	IgnoreBOM bool `json:"ignoreBOM"`
+}
+
+func (p TextDecoderOptions) toDict() js.Value {
+	o := jsObject.New()
+	o.Set("fatal", p.Fatal)
+	o.Set("ignoreBOM", p.IgnoreBOM)
+	return o
+}
+
+// -------------8<---------------------------------------
+
+type TextDecodeOptions struct {
+	Stream bool `json:"stream"`
+}
+
+func (p TextDecodeOptions) toDict() js.Value {
+	o := jsObject.New()
+	o.Set("stream", p.Stream)
+	return o
+}

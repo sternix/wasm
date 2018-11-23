@@ -135,6 +135,6 @@ func NewMediaQueryListEvent(typ string, eventInitDict ...MediaQueryListEventInit
 	case 0:
 		return newMediaQueryListEvent(jsMQLE.New(typ))
 	default:
-		return newMediaQueryListEvent(jsMQLE.New(typ, toJSONObject(eventInitDict[0])))
+		return newMediaQueryListEvent(jsMQLE.New(typ, eventInitDict[0].toDict()))
 	}
 }

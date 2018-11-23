@@ -18,7 +18,7 @@ func NewWorker(scriptURL string, wo ...WorkerOptions) Worker {
 	case 0:
 		return newWorker(jsWorker.New(scriptURL))
 	default:
-		return newWorker(jsWorker.New(scriptURL, toJSONObject(wo[0])))
+		return newWorker(jsWorker.New(scriptURL, wo[0].toDict()))
 	}
 }
 

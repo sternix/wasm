@@ -262,17 +262,17 @@ func (p *responseImpl) Clone() Response {
 func NewRequest(info RequestInfo, ri ...RequestInit) Request {
 	request := js.Global().Get("Request")
 	if len(ri) > 0 {
-		return newRequest(request.New(toJSONObject(info), toJSONObject(ri[0])))
+		return newRequest(request.New(info, ri[0].toDict()))
 	}
 
-	return newRequest(request.New(toJSONObject(info)))
+	return newRequest(request.New(info))
 }
 
 func NewHeaders(hi ...HeadersInit) Headers {
 	headers := js.Global().Get("Headers")
 
 	if len(hi) > 0 {
-		return newHeaders(headers.New(toJSONObject(hi[0])))
+		return newHeaders(headers.New(hi[0]))
 	}
 
 	return newHeaders(headers.New())
@@ -284,12 +284,12 @@ func NewResponse(args ...interface{}) Response {
 	switch len(args) {
 	case 1:
 		if body, ok := args[0].(BodyInit); ok {
-			return newResponse(response.New(toJSONObject(body)))
+			return newResponse(response.New(body))
 		}
 	case 2:
 		if body, ok := args[0].(BodyInit); ok {
 			if ri, ok := args[1].(ResponseInit); ok {
-				return newResponse(response.New(toJSONObject(body), toJSONObject(ri)))
+				return newResponse(response.New(body, ri.toDict()))
 			}
 		}
 	}

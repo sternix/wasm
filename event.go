@@ -52,13 +52,6 @@ type (
 		InitCustomEvent(string, ...interface{})
 	}
 
-	// https://dom.spec.whatwg.org/#dictdef-customeventinit
-	CustomEventInit struct {
-		EventInit
-
-		Detail interface{} `json:"detail"`
-	}
-
 	// https://html.spec.whatwg.org/multipage/webappapis.html#onerroreventhandler
 	// TODO: can we use ErrorEvent for this
 	OnErrorEventHandler func(OnErrorEventHandlerArg) interface{}
@@ -205,26 +198,11 @@ type (
 		Detail() int
 	}
 
-	// https://www.w3.org/TR/uievents/#dictdef-uieventinit-uieventinit
-	UIEventInit struct {
-		EventInit
-
-		View   Window `json:"view"`
-		Detail int    `json:"detail"`
-	}
-
 	// https://www.w3.org/TR/uievents/#focusevent
 	FocusEvent interface {
 		UIEvent
 
 		RelatedTarget() EventTarget
-	}
-
-	// https://www.w3.org/TR/uievents/#dictdef-focuseventinit
-	FocusEventInit struct {
-		UIEventInit
-
-		RelatedTarget EventTarget `json:"relatedTarget"`
 	}
 
 	// https://www.w3.org/TR/uievents/#mouseevent
@@ -252,39 +230,6 @@ type (
 		OffsetY() float64
 	}
 
-	// https://www.w3.org/TR/uievents/#mouseevent
-	MouseEventInit struct {
-		EventModifierInit
-
-		ScreenX       float64     `json:"screenX"`
-		ScreenY       float64     `json:"screenY"`
-		ClientX       float64     `json:"clientX"`
-		ClientY       float64     `json:"clientY"`
-		Button        int         `json:"button"`
-		Buttons       int         `json:"buttons"`
-		RelatedTarget EventTarget `json:"relatedTarget"`
-	}
-
-	// https://www.w3.org/TR/uievents/#dictdef-eventmodifierinit
-	EventModifierInit struct {
-		UIEventInit
-
-		CtrlKey            bool `json:"ctrlKey"`
-		ShiftKey           bool `json:"shiftKey"`
-		AltKey             bool `json:"altKey"`
-		MetaKey            bool `json:"metaKey"`
-		ModifierAltGraph   bool `json:"modifierAltGraph"`
-		ModifierCapsLock   bool `json:"modifierCapsLock"`
-		ModifierFn         bool `json:"modifierFn"`
-		ModifierFnLock     bool `json:"modifierFnLock"`
-		ModifierHyper      bool `json:"modifierHyper"`
-		ModifierNumLock    bool `json:"modifierNumLock"`
-		ModifierScrollLock bool `json:"modifierScrollLock"`
-		ModifierSuper      bool `json:"modifierSuper"`
-		ModifierSymbol     bool `json:"modifierSymbol"`
-		ModifierSymbolLock bool `json:"modifierSymbolLock"`
-	}
-
 	// https://www.w3.org/TR/uievents/#wheelevent
 	WheelEvent interface {
 		MouseEvent
@@ -295,30 +240,12 @@ type (
 		DeltaMode() WheelEventDeltaMode
 	}
 
-	// https://www.w3.org/TR/uievents/#dictdef-wheeleventinit
-	WheelEventInit struct {
-		MouseEventInit
-
-		DeltaX    float64             `json:"deltaX"`
-		DeltaY    float64             `json:"deltaY"`
-		DeltaZ    float64             `json:"deltaZ"`
-		DeltaMode WheelEventDeltaMode `json:"deltaMode"`
-	}
-
 	// https://www.w3.org/TR/uievents/#inputevent
 	InputEvent interface {
 		UIEvent
 
 		Data() string
 		IsComposing() bool
-	}
-
-	// https://www.w3.org/TR/uievents/#dictdef-inputeventinit
-	InputEventInit struct {
-		UIEventInit
-
-		Data        string `json:"data"`
-		IsComposing bool   `json:"isComposing"`
 	}
 
 	// https://www.w3.org/TR/uievents/#keyboardevent-keyboardevent
@@ -338,29 +265,11 @@ type (
 		ModifierState(string) bool
 	}
 
-	// https://www.w3.org/TR/uievents/#dictdef-keyboardeventinit
-	KeyboardEventInit struct {
-		EventModifierInit
-
-		Key         string `json:"key"`
-		Code        string `json:"code"`
-		Location    int    `json:"location"`
-		Repeat      bool   `json:"repeat"`
-		IsComposing bool   `json:"isComposing"`
-	}
-
 	// https://www.w3.org/TR/uievents/#compositionevent
 	CompositionEvent interface {
 		UIEvent
 
 		Data() string
-	}
-
-	// https://www.w3.org/TR/uievents/#dictdef-compositioneventinit
-	CompositionEventInit struct {
-		UIEventInit
-
-		Data string `json:"data"`
 	}
 
 	// https://html.spec.whatwg.org/multipage/webappapis.html#errorevent
@@ -373,33 +282,7 @@ type (
 		Colno() int
 		Error() string // TODO any
 	}
-
-	// https://www.w3.org/TR/html52/webappapis.html#dictdef-erroreventinit
-	ErrorEventInit struct {
-		EventInit
-
-		Message  string `json:"message"`
-		Filename string `json:"filename"`
-		Lineno   int    `json:"lineno"`
-		Colno    int    `json:"colno"`
-		Error    string `json:"error"` // any
-	}
 )
-
-// https://dom.spec.whatwg.org/#dictdef-eventinit
-type EventInit struct {
-	Bubbles    bool `json:"bubbles"`
-	Cancelable bool `json:"cancelable"`
-	Composed   bool `json:"composed"`
-}
-
-func (p EventInit) toDict() js.Value {
-	o := jsObject.New()
-	o.Set("bubbles", p.Bubbles)
-	o.Set("cancelable", p.Cancelable)
-	o.Set("composed", p.Composed)
-	return o
-}
 
 type WheelEventDeltaMode int
 
@@ -426,3 +309,234 @@ const (
 	EventPhaseAtTarget  EventPhase = 2
 	EventPhaseBubbling  EventPhase = 3
 )
+
+// -------------8<---------------------------------------
+
+// https://dom.spec.whatwg.org/#dictdef-eventinit
+type EventInit struct {
+	Bubbles    bool `json:"bubbles"`
+	Cancelable bool `json:"cancelable"`
+	Composed   bool `json:"composed"`
+}
+
+func (p EventInit) toDict() js.Value {
+	o := jsObject.New()
+	o.Set("bubbles", p.Bubbles)
+	o.Set("cancelable", p.Cancelable)
+	o.Set("composed", p.Composed)
+	return o
+}
+
+// -------------8<---------------------------------------
+
+// https://dom.spec.whatwg.org/#dictdef-customeventinit
+type CustomEventInit struct {
+	EventInit
+
+	Detail interface{} `json:"detail"`
+}
+
+func (p CustomEventInit) toDict() js.Value {
+	o := p.EventInit.toDict()
+	o.Set("detail", p.Detail)
+	return o
+}
+
+// -------------8<---------------------------------------
+
+// https://www.w3.org/TR/uievents/#dictdef-uieventinit-uieventinit
+type UIEventInit struct {
+	EventInit
+
+	View   Window `json:"view"`
+	Detail int    `json:"detail"`
+}
+
+func (p UIEventInit) toDict() js.Value {
+	o := p.EventInit.toDict()
+	o.Set("view", p.View)
+	o.Set("detail", p.Detail)
+	return o
+}
+
+// -------------8<---------------------------------------
+
+// https://www.w3.org/TR/uievents/#dictdef-focuseventinit
+type FocusEventInit struct {
+	UIEventInit
+
+	RelatedTarget EventTarget `json:"relatedTarget"`
+}
+
+func (p FocusEventInit) toDict() js.Value {
+	o := p.UIEventInit.toDict()
+	o.Set("relatedTarget", p.RelatedTarget)
+	return o
+}
+
+// -------------8<---------------------------------------
+
+// https://www.w3.org/TR/uievents/#mouseevent
+type MouseEventInit struct {
+	EventModifierInit
+
+	ScreenX       float64     `json:"screenX"`
+	ScreenY       float64     `json:"screenY"`
+	ClientX       float64     `json:"clientX"`
+	ClientY       float64     `json:"clientY"`
+	Button        int         `json:"button"`
+	Buttons       int         `json:"buttons"`
+	RelatedTarget EventTarget `json:"relatedTarget"`
+}
+
+func (p MouseEventInit) toDict() js.Value {
+	o := p.EventModifierInit.toDict()
+	o.Set("screenX", p.ScreenX)
+	o.Set("screenY", p.ScreenY)
+	o.Set("clientX", p.ClientX)
+	o.Set("clientY", p.ClientY)
+	o.Set("button", p.Button)
+	o.Set("buttons", p.Buttons)
+	o.Set("relatedTarget", p.RelatedTarget.JSValue())
+	return o
+}
+
+// -------------8<---------------------------------------
+
+// https://www.w3.org/TR/uievents/#dictdef-eventmodifierinit
+type EventModifierInit struct {
+	UIEventInit
+
+	CtrlKey            bool `json:"ctrlKey"`
+	ShiftKey           bool `json:"shiftKey"`
+	AltKey             bool `json:"altKey"`
+	MetaKey            bool `json:"metaKey"`
+	ModifierAltGraph   bool `json:"modifierAltGraph"`
+	ModifierCapsLock   bool `json:"modifierCapsLock"`
+	ModifierFn         bool `json:"modifierFn"`
+	ModifierFnLock     bool `json:"modifierFnLock"`
+	ModifierHyper      bool `json:"modifierHyper"`
+	ModifierNumLock    bool `json:"modifierNumLock"`
+	ModifierScrollLock bool `json:"modifierScrollLock"`
+	ModifierSuper      bool `json:"modifierSuper"`
+	ModifierSymbol     bool `json:"modifierSymbol"`
+	ModifierSymbolLock bool `json:"modifierSymbolLock"`
+}
+
+func (p EventModifierInit) toDict() js.Value {
+	o := p.UIEventInit.toDict()
+	o.Set("ctrlKey", p.CtrlKey)
+	o.Set("shiftKey", p.ShiftKey)
+	o.Set("altKey", p.AltKey)
+	o.Set("metaKey", p.MetaKey)
+	o.Set("modifierAltGraph", p.ModifierAltGraph)
+	o.Set("modifierCapsLock", p.ModifierCapsLock)
+	o.Set("modifierFn", p.ModifierFn)
+	o.Set("modifierFnLock", p.ModifierFnLock)
+	o.Set("modifierHyper", p.ModifierHyper)
+	o.Set("modifierNumLock", p.ModifierNumLock)
+	o.Set("modifierScrollLock", p.ModifierScrollLock)
+	o.Set("modifierSuper", p.ModifierSuper)
+	o.Set("modifierSymbol", p.ModifierSymbol)
+	o.Set("modifierSymbolLock", p.ModifierSymbolLock)
+	return o
+}
+
+// -------------8<---------------------------------------
+
+// https://www.w3.org/TR/uievents/#dictdef-wheeleventinit
+type WheelEventInit struct {
+	MouseEventInit
+
+	DeltaX    float64             `json:"deltaX"`
+	DeltaY    float64             `json:"deltaY"`
+	DeltaZ    float64             `json:"deltaZ"`
+	DeltaMode WheelEventDeltaMode `json:"deltaMode"`
+}
+
+func (p WheelEventInit) toDict() js.Value {
+	o := p.MouseEventInit.toDict()
+	o.Set("deltaX", p.DeltaX)
+	o.Set("deltaY", p.DeltaY)
+	o.Set("deltaZ", p.DeltaZ)
+	o.Set("deltaMode", int(p.DeltaMode))
+	return o
+}
+
+// -------------8<---------------------------------------
+
+// https://www.w3.org/TR/uievents/#dictdef-inputeventinit
+type InputEventInit struct {
+	UIEventInit
+
+	Data        string `json:"data"`
+	IsComposing bool   `json:"isComposing"`
+}
+
+func (p InputEventInit) toDict() js.Value {
+	o := p.UIEventInit.toDict()
+	o.Set("data", p.Data)
+	o.Set("isComposing", p.IsComposing)
+	return o
+}
+
+// -------------8<---------------------------------------
+
+// https://www.w3.org/TR/uievents/#dictdef-keyboardeventinit
+type KeyboardEventInit struct {
+	EventModifierInit
+
+	Key         string `json:"key"`
+	Code        string `json:"code"`
+	Location    int    `json:"location"`
+	Repeat      bool   `json:"repeat"`
+	IsComposing bool   `json:"isComposing"`
+}
+
+func (p KeyboardEventInit) toDict() js.Value {
+	o := p.EventModifierInit.toDict()
+	o.Set("key", p.Key)
+	o.Set("code", p.Code)
+	o.Set("location", p.Location)
+	o.Set("repeat", p.Repeat)
+	o.Set("isComposing", p.IsComposing)
+	return o
+}
+
+// -------------8<---------------------------------------
+
+// https://www.w3.org/TR/uievents/#dictdef-compositioneventinit
+type CompositionEventInit struct {
+	UIEventInit
+
+	Data string `json:"data"`
+}
+
+func (p CompositionEventInit) toDict() js.Value {
+	o := p.UIEventInit.toDict()
+	o.Set("data", p.Data)
+	return o
+}
+
+// -------------8<---------------------------------------
+
+// https://www.w3.org/TR/html52/webappapis.html#dictdef-erroreventinit
+type ErrorEventInit struct {
+	EventInit
+
+	Message  string `json:"message"`
+	Filename string `json:"filename"`
+	Lineno   int    `json:"lineno"`
+	Colno    int    `json:"colno"`
+	Error    string `json:"error"` // any
+}
+
+func (p ErrorEventInit) toDict() js.Value {
+	o := p.EventInit.toDict()
+	o.Set("message", p.Message)
+	o.Set("filename", p.Filename)
+	o.Set("lineno", p.Lineno)
+	o.Set("colno", p.Colno)
+	o.Set("error", p.Error)
+	return o
+}

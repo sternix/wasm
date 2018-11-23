@@ -18,7 +18,7 @@ func NewDOMPoint(dpi ...DOMPointInit) DOMPoint {
 	case 0:
 		return newDOMPoint(jsDOMPoint.New())
 	default:
-		return newDOMPoint(jsDOMPoint.New(toJSONObject(dpi[0])))
+		return newDOMPoint(jsDOMPoint.New(dpi[0].toDict()))
 	}
 }
 
@@ -59,7 +59,7 @@ func NewDOMQuad(dri ...DOMRectInit) DOMQuad {
 	case 0:
 		return newDOMQuad(jsDOMQuad.New())
 	default:
-		return newDOMQuad(jsDOMQuad.New(toJSONObject(dri[0])))
+		return newDOMQuad(jsDOMQuad.New(dri[0].toDict()))
 	}
 }
 
@@ -474,7 +474,7 @@ func (p *domMatrixReadOnlyImpl) TransformPoint(point ...DOMPointInit) DOMPoint {
 	case 0:
 		return newDOMPoint(p.Call("transformPoint"))
 	default:
-		return newDOMPoint(p.Call("transformPoint", toJSONObject(point[0])))
+		return newDOMPoint(p.Call("transformPoint", point[0].toDict()))
 	}
 }
 

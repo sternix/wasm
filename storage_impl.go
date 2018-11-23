@@ -18,7 +18,7 @@ func NewStorageEvent(typ string, sei ...StorageEventInit) StorageEvent {
 	case 0:
 		return newStorageEvent(jsStorageEvent.New(typ))
 	default:
-		return newStorageEvent(jsStorageEvent.New(typ, toJSONObject(sei[0])))
+		return newStorageEvent(jsStorageEvent.New(typ, sei[0].toDict()))
 	}
 }
 

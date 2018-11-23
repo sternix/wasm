@@ -168,7 +168,7 @@ func NewTouch(ti TouchInit) Touch {
 		return nil
 	}
 
-	return newTouch(jsTouch.New(toJSONObject(ti)))
+	return newTouch(jsTouch.New(ti.toDict()))
 }
 
 func NewTouchEvent(typ string, tei ...TouchEventInit) TouchEvent {
@@ -181,7 +181,7 @@ func NewTouchEvent(typ string, tei ...TouchEventInit) TouchEvent {
 	case 0:
 		return newTouchEvent(jsTouchEvent.New(typ))
 	default:
-		return newTouchEvent(jsTouchEvent.New(typ, toJSONObject(tei[0])))
+		return newTouchEvent(jsTouchEvent.New(typ, tei[0].toDict()))
 	}
 }
 

@@ -3,6 +3,7 @@
 package wasm
 
 import (
+	"syscall/js"
 	"time"
 )
 
@@ -14,13 +15,6 @@ type (
 		CurrentPosition(PositionCallback, ...interface{})
 		WatchPosition(PositionCallback, ...interface{}) int
 		ClearWatch(int)
-	}
-
-	// https://w3c.github.io/geolocation-api/#dom-positionoptions
-	PositionOptions struct {
-		EnableHighAccuracy bool `json:"enableHighAccuracy"`
-		Timeout            int  `json:"timeout"`
-		MaximumAge         int  `json:"maximumAge"`
 	}
 
 	// https://w3c.github.io/geolocation-api/#dom-position
@@ -54,3 +48,20 @@ const (
 	PositionErrorCodePositionUnavailable PositionErrorCode = 2
 	PositionErrorCodeTimeout             PositionErrorCode = 3
 )
+
+// -------------8<---------------------------------------
+
+// https://w3c.github.io/geolocation-api/#dom-positionoptions
+type PositionOptions struct {
+	EnableHighAccuracy bool `json:"enableHighAccuracy"`
+	Timeout            int  `json:"timeout"`
+	MaximumAge         int  `json:"maximumAge"`
+}
+
+func (p PositionOptions) toDict() js.Value {
+	o := jsObject.New()
+	o.Set("enableHighAccuracy", p.EnableHighAccuracy)
+	o.Set("timeout", p.Timeout)
+	o.Set("maximumAge", p.MaximumAge)
+	return o
+}

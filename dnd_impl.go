@@ -172,7 +172,7 @@ func NewDragEvent(typ string, dei ...DragEventInit) DragEvent {
 	}
 
 	if len(dei) > 0 {
-		return newDragEvent(jsDragEvent.New(typ, toJSONObject(dei[0])))
+		return newDragEvent(jsDragEvent.New(typ, dei[0].toDict()))
 	}
 
 	return newDragEvent(jsDragEvent.New(typ))

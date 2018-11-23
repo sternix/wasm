@@ -250,7 +250,7 @@ func NewBlob(args ...interface{}) Blob {
 			if options, ok := args[1].(BlobPropertyBag); ok {
 				ta := js.TypedArrayOf(ar)
 				defer ta.Release()
-				return newBlob(jsBlob.New(ta, toJSONObject(options)))
+				return newBlob(jsBlob.New(ta, options.toDict()))
 			}
 		}
 	}
@@ -271,7 +271,7 @@ func NewFile(fileBits []byte, fileName string, options ...FilePropertyBag) File 
 	case 0:
 		return newFile(jsFile.New(ta, fileName))
 	default:
-		return newFile(jsFile.New(ta, fileName, toJSONObject(options[0])))
+		return newFile(jsFile.New(ta, fileName, options[0].toDict()))
 	}
 }
 
@@ -300,7 +300,7 @@ func NewProgressEvent(typ string, pei ...ProgressEventInit) ProgressEvent {
 	}
 
 	if len(pei) > 0 {
-		return newProgressEvent(jsProgressEvent.New(typ, toJSONObject(pei[0])))
+		return newProgressEvent(jsProgressEvent.New(typ, pei[0].toDict()))
 	}
 	return newProgressEvent(jsProgressEvent.New(typ))
 }

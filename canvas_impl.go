@@ -204,7 +204,7 @@ func (p *canvasRenderingContext2DImpl) DrawImage(image CanvasImageSource, args .
 }
 
 func (p *canvasRenderingContext2DImpl) AddHitRegion(options HitRegionOptions) {
-	p.Call("addHitRegion", toJSONObject(options))
+	p.Call("addHitRegion", options.toDict())
 }
 
 func (p *canvasRenderingContext2DImpl) RemoveHitRegion(id string) {

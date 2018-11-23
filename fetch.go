@@ -11,7 +11,9 @@ import (
 type (
 
 	// typedef (sequence<sequence<ByteString>> or record<ByteString, ByteString>) HeadersInit;
-	HeadersInit interface{}
+	HeadersInit interface {
+		js.Wrapper
+	}
 
 	Headers interface {
 		js.Wrapper
@@ -25,7 +27,9 @@ type (
 	}
 
 	// typedef (Blob or BufferSource or FormData or URLSearchParams or ReadableStream or USVString) BodyInit;
-	BodyInit interface{}
+	BodyInit interface {
+		js.Wrapper
+	}
 
 	Body interface {
 		Body() ReadableStream
@@ -61,22 +65,6 @@ type (
 		Clone() Request
 	}
 
-	RequestInit struct {
-		Method         string             `json:"method"`
-		Headers        HeadersInit        `json:"headers"`
-		Body           BodyInit           `json:"body"`
-		Referrer       string             `json:"referrer"`
-		ReferrerPolicy ReferrerPolicy     `json:"referrerPolicy"`
-		Mode           RequestMode        `json:"mode"`
-		Credentials    RequestCredentials `json:"credentials"`
-		Cache          RequestCache       `json:"cache"`
-		Redirect       RequestRedirect    `json:"redirect"`
-		Integrity      string             `json:"integrity"`
-		Keepalive      bool               `json:"keepalive"`
-		Signal         AbortSignal        `json:"signal"`
-		Window         js.Value           `json:"window"`
-	}
-
 	Response interface {
 		Body
 
@@ -91,12 +79,6 @@ type (
 		Headers() Headers
 		Trailer() Promise
 		Clone() Response
-	}
-
-	ResponseInit struct {
-		status     int         `json:"status"`
-		StatusText string      `json:"statusText"`
-		Headers    HeadersInit `json:"headers"`
 	}
 )
 
@@ -183,3 +165,55 @@ const (
 	ReferrerPolicyStrictOriginWhenCrossOrigin ReferrerPolicy = "strict-origin-when-cross-origin"
 	ReferrerPolicyUnsafeUrl                   ReferrerPolicy = "unsafe-url"
 )
+
+// -------------8<---------------------------------------
+
+type RequestInit struct {
+	Method         string             `json:"method"`
+	Headers        HeadersInit        `json:"headers"`
+	Body           BodyInit           `json:"body"`
+	Referrer       string             `json:"referrer"`
+	ReferrerPolicy ReferrerPolicy     `json:"referrerPolicy"`
+	Mode           RequestMode        `json:"mode"`
+	Credentials    RequestCredentials `json:"credentials"`
+	Cache          RequestCache       `json:"cache"`
+	Redirect       RequestRedirect    `json:"redirect"`
+	Integrity      string             `json:"integrity"`
+	Keepalive      bool               `json:"keepalive"`
+	Signal         AbortSignal        `json:"signal"`
+	Window         js.Value           `json:"window"`
+}
+
+func (p RequestInit) toDict() js.Value {
+	o := jsObject.New()
+	o.Set("method", p.Method)
+	o.Set("headers", p.Headers.JSValue())
+	o.Set("body", p.Body.JSValue())
+	o.Set("referrer", p.Referrer)
+	o.Set("referrerPolicy", string(p.ReferrerPolicy))
+	o.Set("mode", string(p.Mode))
+	o.Set("credentials", string(p.Credentials))
+	o.Set("cache", string(p.Cache))
+	o.Set("redirect", string(p.Redirect))
+	o.Set("integrity", p.Integrity)
+	o.Set("keepalive", p.Keepalive)
+	o.Set("signal", p.Signal.JSValue())
+	o.Set("window", p.Window)
+	return o
+}
+
+// -------------8<---------------------------------------
+
+type ResponseInit struct {
+	Status     int         `json:"status"`
+	StatusText string      `json:"statusText"`
+	Headers    HeadersInit `json:"headers"`
+}
+
+func (p ResponseInit) toDict() js.Value {
+	o := jsObject.New()
+	o.Set("status", p.Status)
+	o.Set("statusText", p.StatusText)
+	o.Set("headers", p.Headers.JSValue())
+	return o
+}

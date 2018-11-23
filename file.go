@@ -29,20 +29,6 @@ type (
 		js.Wrapper
 	} // typedef (BufferSource or Blob or USVString) BlobPart;
 
-	// https://w3c.github.io/FileAPI/#dfn-BlobPropertyBag
-	BlobPropertyBag struct {
-		Type string `json:"type"`
-		// working draft
-		// Endings EndingType `json:"endings"` // default transparent
-	}
-
-	// https://www.w3.org/TR/FileAPI/#dfn-FilePropertyBag
-	FilePropertyBag struct {
-		BlobPropertyBag
-
-		LastModified int `json:"lastModified"`
-	}
-
 	// https://www.w3.org/TR/FileAPI/#dfn-filereader
 	FileReader interface {
 		EventTarget
@@ -84,15 +70,6 @@ type (
 		Loaded() int
 		Total() int
 	}
-
-	// https://xhr.spec.whatwg.org/#progresseventinit
-	ProgressEventInit struct {
-		EventInit
-
-		LengthComputable bool `json:"lengthComputable"`
-		Loaded           int  `json:"loaded"`
-		Total            int  `json:"total"`
-	}
 )
 
 type EndingType string
@@ -109,3 +86,52 @@ const (
 	FileReaderStateLoading FileReaderState = 1
 	FileReaderStateDone    FileReaderState = 2
 )
+
+// -------------8<---------------------------------------
+
+// https://w3c.github.io/FileAPI/#dfn-BlobPropertyBag
+type BlobPropertyBag struct {
+	Type string `json:"type"`
+	// working draft
+	// Endings EndingType `json:"endings"` // default transparent
+}
+
+func (p BlobPropertyBag) toDict() js.Value {
+	o := jsObject.New()
+	o.Set("type", p.Type)
+	return o
+}
+
+// -------------8<---------------------------------------
+
+// https://www.w3.org/TR/FileAPI/#dfn-FilePropertyBag
+type FilePropertyBag struct {
+	BlobPropertyBag
+
+	LastModified int `json:"lastModified"`
+}
+
+func (p FilePropertyBag) toDict() js.Value {
+	o := p.BlobPropertyBag.toDict()
+	o.Set("lastModified", p.LastModified)
+	return o
+}
+
+// -------------8<---------------------------------------
+
+// https://xhr.spec.whatwg.org/#progresseventinit
+type ProgressEventInit struct {
+	EventInit
+
+	LengthComputable bool `json:"lengthComputable"`
+	Loaded           int  `json:"loaded"`
+	Total            int  `json:"total"`
+}
+
+func (p ProgressEventInit) toDict() js.Value {
+	o := p.EventInit.toDict()
+	o.Set("lengthComputable", p.LengthComputable)
+	o.Set("loaded", p.Loaded)
+	o.Set("total", p.Total)
+	return o
+}

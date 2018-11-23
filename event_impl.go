@@ -19,7 +19,7 @@ func NewEvent(typ string, ei ...EventInit) Event {
 	case 0:
 		return newEvent(jsEvent.New(typ))
 	default:
-		return newEvent(jsEvent.New(typ, toJSONObject(ei[0])))
+		return newEvent(jsEvent.New(typ, ei[0].toDict()))
 	}
 }
 
@@ -33,7 +33,7 @@ func NewCustomEvent(typ string, cei ...CustomEventInit) CustomEvent {
 	case 0:
 		return newCustomEvent(jsCustomEvent.New(typ))
 	default:
-		return newCustomEvent(jsCustomEvent.New(typ, toJSONObject(cei[0])))
+		return newCustomEvent(jsCustomEvent.New(typ, cei[0].toDict()))
 	}
 }
 
@@ -47,7 +47,7 @@ func NewFocusEvent(typ string, ini ...FocusEventInit) FocusEvent {
 	case 0:
 		return newFocusEvent(jsFocusEvent.New(typ))
 	default:
-		return newFocusEvent(jsFocusEvent.New(typ, toJSONObject(ini[0])))
+		return newFocusEvent(jsFocusEvent.New(typ, ini[0].toDict()))
 	}
 }
 
@@ -61,7 +61,7 @@ func NewMouseEvent(typ string, ini ...MouseEventInit) MouseEvent {
 	case 0:
 		return newMouseEvent(jsMouseEvent.New(typ))
 	default:
-		return newMouseEvent(jsMouseEvent.New(typ, toJSONObject(ini[0])))
+		return newMouseEvent(jsMouseEvent.New(typ, ini[0].toDict()))
 	}
 }
 
@@ -75,7 +75,7 @@ func NewWheelEvent(typ string, ini ...WheelEventInit) WheelEvent {
 	case 0:
 		return newWheelEvent(jsWheelEvent.New(typ))
 	default:
-		return newWheelEvent(jsWheelEvent.New(typ, toJSONObject(ini[0])))
+		return newWheelEvent(jsWheelEvent.New(typ, ini[0].toDict()))
 	}
 }
 
@@ -89,7 +89,7 @@ func NewInputEvent(typ string, ini ...InputEventInit) InputEvent {
 	case 0:
 		return newInputEvent(jsInputEvent.New(typ))
 	default:
-		return newInputEvent(jsInputEvent.New(typ, toJSONObject(ini[0])))
+		return newInputEvent(jsInputEvent.New(typ, ini[0].toDict()))
 	}
 }
 
@@ -103,7 +103,7 @@ func NewKeyboardEvent(typ string, ini ...KeyboardEventInit) KeyboardEvent {
 	case 0:
 		return newKeyboardEvent(jsKeyboardEvent.New(typ))
 	default:
-		return newKeyboardEvent(jsKeyboardEvent.New(typ, toJSONObject(ini[0])))
+		return newKeyboardEvent(jsKeyboardEvent.New(typ, ini[0].toDict()))
 	}
 }
 
@@ -117,7 +117,7 @@ func NewErrorEvent(typ string, eei ...ErrorEventInit) ErrorEvent {
 	case 0:
 		return newErrorEvent(jsErrorEvent.New(typ))
 	default:
-		return newErrorEvent(jsErrorEvent.New(typ, toJSONObject(eei[0])))
+		return newErrorEvent(jsErrorEvent.New(typ, eei[0].toDict()))
 	}
 }
 
