@@ -48,11 +48,11 @@ type (
 type StorageEventInit struct {
 	EventInit
 
-	Key         string  `json:"key"`
-	OldValue    string  `json:"oldValue"`
-	NewValue    string  `json:"newValue"`
-	Url         string  `json:"url"`
-	StorageArea Storage `json:"storageArea"`
+	Key         string
+	OldValue    string
+	NewValue    string
+	Url         string
+	StorageArea Storage
 }
 
 func (p StorageEventInit) toDict() js.Value {

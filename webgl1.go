@@ -231,14 +231,14 @@ const (
 // -------------8<---------------------------------------
 
 type WebGLContextAttributes struct {
-	Alpha                        bool                 `json:"alpha"`
-	Depth                        bool                 `json:"depth"`
-	Stencil                      bool                 `json:"stencil"`
-	Antialias                    bool                 `json:"antialias"`
-	PremultipliedAlpha           bool                 `json:"premultipliedAlpha"`
-	PreserveDrawingBuffer        bool                 `json:"preserveDrawingBuffer"`
-	PowerPreference              WebGLPowerPreference `json:"powerPreference"`
-	FailIfMajorPerformanceCaveat bool                 `json:"failIfMajorPerformanceCaveat"`
+	Alpha                        bool
+	Depth                        bool
+	Stencil                      bool
+	Antialias                    bool
+	PremultipliedAlpha           bool
+	PreserveDrawingBuffer        bool
+	PowerPreference              WebGLPowerPreference
+	FailIfMajorPerformanceCaveat bool
 }
 
 func (p WebGLContextAttributes) toDict() js.Value {

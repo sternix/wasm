@@ -56,9 +56,9 @@ const (
 
 // https://html.spec.whatwg.org/multipage/web-sockets.html#closeeventinit
 type CloseEventInit struct {
-	WasClean bool   `json:"wasClean"` //false
-	Code     int    `json:"code"`     // 0
-	Reason   string `json:"reason"`
+	WasClean bool //false
+	Code     int  // 0
+	Reason   string
 }
 
 func (p CloseEventInit) toDict() js.Value {

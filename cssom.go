@@ -60,8 +60,8 @@ const (
 type ScrollIntoViewOptions struct {
 	ScrollOptions
 
-	Block  ScrollLogicalPosition `json:"block"`  // default "center"
-	Inline ScrollLogicalPosition `json:"inline"` // default "center"
+	Block  ScrollLogicalPosition // default "center"
+	Inline ScrollLogicalPosition // default "center"
 }
 
 func (p ScrollIntoViewOptions) toDict() js.Value {
@@ -77,8 +77,8 @@ func (p ScrollIntoViewOptions) toDict() js.Value {
 type MediaQueryListEventInit struct {
 	EventInit
 
-	Media   string `json:"media"`
-	Matches bool   `json:"matches"`
+	Media   string
+	Matches bool
 }
 
 func (p MediaQueryListEventInit) toDict() js.Value {

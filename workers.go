@@ -124,9 +124,9 @@ const (
 
 // https://w3c.github.io/workers/#dictdef-workeroptions
 type WorkerOptions struct {
-	Type        WorkerType         `json:"type" // default classic`
-	Credentials RequestCredentials `json:"credentials"` // default omit
-	Name        string             `json:"name"`
+	Type        WorkerType         // default classic`
+	Credentials RequestCredentials // default omit
+	Name        string
 }
 
 func (p WorkerOptions) toDict() js.Value {

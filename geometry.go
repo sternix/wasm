@@ -141,10 +141,10 @@ const (
 
 // https://www.w3.org/TR/geometry-1/#dictdef-dompointinit
 type DOMPointInit struct {
-	X float64 `json:"x"`
-	Y float64 `json:"y"`
-	Z float64 `json:"z"`
-	W float64 `json:"w"` //default 1
+	X float64
+	Y float64
+	Z float64
+	W float64 //default 1
 }
 
 func (p DOMPointInit) toDict() js.Value {
@@ -160,10 +160,10 @@ func (p DOMPointInit) toDict() js.Value {
 
 // https://www.w3.org/TR/geometry-1/#dictdef-domrectinit
 type DOMRectInit struct {
-	X      float64 `json:"x"`
-	Y      float64 `json:"y"`
-	Width  float64 `json:"width"`
-	Height float64 `json:"height"`
+	X      float64
+	Y      float64
+	Width  float64
+	Height float64
 }
 
 func (p DOMRectInit) toDict() js.Value {
@@ -179,8 +179,8 @@ func (p DOMRectInit) toDict() js.Value {
 
 // https://drafts.csswg.org/cssom-view/#dictdef-boxquadoptions
 type BoxQuadOptions struct {
-	Box        CSSBoxType   `json:"box"` // default "border"
-	RelativeTo GeometryNode `json:"relativeTo"`
+	Box        CSSBoxType // default "border"
+	RelativeTo GeometryNode
 }
 
 func (p BoxQuadOptions) toDict() js.Value {
@@ -193,8 +193,8 @@ func (p BoxQuadOptions) toDict() js.Value {
 // -------------8<---------------------------------------
 // https://drafts.csswg.org/cssom-view/#dictdef-convertcoordinateoptions
 type ConvertCoordinateOptions struct {
-	FromBox CSSBoxType `json:"fromBox"` // default "border"
-	ToBox   CSSBoxType `json:"toBox"`   // default "border"
+	FromBox CSSBoxType // default "border"
+	ToBox   CSSBoxType // default "border"
 }
 
 func (p ConvertCoordinateOptions) toDict() js.Value {

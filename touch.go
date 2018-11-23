@@ -62,21 +62,21 @@ const (
 
 // https://w3c.github.io/touch-events/#idl-def-touchinit
 type TouchInit struct {
-	Identifier    int         `json:"identifier"` // required
-	Target        EventTarget `json:"target"`     // required
-	ClientX       float64     `json:"clientX"`
-	ClientY       float64     `json:"clientY"`
-	ScreenX       float64     `json:"screenX"`
-	ScreenY       float64     `json:"screenY"`
-	PageX         float64     `json:"pageX"`
-	PageY         float64     `json:"pageY"`
-	RadiusX       float64     `json:"radiusX"`
-	RadiusY       float64     `json:"radiusY"`
-	RotationAngle float64     `json:"rotationAngle"`
-	Force         float64     `json:"force"`
-	AltitudeAngle float64     `json:"altitudeAngle"`
-	AzimuthAngle  float64     `json:"azimuthAngle"`
-	TouchType     TouchType   `json:"touchType"`
+	Identifier    int         // required
+	Target        EventTarget // required
+	ClientX       float64
+	ClientY       float64
+	ScreenX       float64
+	ScreenY       float64
+	PageX         float64
+	PageY         float64
+	RadiusX       float64
+	RadiusY       float64
+	RotationAngle float64
+	Force         float64
+	AltitudeAngle float64
+	AzimuthAngle  float64
+	TouchType     TouchType
 }
 
 func (p TouchInit) toDict() js.Value {
@@ -104,9 +104,9 @@ func (p TouchInit) toDict() js.Value {
 type TouchEventInit struct {
 	EventModifierInit
 
-	Touches        []Touch `json:"touches"`
-	TargetTouches  []Touch `json:"targetTouches"`
-	ChangedTouches []Touch `json:"changedTouches"`
+	Touches        []Touch
+	TargetTouches  []Touch
+	ChangedTouches []Touch
 }
 
 func (p TouchEventInit) toDict() js.Value {

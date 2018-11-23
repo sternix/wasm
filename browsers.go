@@ -176,7 +176,7 @@ const (
 type PopStateEventInit struct {
 	EventInit
 
-	State interface{} `json:"state"`
+	State interface{}
 }
 
 func (p PopStateEventInit) toDict() js.Value {
@@ -191,8 +191,8 @@ func (p PopStateEventInit) toDict() js.Value {
 type HashChangeEventInit struct {
 	EventInit
 
-	OldUrl string `json:"oldURL"`
-	NewURL string `json:"newURL"`
+	OldUrl string
+	NewURL string
 }
 
 func (p HashChangeEventInit) toDict() js.Value {
@@ -208,7 +208,7 @@ func (p HashChangeEventInit) toDict() js.Value {
 type PageTransitionEventInit struct {
 	EventInit
 
-	Persisted bool `json:"persisted"`
+	Persisted bool
 }
 
 func (p PageTransitionEventInit) toDict() js.Value {

@@ -13,7 +13,7 @@ import (
 )
 
 type PermissionDescriptor struct {
-	Name PermissionName `json:"name"`
+	Name PermissionName
 }
 
 func (p PermissionDescriptor) toDict() js.Value {

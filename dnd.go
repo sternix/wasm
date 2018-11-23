@@ -60,7 +60,7 @@ type (
 type DragEventInit struct {
 	MouseEventInit
 
-	DataTransfer DataTransfer `json:"dataTransfer"`
+	DataTransfer DataTransfer
 }
 
 func (p DragEventInit) toDict() js.Value {

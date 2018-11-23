@@ -131,8 +131,8 @@ type (
 
 // https://www.w3.org/TR/2dcontext/#hitregionoptions
 type HitRegionOptions struct {
-	Id      string  `json:"id"`
-	Control Element `json:"control"`
+	Id      string
+	Control Element
 }
 
 func (p HitRegionOptions) toDict() js.Value {

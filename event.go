@@ -314,9 +314,9 @@ const (
 
 // https://dom.spec.whatwg.org/#dictdef-eventinit
 type EventInit struct {
-	Bubbles    bool `json:"bubbles"`
-	Cancelable bool `json:"cancelable"`
-	Composed   bool `json:"composed"`
+	Bubbles    bool
+	Cancelable bool
+	Composed   bool
 }
 
 func (p EventInit) toDict() js.Value {
@@ -333,7 +333,7 @@ func (p EventInit) toDict() js.Value {
 type CustomEventInit struct {
 	EventInit
 
-	Detail interface{} `json:"detail"`
+	Detail interface{}
 }
 
 func (p CustomEventInit) toDict() js.Value {
@@ -348,8 +348,8 @@ func (p CustomEventInit) toDict() js.Value {
 type UIEventInit struct {
 	EventInit
 
-	View   Window `json:"view"`
-	Detail int    `json:"detail"`
+	View   Window
+	Detail int
 }
 
 func (p UIEventInit) toDict() js.Value {
@@ -365,7 +365,7 @@ func (p UIEventInit) toDict() js.Value {
 type FocusEventInit struct {
 	UIEventInit
 
-	RelatedTarget EventTarget `json:"relatedTarget"`
+	RelatedTarget EventTarget
 }
 
 func (p FocusEventInit) toDict() js.Value {
@@ -380,13 +380,13 @@ func (p FocusEventInit) toDict() js.Value {
 type MouseEventInit struct {
 	EventModifierInit
 
-	ScreenX       float64     `json:"screenX"`
-	ScreenY       float64     `json:"screenY"`
-	ClientX       float64     `json:"clientX"`
-	ClientY       float64     `json:"clientY"`
-	Button        int         `json:"button"`
-	Buttons       int         `json:"buttons"`
-	RelatedTarget EventTarget `json:"relatedTarget"`
+	ScreenX       float64
+	ScreenY       float64
+	ClientX       float64
+	ClientY       float64
+	Button        int
+	Buttons       int
+	RelatedTarget EventTarget
 }
 
 func (p MouseEventInit) toDict() js.Value {
@@ -407,20 +407,20 @@ func (p MouseEventInit) toDict() js.Value {
 type EventModifierInit struct {
 	UIEventInit
 
-	CtrlKey            bool `json:"ctrlKey"`
-	ShiftKey           bool `json:"shiftKey"`
-	AltKey             bool `json:"altKey"`
-	MetaKey            bool `json:"metaKey"`
-	ModifierAltGraph   bool `json:"modifierAltGraph"`
-	ModifierCapsLock   bool `json:"modifierCapsLock"`
-	ModifierFn         bool `json:"modifierFn"`
-	ModifierFnLock     bool `json:"modifierFnLock"`
-	ModifierHyper      bool `json:"modifierHyper"`
-	ModifierNumLock    bool `json:"modifierNumLock"`
-	ModifierScrollLock bool `json:"modifierScrollLock"`
-	ModifierSuper      bool `json:"modifierSuper"`
-	ModifierSymbol     bool `json:"modifierSymbol"`
-	ModifierSymbolLock bool `json:"modifierSymbolLock"`
+	CtrlKey            bool
+	ShiftKey           bool
+	AltKey             bool
+	MetaKey            bool
+	ModifierAltGraph   bool
+	ModifierCapsLock   bool
+	ModifierFn         bool
+	ModifierFnLock     bool
+	ModifierHyper      bool
+	ModifierNumLock    bool
+	ModifierScrollLock bool
+	ModifierSuper      bool
+	ModifierSymbol     bool
+	ModifierSymbolLock bool
 }
 
 func (p EventModifierInit) toDict() js.Value {
@@ -448,10 +448,10 @@ func (p EventModifierInit) toDict() js.Value {
 type WheelEventInit struct {
 	MouseEventInit
 
-	DeltaX    float64             `json:"deltaX"`
-	DeltaY    float64             `json:"deltaY"`
-	DeltaZ    float64             `json:"deltaZ"`
-	DeltaMode WheelEventDeltaMode `json:"deltaMode"`
+	DeltaX    float64
+	DeltaY    float64
+	DeltaZ    float64
+	DeltaMode WheelEventDeltaMode
 }
 
 func (p WheelEventInit) toDict() js.Value {
@@ -469,8 +469,8 @@ func (p WheelEventInit) toDict() js.Value {
 type InputEventInit struct {
 	UIEventInit
 
-	Data        string `json:"data"`
-	IsComposing bool   `json:"isComposing"`
+	Data        string
+	IsComposing bool
 }
 
 func (p InputEventInit) toDict() js.Value {
@@ -486,11 +486,11 @@ func (p InputEventInit) toDict() js.Value {
 type KeyboardEventInit struct {
 	EventModifierInit
 
-	Key         string `json:"key"`
-	Code        string `json:"code"`
-	Location    int    `json:"location"`
-	Repeat      bool   `json:"repeat"`
-	IsComposing bool   `json:"isComposing"`
+	Key         string
+	Code        string
+	Location    int
+	Repeat      bool
+	IsComposing bool
 }
 
 func (p KeyboardEventInit) toDict() js.Value {
@@ -509,7 +509,7 @@ func (p KeyboardEventInit) toDict() js.Value {
 type CompositionEventInit struct {
 	UIEventInit
 
-	Data string `json:"data"`
+	Data string
 }
 
 func (p CompositionEventInit) toDict() js.Value {
@@ -524,11 +524,11 @@ func (p CompositionEventInit) toDict() js.Value {
 type ErrorEventInit struct {
 	EventInit
 
-	Message  string `json:"message"`
-	Filename string `json:"filename"`
-	Lineno   int    `json:"lineno"`
-	Colno    int    `json:"colno"`
-	Error    string `json:"error"` // any
+	Message  string
+	Filename string
+	Lineno   int
+	Colno    int
+	Error    string // any
 }
 
 func (p ErrorEventInit) toDict() js.Value {

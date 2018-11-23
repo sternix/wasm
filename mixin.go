@@ -297,7 +297,7 @@ func (p *parentNodeImpl) QuerySelectorAll(selectors string) []Node {
 // -------------8<---------------------------------------
 
 type FullscreenOptions struct {
-	NavigationUI FullscreenNavigationUI `json:"navigationUI"`
+	NavigationUI FullscreenNavigationUI
 }
 
 func (p FullscreenOptions) toDict() js.Value {

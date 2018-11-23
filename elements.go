@@ -764,28 +764,28 @@ const (
 type MediaTrackConstraints struct {
 	MediaTrackConstraintSet
 
-	Advanced []MediaTrackConstraintSet `json:"advanced"`
+	Advanced []MediaTrackConstraintSet
 }
 
 // -------------8<---------------------------------------
 
 // https://www.w3.org/TR/mediacapture-streams/#dom-mediatrackcapabilities
 type MediaTrackCapabilities struct {
-	Width            LongRange   `json:"width"`
-	Heigth           LongRange   `json:"height"`
-	AspectRatio      DoubleRange `json:"aspectRatio"`
-	FrameRate        DoubleRange `json:"frameRate"`
-	FacingMode       []string    `json:"facingMode"`
-	Volume           DoubleRange `json:"volume"`
-	SampleRate       LongRange   `json:"sampleRate"`
-	SampleSize       LongRange   `json:"sampleSize"`
-	EchoCancellation []bool      `json:"echoCancellation"`
-	AutoGainControl  []bool      `json:"autoGainControl"`
-	NoiseSuppression []bool      `json:"noiseSuppression"`
-	Latency          DoubleRange `json:"latency"`
-	ChannelCount     LongRange   `json:"channelCount"`
-	DeviceId         string      `json:"deviceId"`
-	GroupId          string      `json:"groupId"`
+	Width            LongRange
+	Heigth           LongRange
+	AspectRatio      DoubleRange
+	FrameRate        DoubleRange
+	FacingMode       []string
+	Volume           DoubleRange
+	SampleRate       LongRange
+	SampleSize       LongRange
+	EchoCancellation []bool
+	AutoGainControl  []bool
+	NoiseSuppression []bool
+	Latency          DoubleRange
+	ChannelCount     LongRange
+	DeviceId         string
+	GroupId          string
 }
 
 func (p MediaTrackCapabilities) toDict() js.Value {
@@ -812,21 +812,21 @@ func (p MediaTrackCapabilities) toDict() js.Value {
 
 // https://www.w3.org/TR/mediacapture-streams/#dom-mediatrackconstraintset
 type MediaTrackConstraintSet struct {
-	Width            ConstrainLong      `json:"width"`
-	Height           ConstrainLong      `json:"height"`
-	AspectRatio      ConstrainDouble    `json:"aspectRatio"`
-	FrameRate        ConstrainDouble    `json:"frameRate"`
-	FacingMode       ConstrainDOMString `json:"facingMode"`
-	Volume           ConstrainDouble    `json:"volume"`
-	SampleRate       ConstrainLong      `json:"sampleRate"`
-	SampleSize       ConstrainLong      `json:"sampleSize"`
-	EchoCancellation ConstrainBoolean   `json:"echoCancellation"`
-	AutoGainControl  ConstrainBoolean   `json:"autoGainControl"`
-	NoiseSuppression ConstrainBoolean   `json:"noiseSuppression"`
-	Latency          ConstrainDouble    `json:"latency"`
-	ChannelCount     ConstrainLong      `json:"channelCount"`
-	DeviceId         ConstrainDOMString `json:"deviceId"`
-	GroupId          ConstrainDOMString `json:"groupId"`
+	Width            ConstrainLong
+	Height           ConstrainLong
+	AspectRatio      ConstrainDouble
+	FrameRate        ConstrainDouble
+	FacingMode       ConstrainDOMString
+	Volume           ConstrainDouble
+	SampleRate       ConstrainLong
+	SampleSize       ConstrainLong
+	EchoCancellation ConstrainBoolean
+	AutoGainControl  ConstrainBoolean
+	NoiseSuppression ConstrainBoolean
+	Latency          ConstrainDouble
+	ChannelCount     ConstrainLong
+	DeviceId         ConstrainDOMString
+	GroupId          ConstrainDOMString
 }
 
 func (p MediaTrackConstraintSet) toDict() js.Value {
@@ -853,21 +853,21 @@ func (p MediaTrackConstraintSet) toDict() js.Value {
 
 // https://www.w3.org/TR/mediacapture-streams/#dom-mediatracksettings
 type MediaTrackSettings struct {
-	Width            int     `json:"width"`
-	Height           int     `json:"height"`
-	AspectRatio      float64 `json:"aspectRatio"`
-	FrameRate        float64 `json:"frameRate"`
-	FacingMode       string  `json:"facingMode"`
-	Volume           float64 `json:"volume"`
-	SampleRate       int     `json:"sampleRate"`
-	SampleSize       int     `json:"sampleSize"`
-	EchoCancellation bool    `json:"echoCancellation"`
-	AutoGainControl  bool    `json:"autoGainControl"`
-	NoiseSuppression bool    `json:"noiseSuppression"`
-	Latency          float64 `json:"latency"`
-	ChannelCount     int     `json:"channelCount"`
-	DeviceId         string  `json:"deviceId"`
-	GroupId          string  `json:"groupId"`
+	Width            int
+	Height           int
+	AspectRatio      float64
+	FrameRate        float64
+	FacingMode       string
+	Volume           float64
+	SampleRate       int
+	SampleSize       int
+	EchoCancellation bool
+	AutoGainControl  bool
+	NoiseSuppression bool
+	Latency          float64
+	ChannelCount     int
+	DeviceId         string
+	GroupId          string
 }
 
 func (p MediaTrackSettings) toDict() js.Value {
@@ -894,8 +894,8 @@ func (p MediaTrackSettings) toDict() js.Value {
 
 // https://www.w3.org/TR/mediacapture-streams/#dom-longrange
 type LongRange struct {
-	Max int `json:"max"`
-	Min int `json:"min"`
+	Max int
+	Min int
 }
 
 func (p LongRange) toDict() js.Value {
@@ -909,8 +909,8 @@ func (p LongRange) toDict() js.Value {
 
 // https://www.w3.org/TR/mediacapture-streams/#dom-doublerange
 type DoubleRange struct {
-	Max float64 `json:"max"`
-	Min float64 `json:"min"`
+	Max float64
+	Min float64
 }
 
 func (p DoubleRange) toDict() js.Value {
@@ -926,8 +926,8 @@ func (p DoubleRange) toDict() js.Value {
 type ConstrainLongRange struct {
 	LongRange
 
-	Exact int `json:"exact"`
-	Ideal int `json:"ideal"`
+	Exact int
+	Ideal int
 }
 
 func (p ConstrainLongRange) toDict() js.Value {
@@ -948,8 +948,8 @@ type ConstrainLong ConstrainLongRange
 type ConstrainDoubleRange struct {
 	DoubleRange
 
-	Exact float64 `json:"exact"`
-	Ideal float64 `json:"ideal"`
+	Exact float64
+	Ideal float64
 }
 
 func (p ConstrainDoubleRange) toDict() js.Value {
@@ -971,8 +971,8 @@ type ConstrainDouble = ConstrainDoubleRange
 
 // https://www.w3.org/TR/mediacapture-streams/#dom-constraindomstringparameters
 type ConstrainDOMStringParameters struct {
-	Exact string `json:"exact"`
-	Ideal string `json:"ideal"`
+	Exact string
+	Ideal string
 }
 
 func (p ConstrainDOMStringParameters) toDict() js.Value {
@@ -994,8 +994,8 @@ type ConstrainDOMString = ConstrainDOMStringParameters
 
 // https://www.w3.org/TR/mediacapture-streams/#dom-constrainbooleanparameters
 type ConstrainBooleanParameters struct {
-	Exact bool `json:"exact"`
-	Ideal bool `json:"ideal"`
+	Exact bool
+	Ideal bool
 }
 
 func (p ConstrainBooleanParameters) toDict() js.Value {

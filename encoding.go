@@ -49,8 +49,8 @@ type (
 // -------------8<---------------------------------------
 
 type TextDecoderOptions struct {
-	Fatal     bool `json:"fatal"`
-	IgnoreBOM bool `json:"ignoreBOM"`
+	Fatal     bool
+	IgnoreBOM bool
 }
 
 func (p TextDecoderOptions) toDict() js.Value {
@@ -63,7 +63,7 @@ func (p TextDecoderOptions) toDict() js.Value {
 // -------------8<---------------------------------------
 
 type TextDecodeOptions struct {
-	Stream bool `json:"stream"`
+	Stream bool
 }
 
 func (p TextDecodeOptions) toDict() js.Value {

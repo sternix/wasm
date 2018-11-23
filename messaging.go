@@ -62,11 +62,11 @@ type (
 type MessageEventInit struct {
 	EventInit
 
-	Data        interface{}        `json:"data"`
-	Origin      string             `json:"origin"`
-	LastEventId string             `json:"lastEventId"`
-	Source      MessageEventSource `json:"source"`
-	Ports       []MessagePort      `json:"ports"`
+	Data        interface{}
+	Origin      string
+	LastEventId string
+	Source      MessageEventSource
+	Ports       []MessagePort
 }
 
 func (p MessageEventInit) toDict() js.Value {

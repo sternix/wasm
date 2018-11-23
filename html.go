@@ -62,7 +62,7 @@ type (
 
 // https://html.spec.whatwg.org/multipage/scripting.html#assignednodesoptions
 type AssignedNodesOptions struct {
-	Flatten bool `json:"flatten"` // default false
+	Flatten bool // default false
 }
 
 func (p AssignedNodesOptions) toDict() js.Value {
@@ -78,7 +78,7 @@ func (p AssignedNodesOptions) toDict() js.Value {
 
 // https://html.spec.whatwg.org/multipage/interaction.html#focusoptions
 type FocusOptions struct {
-	PreventScroll bool `json:"preventScroll"`
+	PreventScroll bool
 }
 
 func (p FocusOptions) toDict() js.Value {

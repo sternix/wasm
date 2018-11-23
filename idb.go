@@ -187,8 +187,8 @@ const (
 
 // https://www.w3.org/TR/IndexedDB/#dictdef-idbversionchangeeventinit
 type IDBVersionChangeEventInit struct {
-	OldVersion int `json:"oldVersion"`
-	NewVersion int `json:"newVersion"` // default null
+	OldVersion int
+	NewVersion int // default null
 }
 
 func (p IDBVersionChangeEventInit) toDict() js.Value {
@@ -202,8 +202,8 @@ func (p IDBVersionChangeEventInit) toDict() js.Value {
 
 // https://www.w3.org/TR/IndexedDB/#dictdef-idbobjectstoreparameters
 type IDBObjectStoreParameters struct {
-	KeyPath       []string `json:"keyPath"`
-	AutoIncrement bool     `json:"autoIncrement"`
+	KeyPath       []string
+	AutoIncrement bool
 }
 
 func (p IDBObjectStoreParameters) toDict() js.Value {
@@ -217,8 +217,8 @@ func (p IDBObjectStoreParameters) toDict() js.Value {
 
 // https://www.w3.org/TR/IndexedDB/#dictdef-idbindexparameters
 type IDBIndexParameters struct {
-	Unique     bool `json:"unique"`
-	MultiEntry bool `json:"multiEntry"`
+	Unique     bool
+	MultiEntry bool
 }
 
 func (p IDBIndexParameters) toDict() js.Value {

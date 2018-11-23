@@ -30,7 +30,7 @@ type (
 type ClipboardPermissionDescriptor struct {
 	PermissionDescriptor
 
-	AllowWithoutGesture bool `json:"allowWithoutGesture"`
+	AllowWithoutGesture bool
 }
 
 func (p ClipboardPermissionDescriptor) toDict() js.Value {
@@ -44,7 +44,7 @@ func (p ClipboardPermissionDescriptor) toDict() js.Value {
 type ClipboardEventInit struct {
 	EventInit
 
-	ClipboardData DataTransfer `json:"clipboardData"`
+	ClipboardData DataTransfer
 }
 
 func (p ClipboardEventInit) toDict() js.Value {

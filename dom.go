@@ -612,7 +612,7 @@ const (
 
 // https://dom.spec.whatwg.org/#dictdef-elementcreationoptions
 type ElementCreationOptions struct {
-	Is string `json:"is"`
+	Is string
 }
 
 func (p ElementCreationOptions) toDict() js.Value {
@@ -625,7 +625,7 @@ func (p ElementCreationOptions) toDict() js.Value {
 
 // https://dom.spec.whatwg.org/#dictdef-getrootnodeoptions
 type RootNodeOptions struct {
-	Composed bool `json:"composed"`
+	Composed bool
 }
 
 func (p RootNodeOptions) toDict() js.Value {
@@ -638,7 +638,7 @@ func (p RootNodeOptions) toDict() js.Value {
 
 // https://dom.spec.whatwg.org/#dictdef-shadowrootinit
 type ShadowRootInit struct {
-	Mode ShadowRootMode `json:"mode"`
+	Mode ShadowRootMode
 }
 
 func (p ShadowRootInit) toDict() js.Value {
@@ -651,13 +651,13 @@ func (p ShadowRootInit) toDict() js.Value {
 
 // https://dom.spec.whatwg.org/#dictdef-mutationobserverinit
 type MutationObserverInit struct {
-	ChildList             bool     `json:"childList"`
-	Attributes            bool     `json:"attributes"`
-	CharacterData         bool     `json:"characterData"`
-	SubTree               bool     `json:"subtree"`
-	AttributeOldValue     bool     `json:"attributeOldValue"`
-	CharacterDataOldValue bool     `json:"characterDataOldValue"`
-	AttributeFilter       []string `json:"attributeFilter"`
+	ChildList             bool
+	Attributes            bool
+	CharacterData         bool
+	SubTree               bool
+	AttributeOldValue     bool
+	CharacterDataOldValue bool
+	AttributeFilter       []string
 }
 
 func (p MutationObserverInit) toDict() js.Value {
@@ -676,7 +676,7 @@ func (p MutationObserverInit) toDict() js.Value {
 
 // https://www.w3.org/TR/cssom-view-1/#dictdef-scrolloptions
 type ScrollOptions struct {
-	Behavior ScrollBehavior `json:"behavior"`
+	Behavior ScrollBehavior
 }
 
 func (p ScrollOptions) toDict() js.Value {
@@ -691,8 +691,8 @@ func (p ScrollOptions) toDict() js.Value {
 type ScrollToOptions struct {
 	ScrollOptions
 
-	Left float64 `json:"left"`
-	Top  float64 `json:"top"`
+	Left float64
+	Top  float64
 }
 
 func (p ScrollToOptions) toDict() js.Value {

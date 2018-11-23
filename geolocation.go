@@ -53,9 +53,9 @@ const (
 
 // https://w3c.github.io/geolocation-api/#dom-positionoptions
 type PositionOptions struct {
-	EnableHighAccuracy bool `json:"enableHighAccuracy"`
-	Timeout            int  `json:"timeout"`
-	MaximumAge         int  `json:"maximumAge"`
+	EnableHighAccuracy bool
+	Timeout            int
+	MaximumAge         int
 }
 
 func (p PositionOptions) toDict() js.Value {

@@ -169,19 +169,19 @@ const (
 // -------------8<---------------------------------------
 
 type RequestInit struct {
-	Method         string             `json:"method"`
-	Headers        HeadersInit        `json:"headers"`
-	Body           BodyInit           `json:"body"`
-	Referrer       string             `json:"referrer"`
-	ReferrerPolicy ReferrerPolicy     `json:"referrerPolicy"`
-	Mode           RequestMode        `json:"mode"`
-	Credentials    RequestCredentials `json:"credentials"`
-	Cache          RequestCache       `json:"cache"`
-	Redirect       RequestRedirect    `json:"redirect"`
-	Integrity      string             `json:"integrity"`
-	Keepalive      bool               `json:"keepalive"`
-	Signal         AbortSignal        `json:"signal"`
-	Window         js.Value           `json:"window"`
+	Method         string
+	Headers        HeadersInit
+	Body           BodyInit
+	Referrer       string
+	ReferrerPolicy ReferrerPolicy
+	Mode           RequestMode
+	Credentials    RequestCredentials
+	Cache          RequestCache
+	Redirect       RequestRedirect
+	Integrity      string
+	Keepalive      bool
+	Signal         AbortSignal
+	Window         js.Value
 }
 
 func (p RequestInit) toDict() js.Value {
@@ -205,9 +205,9 @@ func (p RequestInit) toDict() js.Value {
 // -------------8<---------------------------------------
 
 type ResponseInit struct {
-	Status     int         `json:"status"`
-	StatusText string      `json:"statusText"`
-	Headers    HeadersInit `json:"headers"`
+	Status     int
+	StatusText string
+	Headers    HeadersInit
 }
 
 func (p ResponseInit) toDict() js.Value {

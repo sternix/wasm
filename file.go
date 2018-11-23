@@ -91,7 +91,7 @@ const (
 
 // https://w3c.github.io/FileAPI/#dfn-BlobPropertyBag
 type BlobPropertyBag struct {
-	Type string `json:"type"`
+	Type string
 	// working draft
 	// Endings EndingType `json:"endings"` // default transparent
 }
@@ -108,7 +108,7 @@ func (p BlobPropertyBag) toDict() js.Value {
 type FilePropertyBag struct {
 	BlobPropertyBag
 
-	LastModified int `json:"lastModified"`
+	LastModified int
 }
 
 func (p FilePropertyBag) toDict() js.Value {
@@ -123,9 +123,9 @@ func (p FilePropertyBag) toDict() js.Value {
 type ProgressEventInit struct {
 	EventInit
 
-	LengthComputable bool `json:"lengthComputable"`
-	Loaded           int  `json:"loaded"`
-	Total            int  `json:"total"`
+	LengthComputable bool
+	Loaded           int
+	Total            int
 }
 
 func (p ProgressEventInit) toDict() js.Value {

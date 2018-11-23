@@ -66,9 +66,9 @@ func NewReadableStream() ReadableStream {
 // -------------8<---------------------------------------
 
 type PipeToOptions struct {
-	PreventClose  bool `json:"preventClose"`
-	PreventAbort  bool `json:"preventAbort"`
-	PreventCancel bool `json:"preventCancel"`
+	PreventClose  bool
+	PreventAbort  bool
+	PreventCancel bool
 }
 
 func (p PipeToOptions) toDict() js.Value {
@@ -82,8 +82,8 @@ func (p PipeToOptions) toDict() js.Value {
 // -------------8<---------------------------------------
 
 type TransformStream struct {
-	Readable ReadableStream `json:"writable"`
-	Writable WritableStream `json:"readable"`
+	Readable ReadableStream
+	Writable WritableStream
 }
 
 func (p TransformStream) toDict() js.Value {
