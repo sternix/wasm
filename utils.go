@@ -150,7 +150,7 @@ func elementArrayToSlice(v js.Value) []Element {
 	ret := make([]Element, v.Length())
 
 	for i := range ret {
-		ret[i] = newElement(v.Index(i))
+		ret[i] = wrapElement(v.Index(i))
 	}
 
 	return ret

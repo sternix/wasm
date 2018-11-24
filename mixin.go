@@ -68,7 +68,7 @@ func newNonElementParentNodeImpl(v js.Value) *nonElementParentNodeImpl {
 }
 
 func (p *nonElementParentNodeImpl) ElementById(id string) Element {
-	return newElement(p.Call("getElementById", id))
+	return wrapElement(p.Call("getElementById", id))
 }
 
 // -------------8<---------------------------------------
@@ -90,11 +90,11 @@ func newNonDocumentTypeChildNodeImpl(v js.Value) *nonDocumentTypeChildNodeImpl {
 }
 
 func (p *nonDocumentTypeChildNodeImpl) PreviousElementSibling() Element {
-	return newElement(p.Get("previousElementSibling"))
+	return wrapElement(p.Get("previousElementSibling"))
 }
 
 func (p *nonDocumentTypeChildNodeImpl) NextElementSibling() Element {
-	return newElement(p.Get("nextElementSibling"))
+	return wrapElement(p.Get("nextElementSibling"))
 }
 
 // -------------8<---------------------------------------
@@ -190,7 +190,7 @@ func newDocumentOrShadowRootImpl(v js.Value) *documentOrShadowRootImpl {
 }
 
 func (p *documentOrShadowRootImpl) FullscreenElement() Element {
-	return newElement(p.Get("fullscreenElement"))
+	return wrapElement(p.Get("fullscreenElement"))
 }
 
 // -------------8<---------------------------------------
@@ -244,11 +244,11 @@ func (p *parentNodeImpl) Children() HTMLCollection {
 }
 
 func (p *parentNodeImpl) FirstElementChild() Element {
-	return newElement(p.Get("firstElementChild"))
+	return wrapElement(p.Get("firstElementChild"))
 }
 
 func (p *parentNodeImpl) LastElementChild() Element {
-	return newElement(p.Get("lastElementChild"))
+	return wrapElement(p.Get("lastElementChild"))
 }
 
 func (p *parentNodeImpl) ChildElementCount() int {
@@ -287,7 +287,7 @@ func (p *parentNodeImpl) Append(nodes ...interface{}) {
 }
 
 func (p *parentNodeImpl) QuerySelector(selectors string) Element {
-	return newElement(p.Call("querySelector", selectors))
+	return wrapElement(p.Call("querySelector", selectors))
 }
 
 func (p *parentNodeImpl) QuerySelectorAll(selectors string) []Node {

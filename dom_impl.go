@@ -74,7 +74,7 @@ func (p *documentImpl) DocType() DocumentType {
 }
 
 func (p *documentImpl) DocumentElement() Element {
-	return newElement(p.Get("documentElement"))
+	return wrapElement(p.Get("documentElement"))
 }
 
 func (p *documentImpl) ElementsByTagName(qualifiedName string) HTMLCollection {
@@ -334,7 +334,7 @@ func (p *documentImpl) DefaultView() WindowProxy {
 }
 
 func (p *documentImpl) ActiveElement() Element {
-	return newElement(p.Get("activeElement"))
+	return wrapElement(p.Get("activeElement"))
 }
 
 func (p *documentImpl) HasFocus() bool {
@@ -391,7 +391,7 @@ func (p *documentImpl) OnReadyStateChange(fn func(Event)) EventHandler {
 }
 
 func (p *documentImpl) ElementFromPoint(x float64, y float64) Element {
-	return newElement(p.Call("elementFromPoint", x, y))
+	return wrapElement(p.Call("elementFromPoint", x, y))
 }
 
 func (p *documentImpl) ElementsFromPoint(x float64, y float64) []Element {
@@ -400,7 +400,7 @@ func (p *documentImpl) ElementsFromPoint(x float64, y float64) []Element {
 	sl := arrayToSlice(p.Call("elementsFromPoint", x, y))
 	if sl != nil {
 		for _, v := range sl {
-			ret = append(ret, newElement(v))
+			ret = append(ret, wrapElement(v))
 		}
 	}
 
@@ -412,7 +412,7 @@ func (p *documentImpl) CaretPositionFromPoint(x float64, y float64) CaretPositio
 }
 
 func (p *documentImpl) ScrollingElement() Element {
-	return newElement(p.Get("scrollingElement"))
+	return wrapElement(p.Get("scrollingElement"))
 }
 
 // -------------8<---------------------------------------
@@ -1021,7 +1021,7 @@ func (p *nodeImpl) ParentNode() Node {
 }
 
 func (p *nodeImpl) ParentElement() Element {
-	return newElement(p.Get("parentElement"))
+	return wrapElement(p.Get("parentElement"))
 }
 
 func (p *nodeImpl) HasChildNodes() bool {
@@ -1279,7 +1279,7 @@ func (p *elementImpl) ShadowRoot() ShadowRoot {
 }
 
 func (p *elementImpl) Closest(selectors string) Element {
-	return newElement(p.Call("closest"))
+	return wrapElement(p.Call("closest"))
 }
 
 func (p *elementImpl) Matches(string) bool {
@@ -1447,7 +1447,7 @@ func (p *shadowRootImpl) Mode() ShadowRootMode {
 }
 
 func (p *shadowRootImpl) Host() Element {
-	return newElement(p.Get("host"))
+	return wrapElement(p.Get("host"))
 }
 
 // -------------8<---------------------------------------
@@ -1649,7 +1649,7 @@ func (p *attrImpl) SetValue(value string) {
 }
 
 func (p *attrImpl) OwnerElement() Element {
-	return newElement(p.Get("ownerElement"))
+	return wrapElement(p.Get("ownerElement"))
 }
 
 // -------------8<---------------------------------------
@@ -1679,11 +1679,11 @@ func (p *htmlCollectionImpl) Length() int {
 }
 
 func (p *htmlCollectionImpl) Item(index int) Element {
-	return newElement(p.Call("item", index))
+	return wrapElement(p.Call("item", index))
 }
 
 func (p *htmlCollectionImpl) NamedItem(name string) Element {
-	return newElement(p.Call("namedItem", name))
+	return wrapElement(p.Call("namedItem", name))
 }
 
 // -------------8<---------------------------------------
@@ -1937,7 +1937,7 @@ func (p *htmlElementImpl) SetInnerText(text string) {
 }
 
 func (p *htmlElementImpl) OffsetParent() Element {
-	return newElement(p.Get("offsetParent"))
+	return wrapElement(p.Get("offsetParent"))
 }
 
 func (p *htmlElementImpl) OffsetTop() int {

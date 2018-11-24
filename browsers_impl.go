@@ -183,7 +183,7 @@ func (p *windowImpl) Parent() WindowProxy {
 }
 
 func (p *windowImpl) FrameElement() Element {
-	return newElement(p.Get("frameElement"))
+	return wrapElement(p.Get("frameElement"))
 }
 
 func (p *windowImpl) Open(args ...interface{}) WindowProxy {

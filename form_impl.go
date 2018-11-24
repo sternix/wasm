@@ -837,7 +837,7 @@ func (p *htmlSelectElementImpl) SetLength(l int) {
 }
 
 func (p *htmlSelectElementImpl) Item(index int) Element {
-	return newElement(p.Call("item", index))
+	return wrapElement(p.Call("item", index))
 }
 
 func (p *htmlSelectElementImpl) NamedItem(name string) HTMLOptionElement {
