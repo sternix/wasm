@@ -96,7 +96,7 @@ func (p *webSocketImpl) Close(args ...interface{}) {
 		}
 	case 2:
 		if code, ok := args[0].(int); ok {
-			if reason, ok := args[1].(int); ok {
+			if reason, ok := args[1].(string); ok {
 				p.Call("close", code, reason)
 			}
 		}
