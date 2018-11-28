@@ -335,56 +335,104 @@ func (p *globalEventHandlersImpl) OnChange(fn func(Event)) EventHandler {
 	return On("change", fn)
 }
 
-func (p *globalEventHandlersImpl) OnClick(fn func(Event)) EventHandler {
-	return On("click", fn)
+func (p *globalEventHandlersImpl) OnClick(fn func(MouseEvent)) EventHandler {
+	return On("click", func(e Event) {
+		if me, ok := e.(MouseEvent); ok {
+			fn(me)
+		}
+	})
 }
 
-func (p *globalEventHandlersImpl) OnClose(fn func(Event)) EventHandler {
-	return On("close", fn)
+func (p *globalEventHandlersImpl) OnClose(fn func(CloseEvent)) EventHandler {
+	return On("close", func(e Event) {
+		if ce, ok := e.(CloseEvent); ok {
+			fn(ce)
+		}
+	})
 }
 
-func (p *globalEventHandlersImpl) OnContextMenu(fn func(Event)) EventHandler {
-	return On("contextmenu", fn)
+func (p *globalEventHandlersImpl) OnContextMenu(fn func(MouseEvent)) EventHandler {
+	return On("contextmenu", func(e Event) {
+		if me, ok := e.(MouseEvent); ok {
+			fn(me)
+		}
+	})
 }
 
 func (p *globalEventHandlersImpl) OnCueChange(fn func(Event)) EventHandler {
 	return On("cuechange", fn)
 }
 
-func (p *globalEventHandlersImpl) OnDblClick(fn func(Event)) EventHandler {
-	return On("dblclick", fn)
+func (p *globalEventHandlersImpl) OnDblClick(fn func(MouseEvent)) EventHandler {
+	return On("dblclick", func(e Event) {
+		if me, ok := e.(MouseEvent); ok {
+			fn(me)
+		}
+	})
 }
 
-func (p *globalEventHandlersImpl) OnDrag(fn func(Event)) EventHandler {
-	return On("drag", fn)
+func (p *globalEventHandlersImpl) OnDrag(fn func(DragEvent)) EventHandler {
+	return On("drag", func(e Event) {
+		if de, ok := e.(DragEvent); ok {
+			fn(de)
+		}
+	})
 }
 
-func (p *globalEventHandlersImpl) OnDragEnd(fn func(Event)) EventHandler {
-	return On("dragend", fn)
+func (p *globalEventHandlersImpl) OnDragEnd(fn func(DragEvent)) EventHandler {
+	return On("dragend", func(e Event) {
+		if de, ok := e.(DragEvent); ok {
+			fn(de)
+		}
+	})
 }
 
-func (p *globalEventHandlersImpl) OnDragEnter(fn func(Event)) EventHandler {
-	return On("dragenter", fn)
+func (p *globalEventHandlersImpl) OnDragEnter(fn func(DragEvent)) EventHandler {
+	return On("dragenter", func(e Event) {
+		if de, ok := e.(DragEvent); ok {
+			fn(de)
+		}
+	})
 }
 
-func (p *globalEventHandlersImpl) OnDragExit(fn func(Event)) EventHandler {
-	return On("dragexit", fn)
+func (p *globalEventHandlersImpl) OnDragExit(fn func(DragEvent)) EventHandler {
+	return On("dragexit", func(e Event) {
+		if de, ok := e.(DragEvent); ok {
+			fn(de)
+		}
+	})
 }
 
-func (p *globalEventHandlersImpl) OnDragLeave(fn func(Event)) EventHandler {
-	return On("dragleave", fn)
+func (p *globalEventHandlersImpl) OnDragLeave(fn func(DragEvent)) EventHandler {
+	return On("dragleave", func(e Event) {
+		if de, ok := e.(DragEvent); ok {
+			fn(de)
+		}
+	})
 }
 
-func (p *globalEventHandlersImpl) OnDragOver(fn func(Event)) EventHandler {
-	return On("dragover", fn)
+func (p *globalEventHandlersImpl) OnDragOver(fn func(DragEvent)) EventHandler {
+	return On("dragover", func(e Event) {
+		if de, ok := e.(DragEvent); ok {
+			fn(de)
+		}
+	})
 }
 
-func (p *globalEventHandlersImpl) OnDragStart(fn func(Event)) EventHandler {
-	return On("dragstart", fn)
+func (p *globalEventHandlersImpl) OnDragStart(fn func(DragEvent)) EventHandler {
+	return On("dragstart", func(e Event) {
+		if de, ok := e.(DragEvent); ok {
+			fn(de)
+		}
+	})
 }
 
-func (p *globalEventHandlersImpl) OnDrop(fn func(Event)) EventHandler {
-	return On("drop", fn)
+func (p *globalEventHandlersImpl) OnDrop(fn func(DragEvent)) EventHandler {
+	return On("drop", func(e Event) {
+		if de, ok := e.(DragEvent); ok {
+			fn(de)
+		}
+	})
 }
 
 func (p *globalEventHandlersImpl) OnDurationChange(fn func(Event)) EventHandler {
@@ -399,36 +447,64 @@ func (p *globalEventHandlersImpl) OnEnded(fn func(Event)) EventHandler {
 	return On("ended", fn)
 }
 
-func (p *globalEventHandlersImpl) OnError(fn func(Event)) EventHandler {
-	return On("error", fn)
+func (p *globalEventHandlersImpl) OnError(fn func(ErrorEvent)) EventHandler {
+	return On("error", func(e Event) {
+		if ee, ok := e.(ErrorEvent); ok {
+			fn(ee)
+		}
+	})
 }
 
-func (p *globalEventHandlersImpl) OnFocus(fn func(Event)) EventHandler {
-	return On("focus", fn)
+func (p *globalEventHandlersImpl) OnFocus(fn func(FocusEvent)) EventHandler {
+	return On("focus", func(e Event) {
+		if fe, ok := e.(FocusEvent); ok {
+			fn(fe)
+		}
+	})
 }
 
-func (p *globalEventHandlersImpl) OnInput(fn func(Event)) EventHandler {
-	return On("input", fn)
+func (p *globalEventHandlersImpl) OnInput(fn func(InputEvent)) EventHandler {
+	return On("input", func(e Event) {
+		if ie, ok := e.(InputEvent); ok {
+			fn(ie)
+		}
+	})
 }
 
 func (p *globalEventHandlersImpl) OnInvalid(fn func(Event)) EventHandler {
 	return On("invalid", fn)
 }
 
-func (p *globalEventHandlersImpl) OnKeyDown(fn func(Event)) EventHandler {
-	return On("keydown", fn)
+func (p *globalEventHandlersImpl) OnKeyDown(fn func(KeyboardEvent)) EventHandler {
+	return On("keydown", func(e Event) {
+		if ke, ok := e.(KeyboardEvent); ok {
+			fn(ke)
+		}
+	})
 }
 
-func (p *globalEventHandlersImpl) OnKeyPress(fn func(Event)) EventHandler {
-	return On("keypress", fn)
+func (p *globalEventHandlersImpl) OnKeyPress(fn func(KeyboardEvent)) EventHandler {
+	return On("keypress", func(e Event) {
+		if ke, ok := e.(KeyboardEvent); ok {
+			fn(ke)
+		}
+	})
 }
 
-func (p *globalEventHandlersImpl) OnKeyUp(fn func(Event)) EventHandler {
-	return On("keyup", fn)
+func (p *globalEventHandlersImpl) OnKeyUp(fn func(KeyboardEvent)) EventHandler {
+	return On("keyup", func(e Event) {
+		if ke, ok := e.(KeyboardEvent); ok {
+			fn(ke)
+		}
+	})
 }
 
-func (p *globalEventHandlersImpl) OnLoad(fn func(Event)) EventHandler {
-	return On("load", fn)
+func (p *globalEventHandlersImpl) OnLoad(fn func(UIEvent)) EventHandler {
+	return On("load", func(e Event) {
+		if ue, ok := e.(UIEvent); ok {
+			fn(ue)
+		}
+	})
 }
 
 func (p *globalEventHandlersImpl) OnLoadedData(fn func(Event)) EventHandler {
@@ -439,44 +515,85 @@ func (p *globalEventHandlersImpl) OnLoadedMetadata(fn func(Event)) EventHandler 
 	return On("loadedmetadata", fn)
 }
 
-func (p *globalEventHandlersImpl) OnLoadEnd(fn func(Event)) EventHandler {
-	return On("loadend", fn)
+func (p *globalEventHandlersImpl) OnLoadEnd(fn func(ProgressEvent)) EventHandler {
+	return On("loadend", func(e Event) {
+		if pe, ok := e.(ProgressEvent); ok {
+			fn(pe)
+		}
+	})
 }
 
-func (p *globalEventHandlersImpl) OnLoadStart(fn func(Event)) EventHandler {
-	return On("loadstart", fn)
+func (p *globalEventHandlersImpl) OnLoadStart(fn func(ProgressEvent)) EventHandler {
+	return On("loadstart", func(e Event) {
+		if pe, ok := e.(ProgressEvent); ok {
+			fn(pe)
+		}
+	})
 }
 
-func (p *globalEventHandlersImpl) OnMouseDown(fn func(Event)) EventHandler {
-	return On("mousedown", fn)
+func (p *globalEventHandlersImpl) OnMouseDown(fn func(MouseEvent)) EventHandler {
+	return On("mousedown", func(e Event) {
+		if me, ok := e.(MouseEvent); ok {
+			fn(me)
+		}
+	})
 }
 
-func (p *globalEventHandlersImpl) OnMouseEnter(fn func(Event)) EventHandler {
-	return On("mouseenter", fn)
+func (p *globalEventHandlersImpl) OnMouseEnter(fn func(MouseEvent)) EventHandler {
+	return On("mouseenter", func(e Event) {
+		if me, ok := e.(MouseEvent); ok {
+			fn(me)
+		}
+	})
 }
 
-func (p *globalEventHandlersImpl) OnMouseLeave(fn func(Event)) EventHandler {
-	return On("mouseleave", fn)
+func (p *globalEventHandlersImpl) OnMouseLeave(fn func(MouseEvent)) EventHandler {
+	return On("mouseleave", func(e Event) {
+		if me, ok := e.(MouseEvent); ok {
+			fn(me)
+		}
+	})
 }
 
-func (p *globalEventHandlersImpl) OnMouseMove(fn func(Event)) EventHandler {
-	return On("mousemove", fn)
+func (p *globalEventHandlersImpl) OnMouseMove(fn func(MouseEvent)) EventHandler {
+	return On("mousemove", func(e Event) {
+		if me, ok := e.(MouseEvent); ok {
+			fn(me)
+		}
+	})
 }
 
-func (p *globalEventHandlersImpl) OnMouseOut(fn func(Event)) EventHandler {
-	return On("mouseout", fn)
+func (p *globalEventHandlersImpl) OnMouseOut(fn func(MouseEvent)) EventHandler {
+	return On("mouseout", func(e Event) {
+		if me, ok := e.(MouseEvent); ok {
+			fn(me)
+		}
+	})
 }
 
-func (p *globalEventHandlersImpl) OnMouseOver(fn func(Event)) EventHandler {
-	return On("mouseover", fn)
+func (p *globalEventHandlersImpl) OnMouseOver(fn func(MouseEvent)) EventHandler {
+	return On("mouseover", func(e Event) {
+		if me, ok := e.(MouseEvent); ok {
+			fn(me)
+		}
+	})
+
 }
 
-func (p *globalEventHandlersImpl) OnMouseUp(fn func(Event)) EventHandler {
-	return On("mouseup", fn)
+func (p *globalEventHandlersImpl) OnMouseUp(fn func(MouseEvent)) EventHandler {
+	return On("mouseup", func(e Event) {
+		if me, ok := e.(MouseEvent); ok {
+			fn(me)
+		}
+	})
 }
 
-func (p *globalEventHandlersImpl) OnWheel(fn func(Event)) EventHandler {
-	return On("wheel", fn)
+func (p *globalEventHandlersImpl) OnWheel(fn func(WheelEvent)) EventHandler {
+	return On("wheel", func(e Event) {
+		if we, ok := e.(WheelEvent); ok {
+			fn(we)
+		}
+	})
 }
 
 func (p *globalEventHandlersImpl) OnPause(fn func(Event)) EventHandler {
@@ -491,8 +608,12 @@ func (p *globalEventHandlersImpl) OnPlaying(fn func(Event)) EventHandler {
 	return On("playing", fn)
 }
 
-func (p *globalEventHandlersImpl) OnProgress(fn func(Event)) EventHandler {
-	return On("progress", fn)
+func (p *globalEventHandlersImpl) OnProgress(fn func(ProgressEvent)) EventHandler {
+	return On("progress", func(e Event) {
+		if pe, ok := e.(ProgressEvent); ok {
+			fn(pe)
+		}
+	})
 }
 
 func (p *globalEventHandlersImpl) OnRateChange(fn func(Event)) EventHandler {
@@ -668,20 +789,32 @@ func (p *windowEventHandlersImpl) OnBeforePrint(fn func(Event)) EventHandler {
 	return On("beforeprint", fn)
 }
 
-func (p *windowEventHandlersImpl) OnBeforeUnload(fn func(Event)) EventHandler {
-	return On("beforeunload", fn)
+func (p *windowEventHandlersImpl) OnBeforeUnload(fn func(BeforeUnloadEvent)) EventHandler {
+	return On("beforeunload", func(e Event) {
+		if be, ok := e.(BeforeUnloadEvent); ok {
+			fn(be)
+		}
+	})
 }
 
-func (p *windowEventHandlersImpl) OnHashChange(fn func(Event)) EventHandler {
-	return On("hashchange", fn)
+func (p *windowEventHandlersImpl) OnHashChange(fn func(HashChangeEvent)) EventHandler {
+	return On("hashchange", func(e Event) {
+		if hce, ok := e.(HashChangeEvent); ok {
+			fn(hce)
+		}
+	})
 }
 
 func (p *windowEventHandlersImpl) OnLanguageChange(fn func(Event)) EventHandler {
 	return On("languagechange", fn)
 }
 
-func (p *windowEventHandlersImpl) OnMessage(fn func(Event)) EventHandler {
-	return On("message", fn)
+func (p *windowEventHandlersImpl) OnMessage(fn func(MessageEvent)) EventHandler {
+	return On("message", func(e Event) {
+		if me, ok := e.(MessageEvent); ok {
+			fn(me)
+		}
+	})
 }
 
 func (p *windowEventHandlersImpl) OnMessageError(fn func(Event)) EventHandler {
@@ -696,24 +829,40 @@ func (p *windowEventHandlersImpl) OnOnline(fn func(Event)) EventHandler {
 	return On("online", fn)
 }
 
-func (p *windowEventHandlersImpl) OnPageHide(fn func(Event)) EventHandler {
-	return On("pagehide", fn)
+func (p *windowEventHandlersImpl) OnPageHide(fn func(PageTransitionEvent)) EventHandler {
+	return On("pagehide", func(e Event) {
+		if te, ok := e.(PageTransitionEvent); ok {
+			fn(te)
+		}
+	})
 }
 
-func (p *windowEventHandlersImpl) OnPageShow(fn func(Event)) EventHandler {
-	return On("pageshow", fn)
+func (p *windowEventHandlersImpl) OnPageShow(fn func(PageTransitionEvent)) EventHandler {
+	return On("pageshow", func(e Event) {
+		if te, ok := e.(PageTransitionEvent); ok {
+			fn(te)
+		}
+	})
 }
 
-func (p *windowEventHandlersImpl) OnPopState(fn func(Event)) EventHandler {
-	return On("popstate", fn)
+func (p *windowEventHandlersImpl) OnPopState(fn func(PopStateEvent)) EventHandler {
+	return On("popstate", func(e Event) {
+		if pse, ok := e.(PopStateEvent); ok {
+			fn(pse)
+		}
+	})
 }
 
 func (p *windowEventHandlersImpl) OnRejectionHandled(fn func(Event)) EventHandler {
 	return On("rejectionhandled", fn)
 }
 
-func (p *windowEventHandlersImpl) OnStorage(fn func(Event)) EventHandler {
-	return On("storage", fn)
+func (p *windowEventHandlersImpl) OnStorage(fn func(StorageEvent)) EventHandler {
+	return On("storage", func(e Event) {
+		if se, ok := e.(StorageEvent); ok {
+			fn(se)
+		}
+	})
 }
 
 func (p *windowEventHandlersImpl) OnUnhandledRejection(fn func(Event)) EventHandler {

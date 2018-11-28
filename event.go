@@ -78,49 +78,49 @@ type (
 		OnCanPlay(func(Event)) EventHandler
 		OnCanPlayThrough(func(Event)) EventHandler
 		OnChange(func(Event)) EventHandler
-		OnClick(func(Event)) EventHandler
-		OnClose(func(Event)) EventHandler
-		OnContextMenu(func(Event)) EventHandler
+		OnClick(func(MouseEvent)) EventHandler
+		OnClose(func(CloseEvent)) EventHandler
+		OnContextMenu(func(MouseEvent)) EventHandler
 		OnCueChange(func(Event)) EventHandler
-		OnDblClick(func(Event)) EventHandler
-		OnDrag(func(Event)) EventHandler
-		OnDragEnd(func(Event)) EventHandler
-		OnDragEnter(func(Event)) EventHandler
-		OnDragExit(func(Event)) EventHandler
-		OnDragLeave(func(Event)) EventHandler
-		OnDragOver(func(Event)) EventHandler
-		OnDragStart(func(Event)) EventHandler
-		OnDrop(func(Event)) EventHandler
+		OnDblClick(func(MouseEvent)) EventHandler
+		OnDrag(func(DragEvent)) EventHandler
+		OnDragEnd(func(DragEvent)) EventHandler
+		OnDragEnter(func(DragEvent)) EventHandler
+		OnDragExit(func(DragEvent)) EventHandler
+		OnDragLeave(func(DragEvent)) EventHandler
+		OnDragOver(func(DragEvent)) EventHandler
+		OnDragStart(func(DragEvent)) EventHandler
+		OnDrop(func(DragEvent)) EventHandler
 		OnDurationChange(func(Event)) EventHandler
 		OnEmptied(func(Event)) EventHandler
 		OnEnded(func(Event)) EventHandler
 
 		// TODO
 		//OnError(func(Event)) OnErrorEventHandler
-		OnError(func(Event)) EventHandler
-		OnFocus(func(Event)) EventHandler
-		OnInput(func(Event)) EventHandler
+		OnError(func(ErrorEvent)) EventHandler
+		OnFocus(func(FocusEvent)) EventHandler
+		OnInput(func(InputEvent)) EventHandler
 		OnInvalid(func(Event)) EventHandler
-		OnKeyDown(func(Event)) EventHandler
-		OnKeyPress(func(Event)) EventHandler
-		OnKeyUp(func(Event)) EventHandler
-		OnLoad(func(Event)) EventHandler
+		OnKeyDown(func(KeyboardEvent)) EventHandler
+		OnKeyPress(func(KeyboardEvent)) EventHandler
+		OnKeyUp(func(KeyboardEvent)) EventHandler
+		OnLoad(func(UIEvent)) EventHandler
 		OnLoadedData(func(Event)) EventHandler
 		OnLoadedMetadata(func(Event)) EventHandler
-		OnLoadEnd(func(Event)) EventHandler
-		OnLoadStart(func(Event)) EventHandler
-		OnMouseDown(func(Event)) EventHandler
-		OnMouseEnter(func(Event)) EventHandler
-		OnMouseLeave(func(Event)) EventHandler
-		OnMouseMove(func(Event)) EventHandler
-		OnMouseOut(func(Event)) EventHandler
-		OnMouseOver(func(Event)) EventHandler
-		OnMouseUp(func(Event)) EventHandler
-		OnWheel(func(Event)) EventHandler
+		OnLoadEnd(func(ProgressEvent)) EventHandler
+		OnLoadStart(func(ProgressEvent)) EventHandler
+		OnMouseDown(func(MouseEvent)) EventHandler
+		OnMouseEnter(func(MouseEvent)) EventHandler
+		OnMouseLeave(func(MouseEvent)) EventHandler
+		OnMouseMove(func(MouseEvent)) EventHandler
+		OnMouseOut(func(MouseEvent)) EventHandler
+		OnMouseOver(func(MouseEvent)) EventHandler
+		OnMouseUp(func(MouseEvent)) EventHandler
+		OnWheel(func(WheelEvent)) EventHandler
 		OnPause(func(Event)) EventHandler
 		OnPlay(func(Event)) EventHandler
 		OnPlaying(func(Event)) EventHandler
-		OnProgress(func(Event)) EventHandler
+		OnProgress(func(ProgressEvent)) EventHandler
 		OnRateChange(func(Event)) EventHandler
 		OnReset(func(Event)) EventHandler
 		OnResize(func(Event)) EventHandler
@@ -145,18 +145,18 @@ type (
 
 		// TODO
 		//OnBeforeUnload(func(Event)) OnBeforeUnloadEventHandler
-		OnBeforeUnload(func(Event)) EventHandler
-		OnHashChange(func(Event)) EventHandler
+		OnBeforeUnload(func(BeforeUnloadEvent)) EventHandler
+		OnHashChange(func(HashChangeEvent)) EventHandler
 		OnLanguageChange(func(Event)) EventHandler
-		OnMessage(func(Event)) EventHandler
+		OnMessage(func(MessageEvent)) EventHandler
 		OnMessageError(func(Event)) EventHandler
 		OnOffline(func(Event)) EventHandler
 		OnOnline(func(Event)) EventHandler
-		OnPageHide(func(Event)) EventHandler
-		OnPageShow(func(Event)) EventHandler
-		OnPopState(func(Event)) EventHandler
+		OnPageHide(func(PageTransitionEvent)) EventHandler
+		OnPageShow(func(PageTransitionEvent)) EventHandler
+		OnPopState(func(PopStateEvent)) EventHandler
 		OnRejectionHandled(func(Event)) EventHandler
-		OnStorage(func(Event)) EventHandler
+		OnStorage(func(StorageEvent)) EventHandler
 		OnUnhandledRejection(func(Event)) EventHandler
 		OnUnload(func(Event)) EventHandler
 	}
