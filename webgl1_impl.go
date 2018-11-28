@@ -738,25 +738,25 @@ func (p *webGLRenderingContextBaseImpl) Uniform4i(location WebGLUniformLocation,
 
 func (p *webGLRenderingContextBaseImpl) Uniform1fv(location WebGLUniformLocation, v []float64) {
 	ta := js.TypedArrayOf(v)
-	p.Call("uniform1fv", location.JSValue(), v)
+	p.Call("uniform1fv", location.JSValue(), ta)
 	ta.Release()
 }
 
 func (p *webGLRenderingContextBaseImpl) Uniform2fv(location WebGLUniformLocation, v []float64) {
 	ta := js.TypedArrayOf(v)
-	p.Call("uniform2fv", location.JSValue(), v)
+	p.Call("uniform2fv", location.JSValue(), ta)
 	ta.Release()
 }
 
 func (p *webGLRenderingContextBaseImpl) Uniform3fv(location WebGLUniformLocation, v []float64) {
 	ta := js.TypedArrayOf(v)
-	p.Call("uniform3fv", location.JSValue(), v)
+	p.Call("uniform3fv", location.JSValue(), ta)
 	ta.Release()
 }
 
 func (p *webGLRenderingContextBaseImpl) Uniform4fv(location WebGLUniformLocation, v []float64) {
 	ta := js.TypedArrayOf(v)
-	p.Call("uniform4fv", location.JSValue(), v)
+	p.Call("uniform4fv", location.JSValue(), ta)
 	ta.Release()
 }
 

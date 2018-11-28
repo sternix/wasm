@@ -3,6 +3,7 @@
 package wasm
 
 import (
+	"fmt"
 	"syscall/js"
 	"time"
 )
@@ -67,6 +68,15 @@ type htmlBodyElementImpl struct {
 	*htmlElementImpl
 	*windowEventHandlersImpl
 	js.Value
+}
+
+func NewHTMLBodyElement() HTMLBodyElement {
+	if el := CurrentDocument().CreateElement("body"); el != nil {
+		if body, ok := el.(HTMLBodyElement); ok {
+			return body
+		}
+	}
+	return nil
 }
 
 func newHTMLBodyElement(v js.Value) HTMLBodyElement {
@@ -206,6 +216,17 @@ type htmlHeadingElementImpl struct {
 	*htmlElementImpl
 }
 
+func NewHTMLHeadingElement(rank int) HTMLHeadingElement {
+	if rank >= 1 || rank <= 6 { // h1 to h6
+		if el := CurrentDocument().CreateElement(fmt.Sprintf("h%d", rank)); el != nil {
+			if h, ok := el.(HTMLHeadingElement); ok {
+				return h
+			}
+		}
+	}
+	return nil
+}
+
 func newHTMLHeadingElement(v js.Value) HTMLHeadingElement {
 	if isNil(v) {
 		return nil
@@ -220,6 +241,15 @@ func newHTMLHeadingElement(v js.Value) HTMLHeadingElement {
 
 type htmlParagraphElementImpl struct {
 	*htmlElementImpl
+}
+
+func NewHTMLParagraphElement() HTMLParagraphElement {
+	if el := CurrentDocument().CreateElement("p"); el != nil {
+		if p, ok := el.(HTMLParagraphElement); ok {
+			return p
+		}
+	}
+	return nil
 }
 
 func newHTMLParagraphElement(v js.Value) HTMLParagraphElement {
@@ -238,6 +268,15 @@ type htmlHRElementImpl struct {
 	*htmlElementImpl
 }
 
+func NewHTMLHRElement() HTMLHRElement {
+	if el := CurrentDocument().CreateElement("hr"); el != nil {
+		if hr, ok := el.(HTMLHRElement); ok {
+			return hr
+		}
+	}
+	return nil
+}
+
 func newHTMLHRElement(v js.Value) HTMLHRElement {
 	if isNil(v) {
 		return nil
@@ -254,6 +293,15 @@ type htmlPreElementImpl struct {
 	*htmlElementImpl
 }
 
+func NewHTMLPreElement() HTMLPreElement {
+	if el := CurrentDocument().CreateElement("pre"); el != nil {
+		if pre, ok := el.(HTMLPreElement); ok {
+			return pre
+		}
+	}
+	return nil
+}
+
 func newHTMLPreElement(v js.Value) HTMLPreElement {
 	if isNil(v) {
 		return nil
@@ -268,6 +316,21 @@ func newHTMLPreElement(v js.Value) HTMLPreElement {
 
 type htmlQuoteElementImpl struct {
 	*htmlElementImpl
+}
+
+func NewHTMLQuoteElement(block ...bool) HTMLQuoteElement {
+	var tag = "q"
+
+	if len(block) > 0 && block[0] == true {
+		tag = "blockquote"
+	}
+
+	if el := CurrentDocument().CreateElement(tag); el != nil {
+		if q, ok := el.(HTMLQuoteElement); ok {
+			return q
+		}
+	}
+	return nil
 }
 
 func newHTMLQuoteElement(v js.Value) HTMLQuoteElement {
@@ -292,6 +355,15 @@ func (p *htmlQuoteElementImpl) SetCite(cite string) {
 
 type htmlOListElementImpl struct {
 	*htmlElementImpl
+}
+
+func NewHTMLOListElement() HTMLOListElement {
+	if el := CurrentDocument().CreateElement("ol"); el != nil {
+		if ol, ok := el.(HTMLOListElement); ok {
+			return ol
+		}
+	}
+	return nil
 }
 
 func newHTMLOListElement(v js.Value) HTMLOListElement {
@@ -334,6 +406,15 @@ type htmlUListElementImpl struct {
 	*htmlElementImpl
 }
 
+func NewHTMLUListElement() HTMLUListElement {
+	if el := CurrentDocument().CreateElement("ul"); el != nil {
+		if ul, ok := el.(HTMLUListElement); ok {
+			return ul
+		}
+	}
+	return nil
+}
+
 func newHTMLUListElement(v js.Value) HTMLUListElement {
 	if isNil(v) {
 		return nil
@@ -348,6 +429,15 @@ func newHTMLUListElement(v js.Value) HTMLUListElement {
 
 type htmlLIElementImpl struct {
 	*htmlElementImpl
+}
+
+func NewHTMLLIElement() HTMLLIElement {
+	if el := CurrentDocument().CreateElement("li"); el != nil {
+		if li, ok := el.(HTMLLIElement); ok {
+			return li
+		}
+	}
+	return nil
 }
 
 func newHTMLLIElement(v js.Value) HTMLLIElement {
@@ -374,6 +464,15 @@ type htmlDListElementImpl struct {
 	*htmlElementImpl
 }
 
+func NewHTMLDListElement() HTMLDListElement {
+	if el := CurrentDocument().CreateElement("dl"); el != nil {
+		if dl, ok := el.(HTMLDListElement); ok {
+			return dl
+		}
+	}
+	return nil
+}
+
 func newHTMLDListElement(v js.Value) HTMLDListElement {
 	if isNil(v) {
 		return nil
@@ -388,6 +487,15 @@ func newHTMLDListElement(v js.Value) HTMLDListElement {
 
 type htmlDivElementImpl struct {
 	*htmlElementImpl
+}
+
+func NewHTMLDivElement() HTMLDivElement {
+	if el := CurrentDocument().CreateElement("div"); el != nil {
+		if div, ok := el.(HTMLDivElement); ok {
+			return div
+		}
+	}
+	return nil
 }
 
 func newHTMLDivElement(v js.Value) HTMLDivElement {
@@ -406,6 +514,15 @@ type htmlAnchorElementImpl struct {
 	*htmlElementImpl
 	*htmlHyperlinkElementUtilsImpl
 	js.Value
+}
+
+func NewHTMLAnchorElement() HTMLAnchorElement {
+	if el := CurrentDocument().CreateElement("a"); el != nil {
+		if a, ok := el.(HTMLAnchorElement); ok {
+			return a
+		}
+	}
+	return nil
 }
 
 func newHTMLAnchorElement(v js.Value) HTMLAnchorElement {
@@ -601,6 +718,15 @@ type htmlDataElementImpl struct {
 	*htmlElementImpl
 }
 
+func NewHTMLDataElement() HTMLDataElement {
+	if el := CurrentDocument().CreateElement("data"); el != nil {
+		if data, ok := el.(HTMLDataElement); ok {
+			return data
+		}
+	}
+	return nil
+}
+
 func newHTMLDataElement(v js.Value) HTMLDataElement {
 	if isNil(v) {
 		return nil
@@ -623,6 +749,15 @@ func (p *htmlDataElementImpl) SetValue(value string) {
 
 type htmlTimeElementImpl struct {
 	*htmlElementImpl
+}
+
+func NewHTMLTimeElement() HTMLTimeElement {
+	if el := CurrentDocument().CreateElement("time"); el != nil {
+		if tim, ok := el.(HTMLTimeElement); ok {
+			return tim
+		}
+	}
+	return nil
 }
 
 func newHTMLTimeElement(v js.Value) HTMLTimeElement {
@@ -649,6 +784,15 @@ type htmlSpanElementImpl struct {
 	*htmlElementImpl
 }
 
+func NewHTMLSpanElement() HTMLSpanElement {
+	if el := CurrentDocument().CreateElement("span"); el != nil {
+		if span, ok := el.(HTMLSpanElement); ok {
+			return span
+		}
+	}
+	return nil
+}
+
 func newHTMLSpanElement(v js.Value) HTMLSpanElement {
 	if isNil(v) {
 		return nil
@@ -665,6 +809,15 @@ type htmlBRElementImpl struct {
 	*htmlElementImpl
 }
 
+func NewHTMLBRElement() HTMLBRElement {
+	if el := CurrentDocument().CreateElement("br"); el != nil {
+		if br, ok := el.(HTMLBRElement); ok {
+			return br
+		}
+	}
+	return nil
+}
+
 func newHTMLBRElement(v js.Value) HTMLBRElement {
 	if isNil(v) {
 		return nil
@@ -679,6 +832,24 @@ func newHTMLBRElement(v js.Value) HTMLBRElement {
 
 type htmlModElementImpl struct {
 	*htmlElementImpl
+}
+
+func NewHTMLDelElement() HTMLModElement {
+	if el := CurrentDocument().CreateElement("del"); el != nil {
+		if d, ok := el.(HTMLModElement); ok {
+			return d
+		}
+	}
+	return nil
+}
+
+func NewHTMLInsElement() HTMLModElement {
+	if el := CurrentDocument().CreateElement("ins"); el != nil {
+		if d, ok := el.(HTMLModElement); ok {
+			return d
+		}
+	}
+	return nil
 }
 
 func newHTMLModElement(v js.Value) HTMLModElement {
@@ -713,6 +884,15 @@ type htmlPictureElementImpl struct {
 	*htmlElementImpl
 }
 
+func NewHTMLPictureElement() HTMLPictureElement {
+	if el := CurrentDocument().CreateElement("picture"); el != nil {
+		if picture, ok := el.(HTMLPictureElement); ok {
+			return picture
+		}
+	}
+	return nil
+}
+
 func newHTMLPictureElement(v js.Value) HTMLPictureElement {
 	if isNil(v) {
 		return nil
@@ -727,6 +907,15 @@ func newHTMLPictureElement(v js.Value) HTMLPictureElement {
 
 type htmlSourceElementImpl struct {
 	*htmlElementImpl
+}
+
+func NewHTMLSourceElement() HTMLSourceElement {
+	if el := CurrentDocument().CreateElement("source"); el != nil {
+		if source, ok := el.(HTMLSourceElement); ok {
+			return source
+		}
+	}
+	return nil
 }
 
 func newHTMLSourceElement(v js.Value) HTMLSourceElement {
@@ -783,6 +972,15 @@ func (p *htmlSourceElementImpl) SetMedia(media string) {
 
 type htmlImageElementImpl struct {
 	*htmlElementImpl
+}
+
+func NewHTMLImageElement() HTMLImageElement {
+	if el := CurrentDocument().CreateElement("img"); el != nil {
+		if img, ok := el.(HTMLImageElement); ok {
+			return img
+		}
+	}
+	return nil
 }
 
 func newHTMLImageElement(v js.Value) HTMLImageElement {
@@ -913,6 +1111,15 @@ type htmlIFrameElementImpl struct {
 	*htmlElementImpl
 }
 
+func NewHTMLIFrameElement() HTMLIFrameElement {
+	if el := CurrentDocument().CreateElement("iframe"); el != nil {
+		if iframe, ok := el.(HTMLIFrameElement); ok {
+			return iframe
+		}
+	}
+	return nil
+}
+
 func newHTMLIFrameElement(v js.Value) HTMLIFrameElement {
 	if isNil(v) {
 		return nil
@@ -1005,6 +1212,15 @@ type htmlEmbedElementImpl struct {
 	*htmlElementImpl
 }
 
+func NewHTMLEmbedElement() HTMLEmbedElement {
+	if el := CurrentDocument().CreateElement("embed"); el != nil {
+		if embed, ok := el.(HTMLEmbedElement); ok {
+			return embed
+		}
+	}
+	return nil
+}
+
 func newHTMLEmbedElement(v js.Value) HTMLEmbedElement {
 	if isNil(v) {
 		return nil
@@ -1051,6 +1267,15 @@ func (p *htmlEmbedElementImpl) SetHeight(h string) {
 
 type htmlObjectElementImpl struct {
 	*htmlElementImpl
+}
+
+func NewHTMLObjectElement() HTMLObjectElement {
+	if el := CurrentDocument().CreateElement("object"); el != nil {
+		if obj, ok := el.(HTMLObjectElement); ok {
+			return obj
+		}
+	}
+	return nil
 }
 
 func newHTMLObjectElement(v js.Value) HTMLObjectElement {
@@ -1213,6 +1438,17 @@ type htmlParamElementImpl struct {
 	*htmlElementImpl
 }
 
+func NewHTMLParamElement(name string, value string) HTMLParamElement {
+	if el := CurrentDocument().CreateElement("param"); el != nil {
+		if param, ok := el.(HTMLParamElement); ok {
+			param.SetName(name)
+			param.SetValue(value)
+			return param
+		}
+	}
+	return nil
+}
+
 func newHTMLParamElement(v js.Value) HTMLParamElement {
 	if isNil(v) {
 		return nil
@@ -1243,6 +1479,15 @@ func (p *htmlParamElementImpl) SetValue(value string) {
 
 type htmlVideoElementImpl struct {
 	*htmlMediaElementImpl
+}
+
+func NewHTMLVideoElement() HTMLVideoElement {
+	if el := CurrentDocument().CreateElement("video"); el != nil {
+		if video, ok := el.(HTMLVideoElement); ok {
+			return video
+		}
+	}
+	return nil
 }
 
 func newHTMLVideoElement(v js.Value) HTMLVideoElement {
@@ -1293,6 +1538,15 @@ type htmlAudioElementImpl struct {
 	*htmlMediaElementImpl
 }
 
+func NewHTMLAudioElement() HTMLAudioElement {
+	if el := CurrentDocument().CreateElement("audio"); el != nil {
+		if audio, ok := el.(HTMLAudioElement); ok {
+			return audio
+		}
+	}
+	return nil
+}
+
 func newHTMLAudioElement(v js.Value) HTMLAudioElement {
 	if isNil(v) {
 		return nil
@@ -1307,6 +1561,15 @@ func newHTMLAudioElement(v js.Value) HTMLAudioElement {
 
 type htmlTrackElementImpl struct {
 	*htmlElementImpl
+}
+
+func NewHTMLTrackElement() HTMLTrackElement {
+	if el := CurrentDocument().CreateElement("track"); el != nil {
+		if track, ok := el.(HTMLTrackElement); ok {
+			return track
+		}
+	}
+	return nil
 }
 
 func newHTMLTrackElement(v js.Value) HTMLTrackElement {
@@ -1525,6 +1788,15 @@ type htmlMapElementImpl struct {
 	*htmlElementImpl
 }
 
+func NewHTMLMapElement() HTMLMapElement {
+	if el := CurrentDocument().CreateElement("map"); el != nil {
+		if m, ok := el.(HTMLMapElement); ok {
+			return m
+		}
+	}
+	return nil
+}
+
 func newHTMLMapElement(v js.Value) HTMLMapElement {
 	if isNil(v) {
 		return nil
@@ -1557,6 +1829,15 @@ type htmlAreaElementImpl struct {
 	*htmlElementImpl
 	*htmlHyperlinkElementUtilsImpl
 	js.Value
+}
+
+func NewHTMLAreaElement() HTMLAreaElement {
+	if el := CurrentDocument().CreateElement("area"); el != nil {
+		if area, ok := el.(HTMLAreaElement); ok {
+			return area
+		}
+	}
+	return nil
 }
 
 func newHTMLAreaElement(v js.Value) HTMLAreaElement {
