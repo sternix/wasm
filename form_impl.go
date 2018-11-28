@@ -13,6 +13,15 @@ type htmlFormElementImpl struct {
 	*htmlElementImpl
 }
 
+func NewHTMLFormElement() HTMLFormElement {
+	if el := CurrentDocument().CreateElement("form"); el != nil {
+		if form, ok := el.(HTMLFormElement); ok {
+			return form
+		}
+	}
+	return nil
+}
+
 func newHTMLFormElement(v js.Value) HTMLFormElement {
 	if isNil(v) {
 		return nil
@@ -181,6 +190,15 @@ type htmlLabelElementImpl struct {
 	*htmlElementImpl
 }
 
+func NewHTMLLabelElement() HTMLLabelElement {
+	if el := CurrentDocument().CreateElement("label"); el != nil {
+		if label, ok := el.(HTMLLabelElement); ok {
+			return label
+		}
+	}
+	return nil
+}
+
 func newHTMLLabelElement(v js.Value) HTMLLabelElement {
 	if isNil(v) {
 		return nil
@@ -211,6 +229,64 @@ func (p *htmlLabelElementImpl) Control() HTMLElement {
 
 type htmlInputElementImpl struct {
 	*htmlElementImpl
+}
+
+func NewHTMLInputElement(typ ...string) HTMLInputElement {
+	if el := CurrentDocument().CreateElement("input"); el != nil {
+		if input, ok := el.(HTMLInputElement); ok {
+			if len(typ) > 0 {
+				switch typ[0] {
+				case "button":
+					input.SetType("button")
+				case "checkbox":
+					input.SetType("checkbox")
+				case "color":
+					input.SetType("color")
+				case "date":
+					input.SetType("date")
+				case "datetime-local":
+					input.SetType("datetime-local")
+				case "email":
+					input.SetType("email")
+				case "file":
+					input.SetType("file")
+				case "hidden":
+					input.SetType("hidden")
+				case "image":
+					input.SetType("image")
+				case "month":
+					input.SetType("month")
+				case "number":
+					input.SetType("number")
+				case "password":
+					input.SetType("password")
+				case "radio":
+					input.SetType("radio")
+				case "range":
+					input.SetType("range")
+				case "reset":
+					input.SetType("reset")
+				case "search":
+					input.SetType("search")
+				case "submit":
+					input.SetType("submit")
+				case "tel":
+					input.SetType("tel")
+				case "text":
+					input.SetType("text")
+				case "time":
+					input.SetType("time")
+				case "url":
+					input.SetType("url")
+				case "week":
+					input.SetType("week")
+				}
+			}
+
+			return input
+		}
+	}
+	return nil
 }
 
 func newHTMLInputElement(v js.Value) HTMLInputElement {
@@ -622,6 +698,15 @@ type htmlButtonElementImpl struct {
 	*htmlElementImpl
 }
 
+func NewHTMLButtonElement() HTMLButtonElement {
+	if el := CurrentDocument().CreateElement("button"); el != nil {
+		if button, ok := el.(HTMLButtonElement); ok {
+			return button
+		}
+	}
+	return nil
+}
+
 func newHTMLButtonElement(v js.Value) HTMLButtonElement {
 	if isNil(v) {
 		return nil
@@ -748,6 +833,15 @@ func (p *htmlButtonElementImpl) Labels() []Node {
 
 type htmlSelectElementImpl struct {
 	*htmlElementImpl
+}
+
+func NewHTMLSelectElement() HTMLSelectElement {
+	if el := CurrentDocument().CreateElement("select"); el != nil {
+		if sel, ok := el.(HTMLSelectElement); ok {
+			return sel
+		}
+	}
+	return nil
 }
 
 func newHTMLSelectElement(v js.Value) HTMLSelectElement {
@@ -974,6 +1068,15 @@ type htmlDataListElementImpl struct {
 	*htmlElementImpl
 }
 
+func NewHTMLDataListElement() HTMLDataListElement {
+	if el := CurrentDocument().CreateElement("datalist"); el != nil {
+		if datalist, ok := el.(HTMLDataListElement); ok {
+			return datalist
+		}
+	}
+	return nil
+}
+
 func newHTMLDataListElement(v js.Value) HTMLDataListElement {
 	if isNil(v) {
 		return nil
@@ -992,6 +1095,15 @@ func (p *htmlDataListElementImpl) Options() HTMLCollection {
 
 type htmlOptGroupElementImpl struct {
 	*htmlElementImpl
+}
+
+func NewHTMLOptGroupElement() HTMLOptGroupElement {
+	if el := CurrentDocument().CreateElement("optgroup"); el != nil {
+		if optgroup, ok := el.(HTMLOptGroupElement); ok {
+			return optgroup
+		}
+	}
+	return nil
 }
 
 func newHTMLOptGroupElement(v js.Value) HTMLOptGroupElement {
@@ -1024,6 +1136,15 @@ func (p *htmlOptGroupElementImpl) SetLabel(lbl string) {
 
 type htmlOptionElementImpl struct {
 	*htmlElementImpl
+}
+
+func NewHTMLOptionElement() HTMLOptionElement {
+	if el := CurrentDocument().CreateElement("option"); el != nil {
+		if option, ok := el.(HTMLOptionElement); ok {
+			return option
+		}
+	}
+	return nil
 }
 
 func newHTMLOptionElement(v js.Value) HTMLOptionElement {
@@ -1096,6 +1217,15 @@ func (p *htmlOptionElementImpl) Index() int {
 
 type htmlTextAreaElementImpl struct {
 	*htmlElementImpl
+}
+
+func NewHTMLTextAreaElement() HTMLTextAreaElement {
+	if el := CurrentDocument().CreateElement("textarea"); el != nil {
+		if textarea, ok := el.(HTMLTextAreaElement); ok {
+			return textarea
+		}
+	}
+	return nil
 }
 
 func newHTMLTextAreaElement(v js.Value) HTMLTextAreaElement {
@@ -1332,6 +1462,15 @@ type htmlOutputElementImpl struct {
 	*htmlElementImpl
 }
 
+func NewHTMLOutputElement() HTMLOutputElement {
+	if el := CurrentDocument().CreateElement("output"); el != nil {
+		if output, ok := el.(HTMLOutputElement); ok {
+			return output
+		}
+	}
+	return nil
+}
+
 func newHTMLOutputElement(v js.Value) HTMLOutputElement {
 	if isNil(v) {
 		return nil
@@ -1412,6 +1551,15 @@ type htmlProgressElementImpl struct {
 	*htmlElementImpl
 }
 
+func NewHTMLProgressElement() HTMLProgressElement {
+	if el := CurrentDocument().CreateElement("progress"); el != nil {
+		if progress, ok := el.(HTMLProgressElement); ok {
+			return progress
+		}
+	}
+	return nil
+}
+
 func newHTMLProgressElement(v js.Value) HTMLProgressElement {
 	if isNil(v) {
 		return nil
@@ -1450,6 +1598,15 @@ func (p *htmlProgressElementImpl) Labels() []Node {
 
 type htmlMeterElementImpl struct {
 	*htmlElementImpl
+}
+
+func NewHTMLMeterElement() HTMLMeterElement {
+	if el := CurrentDocument().CreateElement("meter"); el != nil {
+		if meter, ok := el.(HTMLMeterElement); ok {
+			return meter
+		}
+	}
+	return nil
 }
 
 func newHTMLMeterElement(v js.Value) HTMLMeterElement {
@@ -1520,6 +1677,15 @@ type htmlFieldSetElementImpl struct {
 	*htmlElementImpl
 }
 
+func NewHTMLFieldSetElement() HTMLFieldSetElement {
+	if el := CurrentDocument().CreateElement("fieldset"); el != nil {
+		if fieldset, ok := el.(HTMLFieldSetElement); ok {
+			return fieldset
+		}
+	}
+	return nil
+}
+
 func newHTMLFieldSetElement(v js.Value) HTMLFieldSetElement {
 	if isNil(v) {
 		return nil
@@ -1586,6 +1752,15 @@ func (p *htmlFieldSetElementImpl) SetCustomValidity(e string) {
 
 type htmlLegendElementImpl struct {
 	*htmlElementImpl
+}
+
+func NewHTMLLegendElement() HTMLLegendElement {
+	if el := CurrentDocument().CreateElement("legend"); el != nil {
+		if legend, ok := el.(HTMLLegendElement); ok {
+			return legend
+		}
+	}
+	return nil
 }
 
 func newHTMLLegendElement(v js.Value) HTMLLegendElement {
