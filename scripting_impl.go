@@ -12,6 +12,15 @@ type htmlScriptElementImpl struct {
 	*htmlElementImpl
 }
 
+func NewHTMLScriptElement() HTMLScriptElement {
+	if el := CurrentDocument().CreateElement("script"); el != nil {
+		if script, ok := el.(HTMLScriptElement); ok {
+			return script
+		}
+	}
+	return nil
+}
+
 func newHTMLScriptElement(v js.Value) HTMLScriptElement {
 	if isNil(v) {
 		return nil
@@ -92,6 +101,15 @@ type htmlTemplateElementImpl struct {
 	*htmlElementImpl
 }
 
+func NewHTMLTemplateElement() HTMLTemplateElement {
+	if el := CurrentDocument().CreateElement("template"); el != nil {
+		if template, ok := el.(HTMLTemplateElement); ok {
+			return template
+		}
+	}
+	return nil
+}
+
 func newHTMLTemplateElement(v js.Value) HTMLTemplateElement {
 	if isNil(v) {
 		return nil
@@ -110,6 +128,15 @@ func (p *htmlTemplateElementImpl) Content() DocumentFragment {
 
 type htmlCanvasElementImpl struct {
 	*htmlElementImpl
+}
+
+func NewHTMLCanvasElement() HTMLCanvasElement {
+	if el := CurrentDocument().CreateElement("canvas"); el != nil {
+		if canvas, ok := el.(HTMLCanvasElement); ok {
+			return canvas
+		}
+	}
+	return nil
 }
 
 func newHTMLCanvasElement(v js.Value) HTMLCanvasElement {

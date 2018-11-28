@@ -12,6 +12,15 @@ type htmlHtmlElementImpl struct {
 	*htmlElementImpl
 }
 
+func NewHTMLHtmlElement() HTMLHtmlElement {
+	if el := CurrentDocument().CreateElement("html"); el != nil {
+		if html, ok := el.(HTMLHtmlElement); ok {
+			return html
+		}
+	}
+	return nil
+}
+
 func newHTMLHtmlElement(v js.Value) HTMLHtmlElement {
 	if isNil(v) {
 		return nil
@@ -28,6 +37,15 @@ type htmlHeadElementImpl struct {
 	*htmlElementImpl
 }
 
+func NewHTMLHeadElement() HTMLHeadElement {
+	if el := CurrentDocument().CreateElement("head"); el != nil {
+		if head, ok := el.(HTMLHeadElement); ok {
+			return head
+		}
+	}
+	return nil
+}
+
 func newHTMLHeadElement(v js.Value) HTMLHeadElement {
 	if isNil(v) {
 		return nil
@@ -42,6 +60,15 @@ func newHTMLHeadElement(v js.Value) HTMLHeadElement {
 
 type htmlTitleElementImpl struct {
 	*htmlElementImpl
+}
+
+func NewHTMLTitleElement() HTMLTitleElement {
+	if el := CurrentDocument().CreateElement("title"); el != nil {
+		if title, ok := el.(HTMLTitleElement); ok {
+			return title
+		}
+	}
+	return nil
 }
 
 func newHTMLTitleElement(v js.Value) HTMLTitleElement {
@@ -66,6 +93,15 @@ func (p *htmlTitleElementImpl) SetText(text string) {
 
 type htmlBaseElementImpl struct {
 	*htmlElementImpl
+}
+
+func NewHTMLBaseElement() HTMLBaseElement {
+	if el := CurrentDocument().CreateElement("base"); el != nil {
+		if base, ok := el.(HTMLBaseElement); ok {
+			return base
+		}
+	}
+	return nil
 }
 
 func newHTMLBaseElement(v js.Value) HTMLBaseElement {
@@ -100,6 +136,15 @@ type htmlLinkElementImpl struct {
 	*linkStyleImpl
 	*htmlElementImpl
 	js.Value
+}
+
+func NewHTMLLinkElement() HTMLLinkElement {
+	if el := CurrentDocument().CreateElement("link"); el != nil {
+		if link, ok := el.(HTMLLinkElement); ok {
+			return link
+		}
+	}
+	return nil
 }
 
 func newHTMLLinkElement(v js.Value) HTMLLinkElement {
@@ -200,6 +245,15 @@ type htmlMetaElementImpl struct {
 	*htmlElementImpl
 }
 
+func NewHTMLMetaElement() HTMLMetaElement {
+	if el := CurrentDocument().CreateElement("meta"); el != nil {
+		if meta, ok := el.(HTMLMetaElement); ok {
+			return meta
+		}
+	}
+	return nil
+}
+
 func newHTMLMetaElement(v js.Value) HTMLMetaElement {
 	if isNil(v) {
 		return nil
@@ -240,6 +294,15 @@ type htmlStyleElementImpl struct {
 	*htmlElementImpl
 	*linkStyleImpl
 	js.Value
+}
+
+func NewHTMLStyleElement() HTMLStyleElement {
+	if el := CurrentDocument().CreateElement("style"); el != nil {
+		if style, ok := el.(HTMLStyleElement); ok {
+			return style
+		}
+	}
+	return nil
 }
 
 func newHTMLStyleElement(v js.Value) HTMLStyleElement {
