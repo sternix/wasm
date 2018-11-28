@@ -12,6 +12,15 @@ type htmlTableElementImpl struct {
 	*htmlElementImpl
 }
 
+func NewHTMLTableElement() HTMLTableElement {
+	if el := CurrentDocument().CreateElement("table"); el != nil {
+		if table, ok := el.(HTMLTableElement); ok {
+			return table
+		}
+	}
+	return nil
+}
+
 func newHTMLTableElement(v js.Value) HTMLTableElement {
 	if isNil(v) {
 		return nil
@@ -102,6 +111,15 @@ type htmlTableCaptionElementImpl struct {
 	*htmlElementImpl
 }
 
+func NewHTMLTableCaptionElement() HTMLTableCaptionElement {
+	if el := CurrentDocument().CreateElement("caption"); el != nil {
+		if caption, ok := el.(HTMLTableCaptionElement); ok {
+			return caption
+		}
+	}
+	return nil
+}
+
 func newHTMLTableCaptionElement(v js.Value) HTMLTableCaptionElement {
 	if isNil(v) {
 		return nil
@@ -116,6 +134,33 @@ func newHTMLTableCaptionElement(v js.Value) HTMLTableCaptionElement {
 
 type htmlTableSectionElementImpl struct {
 	*htmlElementImpl
+}
+
+func NewHTMLTFootElement() HTMLTableSectionElement {
+	if el := CurrentDocument().CreateElement("tfoot"); el != nil {
+		if tfoot, ok := el.(HTMLTableSectionElement); ok {
+			return tfoot
+		}
+	}
+	return nil
+}
+
+func NewHTMLTHeadElement() HTMLTableSectionElement {
+	if el := CurrentDocument().CreateElement("thead"); el != nil {
+		if thead, ok := el.(HTMLTableSectionElement); ok {
+			return thead
+		}
+	}
+	return nil
+}
+
+func NewHTMLTBodyElement() HTMLTableSectionElement {
+	if el := CurrentDocument().CreateElement("tbody"); el != nil {
+		if tbody, ok := el.(HTMLTableSectionElement); ok {
+			return tbody
+		}
+	}
+	return nil
 }
 
 func newHTMLTableSectionElement(v js.Value) HTMLTableSectionElement {
@@ -149,6 +194,15 @@ func (p *htmlTableSectionElementImpl) DeleteRow(index int) {
 
 type htmlTableRowElementImpl struct {
 	*htmlElementImpl
+}
+
+func NewHTMLTableRowElement() HTMLTableRowElement {
+	if el := CurrentDocument().CreateElement("tr"); el != nil {
+		if tr, ok := el.(HTMLTableRowElement); ok {
+			return tr
+		}
+	}
+	return nil
 }
 
 func newHTMLTableRowElement(v js.Value) HTMLTableRowElement {
@@ -190,6 +244,24 @@ func (p *htmlTableRowElementImpl) DeleteCell(index int) {
 
 type htmlTableColElementImpl struct {
 	*htmlElementImpl
+}
+
+func NewHTMLTableColElement() HTMLTableColElement {
+	if el := CurrentDocument().CreateElement("col"); el != nil {
+		if col, ok := el.(HTMLTableColElement); ok {
+			return col
+		}
+	}
+	return nil
+}
+
+func NewHTMLTableColGroupElement() HTMLTableColElement {
+	if el := CurrentDocument().CreateElement("colgroup"); el != nil {
+		if colgroup, ok := el.(HTMLTableColElement); ok {
+			return colgroup
+		}
+	}
+	return nil
 }
 
 func newHTMLTableColElement(v js.Value) HTMLTableColElement {
@@ -263,6 +335,15 @@ type htmlTableDataCellElementImpl struct {
 	*htmlTableCellElementImpl
 }
 
+func NewHTMLTableDataCellElement() HTMLTableDataCellElement {
+	if el := CurrentDocument().CreateElement("td"); el != nil {
+		if td, ok := el.(HTMLTableDataCellElement); ok {
+			return td
+		}
+	}
+	return nil
+}
+
 func newHTMLTableDataCellElement(v js.Value) HTMLTableDataCellElement {
 	if isNil(v) {
 		return nil
@@ -277,6 +358,15 @@ func newHTMLTableDataCellElement(v js.Value) HTMLTableDataCellElement {
 
 type htmlTableHeaderCellElementImpl struct {
 	*htmlTableCellElementImpl
+}
+
+func NewHTMLTableHeaderCellElement() HTMLTableHeaderCellElement {
+	if el := CurrentDocument().CreateElement("th"); el != nil {
+		if th, ok := el.(HTMLTableHeaderCellElement); ok {
+			return th
+		}
+	}
+	return nil
 }
 
 func newHTMLTableHeaderCellElement(v js.Value) HTMLTableHeaderCellElement {
