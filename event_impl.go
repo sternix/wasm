@@ -676,6 +676,38 @@ func (p *globalEventHandlersImpl) OnWaiting(fn func(Event)) EventHandler {
 	return On("waiting", fn)
 }
 
+func (p *globalEventHandlersImpl) OnTransitionRun(fn func(TransitionEvent)) EventHandler {
+	return On("transitionrun", func(e Event) {
+		if te, ok := e.(TransitionEvent); ok {
+			fn(te)
+		}
+	})
+}
+
+func (p *globalEventHandlersImpl) OnTransitionStart(fn func(TransitionEvent)) EventHandler {
+	return On("transitionstart", func(e Event) {
+		if te, ok := e.(TransitionEvent); ok {
+			fn(te)
+		}
+	})
+}
+
+func (p *globalEventHandlersImpl) OnTransitionEnd(fn func(TransitionEvent)) EventHandler {
+	return On("transitionend", func(e Event) {
+		if te, ok := e.(TransitionEvent); ok {
+			fn(te)
+		}
+	})
+}
+
+func (p *globalEventHandlersImpl) OnTransitionCancel(fn func(TransitionEvent)) EventHandler {
+	return On("transitioncancel", func(e Event) {
+		if te, ok := e.(TransitionEvent); ok {
+			fn(te)
+		}
+	})
+}
+
 // -------------8<---------------------------------------
 
 var _ DocumentAndElementEventHandlers = &documentAndElementEventHandlersImpl{}
@@ -1188,3 +1220,42 @@ func (p *errorEventImpl) Error() string {
 }
 
 // -------------8<---------------------------------------
+
+type transitionEventImpl struct {
+	*eventImpl
+}
+
+func NewTransitionEvent(typ string, tei ...TransitionEventInit) TransitionEvent {
+	jsTe := js.Global().Get("TransitionEvent")
+	if isNil(jsTe) {
+		return nil
+	}
+
+	switch len(tei) {
+	case 0:
+		return newTransitionEvent(jsTe.New(typ))
+	default:
+		return newTransitionEvent(jsTe.New(typ, tei[0].toDict()))
+	}
+}
+
+func newTransitionEvent(v js.Value) TransitionEvent {
+	if isNil(v) {
+		return nil
+	}
+	return &transitionEventImpl{
+		eventImpl: newEventImpl(v),
+	}
+}
+
+func (p *transitionEventImpl) PropertyName() string {
+	return p.Get("propertyName").String()
+}
+
+func (p *transitionEventImpl) ElapsedTime() float64 {
+	return p.Get("elapsedTime").Float()
+}
+
+func (p *transitionEventImpl) PseudoElement() string {
+	return p.Get("pseudoElement").String()
+}

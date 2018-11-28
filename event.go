@@ -136,6 +136,12 @@ type (
 		OnToggle(func(Event)) EventHandler
 		OnVolumeChange(func(Event)) EventHandler
 		OnWaiting(func(Event)) EventHandler
+
+		//https://drafts.csswg.org/css-transitions/#interface-globaleventhandlers-idl
+		OnTransitionRun(func(TransitionEvent)) EventHandler
+		OnTransitionStart(func(TransitionEvent)) EventHandler
+		OnTransitionEnd(func(TransitionEvent)) EventHandler
+		OnTransitionCancel(func(TransitionEvent)) EventHandler
 	}
 
 	// https://www.w3.org/TR/html52/webappapis.html#windoweventhandlers
@@ -281,6 +287,15 @@ type (
 		Lineno() int
 		Colno() int
 		Error() string // TODO any
+	}
+
+	// https://drafts.csswg.org/css-transitions/#transitionevent
+	TransitionEvent interface {
+		Event
+
+		PropertyName() string
+		ElapsedTime() float64
+		PseudoElement() string
 	}
 )
 
@@ -540,3 +555,24 @@ func (p ErrorEventInit) toDict() js.Value {
 	o.Set("error", p.Error)
 	return o
 }
+
+// -------------8<---------------------------------------
+
+// https://drafts.csswg.org/css-transitions/#dictdef-transitioneventinit
+type TransitionEventInit struct {
+	EventInit
+
+	PropertyName  string
+	ElapsedTime   float64
+	PseudoElement string
+}
+
+func (p TransitionEventInit) toDict() js.Value {
+	o := p.EventInit.toDict()
+	o.Set("propertyName", p.PropertyName)
+	o.Set("elapsedTime", p.ElapsedTime)
+	o.Set("pseudoElement", p.PseudoElement)
+	return o
+}
+
+// -------------8<---------------------------------------

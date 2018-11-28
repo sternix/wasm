@@ -520,6 +520,8 @@ func wrapObject(v js.Value) interface{} {
 		return newTouch(v)
 	case "TreeWalker":
 		return newTreeWalker(v)
+	case "TransitionEvent":
+		return newTransitionEvent(v)
 	case "UIEvent":
 		return newUIEvent(v)
 	case "URL":
