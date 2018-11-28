@@ -41,14 +41,6 @@ type (
 		CtrlKey() bool
 		ShiftKey() bool
 	}
-
-	// https://w3c.github.io/touch-events/#extensions-to-the-globaleventhandlers-interface
-	touchEventHandlers interface {
-		OnTouchStart(func(Event)) EventHandler
-		OnTouchEnd(func(Event)) EventHandler
-		OnTouchMove(func(Event)) EventHandler
-		OnTouchCancel(func(Event)) EventHandler
-	}
 )
 
 type TouchType string

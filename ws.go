@@ -15,12 +15,12 @@ type (
 		ReadyState() WebSocketReadyState
 		BufferedAmount() int
 		OnOpen(func(Event)) EventHandler
-		OnError(func(Event)) EventHandler
-		OnClose(func(Event)) EventHandler
+		OnError(func(ErrorEvent)) EventHandler
+		OnClose(func(CloseEvent)) EventHandler
 		Extensions() string
 		Protocol() string
 		Close(...interface{})
-		OnMessage(func(Event)) EventHandler
+		OnMessage(func(MessageEvent)) EventHandler
 		BinaryType() BinaryType
 		SetBinaryType(BinaryType)
 		Send(interface{})

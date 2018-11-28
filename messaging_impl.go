@@ -60,8 +60,12 @@ func (p *messagePortImpl) Close() {
 	p.Call("close")
 }
 
-func (p *messagePortImpl) OnMessage(fn func(Event)) EventHandler {
-	return p.On("message", fn)
+func (p *messagePortImpl) OnMessage(fn func(MessageEvent)) EventHandler {
+	return p.On("message", func(e Event) {
+		if me, ok := e.(MessageEvent); ok {
+			fn(me)
+		}
+	})
 }
 
 func (p *messagePortImpl) OnMessageError(fn func(Event)) EventHandler {
@@ -96,8 +100,12 @@ func (p *broadcastChannelImpl) Close() {
 	p.Call("close")
 }
 
-func (p *broadcastChannelImpl) OnMessage(fn func(Event)) EventHandler {
-	return p.On("message", fn)
+func (p *broadcastChannelImpl) OnMessage(fn func(MessageEvent)) EventHandler {
+	return p.On("message", func(e Event) {
+		if me, ok := e.(MessageEvent); ok {
+			fn(me)
+		}
+	})
 }
 
 func (p *broadcastChannelImpl) OnMessageError(fn func(Event)) EventHandler {

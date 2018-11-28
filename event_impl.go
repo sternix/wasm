@@ -294,7 +294,7 @@ func (p *customEventImpl) InitCustomEvent(typ string, args ...interface{}) {
 var _ GlobalEventHandlers = &globalEventHandlersImpl{}
 
 type globalEventHandlersImpl struct {
-	*touchEventHandlersImpl
+	js.Value
 }
 
 func newGlobalEventHandlersImpl(v js.Value) *globalEventHandlersImpl {
@@ -303,7 +303,7 @@ func newGlobalEventHandlersImpl(v js.Value) *globalEventHandlersImpl {
 	}
 
 	return &globalEventHandlersImpl{
-		touchEventHandlersImpl: newTouchEventHandlersImpl(v),
+		Value: v,
 	}
 }
 
@@ -676,6 +676,38 @@ func (p *globalEventHandlersImpl) OnWaiting(fn func(Event)) EventHandler {
 	return On("waiting", fn)
 }
 
+func (p *globalEventHandlersImpl) OnTouchStart(fn func(TouchEvent)) EventHandler {
+	return On("touchstart", func(e Event) {
+		if te, ok := e.(TouchEvent); ok {
+			fn(te)
+		}
+	})
+}
+
+func (p *globalEventHandlersImpl) OnTouchEnd(fn func(TouchEvent)) EventHandler {
+	return On("touchend", func(e Event) {
+		if te, ok := e.(TouchEvent); ok {
+			fn(te)
+		}
+	})
+}
+
+func (p *globalEventHandlersImpl) OnTouchMove(fn func(TouchEvent)) EventHandler {
+	return On("touchmove", func(e Event) {
+		if te, ok := e.(TouchEvent); ok {
+			fn(te)
+		}
+	})
+}
+
+func (p *globalEventHandlersImpl) OnTouchCancel(fn func(TouchEvent)) EventHandler {
+	return On("touchcancel", func(e Event) {
+		if te, ok := e.(TouchEvent); ok {
+			fn(te)
+		}
+	})
+}
+
 func (p *globalEventHandlersImpl) OnTransitionRun(fn func(TransitionEvent)) EventHandler {
 	return On("transitionrun", func(e Event) {
 		if te, ok := e.(TransitionEvent); ok {
@@ -704,6 +736,86 @@ func (p *globalEventHandlersImpl) OnTransitionCancel(fn func(TransitionEvent)) E
 	return On("transitioncancel", func(e Event) {
 		if te, ok := e.(TransitionEvent); ok {
 			fn(te)
+		}
+	})
+}
+
+func (p *globalEventHandlersImpl) OnGotPointerCapture(fn func(PointerEvent)) EventHandler {
+	return On("gotpointercapture", func(e Event) {
+		if pe, ok := e.(PointerEvent); ok {
+			fn(pe)
+		}
+	})
+}
+
+func (p *globalEventHandlersImpl) OnLostPointerCapture(fn func(PointerEvent)) EventHandler {
+	return On("lostpointercapture", func(e Event) {
+		if pe, ok := e.(PointerEvent); ok {
+			fn(pe)
+		}
+	})
+}
+
+func (p *globalEventHandlersImpl) OnPointerDown(fn func(PointerEvent)) EventHandler {
+	return On("pointerdown", func(e Event) {
+		if pe, ok := e.(PointerEvent); ok {
+			fn(pe)
+		}
+	})
+}
+
+func (p *globalEventHandlersImpl) OnPointerMove(fn func(PointerEvent)) EventHandler {
+	return On("pointermove", func(e Event) {
+		if pe, ok := e.(PointerEvent); ok {
+			fn(pe)
+		}
+	})
+}
+
+func (p *globalEventHandlersImpl) OnPointerUp(fn func(PointerEvent)) EventHandler {
+	return On("pointerup", func(e Event) {
+		if pe, ok := e.(PointerEvent); ok {
+			fn(pe)
+		}
+	})
+}
+
+func (p *globalEventHandlersImpl) OnPointerCancel(fn func(PointerEvent)) EventHandler {
+	return On("pointercancel", func(e Event) {
+		if pe, ok := e.(PointerEvent); ok {
+			fn(pe)
+		}
+	})
+}
+
+func (p *globalEventHandlersImpl) OnPointerOver(fn func(PointerEvent)) EventHandler {
+	return On("pointerover", func(e Event) {
+		if pe, ok := e.(PointerEvent); ok {
+			fn(pe)
+		}
+	})
+}
+
+func (p *globalEventHandlersImpl) OnPointerOut(fn func(PointerEvent)) EventHandler {
+	return On("pointerout", func(e Event) {
+		if pe, ok := e.(PointerEvent); ok {
+			fn(pe)
+		}
+	})
+}
+
+func (p *globalEventHandlersImpl) OnPointerEnter(fn func(PointerEvent)) EventHandler {
+	return On("pointerenter", func(e Event) {
+		if pe, ok := e.(PointerEvent); ok {
+			fn(pe)
+		}
+	})
+}
+
+func (p *globalEventHandlersImpl) OnPointerLeave(fn func(PointerEvent)) EventHandler {
+	return On("pointerleave", func(e Event) {
+		if pe, ok := e.(PointerEvent); ok {
+			fn(pe)
 		}
 	})
 }
@@ -1258,4 +1370,73 @@ func (p *transitionEventImpl) ElapsedTime() float64 {
 
 func (p *transitionEventImpl) PseudoElement() string {
 	return p.Get("pseudoElement").String()
+}
+
+// -------------8<---------------------------------------
+
+type pointerEventImpl struct {
+	*mouseEventImpl
+}
+
+func NewPointerEvent(typ string, pei ...PointerEventInit) PointerEvent {
+	jsPe := js.Global().Get("PointerEvent")
+	if isNil(jsPe) {
+		return nil
+	}
+
+	switch len(pei) {
+	case 0:
+		return newPointerEvent(jsPe.New(typ))
+	default:
+		return newPointerEvent(jsPe.New(typ, pei[0].toDict()))
+	}
+}
+
+func newPointerEvent(v js.Value) PointerEvent {
+	if isNil(v) {
+		return nil
+	}
+	return &pointerEventImpl{
+		mouseEventImpl: newMouseEventImpl(v),
+	}
+}
+
+func (p *pointerEventImpl) PointerId() int {
+	return p.Get("pointerId").Int()
+}
+
+func (p *pointerEventImpl) Width() float64 {
+	return p.Get("width").Float()
+}
+
+func (p *pointerEventImpl) Height() float64 {
+	return p.Get("height").Float()
+}
+
+func (p *pointerEventImpl) Pressure() float64 {
+	return p.Get("pressure").Float()
+}
+
+func (p *pointerEventImpl) TangentialPressure() float64 {
+	return p.Get("tangentialPressure").Float()
+}
+
+func (p *pointerEventImpl) TiltX() int {
+	return p.Get("tiltX").Int()
+}
+
+func (p *pointerEventImpl) TiltY() int {
+	return p.Get("tiltY").Int()
+}
+
+func (p *pointerEventImpl) Twist() int {
+	return p.Get("twist").Int()
+}
+
+func (p *pointerEventImpl) PointerType() string {
+	return p.Get("pointerType").String()
+}
+
+func (p *pointerEventImpl) IsPrimary() bool {
+	return p.Get("isPrimary").Bool()
 }

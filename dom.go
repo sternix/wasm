@@ -360,6 +360,11 @@ type (
 		RequestFullscreen(...FullscreenOptions) Promise
 		OnFullScreenChange(func(Event)) EventHandler
 		OnFullScreenError(func(Event)) EventHandler
+
+		// https://www.w3.org/TR/pointerevents/#extensions-to-the-element-interface
+		SetPointerCapture(int)
+		ReleasePointerCapture(int)
+		HasPointerCapture(int) bool
 	}
 
 	// https://dom.spec.whatwg.org/#shadowroot

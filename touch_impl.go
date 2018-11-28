@@ -128,40 +128,6 @@ func (p *touchEventImpl) ShiftKey() bool {
 
 // -------------8<---------------------------------------
 
-var _ touchEventHandlers = &touchEventHandlersImpl{}
-
-type touchEventHandlersImpl struct {
-	js.Value
-}
-
-func newTouchEventHandlersImpl(v js.Value) *touchEventHandlersImpl {
-	if isNil(v) {
-		return nil
-	}
-
-	return &touchEventHandlersImpl{
-		Value: v,
-	}
-}
-
-func (p *touchEventHandlersImpl) OnTouchStart(fn func(Event)) EventHandler {
-	return On("touchstart", fn)
-}
-
-func (p *touchEventHandlersImpl) OnTouchEnd(fn func(Event)) EventHandler {
-	return On("touchend", fn)
-}
-
-func (p *touchEventHandlersImpl) OnTouchMove(fn func(Event)) EventHandler {
-	return On("touchmove", fn)
-}
-
-func (p *touchEventHandlersImpl) OnTouchCancel(fn func(Event)) EventHandler {
-	return On("touchcancel", fn)
-}
-
-// -------------8<---------------------------------------
-
 func NewTouch(ti TouchInit) Touch {
 	jsTouch := js.Global().Get("Touch")
 	if isNil(jsTouch) {

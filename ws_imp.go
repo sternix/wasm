@@ -70,12 +70,20 @@ func (p *webSocketImpl) OnOpen(fn func(Event)) EventHandler {
 	return p.On("open", fn)
 }
 
-func (p *webSocketImpl) OnError(fn func(Event)) EventHandler {
-	return p.On("error", fn)
+func (p *webSocketImpl) OnError(fn func(ErrorEvent)) EventHandler {
+	return p.On("error", func(e Event) {
+		if ee, ok := e.(ErrorEvent); ok {
+			fn(ee)
+		}
+	})
 }
 
-func (p *webSocketImpl) OnClose(fn func(Event)) EventHandler {
-	return p.On("close", fn)
+func (p *webSocketImpl) OnClose(fn func(CloseEvent)) EventHandler {
+	return p.On("close", func(e Event) {
+		if ce, ok := e.(CloseEvent); ok {
+			fn(ce)
+		}
+	})
 }
 
 func (p *webSocketImpl) Extensions() string {
@@ -103,8 +111,12 @@ func (p *webSocketImpl) Close(args ...interface{}) {
 	}
 }
 
-func (p *webSocketImpl) OnMessage(fn func(Event)) EventHandler {
-	return p.On("message", fn)
+func (p *webSocketImpl) OnMessage(fn func(MessageEvent)) EventHandler {
+	return p.On("message", func(e Event) {
+		if me, ok := e.(MessageEvent); ok {
+			fn(me)
+		}
+	})
 }
 
 func (p *webSocketImpl) BinaryType() BinaryType {

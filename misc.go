@@ -510,10 +510,6 @@ func wrapObject(v js.Value) interface{} {
 		return newTextTrackList(v)
 	case "TimeRanges":
 		return newTimeRanges(v)
-		/*
-			case "TouchEventHandlers":
-				return newTouchEventHandlersImpl(v)
-		*/
 	case "TouchEvent":
 		return newTouchEvent(v)
 	case "Touch":

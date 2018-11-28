@@ -69,8 +69,6 @@ type (
 
 	// https://www.w3.org/TR/html52/webappapis.html#globaleventhandlers
 	GlobalEventHandlers interface {
-		touchEventHandlers
-
 		OnAbort(func(Event)) EventHandler
 		OnAuxClick(func(Event)) EventHandler
 		OnBlur(func(Event)) EventHandler
@@ -137,11 +135,29 @@ type (
 		OnVolumeChange(func(Event)) EventHandler
 		OnWaiting(func(Event)) EventHandler
 
+		// https://w3c.github.io/touch-events/#extensions-to-the-globaleventhandlers-interface
+		OnTouchStart(func(TouchEvent)) EventHandler
+		OnTouchEnd(func(TouchEvent)) EventHandler
+		OnTouchMove(func(TouchEvent)) EventHandler
+		OnTouchCancel(func(TouchEvent)) EventHandler
+
 		//https://drafts.csswg.org/css-transitions/#interface-globaleventhandlers-idl
 		OnTransitionRun(func(TransitionEvent)) EventHandler
 		OnTransitionStart(func(TransitionEvent)) EventHandler
 		OnTransitionEnd(func(TransitionEvent)) EventHandler
 		OnTransitionCancel(func(TransitionEvent)) EventHandler
+
+		// https://www.w3.org/TR/pointerevents/#extensions-to-the-globaleventhandlers-interface
+		OnGotPointerCapture(func(PointerEvent)) EventHandler
+		OnLostPointerCapture(func(PointerEvent)) EventHandler
+		OnPointerDown(func(PointerEvent)) EventHandler
+		OnPointerMove(func(PointerEvent)) EventHandler
+		OnPointerUp(func(PointerEvent)) EventHandler
+		OnPointerCancel(func(PointerEvent)) EventHandler
+		OnPointerOver(func(PointerEvent)) EventHandler
+		OnPointerOut(func(PointerEvent)) EventHandler
+		OnPointerEnter(func(PointerEvent)) EventHandler
+		OnPointerLeave(func(PointerEvent)) EventHandler
 	}
 
 	// https://www.w3.org/TR/html52/webappapis.html#windoweventhandlers
@@ -296,6 +312,22 @@ type (
 		PropertyName() string
 		ElapsedTime() float64
 		PseudoElement() string
+	}
+
+	// https://www.w3.org/TR/pointerevents/#pointerevent-interface
+	PointerEvent interface {
+		MouseEvent
+
+		PointerId() int
+		Width() float64
+		Height() float64
+		Pressure() float64
+		TangentialPressure() float64
+		TiltX() int
+		TiltY() int
+		Twist() int
+		PointerType() string
+		IsPrimary() bool
 	}
 )
 
@@ -576,3 +608,34 @@ func (p TransitionEventInit) toDict() js.Value {
 }
 
 // -------------8<---------------------------------------
+
+// https://www.w3.org/TR/pointerevents/#pointerevent-interface
+type PointerEventInit struct {
+	MouseEventInit
+
+	PointerId          int
+	Width              float64
+	Height             float64
+	Pressure           float64
+	TangentialPressure float64
+	TiltX              int
+	TiltY              int
+	Twist              int
+	PointerType        string
+	IsPrimary          bool
+}
+
+func (p PointerEventInit) todict() js.Value {
+	o := p.MouseEventInit.toDict()
+	o.Set("pointerId", p.PointerId)
+	o.Set("width", p.Width)
+	o.Set("height", p.Height)
+	o.Set("pressure", p.Pressure)
+	o.Set("tangentialPressure", p.TangentialPressure)
+	o.Set("tiltX", p.TiltX)
+	o.Set("tiltY", p.TiltY)
+	o.Set("twist", p.Twist)
+	o.Set("pointerType", p.PointerType)
+	o.Set("isPrimary", p.IsPrimary)
+	return o
+}

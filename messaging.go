@@ -22,7 +22,7 @@ type (
 		Start()
 		Close()
 
-		OnMessage(func(Event)) EventHandler
+		OnMessage(func(MessageEvent)) EventHandler
 		OnMessageError(func(Event)) EventHandler
 	}
 
@@ -33,7 +33,7 @@ type (
 		Name() string
 		PostMessage(interface{})
 		Close()
-		OnMessage(func(Event)) EventHandler
+		OnMessage(func(MessageEvent)) EventHandler
 		OnMessageError(func(Event)) EventHandler
 	}
 

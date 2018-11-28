@@ -17,6 +17,9 @@ type (
 
 		// https://w3c.github.io/clipboard-apis/#idl-index
 		Clipboard() Clipboard
+
+		// https://www.w3.org/TR/pointerevents/#extensions-to-the-navigator-interface
+		MaxTouchPoints() int
 	}
 
 	// https://www.w3.org/TR/html52/webappapis.html#navigatorid

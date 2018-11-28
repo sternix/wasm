@@ -42,6 +42,10 @@ func (p *navigatorImpl) Clipboard() Clipboard {
 	return newClipboard(p.Get("clipboard"))
 }
 
+func (p *navigatorImpl) MaxTouchPoints() int {
+	return p.Get("maxTouchPoints").Int()
+}
+
 // -------------8<---------------------------------------
 
 var _ NavigatorID = &navigatorIDImpl{}

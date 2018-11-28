@@ -1421,6 +1421,18 @@ func (p *elementImpl) OnFullScreenError(fn func(Event)) EventHandler {
 	return p.On("fullscreenerror", fn)
 }
 
+func (p *elementImpl) SetPointerCapture(pointerId int) {
+	p.Call("setPointerCapture", pointerId)
+}
+
+func (p *elementImpl) ReleasePointerCapture(pointerId int) {
+	p.Call("releasePointerCapture", pointerId)
+}
+
+func (p *elementImpl) HasPointerCapture(pointerId int) bool {
+	return p.Call("hasPointerCapture", pointerId).Bool()
+}
+
 // -------------8<---------------------------------------
 
 type shadowRootImpl struct {
