@@ -444,6 +444,8 @@ func wrapObject(v js.Value) interface{} {
 		return newNodeList(v)
 	case "PageTransitionEvent":
 		return newPageTransitionEvent(v)
+	case "PointerEvent":
+		return newPointerEvent(v)
 	case "PopStateEvent":
 		return newPopStateEvent(v)
 	case "PositionError":
