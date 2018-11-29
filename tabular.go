@@ -37,7 +37,7 @@ type (
 		HTMLElement
 
 		Rows() HTMLCollection
-		InsertRow(...int) HTMLElement
+		InsertRow(...int) HTMLTableRowElement
 		DeleteRow(int)
 	}
 
@@ -48,7 +48,7 @@ type (
 		RowIndex() int
 		SectionRowIndex() int
 		Cells() HTMLCollection
-		InsertCell(...int) HTMLElement // return <td> element
+		InsertCell(...int) HTMLTableCellElement // return <td> element
 		DeleteCell(int)
 	}
 

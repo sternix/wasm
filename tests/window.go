@@ -31,6 +31,12 @@ func main() {
 		errx("Window.Document is NULL")
 	}
 
+	css := wasm.NewHTMLLinkElement()
+	css.SetRel("stylesheet")
+	css.SetType("text/css")
+	css.SetHref("wasm.css") // http://XYZ/wasm.css
+	doc.Head().AppendChild(css)
+
 	TestDocument(doc)
 
 	clock := wasm.NewHTMLDivElement()
@@ -220,6 +226,8 @@ func main() {
 	fmt.Printf("Screen.Height: %d\n", screen.Height())
 	fmt.Printf("Screen.ColorDepth: %d\n", screen.ColorDepth())
 	fmt.Printf("Screen.PixelDepth: %d\n", screen.PixelDepth())
+
+	TestTabular()
 
 	fmt.Println("All Tests completed")
 
