@@ -3,7 +3,6 @@
 package wasm
 
 import (
-	"fmt"
 	"syscall/js"
 	"time"
 )
@@ -216,9 +215,18 @@ type htmlHeadingElementImpl struct {
 	*htmlElementImpl
 }
 
+var htmlHeadingTags = map[int]string{
+	1: "h1",
+	2: "h2",
+	3: "h3",
+	4: "h4",
+	5: "h5",
+	6: "h6",
+}
+
 func NewHTMLHeadingElement(rank int) HTMLHeadingElement {
-	if rank >= 1 || rank <= 6 { // h1 to h6
-		if el := CurrentDocument().CreateElement(fmt.Sprintf("h%d", rank)); el != nil {
+	if tag := htmlHeadingTags[rank]; tag != "" {
+		if el := CurrentDocument().CreateElement(tag); el != nil {
 			if h, ok := el.(HTMLHeadingElement); ok {
 				return h
 			}

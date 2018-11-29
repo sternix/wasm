@@ -28,7 +28,7 @@ type (
 		IDBRequest
 
 		OnBlocked(func(Event)) EventHandler
-		OnUpgradeNeeded(func(Event)) EventHandler
+		OnUpgradeNeeded(func(IDBVersionChangeEvent)) EventHandler
 	}
 
 	// https://www.w3.org/TR/IndexedDB/#idbversionchangeevent

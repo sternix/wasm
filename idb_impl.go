@@ -95,8 +95,12 @@ func (p *idbOpenDBRequestImpl) OnBlocked(fn func(Event)) EventHandler {
 	return p.On("blocked", fn)
 }
 
-func (p *idbOpenDBRequestImpl) OnUpgradeNeeded(fn func(Event)) EventHandler {
-	return p.On("upgradeneeded", fn)
+func (p *idbOpenDBRequestImpl) OnUpgradeNeeded(fn func(IDBVersionChangeEvent)) EventHandler {
+	return p.On("upgradeneeded", func(e Event) {
+		if ve, ok := e.(IDBVersionChangeEvent); ok {
+			fn(ve)
+		}
+	})
 }
 
 // -------------8<---------------------------------------

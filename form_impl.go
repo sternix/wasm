@@ -231,58 +231,39 @@ type htmlInputElementImpl struct {
 	*htmlElementImpl
 }
 
+var htmlInputElementTypeMap = map[string]string{
+	"button":         "button",
+	"checkbox":       "checkbox",
+	"color":          "color",
+	"date":           "date",
+	"datetime-local": "datetime-local",
+	"email":          "email",
+	"file":           "file",
+	"hidden":         "hidden",
+	"image":          "image",
+	"month":          "month",
+	"number":         "number",
+	"password":       "password",
+	"radio":          "radio",
+	"range":          "range",
+	"reset":          "reset",
+	"search":         "search",
+	"submit":         "submit",
+	"tel":            "tel",
+	"text":           "text",
+	"time":           "time",
+	"url":            "url",
+	"week":           "week",
+}
+
 func NewHTMLInputElement(typ ...string) HTMLInputElement {
 	if el := CurrentDocument().CreateElement("input"); el != nil {
 		if input, ok := el.(HTMLInputElement); ok {
 			if len(typ) > 0 {
-				switch typ[0] {
-				case "button":
-					input.SetType("button")
-				case "checkbox":
-					input.SetType("checkbox")
-				case "color":
-					input.SetType("color")
-				case "date":
-					input.SetType("date")
-				case "datetime-local":
-					input.SetType("datetime-local")
-				case "email":
-					input.SetType("email")
-				case "file":
-					input.SetType("file")
-				case "hidden":
-					input.SetType("hidden")
-				case "image":
-					input.SetType("image")
-				case "month":
-					input.SetType("month")
-				case "number":
-					input.SetType("number")
-				case "password":
-					input.SetType("password")
-				case "radio":
-					input.SetType("radio")
-				case "range":
-					input.SetType("range")
-				case "reset":
-					input.SetType("reset")
-				case "search":
-					input.SetType("search")
-				case "submit":
-					input.SetType("submit")
-				case "tel":
-					input.SetType("tel")
-				case "text":
-					input.SetType("text")
-				case "time":
-					input.SetType("time")
-				case "url":
-					input.SetType("url")
-				case "week":
-					input.SetType("week")
+				if t := htmlInputElementTypeMap[typ[0]]; t != "" {
+					input.SetType(t)
 				}
 			}
-
 			return input
 		}
 	}

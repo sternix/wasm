@@ -149,65 +149,12 @@ func PrintDocumentPosition(pos wasm.DocumentPosition) {
 }
 
 func TestLoginForm(doc wasm.Document) {
-	el := doc.CreateElement("form")
-	if el == nil {
-		errx("Document.CreateElement == NULL")
-	}
-
-	form, ok := el.(wasm.HTMLFormElement)
-	if !ok {
-		errx("HTMLFormElement assertion failed")
-	}
-
-	el = doc.CreateElement("label")
-	if el == nil {
-		errx("Document.CreateElement == NULL")
-	}
-
-	lblInput, ok := el.(wasm.HTMLLabelElement)
-	if !ok {
-		errx("HTMLLabelElement assertion failed")
-	}
-
-	el = doc.CreateElement("input")
-	if el == nil {
-		errx("Document.CreateElement == NULL")
-	}
-
-	input, ok := el.(wasm.HTMLInputElement)
-	if !ok {
-		errx("HTMLInputElement assertion failed")
-	}
-
-	el = doc.CreateElement("label")
-	if el == nil {
-		errx("Document.CreateElement == NULL")
-	}
-
-	lblPassword, ok := el.(wasm.HTMLLabelElement)
-	if !ok {
-		errx("HTMLLabelElement assertion failed")
-	}
-
-	el = doc.CreateElement("input")
-	if el == nil {
-		errx("Document.CreateElement == NULL")
-	}
-
-	password, ok := el.(wasm.HTMLInputElement)
-	if !ok {
-		errx("HTMLInputElement assertion failed")
-	}
-
-	el = doc.CreateElement("input")
-	if el == nil {
-		errx("Document.CreateElement == NULL")
-	}
-
-	submit, ok := el.(wasm.HTMLInputElement)
-	if !ok {
-		errx("HTMLInputElement assertion failed")
-	}
+	form := wasm.NewHTMLFormElement()
+	lblInput := wasm.NewHTMLLabelElement()
+	input := wasm.NewHTMLInputElement("text")
+	lblPassword := wasm.NewHTMLLabelElement()
+	password := wasm.NewHTMLInputElement("password")
+	submit := wasm.NewHTMLInputElement("submit")
 
 	form.SetAttribute("action", "#")
 	form.SetAttribute("method", "get")
@@ -217,7 +164,6 @@ func TestLoginForm(doc wasm.Document) {
 	lblInput.SetInnerHTML("Input1 Label")
 	form.AppendChild(lblInput)
 
-	input.SetAttribute("type", "text")
 	input.SetAttribute("name", "input1")
 	input.SetValue("")
 	input.SetId("input1")
@@ -227,13 +173,11 @@ func TestLoginForm(doc wasm.Document) {
 	lblPassword.SetInnerHTML("Password Label")
 	form.AppendChild(lblPassword)
 
-	password.SetAttribute("type", "password")
 	password.SetAttribute("name", "password")
 	password.SetValue("")
 	password.SetId("password")
 	form.AppendChild(password)
 
-	submit.SetAttribute("type", "submit")
 	submit.SetValue("SUBMIT")
 	form.AppendChild(submit)
 

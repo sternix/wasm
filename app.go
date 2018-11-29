@@ -3,12 +3,16 @@
 package wasm
 
 import (
+	"sync"
 	"syscall/js"
 )
 
 var (
-	doneCh        chan bool = make(chan bool)
-	currentWindow Window
+	doneCh          chan bool = make(chan bool)
+	windowOnce      sync.Once
+	docOnce         sync.Once
+	currentWindow   Window
+	currentDocument Document
 )
 
 func Wait() {
@@ -28,17 +32,21 @@ func On(event string, fn func(ev Event)) EventHandler {
 }
 
 func CurrentWindow() Window {
-	if currentWindow == nil {
-		currentWindow = newWindow(js.Global())
-	}
+	windowOnce.Do(func() {
+		if currentWindow == nil {
+			currentWindow = newWindow(js.Global())
+		}
+	})
 	return currentWindow
 }
 
 func CurrentDocument() Document {
-	if w := CurrentWindow(); w != nil {
-		return w.Document()
-	}
-	return nil
+	docOnce.Do(func() {
+		if currentDocument == nil {
+			currentDocument = CurrentWindow().Document()
+		}
+	})
+	return currentDocument
 }
 
 func SessionStorage() Storage {

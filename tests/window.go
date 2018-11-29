@@ -33,32 +33,22 @@ func main() {
 
 	TestDocument(doc)
 
-	e1 := doc.CreateElement("div")
-	if e1 == nil {
-		errx("Document.CreateElement == NULL")
+	clock := wasm.NewHTMLDivElement()
+	if clock == nil {
+		errx("wasm.NewHTMLDivElement == NULL")
 	}
-	e1.SetId("clock")
-	fmt.Printf("Typeof CreateElement: %s\n", wasm.JSType(e1.JSValue()))
-
-	doc.Body().AppendChild(e1)
+	doc.Body().AppendChild(clock)
 
 	fn := func(cb wasm.FrameRequestCallback, t time.Time) {
-		el := doc.ElementById("clock")
-		if el != nil {
-			if div, ok := el.(wasm.HTMLDivElement); ok {
-				div.SetInnerHTML(time.Now().Format("15:04:05"))
-			} else {
-				errx("Cannot type assert HTMLDivElement")
-			}
-		} else {
-			errx("Document.ElementById == NULL")
-		}
+		clock.SetInnerHTML(time.Now().Format("15:04:05"))
 		win.RequestAnimationFrame(cb)
 	}
 
 	frcb := wasm.NewFrameRequestCallback(fn)
 
 	win.RequestAnimationFrame(frcb)
+
+	TestWebSocket(doc)
 
 	wp := win.Window()
 	if wp == nil {
