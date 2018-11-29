@@ -20,9 +20,9 @@ type (
 		SetTFoot(HTMLTableSectionElement)
 		CreateTFoot() HTMLTableSectionElement
 		DeleteTFoot()
-		TBodies() HTMLCollection
+		TBodies() []HTMLTableSectionElement
 		CreateTBody() HTMLTableSectionElement
-		Rows() HTMLCollection
+		Rows() []HTMLTableRowElement
 		InsertRow(...int) HTMLTableRowElement
 		DeleteRow(int)
 	}
@@ -36,7 +36,7 @@ type (
 	HTMLTableSectionElement interface {
 		HTMLElement
 
-		Rows() HTMLCollection
+		Rows() []HTMLTableRowElement
 		InsertRow(...int) HTMLTableRowElement
 		DeleteRow(int)
 	}
@@ -47,7 +47,7 @@ type (
 
 		RowIndex() int
 		SectionRowIndex() int
-		Cells() HTMLCollection
+		Cells() []HTMLTableCellElement
 		InsertCell(...int) HTMLTableCellElement // return <td> element
 		DeleteCell(int)
 	}

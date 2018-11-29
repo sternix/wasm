@@ -415,6 +415,16 @@ func (p *documentImpl) ScrollingElement() Element {
 	return wrapElement(p.Get("scrollingElement"))
 }
 
+// helper function type assert on new Element return HTMLElement
+func (p *documentImpl) CreateHTMLElement(tag string) HTMLElement {
+	if el := p.CreateElement(tag); el != nil {
+		if htmlEl, ok := el.(HTMLElement); ok {
+			return htmlEl
+		}
+	}
+	return nil
+}
+
 // -------------8<---------------------------------------
 
 type domImplementationImpl struct {

@@ -79,16 +79,37 @@ func (p *htmlTableElementImpl) DeleteTFoot() {
 	p.Call("deleteTFoot")
 }
 
-func (p *htmlTableElementImpl) TBodies() HTMLCollection {
-	return newHTMLCollection(p.Get("tBodies"))
+func (p *htmlTableElementImpl) TBodies() []HTMLTableSectionElement {
+	bodies := newHTMLCollection(p.Get("tBodies"))
+	if bodies != nil {
+		var ret []HTMLTableSectionElement
+		for i := 0; i < bodies.Length(); i++ {
+			if r, ok := bodies.Item(i).(HTMLTableSectionElement); ok {
+				ret = append(ret, r)
+			}
+		}
+		return ret
+	}
+	return nil
+
 }
 
 func (p *htmlTableElementImpl) CreateTBody() HTMLTableSectionElement {
 	return newHTMLTableSectionElement(p.Call("createTBody"))
 }
 
-func (p *htmlTableElementImpl) Rows() HTMLCollection {
-	return newHTMLCollection(p.Get("rows"))
+func (p *htmlTableElementImpl) Rows() []HTMLTableRowElement {
+	rows := newHTMLCollection(p.Get("rows"))
+	if rows != nil {
+		var ret []HTMLTableRowElement
+		for i := 0; i < rows.Length(); i++ {
+			if r, ok := rows.Item(i).(HTMLTableRowElement); ok {
+				ret = append(ret, r)
+			}
+		}
+		return ret
+	}
+	return nil
 }
 
 func (p *htmlTableElementImpl) InsertRow(index ...int) HTMLTableRowElement {
@@ -137,8 +158,18 @@ func newHTMLTableSectionElement(v js.Value) HTMLTableSectionElement {
 	}
 }
 
-func (p *htmlTableSectionElementImpl) Rows() HTMLCollection {
-	return newHTMLCollection(p.Get("rows"))
+func (p *htmlTableSectionElementImpl) Rows() []HTMLTableRowElement {
+	rows := newHTMLCollection(p.Get("rows"))
+	if rows != nil {
+		var ret []HTMLTableRowElement
+		for i := 0; i < rows.Length(); i++ {
+			if r, ok := rows.Item(i).(HTMLTableRowElement); ok {
+				ret = append(ret, r)
+			}
+		}
+		return ret
+	}
+	return nil
 }
 
 func (p *htmlTableSectionElementImpl) InsertRow(index ...int) HTMLTableRowElement {
@@ -178,8 +209,19 @@ func (p *htmlTableRowElementImpl) SectionRowIndex() int {
 	return p.Get("sectionRowIndex").Int()
 }
 
-func (p *htmlTableRowElementImpl) Cells() HTMLCollection {
-	return newHTMLCollection(p.Get("cells"))
+func (p *htmlTableRowElementImpl) Cells() []HTMLTableCellElement {
+	cells := newHTMLCollection(p.Get("cells"))
+	if cells != nil {
+		var ret []HTMLTableCellElement
+		for i := 0; i < cells.Length(); i++ {
+			if c, ok := cells.Item(i).(HTMLTableCellElement); ok {
+				ret = append(ret, c)
+			}
+		}
+		return ret
+	}
+	return nil
+
 }
 
 func (p *htmlTableRowElementImpl) InsertCell(index ...int) HTMLTableCellElement {

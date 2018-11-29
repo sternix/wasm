@@ -60,6 +60,7 @@ type (
 		LastModified() string
 		ReadyState() DocumentReadyState
 		//ByName(string) js.Value // ???
+		// getter object (DOMString name);
 		Title() string
 		SetTitle(string)
 		Dir() string
@@ -98,6 +99,9 @@ type (
 		ElementsFromPoint(float64, float64) []Element
 		CaretPositionFromPoint(float64, float64) CaretPosition
 		ScrollingElement() Element
+
+		// helpers
+		CreateHTMLElement(string) HTMLElement
 	}
 
 	// https://dom.spec.whatwg.org/#domimplementation
