@@ -19,7 +19,7 @@ type (
 
 	// https://dom.spec.whatwg.org/#parentnode
 	ParentNode interface {
-		Children() HTMLCollection
+		Children() []Element
 		FirstElementChild() Element
 		LastElementChild() Element
 		ChildElementCount() int
@@ -239,8 +239,8 @@ func newParentNodeImpl(v js.Value) *parentNodeImpl {
 	}
 }
 
-func (p *parentNodeImpl) Children() HTMLCollection {
-	return newHTMLCollection(p.Get("children"))
+func (p *parentNodeImpl) Children() []Element {
+	return htmlCollectionToElementSlice(p.Get("children"))
 }
 
 func (p *parentNodeImpl) FirstElementChild() Element {

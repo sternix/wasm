@@ -23,9 +23,9 @@ type (
 		ContentType() string
 		DocType() DocumentType
 		DocumentElement() Element
-		ElementsByTagName(string) HTMLCollection
-		ElementsByTagNameNS(string, string) HTMLCollection
-		ElementsByClassName(string) HTMLCollection
+		ElementsByTagName(string) []Element
+		ElementsByTagNameNS(string, string) []Element
+		ElementsByClassName(string) []Element
 		CreateElement(string, ...ElementCreationOptions) Element
 		CreateElementNS(string, string, ...ElementCreationOptions) Element
 		CreateDocumentFragment() DocumentFragment
@@ -68,12 +68,12 @@ type (
 		Body() HTMLBodyElement
 		SetBody(HTMLBodyElement)
 		Head() HTMLHeadElement
-		Images() HTMLCollection
-		Embeds() HTMLCollection
-		Plugins() HTMLCollection
-		Links() HTMLCollection
-		Forms() HTMLCollection
-		Scripts() HTMLCollection
+		Images() []HTMLImageElement
+		Embeds() []HTMLEmbedElement
+		Plugins() []HTMLEmbedElement
+		Links() []HTMLElement
+		Forms() []HTMLFormElement
+		Scripts() []HTMLScriptElement
 		ElementsByName(string) []Node
 		CurrentScript() HTMLOrSVGScriptElement
 		Open(...string) Document
@@ -331,9 +331,9 @@ type (
 		ShadowRoot() ShadowRoot
 		Closest(string) Element
 		Matches(string) bool
-		ElementsByTagName(string) HTMLCollection
-		ElementsByTagNameNS(string, string) HTMLCollection
-		ElementsByClassName(string) HTMLCollection
+		ElementsByTagName(string) []Element
+		ElementsByTagNameNS(string, string) []Element
+		ElementsByClassName(string) []Element
 
 		// https://www.w3.org/TR/cssom-view-1/#extension-to-the-element-interface
 		ClientRects() []DOMRect

@@ -943,8 +943,8 @@ func (p *htmlSelectElementImpl) SetByIndex(index int, option HTMLOptionElement) 
 	//  setter void (unsigned long index, HTMLOptionElement? option);
 }
 
-func (p *htmlSelectElementImpl) SelectedOptions() HTMLCollection {
-	return newHTMLCollection(p.Get("selectedOptions"))
+func (p *htmlSelectElementImpl) SelectedOptions() []HTMLOptionElement {
+	return htmlCollectionToHTMLOptionElementSlice(p.Get("selectedOptions"))
 }
 
 func (p *htmlSelectElementImpl) SelectedIndex() int {
@@ -1068,8 +1068,8 @@ func newHTMLDataListElement(v js.Value) HTMLDataListElement {
 	}
 }
 
-func (p *htmlDataListElementImpl) Options() HTMLCollection {
-	return newHTMLCollection(p.Get("options"))
+func (p *htmlDataListElementImpl) Options() []HTMLOptionElement {
+	return htmlCollectionToHTMLOptionElementSlice(p.Get("options"))
 }
 
 // -------------8<---------------------------------------
@@ -1701,8 +1701,8 @@ func (p *htmlFieldSetElementImpl) Type() string {
 	return p.Get("type").String()
 }
 
-func (p *htmlFieldSetElementImpl) Elements() HTMLCollection {
-	return newHTMLCollection(p.Get("elements"))
+func (p *htmlFieldSetElementImpl) Elements() []HTMLElement {
+	return htmlCollectionToHTMLElementSlice(p.Get("elements"))
 }
 
 func (p *htmlFieldSetElementImpl) WillValidate() bool {

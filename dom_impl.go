@@ -77,17 +77,16 @@ func (p *documentImpl) DocumentElement() Element {
 	return wrapElement(p.Get("documentElement"))
 }
 
-func (p *documentImpl) ElementsByTagName(qualifiedName string) HTMLCollection {
-	return newHTMLCollection(p.Call("getElementsByTagName", qualifiedName))
-
+func (p *documentImpl) ElementsByTagName(qualifiedName string) []Element {
+	return htmlCollectionToElementSlice(p.Call("getElementsByTagName", qualifiedName))
 }
 
-func (p *documentImpl) ElementsByTagNameNS(namespace string, localName string) HTMLCollection {
-	return newHTMLCollection(p.Call("getElementsByTagNameNS", namespace, localName))
+func (p *documentImpl) ElementsByTagNameNS(namespace string, localName string) []Element {
+	return htmlCollectionToElementSlice(p.Call("getElementsByTagNameNS", namespace, localName))
 }
 
-func (p *documentImpl) ElementsByClassName(classNames string) HTMLCollection {
-	return newHTMLCollection(p.Call("getElementsByClassName", classNames))
+func (p *documentImpl) ElementsByClassName(classNames string) []Element {
+	return htmlCollectionToElementSlice(p.Call("getElementsByClassName", classNames))
 }
 
 func (p *documentImpl) CreateElement(localName string, options ...ElementCreationOptions) Element {
@@ -253,28 +252,66 @@ func (p *documentImpl) Head() HTMLHeadElement {
 	return newHTMLHeadElement(p.Get("head"))
 }
 
-func (p *documentImpl) Images() HTMLCollection {
-	return newHTMLCollection(p.Get("images"))
+func (p *documentImpl) Images() []HTMLImageElement {
+	if c := newHTMLCollection(p.Get("images")); c != nil && c.Length() > 0 {
+		var ret []HTMLImageElement
+		for i := 0; i < c.Length(); i++ {
+			if img, ok := c.Item(i).(HTMLImageElement); ok {
+				ret = append(ret, img)
+			}
+		}
+		return ret
+	}
+	return nil
 }
 
-func (p *documentImpl) Embeds() HTMLCollection {
-	return newHTMLCollection(p.Get("embeds"))
+func (p *documentImpl) Embeds() []HTMLEmbedElement {
+	if c := newHTMLCollection(p.Get("embeds")); c != nil && c.Length() > 0 {
+		var ret []HTMLEmbedElement
+		for i := 0; i < c.Length(); i++ {
+			if embed, ok := c.Item(i).(HTMLEmbedElement); ok {
+				ret = append(ret, embed)
+			}
+		}
+		return ret
+	}
+	return nil
 }
 
-func (p *documentImpl) Plugins() HTMLCollection {
-	return newHTMLCollection(p.Get("plugins"))
+func (p *documentImpl) Plugins() []HTMLEmbedElement {
+	// The plugins attribute must return the same object as that returned by the embeds attribute.
+	return p.Embeds()
 }
 
-func (p *documentImpl) Links() HTMLCollection {
-	return newHTMLCollection(p.Get("links"))
+// returns <a> and <area> elements with href attributes, common interface is HTMLElement
+func (p *documentImpl) Links() []HTMLElement {
+	return htmlCollectionToHTMLElementSlice(p.Get("links"))
 }
 
-func (p *documentImpl) Forms() HTMLCollection {
-	return newHTMLCollection(p.Get("forms"))
+func (p *documentImpl) Forms() []HTMLFormElement {
+	if c := newHTMLCollection(p.Get("form")); c != nil && c.Length() > 0 {
+		var ret []HTMLFormElement
+		for i := 0; i < c.Length(); i++ {
+			if el, ok := c.Item(i).(HTMLFormElement); ok {
+				ret = append(ret, el)
+			}
+		}
+		return ret
+	}
+	return nil
 }
 
-func (p *documentImpl) Scripts() HTMLCollection {
-	return newHTMLCollection(p.Get("scripts"))
+func (p *documentImpl) Scripts() []HTMLScriptElement {
+	if c := newHTMLCollection(p.Get("scripts")); c != nil && c.Length() > 0 {
+		var ret []HTMLScriptElement
+		for i := 0; i < c.Length(); i++ {
+			if el, ok := c.Item(i).(HTMLScriptElement); ok {
+				ret = append(ret, el)
+			}
+		}
+		return ret
+	}
+	return nil
 }
 
 func (p *documentImpl) ElementsByName(name string) []Node {
@@ -1296,16 +1333,16 @@ func (p *elementImpl) Matches(string) bool {
 	return p.Call("matches").Bool()
 }
 
-func (p *elementImpl) ElementsByTagName(name string) HTMLCollection {
-	return newHTMLCollection(p.Call("getElementsByTagName", name))
+func (p *elementImpl) ElementsByTagName(name string) []Element {
+	return htmlCollectionToElementSlice(p.Call("getElementsByTagName", name))
 }
 
-func (p *elementImpl) ElementsByTagNameNS(namespace string, localName string) HTMLCollection {
-	return newHTMLCollection(p.Call("getElementsByTagNameNS", namespace, localName))
+func (p *elementImpl) ElementsByTagNameNS(namespace string, localName string) []Element {
+	return htmlCollectionToElementSlice(p.Call("getElementsByTagNameNS", namespace, localName))
 }
 
-func (p *elementImpl) ElementsByClassName(names string) HTMLCollection {
-	return newHTMLCollection(p.Call("getElementsByClassName", names))
+func (p *elementImpl) ElementsByClassName(names string) []Element {
+	return htmlCollectionToElementSlice(p.Call("getElementsByClassName", names))
 }
 
 func (p *elementImpl) ClientRects() []DOMRect {

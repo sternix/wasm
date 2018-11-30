@@ -428,8 +428,8 @@ type (
 
 		Name() string
 		SetName(string)
-		Areas() HTMLCollection
-		Images() HTMLCollection
+		Areas() []HTMLAreaElement
+		Images() []HTMLElement
 	}
 
 	// https://www.w3.org/TR/html52/semantics-embedded-content.html#htmlareaelement

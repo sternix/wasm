@@ -342,6 +342,49 @@ func toFloat64Slice(v js.Value) []float64 {
 
 // -------------8<---------------------------------------
 
+func htmlCollectionToElementSlice(v js.Value) []Element {
+	if c := newHTMLCollection(v); c != nil && c.Length() > 0 {
+		var ret []Element
+		for i := 0; i < c.Length(); i++ {
+			ret = append(ret, c.Item(i))
+		}
+		return ret
+	}
+	return nil
+}
+
+// -------------8<---------------------------------------
+
+func htmlCollectionToHTMLElementSlice(v js.Value) []HTMLElement {
+	if c := newHTMLCollection(v); c != nil && c.Length() > 0 {
+		var ret []HTMLElement
+		for i := 0; i < c.Length(); i++ {
+			if el, ok := c.Item(i).(HTMLElement); ok {
+				ret = append(ret, el)
+			}
+		}
+		return ret
+	}
+	return nil
+}
+
+// -------------8<---------------------------------------
+
+func htmlCollectionToHTMLOptionElementSlice(v js.Value) []HTMLOptionElement {
+	if c := newHTMLCollection(v); c != nil && c.Length() > 0 {
+		var ret []HTMLOptionElement
+		for i := 0; i < c.Length(); i++ {
+			if el, ok := c.Item(i).(HTMLOptionElement); ok {
+				ret = append(ret, el)
+			}
+		}
+		return ret
+	}
+	return nil
+}
+
+// -------------8<---------------------------------------
+
 func uint8ArrayToByteSlice(v js.Value) []byte {
 	jsa := jsUint8Array.New(v)
 	ret := make([]byte, jsa.Get("byteLength").Int())

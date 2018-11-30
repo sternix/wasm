@@ -221,7 +221,7 @@ type (
 		// NOTE: Overload ChildNode.Remove() method
 		RemoveByIndex(int) // remove(long)
 		SetByIndex(int, HTMLOptionElement)
-		SelectedOptions() HTMLCollection
+		SelectedOptions() []HTMLOptionElement
 		SelectedIndex() int
 		SetSelectedIndex(int)
 		Value() string
@@ -253,7 +253,7 @@ type (
 	HTMLDataListElement interface {
 		HTMLElement
 
-		Options() HTMLCollection
+		Options() []HTMLOptionElement
 	}
 
 	// https://www.w3.org/TR/html52/sec-forms.html#htmloptgroupelement
@@ -412,7 +412,7 @@ type (
 		Name() string
 		SetName(string)
 		Type() string
-		Elements() HTMLCollection
+		Elements() []HTMLElement
 		WillValidate() bool
 		Validity() ValidityState
 		ValidationMessage() string

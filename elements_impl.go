@@ -1823,12 +1823,22 @@ func (p *htmlMapElementImpl) SetName(name string) {
 	p.Set("name", name)
 }
 
-func (p *htmlMapElementImpl) Areas() HTMLCollection {
-	return newHTMLCollection(p.Get("areas"))
+func (p *htmlMapElementImpl) Areas() []HTMLAreaElement {
+	if c := newHTMLCollection(p.Get("areas")); c != nil && c.Length() > 0 {
+		var ret []HTMLAreaElement
+		for i := 0; i < c.Length(); i++ {
+			if el, ok := c.Item(i).(HTMLAreaElement); ok {
+				ret = append(ret, el)
+			}
+		}
+		return ret
+	}
+	return nil
 }
 
-func (p *htmlMapElementImpl) Images() HTMLCollection {
-	return newHTMLCollection(p.Get("images"))
+// <img> and <object> Elements
+func (p *htmlMapElementImpl) Images() []HTMLElement {
+	return htmlCollectionToHTMLElementSlice(p.Get("images"))
 }
 
 // -------------8<---------------------------------------

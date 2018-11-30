@@ -80,8 +80,7 @@ func (p *htmlTableElementImpl) DeleteTFoot() {
 }
 
 func (p *htmlTableElementImpl) TBodies() []HTMLTableSectionElement {
-	bodies := newHTMLCollection(p.Get("tBodies"))
-	if bodies != nil {
+	if bodies := newHTMLCollection(p.Get("tBodies")); bodies != nil && bodies.Length() > 0 {
 		var ret []HTMLTableSectionElement
 		for i := 0; i < bodies.Length(); i++ {
 			if r, ok := bodies.Item(i).(HTMLTableSectionElement); ok {
@@ -99,8 +98,7 @@ func (p *htmlTableElementImpl) CreateTBody() HTMLTableSectionElement {
 }
 
 func (p *htmlTableElementImpl) Rows() []HTMLTableRowElement {
-	rows := newHTMLCollection(p.Get("rows"))
-	if rows != nil {
+	if rows := newHTMLCollection(p.Get("rows")); rows != nil && rows.Length() > 0 {
 		var ret []HTMLTableRowElement
 		for i := 0; i < rows.Length(); i++ {
 			if r, ok := rows.Item(i).(HTMLTableRowElement); ok {
@@ -159,8 +157,7 @@ func newHTMLTableSectionElement(v js.Value) HTMLTableSectionElement {
 }
 
 func (p *htmlTableSectionElementImpl) Rows() []HTMLTableRowElement {
-	rows := newHTMLCollection(p.Get("rows"))
-	if rows != nil {
+	if rows := newHTMLCollection(p.Get("rows")); rows != nil && rows.Length() > 0 {
 		var ret []HTMLTableRowElement
 		for i := 0; i < rows.Length(); i++ {
 			if r, ok := rows.Item(i).(HTMLTableRowElement); ok {
@@ -210,8 +207,7 @@ func (p *htmlTableRowElementImpl) SectionRowIndex() int {
 }
 
 func (p *htmlTableRowElementImpl) Cells() []HTMLTableCellElement {
-	cells := newHTMLCollection(p.Get("cells"))
-	if cells != nil {
+	if cells := newHTMLCollection(p.Get("cells")); cells != nil && cells.Length() > 0 {
 		var ret []HTMLTableCellElement
 		for i := 0; i < cells.Length(); i++ {
 			if c, ok := cells.Item(i).(HTMLTableCellElement); ok {
