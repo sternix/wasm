@@ -29,10 +29,10 @@ type (
 		SetGlobalAlpha(float64)
 		GlobalCompositeOperation() string
 		SetGlobalCompositeOperation(string)
-		StrokeStyle() string
-		SetStrokeStyle(string)
-		FillStyle() string
-		SetFillStyle(string)
+		StrokeStyle() interface{}
+		SetStrokeStyle(interface{})
+		FillStyle() interface{}
+		SetFillStyle(interface{})
 		CreateLinearGradient(float64, float64, float64, float64) CanvasGradient
 		CreateRadialGradient(float64, float64, float64, float64, float64, float64) CanvasGradient
 		CreatePattern(CanvasImageSource, string)

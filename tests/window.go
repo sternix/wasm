@@ -56,6 +56,8 @@ func main() {
 
 	TestWebSocket(doc)
 
+	TestCanvas(doc)
+
 	wp := win.Window()
 	if wp == nil {
 		errx("Window.Window is NULL")

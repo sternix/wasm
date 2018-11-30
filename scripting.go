@@ -42,7 +42,10 @@ type (
 		SetWidth(int)
 		Height() int
 		SetHeight(int)
-		Context(string, ...interface{}) RenderingContext
+		//Context(string, ...interface{}) RenderingContext
+		Context2D(alpha ...bool) CanvasRenderingContext2D
+		// TODO
+		//ContextWebGl()
 		ProbablySupportsContext(string, ...interface{}) bool
 		ToDataURL(...interface{}) string
 		ToBlob(BlobCallback, ...interface{})

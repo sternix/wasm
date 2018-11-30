@@ -130,9 +130,13 @@ type htmlCanvasElementImpl struct {
 	*htmlElementImpl
 }
 
-func NewHTMLCanvasElement() HTMLCanvasElement {
+func NewHTMLCanvasElement(size ...int) HTMLCanvasElement {
 	if el := CurrentDocument().CreateElement("canvas"); el != nil {
 		if canvas, ok := el.(HTMLCanvasElement); ok {
+			if len(size) == 2 {
+				canvas.SetWidth(size[0])
+				canvas.SetHeight(size[1])
+			}
 			return canvas
 		}
 	}
@@ -152,6 +156,7 @@ func newHTMLCanvasElement(v js.Value) HTMLCanvasElement {
 func (p *htmlCanvasElementImpl) Width() int {
 	return p.Get("width").Int()
 }
+
 func (p *htmlCanvasElementImpl) SetWidth(w int) {
 	p.Set("width", w)
 }
@@ -164,9 +169,16 @@ func (p *htmlCanvasElementImpl) SetHeight(h int) {
 	p.Set("height", h)
 }
 
+/*
 func (p *htmlCanvasElementImpl) Context(ctxId string, args ...interface{}) RenderingContext {
 	// TODO
 	return nil
+}
+*/
+
+func (p *htmlCanvasElementImpl) Context2D(alpha ...bool) CanvasRenderingContext2D {
+	// TODO: alpha param omitted
+	return newCanvasRenderingContext2D(p.Call("getContext", "2d"))
 }
 
 func (p *htmlCanvasElementImpl) ProbablySupportsContext(ctxId string, args ...interface{}) bool {

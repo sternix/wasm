@@ -74,20 +74,36 @@ func (p *canvasRenderingContext2DImpl) SetGlobalCompositeOperation(gco string) {
 	p.Set("globalCompositeOperation", gco)
 }
 
-func (p *canvasRenderingContext2DImpl) StrokeStyle() string {
-	return p.Get("strokeStyle").String()
+func (p *canvasRenderingContext2DImpl) StrokeStyle() interface{} {
+	return Wrap(p.Get("strokeStyle"))
 }
 
-func (p *canvasRenderingContext2DImpl) SetStrokeStyle(style string) {
-	p.Set("strokeStyle", style)
+// attribute (DOMString or CanvasGradient or CanvasPattern) strokeStyle; // (default: "black")
+func (p *canvasRenderingContext2DImpl) SetStrokeStyle(style interface{}) {
+	switch x := style.(type) {
+	case string:
+		p.Set("strokeStyle", x)
+	case CanvasGradient:
+		p.Set("strokeStyle", x.JSValue())
+	case CanvasPattern:
+		p.Set("strokeStyle", x.JSValue())
+	}
 }
 
-func (p *canvasRenderingContext2DImpl) FillStyle() string {
-	return p.Get("fillStyle").String()
+func (p *canvasRenderingContext2DImpl) FillStyle() interface{} {
+	return Wrap(p.Get("fillStyle"))
 }
 
-func (p *canvasRenderingContext2DImpl) SetFillStyle(style string) {
-	p.Set("fillStyle", style)
+// attribute (DOMString or CanvasGradient or CanvasPattern) strokeStyle; // (default: "black")
+func (p *canvasRenderingContext2DImpl) SetFillStyle(style interface{}) {
+	switch x := style.(type) {
+	case string:
+		p.Set("fillStyle", x)
+	case CanvasGradient:
+		p.Set("fillStyle", x.JSValue())
+	case CanvasPattern:
+		p.Set("fillStyle", x.JSValue())
+	}
 }
 
 func (p *canvasRenderingContext2DImpl) CreateLinearGradient(x0 float64, y0 float64, x1 float64, y1 float64) CanvasGradient {
