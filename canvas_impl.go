@@ -296,7 +296,7 @@ func (p *canvasDrawingStylesImpl) LineDash() []float64 {
 
 func (p *canvasDrawingStylesImpl) SetLineDash(arg ...float64) {
 	// TODO check this
-	p.Call("setLineDash", floatSliceToJsArray(arg))
+	p.Call("setLineDash", sliceToJsArray(arg))
 }
 
 func (p *canvasDrawingStylesImpl) LineDashOffset() float64 {

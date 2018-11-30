@@ -677,7 +677,7 @@ func (p MutationObserverInit) toDict() js.Value {
 	o.Set("subtree", p.SubTree)
 	o.Set("attributeOldValue", p.AttributeOldValue)
 	o.Set("characterDataOldValue", p.CharacterDataOldValue)
-	o.Set("attributeFilter", stringSliceToJsArray(p.AttributeFilter))
+	o.Set("attributeFilter", sliceToJsArray(p.AttributeFilter))
 	return o
 }
 

@@ -75,6 +75,6 @@ func (p MessageEventInit) toDict() js.Value {
 	o.Set("origin", p.Origin)
 	o.Set("lastEventId", p.LastEventId)
 	o.Set("source", p.Source.JSValue())
-	o.Set("ports", messagePortSliceToJsArray(p.Ports))
+	o.Set("ports", sliceToJsArray(p.Ports))
 	return o
 }

@@ -62,26 +62,6 @@ func arrayToSlice(a js.Value) []js.Value {
 
 // -------------8<---------------------------------------
 
-func stringSliceToJsArray(slc []string) js.Value {
-	arr := jsArray.New(len(slc))
-	for i, s := range slc {
-		arr.SetIndex(i, s)
-	}
-	return arr
-}
-
-// -------------8<---------------------------------------
-
-func promiseSliceToJsArray(slc []Promise) js.Value {
-	arr := jsArray.New(len(slc))
-	for i, p := range slc {
-		arr.SetIndex(i, p)
-	}
-	return arr
-}
-
-// -------------8<---------------------------------------
-
 // TODO
 func sliceToJsArray(slc interface{}) js.Value {
 	switch x := slc.(type) {
@@ -121,6 +101,33 @@ func sliceToJsArray(slc interface{}) js.Value {
 			arr.SetIndex(i, s)
 		}
 		return arr
+
+	case []Promise:
+		arr := jsArray.New(len(x))
+		for i, p := range x {
+			arr.SetIndex(i, p.JSValue())
+		}
+		return arr
+
+	case []bool:
+		arr := jsArray.New(len(x))
+		for i, b := range x {
+			arr.SetIndex(i, b)
+		}
+		return arr
+	case []Touch:
+		arr := jsArray.New(len(x))
+		for i, t := range x {
+			arr.SetIndex(i, t.JSValue())
+		}
+		return arr
+
+	case []MessagePort:
+		arr := jsArray.New(len(x))
+		for i, t := range x {
+			arr.SetIndex(i, t.JSValue())
+		}
+		return arr
 	default:
 		// TODO: remove this when all types ok
 		panic("sliceToJsArray: unregistered type")
@@ -154,30 +161,6 @@ func elementArrayToSlice(v js.Value) []Element {
 	}
 
 	return ret
-}
-
-// -------------8<---------------------------------------
-
-func floatSliceToJsArray(sl []float64) js.Value {
-	obj := jsArray.New(len(sl))
-
-	for i, f := range sl {
-		obj.SetIndex(i, f)
-	}
-
-	return obj
-}
-
-// -------------8<---------------------------------------
-
-func boolSliceToJsArray(sl []bool) js.Value {
-	obj := jsArray.New(len(sl))
-
-	for i, b := range sl {
-		obj.SetIndex(i, b)
-	}
-
-	return obj
 }
 
 // -------------8<---------------------------------------
@@ -325,38 +308,6 @@ func touchListToSlice(v js.Value) []Touch {
 	}
 
 	return ret
-}
-
-// -------------8<---------------------------------------
-
-func touchSliceToJsArray(slc []Touch) js.Value {
-	if len(slc) > 0 {
-		obj := jsArray.New(len(slc))
-
-		for i, t := range slc {
-			obj.SetIndex(i, t)
-		}
-
-		return obj
-	}
-
-	return js.Null()
-}
-
-// -------------8<---------------------------------------
-
-func messagePortSliceToJsArray(slc []MessagePort) js.Value {
-	if len(slc) > 0 {
-		obj := jsArray.New(len(slc))
-
-		for i, t := range slc {
-			obj.SetIndex(i, t)
-		}
-
-		return obj
-	}
-
-	return js.Null()
 }
 
 // -------------8<---------------------------------------

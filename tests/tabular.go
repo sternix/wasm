@@ -37,5 +37,7 @@ func TestTabular() {
 	fc.SetColSpan(3)
 	fc.SetInnerHTML("Go Wasm Table Foot")
 
+	fmt.Printf("Table Row Size: %d\n", len(table.Rows()))
+
 	wasm.CurrentDocument().Body().AppendChild(table)
 }

@@ -103,7 +103,7 @@ func (p *promiseImpl) Finally(cb js.Callback) Promise {
 }
 
 func (p *promiseImpl) Race(s []Promise) Promise {
-	return newPromiseImpl(p.Call("race", promiseSliceToJsArray(s)))
+	return newPromiseImpl(p.Call("race", sliceToJsArray(s)))
 }
 
 func (p *promiseImpl) Reject(reason string) Promise {

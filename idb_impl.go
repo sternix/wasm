@@ -188,8 +188,7 @@ func (p *idbDatabaseImpl) ObjectStoreNames() []string {
 }
 
 func (p *idbDatabaseImpl) Transaction(storeNames []string, mode ...IDBTransactionMode) IDBTransaction {
-	arr := stringSliceToJsArray(storeNames)
-
+	arr := sliceToJsArray(storeNames)
 	switch len(mode) {
 	case 0:
 		return newIDBTransaction(p.Call("transaction", arr))

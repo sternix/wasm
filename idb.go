@@ -208,7 +208,7 @@ type IDBObjectStoreParameters struct {
 
 func (p IDBObjectStoreParameters) toDict() js.Value {
 	o := jsObject.New()
-	o.Set("keyPath", stringSliceToJsArray(p.KeyPath))
+	o.Set("keyPath", sliceToJsArray(p.KeyPath))
 	o.Set("autoIncrement", p.AutoIncrement)
 	return o
 }
