@@ -369,8 +369,16 @@ func (p *windowImpl) ScreenX() int {
 	return p.Get("screenX").Int()
 }
 
+func (p *windowImpl) ScreenLeft() int {
+	return p.Get("screenLeft").Int()
+}
+
 func (p *windowImpl) ScreenY() int {
 	return p.Get("screenY").Int()
+}
+
+func (p *windowImpl) ScreenTop() int {
+	return p.Get("screenTop").Int()
 }
 
 func (p *windowImpl) OuterWidth() int {
@@ -383,6 +391,10 @@ func (p *windowImpl) OuterHeight() int {
 
 func (p *windowImpl) DevicePixelRatio() float64 {
 	return p.Get("devicePixelRatio").Float()
+}
+
+func (p *windowImpl) ComputedStyle(Element, ...string) CSSStyleDeclaration {
+	return newCSSStyleDeclaration(p.Call("getComputedStyle"))
 }
 
 // -------------8<---------------------------------------

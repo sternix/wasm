@@ -14,39 +14,6 @@ type (
 		WindowEventHandlers
 	}
 
-	// https://www.w3.org/TR/cssom-1/#linkstyle
-	LinkStyle interface {
-		Sheet() StyleSheet
-		SetSheet(StyleSheet)
-	}
-
-	// https://www.w3.org/TR/cssom-1/#stylesheet
-	StyleSheet interface {
-		js.Wrapper
-
-		Type() string
-		Href() string
-		OwnerNode() Node
-		ParentStyleSheet() StyleSheet
-		Title() string
-		Media() MediaList
-		Disabled() bool
-		SetDisabled(bool)
-	}
-
-	// (Element or ProcessingInstruction)
-	//StyleSheetOwnerNode Node
-
-	// https://www.w3.org/TR/cssom-1/#medialist
-	MediaList interface {
-		MediaText() string
-		SetMediaText(string)
-		Length() int
-		Item(int) string
-		AppendMedium(string)
-		DeleteMedium(string)
-	}
-
 	// https://www.w3.org/TR/html52/sections.html#htmlheadingelement
 	HTMLHeadingElement interface {
 		HTMLElement

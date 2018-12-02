@@ -26,8 +26,6 @@ type (
 
 	// https://dom.spec.whatwg.org/#event
 	Event interface {
-		js.Wrapper
-
 		Type() string
 		Target() EventTarget
 		CurrentTarget() EventTarget
@@ -230,6 +228,7 @@ type (
 	// https://www.w3.org/TR/uievents/#mouseevent
 	// https://www.w3.org/TR/cssom-view-1/#extensions-to-the-mouseevent-interface
 	MouseEvent interface {
+		js.Wrapper
 		UIEvent
 
 		ScreenX() float64

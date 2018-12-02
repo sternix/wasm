@@ -50,7 +50,7 @@ type (
 		RequestAnimationFrame(FrameRequestCallback) int
 		CancelAnimationFrame(int)
 
-		// https://www.w3.org/TR/cssom-view-1/#extensions-to-the-window-interface
+		// https://drafts.csswg.org/cssom-view/#extensions-to-the-window-interface
 		MatchMedia(string) MediaQueryList
 		Screen() Screen
 		MoveTo(int, int)
@@ -67,16 +67,19 @@ type (
 		ScrollTo(...interface{})
 		ScrollBy(...interface{})
 		ScreenX() int
+		ScreenLeft() int
 		ScreenY() int
+		ScreenTop() int
 		OuterWidth() int
 		OuterHeight() int
 		DevicePixelRatio() float64
+
+		// https://drafts.csswg.org/cssom/#extensions-to-the-window-interface
+		ComputedStyle(Element, ...string) CSSStyleDeclaration
 	}
 
 	// https://www.w3.org/TR/html52/browsers.html#barprop
 	BarProp interface {
-		js.Wrapper
-
 		Visible() bool
 	}
 
@@ -105,8 +108,6 @@ type (
 
 	// https://www.w3.org/TR/html52/browsers.html#history
 	History interface {
-		js.Wrapper
-
 		Length() int
 		ScrollRestoration() ScrollRestorationType
 		SetScrollRestoration(ScrollRestorationType)

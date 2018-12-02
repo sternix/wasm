@@ -837,6 +837,8 @@ func newStaticRange(v js.Value) StaticRange {
 
 type processingInstructionImpl struct {
 	*characterDataImpl
+	*linkStyleImpl
+	js.Value
 }
 
 func newProcessingInstruction(v js.Value) ProcessingInstruction {
@@ -846,11 +848,17 @@ func newProcessingInstruction(v js.Value) ProcessingInstruction {
 
 	return &processingInstructionImpl{
 		characterDataImpl: newCharacterDataImpl(v),
+		linkStyleImpl:     newLinkStyleImpl(v),
+		Value:             v,
 	}
 }
 
 func (p *processingInstructionImpl) Target() string {
 	return p.Get("target").String()
+}
+
+func (p *processingInstructionImpl) Length() int {
+	return p.characterDataImpl.Length()
 }
 
 // -------------8<---------------------------------------
@@ -2013,6 +2021,10 @@ func (p *htmlElementImpl) OffsetWidth() int {
 
 func (p *htmlElementImpl) OffsetHeight() int {
 	return p.Get("offsetHeight").Int()
+}
+
+func (p *htmlElementImpl) Style() CSSStyleDeclaration {
+	return newCSSStyleDeclaration(p.Get("style"))
 }
 
 // -------------8<---------------------------------------

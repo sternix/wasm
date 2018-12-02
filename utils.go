@@ -344,9 +344,9 @@ func toFloat64Slice(v js.Value) []float64 {
 
 func htmlCollectionToElementSlice(v js.Value) []Element {
 	if c := newHTMLCollection(v); c != nil && c.Length() > 0 {
-		var ret []Element
+		ret := make([]Element, c.Length())
 		for i := 0; i < c.Length(); i++ {
-			ret = append(ret, c.Item(i))
+			ret[i] = c.Item(i)
 		}
 		return ret
 	}

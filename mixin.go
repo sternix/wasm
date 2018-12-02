@@ -15,6 +15,7 @@ type (
 	// https://dom.spec.whatwg.org/#documentorshadowroot
 	DocumentOrShadowRoot interface {
 		FullscreenElement() Element
+		StyleSheets() []CSSStyleSheet
 	}
 
 	// https://dom.spec.whatwg.org/#parentnode
@@ -191,6 +192,17 @@ func newDocumentOrShadowRootImpl(v js.Value) *documentOrShadowRootImpl {
 
 func (p *documentOrShadowRootImpl) FullscreenElement() Element {
 	return wrapElement(p.Get("fullscreenElement"))
+}
+
+func (p *documentOrShadowRootImpl) StyleSheets() []CSSStyleSheet {
+	if list := newStyleSheetList(p.Get("styleSheets")); list != nil && list.Length() > 0 {
+		ret := make([]CSSStyleSheet, list.Length())
+		for i := 0; i < list.Length(); i++ {
+			ret[i] = list.Item(i)
+		}
+		return ret
+	}
+	return nil
 }
 
 // -------------8<---------------------------------------

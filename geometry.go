@@ -128,15 +128,6 @@ type (
 	}
 )
 
-type CSSBoxType string
-
-const (
-	CSSBoxTypeMargin  CSSBoxType = "margin"
-	CSSBoxTypeBorder  CSSBoxType = "border"
-	CSSBoxTypePadding CSSBoxType = "padding"
-	CSSBoxTypeContent CSSBoxType = "content"
-)
-
 // -------------8<---------------------------------------
 
 // https://www.w3.org/TR/geometry-1/#dictdef-dompointinit
@@ -172,34 +163,5 @@ func (p DOMRectInit) toDict() js.Value {
 	o.Set("y", p.Y)
 	o.Set("width", p.Width)
 	o.Set("height", p.Height)
-	return o
-}
-
-// -------------8<---------------------------------------
-
-// https://drafts.csswg.org/cssom-view/#dictdef-boxquadoptions
-type BoxQuadOptions struct {
-	Box        CSSBoxType // default "border"
-	RelativeTo GeometryNode
-}
-
-func (p BoxQuadOptions) toDict() js.Value {
-	o := jsObject.New()
-	o.Set("box", string(p.Box))
-	o.Set("relativeTo", p.RelativeTo.JSValue())
-	return o
-}
-
-// -------------8<---------------------------------------
-// https://drafts.csswg.org/cssom-view/#dictdef-convertcoordinateoptions
-type ConvertCoordinateOptions struct {
-	FromBox CSSBoxType // default "border"
-	ToBox   CSSBoxType // default "border"
-}
-
-func (p ConvertCoordinateOptions) toDict() js.Value {
-	o := jsObject.New()
-	o.Set("fromBox", string(p.FromBox))
-	o.Set("toBox", string(p.ToBox))
 	return o
 }

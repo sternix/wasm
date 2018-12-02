@@ -9,81 +9,148 @@ import (
 // https://www.w3.org/TR/cssom-view-1/#idl-index
 
 type (
-	// https://drafts.csswg.org/cssom-view/#screen
-	Screen interface {
-		AvailWidth() int
-		AvailHeight() int
-		Width() int
-		Height() int
-		ColorDepth() int
-		PixelDepth() int
+	// https://drafts.csswg.org/cssom/#medialist
+	MediaList interface {
+		MediaText() string
+		SetMediaText(string)
+		Length() int
+		Item(int) string
+		AppendMedium(string)
+		DeleteMedium(string)
 	}
 
-	// https://www.w3.org/TR/cssom-view-1/#mediaquerylist
-	MediaQueryList interface {
-		EventTarget
-
-		Media() string
-		Matches() bool
-		OnChange(func(Event)) EventHandler
+	// https://drafts.csswg.org/cssom/#stylesheet
+	StyleSheet interface {
+		Type() string
+		Href() string
+		OwnerNode() Node // (Element or ProcessingInstruction) common interface is Node
+		ParentStyleSheet() StyleSheet
+		Title() string
+		Media() MediaList
+		Disabled() bool
+		SetDisabled(bool)
 	}
 
-	// https://www.w3.org/TR/cssom-view-1/#mediaquerylistevent
-	MediaQueryListEvent interface {
-		Event
-
-		Media() string
-		Matches() bool
+	// https://www.w3.org/TR/cssom-1/#linkstyle
+	LinkStyle interface {
+		Sheet() StyleSheet
 	}
 
-	// https://www.w3.org/TR/cssom-view-1/#caretposition
-	CaretPosition interface {
-		OffsetNode() Node
-		Offset() int
-		ClientRect() DOMRect
+	// https://drafts.csswg.org/cssom/#cssstylesheet
+	CSSStyleSheet interface {
+		StyleSheet
+
+		OwnerRule() CSSRule
+		CSSRules() []CSSRule
+		InsertRule(string, ...int) int
+		DeleteRule(int)
+	}
+
+	// https://drafts.csswg.org/cssom/#cssrule
+	CSSRule interface {
+		Type() CSSRuleType
+		CSSText() string
+		SetCSSText(string)
+		ParentRule() CSSRule
+		ParentStyleSheet() CSSStyleSheet
+	}
+
+	// https://drafts.csswg.org/cssom/#stylesheetlist
+	StyleSheetList interface {
+		Item(int) CSSStyleSheet
+		Length() int
+	}
+
+	// https://drafts.csswg.org/cssom/#cssrulelist
+	CSSRuleList interface {
+		Item(int) CSSRule
+		Length() int
+	}
+
+	// https://drafts.csswg.org/cssom/#cssstylerule
+	CSSStyleRule interface {
+		CSSRule
+
+		SelectorText() string
+		SetSelectorText(string)
+		Style() CSSStyleDeclaration
+	}
+
+	// https://drafts.csswg.org/cssom/#cssimportrule
+	CSSImportRule interface {
+		CSSRule
+
+		Href() string
+		Media() MediaList
+		StyleSheet() CSSStyleSheet
+	}
+
+	// https://drafts.csswg.org/cssom/#cssgroupingrule
+	CSSGroupingRule interface {
+		CSSRule
+
+		CSSRules() []CSSRule
+		insertRule(string, ...int) int
+		DeleteRule(int)
+	}
+
+	// https://drafts.csswg.org/cssom/#csspagerule
+	CSSPageRule interface {
+		CSSGroupingRule
+
+		SelectorText() string
+		SetSelectorText(string)
+		Style() CSSStyleDeclaration
+	}
+
+	// https://drafts.csswg.org/cssom/#cssmarginrule
+	CSSMarginRule interface {
+		CSSRule
+
+		Name() string
+		Style() CSSStyleDeclaration
+	}
+
+	// https://drafts.csswg.org/cssom/#cssnamespacerule
+	CSSNamespaceRule interface {
+		CSSRule
+
+		NamespaceURI() string
+		Prefix() string
+	}
+
+	// https://drafts.csswg.org/cssom/#cssstyledeclaration
+	CSSStyleDeclaration interface {
+		CSSText() string
+		SetCSSText(string)
+		Length() int
+		Item(int) string
+		PropertyValue(string) string
+		PropertyPriority(string) string
+		SetProperty(string, string, ...string)
+		RemoveProperty(string) string
+		ParentRule() CSSRule
+		CSSFloat() string
+		SetCSSFloat(string)
 	}
 )
 
-// https://www.w3.org/TR/cssom-view-1/#enumdef-scrolllogicalposition
-type ScrollLogicalPosition string
+// https://drafts.csswg.org/cssom/#namespacedef-css
+func CSSEscape(ident string) string {
+	return js.Global().Invoke("CSS.escape", ident).String()
+}
+
+// -------------8<---------------------------------------
+
+type CSSRuleType uint
 
 const (
-	ScrollLogicalPositionStart   ScrollLogicalPosition = "start"
-	ScrollLogicalPositionCenter  ScrollLogicalPosition = "center"
-	ScrollLogicalPositionEnd     ScrollLogicalPosition = "end"
-	ScrollLogicalPositionNearest ScrollLogicalPosition = "nearest"
+	CSSRuleTypeStyle     CSSRuleType = 1
+	CSSRuleTypeCharset   CSSRuleType = 2
+	CSSRuleTypeImport    CSSRuleType = 3
+	CSSRuleTypeMedia     CSSRuleType = 4
+	CSSRuleTypeFontFace  CSSRuleType = 5
+	CSSRuleTypePage      CSSRuleType = 6
+	CSSRuleTypeMargin    CSSRuleType = 9
+	CSSRuleTypeNamespace CSSRuleType = 10
 )
-
-// -------------8<---------------------------------------
-
-// https://www.w3.org/TR/cssom-view-1/#dictdef-scrollintoviewoptions
-type ScrollIntoViewOptions struct {
-	ScrollOptions
-
-	Block  ScrollLogicalPosition // default "center"
-	Inline ScrollLogicalPosition // default "center"
-}
-
-func (p ScrollIntoViewOptions) toDict() js.Value {
-	o := p.ScrollOptions.toDict()
-	o.Set("block", string(p.Block))
-	o.Set("inline", string(p.Inline))
-	return o
-}
-
-// -------------8<---------------------------------------
-
-// https://www.w3.org/TR/cssom-view-1/#dictdef-mediaquerylisteventinit
-type MediaQueryListEventInit struct {
-	EventInit
-
-	Media   string
-	Matches bool
-}
-
-func (p MediaQueryListEventInit) toDict() js.Value {
-	o := p.EventInit.toDict()
-	o.Set("media", p.Media)
-	o.Set("matches", p.Matches)
-	return o
-}

@@ -132,6 +132,26 @@ func wrapObject(v js.Value) interface{} {
 		return newConsole(v)
 	case "Coordinates":
 		return newCoordinates(v)
+	case "CSSStyleSheet":
+		return newCSSStyleSheet(v)
+	case "CSSRule":
+		return newCSSRule(v)
+	case "CSSRuleList":
+		return newCSSRuleList(v)
+	case "CSSStyleRule":
+		return newCSSStyleRule(v)
+	case "CSSImportRule":
+		return newCSSImportRule(v)
+	case "CSSGroupingRule":
+		return newCSSGroupingRule(v)
+	case "CSSPageRule":
+		return newCSSPageRule(v)
+	case "CSSMarginRule":
+		return newCSSMarginRule(v)
+	case "CSSNamespaceRule":
+		return newCSSNamespaceRule(v)
+	case "CSSStyleDeclaration":
+		return newCSSStyleDeclaration(v)
 	case "CustomEvent":
 		return newCustomEvent(v)
 	case "DOMException":
@@ -484,6 +504,8 @@ func wrapObject(v js.Value) interface{} {
 		return newStorage(v)
 	case "StyleSheet":
 		return newStyleSheet(v)
+	case "StyleSheetList":
+		return newStyleSheetList(v)
 	case "TexImageSource":
 		return newTexImageSource(v)
 	case "TextDecoderCommon":

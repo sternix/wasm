@@ -94,7 +94,7 @@ type (
 		QueryCommandValue(string) string
 		OnReadyStateChange(func(Event)) EventHandler
 
-		// https://www.w3.org/TR/cssom-view-1/#extensions-to-the-document-interface
+		// https://drafts.csswg.org/cssom-view/#extensions-to-the-document-interface
 		ElementFromPoint(float64, float64) Element
 		ElementsFromPoint(float64, float64) []Element
 		CaretPositionFromPoint(float64, float64) CaretPosition
@@ -179,7 +179,7 @@ type (
 		ComparePoint(Node, int) int
 		IntersectsNode(Node) bool
 
-		// https://www.w3.org/TR/cssom-view-1/#extensions-to-the-range-interface
+		// https://drafts.csswg.org/cssom-view/#extensions-to-the-range-interface
 		ClientRects() []DOMRect
 		BoundingClientRect() DOMRect
 
@@ -207,6 +207,7 @@ type (
 	// https://dom.spec.whatwg.org/#processinginstruction
 	ProcessingInstruction interface {
 		CharacterData
+		LinkStyle
 
 		Target() string
 	}
@@ -376,6 +377,7 @@ type (
 		DocumentFragment
 		DocumentOrShadowRoot
 		ParentNode
+
 		Mode() ShadowRootMode
 		Host() Element
 	}
@@ -503,6 +505,9 @@ type (
 		OffsetLeft() int
 		OffsetWidth() int
 		OffsetHeight() int
+
+		// https://drafts.csswg.org/cssom/#elementcssinlinestyle
+		Style() CSSStyleDeclaration
 	}
 
 	// https://www.w3.org/TR/html52/dom.html#domstringmap
@@ -597,15 +602,6 @@ const (
 	NodeFilterShowFragment              NodeFilterShow = 0x400
 )
 
-// https://www.w3.org/TR/cssom-view-1/#enumdef-scrollbehavior
-type ScrollBehavior string
-
-const (
-	ScrollBehaviorAuto    ScrollBehavior = "auto"
-	ScrollBehaviorInstant ScrollBehavior = "instant"
-	ScrollBehaviorSmooth  ScrollBehavior = "smooth"
-)
-
 // https://www.w3.org/TR/DOM-Parsing/
 type SupportedType string
 
@@ -682,31 +678,3 @@ func (p MutationObserverInit) toDict() js.Value {
 }
 
 // -------------8<---------------------------------------
-
-// https://www.w3.org/TR/cssom-view-1/#dictdef-scrolloptions
-type ScrollOptions struct {
-	Behavior ScrollBehavior
-}
-
-func (p ScrollOptions) toDict() js.Value {
-	o := jsObject.New()
-	o.Set("behavior", string(p.Behavior))
-	return o
-}
-
-// -------------8<---------------------------------------
-
-// https://www.w3.org/TR/cssom-view-1/#dictdef-scrolltooptions
-type ScrollToOptions struct {
-	ScrollOptions
-
-	Left float64
-	Top  float64
-}
-
-func (p ScrollToOptions) toDict() js.Value {
-	o := p.ScrollOptions.toDict()
-	o.Set("left", p.Left)
-	o.Set("top", p.Top)
-	return o
-}
