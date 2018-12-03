@@ -165,6 +165,20 @@ func elementArrayToSlice(v js.Value) []Element {
 
 // -------------8<---------------------------------------
 
+func domQuadArrayToSlice(v js.Value) []DOMQuad {
+	if !isNil(v) && v.Length() > 0 {
+		ret := make([]DOMQuad, v.Length())
+		for i := range ret {
+			ret[i] = newDOMQuad(v.Index(i))
+		}
+		return ret
+	}
+
+	return nil
+}
+
+// -------------8<---------------------------------------
+
 func stringSequenceToSlice(s js.Value) []string {
 	if isNil(s) {
 		return nil

@@ -15,6 +15,7 @@ type documentImpl struct {
 	*parentNodeImpl
 	*globalEventHandlersImpl
 	*documentAndElementEventHandlersImpl
+	*geometryUtilsImpl
 	js.Value
 }
 
@@ -37,6 +38,7 @@ func newDocumentImpl(v js.Value) *documentImpl {
 		parentNodeImpl:                      newParentNodeImpl(v),
 		globalEventHandlersImpl:             newGlobalEventHandlersImpl(v),
 		documentAndElementEventHandlersImpl: newDocumentAndElementEventHandlersImpl(v),
+		geometryUtilsImpl:                   newGeometryUtilsImpl(v),
 		Value:                               v,
 	}
 }
@@ -896,6 +898,7 @@ func newCDATASection(v js.Value) CDATASection {
 type textImpl struct {
 	*characterDataImpl
 	*slotableImpl
+	*geometryUtilsImpl
 	js.Value
 }
 
@@ -914,6 +917,7 @@ func newTextImpl(v js.Value) *textImpl {
 	return &textImpl{
 		characterDataImpl: newCharacterDataImpl(v),
 		slotableImpl:      newSlotableImpl(v),
+		geometryUtilsImpl: newGeometryUtilsImpl(v),
 		Value:             v,
 	}
 }
@@ -1185,6 +1189,7 @@ type elementImpl struct {
 	*nonDocumentTypeChildNodeImpl
 	*childNodeImpl
 	*slotableImpl
+	*geometryUtilsImpl
 	js.Value
 }
 
@@ -1206,6 +1211,7 @@ func newElementImpl(v js.Value) *elementImpl {
 		nonDocumentTypeChildNodeImpl: newNonDocumentTypeChildNodeImpl(v),
 		childNodeImpl:                newChildNodeImpl(v),
 		slotableImpl:                 newSlotableImpl(v),
+		geometryUtilsImpl:            newGeometryUtilsImpl(v),
 		Value:                        v,
 	}
 }

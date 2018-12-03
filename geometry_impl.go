@@ -63,6 +63,24 @@ func NewDOMQuad(dri ...DOMRectInit) DOMQuad {
 	}
 }
 
+func DOMQuadFromRect(other ...DOMRectInit) DOMQuad {
+	switch len(other) {
+	case 0:
+		return newDOMQuad(js.Global().Invoke("DOMQuad.fromRect"))
+	default:
+		return newDOMQuad(js.Global().Invoke("DOMQuad.fromRect", other[0].toDict()))
+	}
+}
+
+func DOMQuadFromQuad(other ...DOMQuadInit) DOMQuad {
+	switch len(other) {
+	case 0:
+		return newDOMQuad(js.Global().Invoke("DOMQuad.fromQuad"))
+	default:
+		return newDOMQuad(js.Global().Invoke("DOMQuad.fromQuad", other[0].toDict()))
+	}
+}
+
 func NewDOMMatrixReadOnly(numberSequence []float64) DOMMatrixReadOnly {
 	jsDOMMatrixReadOnly := js.Global().Get("DOMMatrixReadOnly")
 	if isNil(jsDOMMatrixReadOnly) {

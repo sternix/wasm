@@ -128,6 +128,113 @@ func (p *caretPositionImpl) ClientRect() DOMRect {
 
 // -------------8<---------------------------------------
 
+type geometryUtilsImpl struct {
+	js.Value
+}
+
+func newGeometryUtils(v js.Value) GeometryUtils {
+	if p := newGeometryUtilsImpl(v); p != nil {
+		return p
+	}
+	return nil
+}
+
+func newGeometryUtilsImpl(v js.Value) *geometryUtilsImpl {
+	if isNil(v) {
+		return nil
+	}
+	return &geometryUtilsImpl{
+		Value: v,
+	}
+}
+
+func (p *geometryUtilsImpl) BoxQuads(options ...BoxQuadOptions) []DOMQuad {
+	switch len(options) {
+	case 0:
+		return domQuadArrayToSlice(p.Call("getBoxQuads"))
+	default:
+		return domQuadArrayToSlice(p.Call("getBoxQuads", options[0].toDict()))
+	}
+}
+
+func (p *geometryUtilsImpl) ConvertQuadFromNode(quad DOMQuadInit, from GeometryNode, options ...ConvertCoordinateOptions) DOMQuad {
+	switch len(options) {
+	case 0:
+		return newDOMQuad(p.Call("convertQuadFromNode", quad.toDict(), from.JSValue()))
+	default:
+		return newDOMQuad(p.Call("convertQuadFromNode", quad.toDict(), from.JSValue(), options[0].toDict()))
+	}
+}
+
+func (p *geometryUtilsImpl) ConvertRectFromNode(rect DOMRectReadOnly, from GeometryNode, options ...ConvertCoordinateOptions) DOMQuad {
+	switch len(options) {
+	case 0:
+		return newDOMQuad(p.Call("convertRectFromNode", rect.JSValue(), from.JSValue()))
+	default:
+		return newDOMQuad(p.Call("convertRectFromNode", rect.JSValue(), from.JSValue(), options[0].toDict()))
+	}
+}
+
+func (p *geometryUtilsImpl) ConvertPointFromNode(point DOMPointInit, from GeometryNode, options ...ConvertCoordinateOptions) DOMPoint {
+	switch len(options) {
+	case 0:
+		return newDOMPoint(p.Call("convertPointFromNode", point.toDict(), from.JSValue()))
+	default:
+		return newDOMPoint(p.Call("convertPointFromNode", point.toDict(), from.JSValue(), options[0].toDict()))
+	}
+}
+
+// -------------8<---------------------------------------
+
+type cssPseudoElementImpl struct {
+	*eventTargetImpl
+}
+
+func newCSSPseudoElement(v js.Value) CSSPseudoElement {
+	if isNil(v) {
+		return nil
+	}
+	return &cssPseudoElementImpl{
+		eventTargetImpl: newEventTargetImpl(v),
+	}
+}
+
+func (p *cssPseudoElementImpl) Type() string {
+	return p.Get("type").String()
+}
+
+func (p *cssPseudoElementImpl) Style() CSSStyleDeclaration {
+	return newCSSStyleDeclaration(p.Get("style"))
+}
+
+// -------------8<---------------------------------------
+
+type cssPseudoElementListImpl struct {
+	js.Value
+}
+
+func newCSSPseudoElementList(v js.Value) CSSPseudoElementList {
+	if isNil(v) {
+		return nil
+	}
+	return &cssPseudoElementListImpl{
+		Value: v,
+	}
+}
+
+func (p *cssPseudoElementListImpl) Length() int {
+	return p.Get("length").Int()
+}
+
+func (p *cssPseudoElementListImpl) Item(index int) CSSPseudoElement {
+	return newCSSPseudoElement(p.Call("item", index))
+}
+
+func (p *cssPseudoElementListImpl) ByType(typ string) CSSPseudoElement {
+	return newCSSPseudoElement(p.Call("getByType", typ))
+}
+
+// -------------8<---------------------------------------
 func NewMediaQueryListEvent(typ string, eventInitDict ...MediaQueryListEventInit) MediaQueryListEvent {
 	jsMQLE := js.Global().Get("MediaQueryListEvent")
 

@@ -121,11 +121,6 @@ type (
 		InverseSelf() DOMMatrix
 		SetMatrixValue(string) DOMMatrix
 	}
-
-	// typedef (Text or Element or CSSPseudoElement or Document) GeometryNode
-	GeometryNode interface {
-		js.Wrapper
-	}
 )
 
 // -------------8<---------------------------------------
@@ -163,5 +158,25 @@ func (p DOMRectInit) toDict() js.Value {
 	o.Set("y", p.Y)
 	o.Set("width", p.Width)
 	o.Set("height", p.Height)
+	return o
+}
+
+// -------------8<---------------------------------------
+
+//https://drafts.fxtf.org/geometry-1/#dictdef-domquadinit
+
+type DOMQuadInit struct {
+	P1 DOMPointInit
+	P2 DOMPointInit
+	P3 DOMPointInit
+	P4 DOMPointInit
+}
+
+func (p DOMQuadInit) toDict() js.Value {
+	o := jsObject.New()
+	o.Set("p1", p.P1.toDict())
+	o.Set("p2", p.P2.toDict())
+	o.Set("p3", p.P3.toDict())
+	o.Set("p4", p.P4.toDict())
 	return o
 }

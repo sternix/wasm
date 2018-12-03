@@ -11,6 +11,10 @@ type (
 		SetOpen(bool)
 	}
 
+	/*
+	   in firefox -> about:config -> dom.dialog_element.enabled -> true
+	*/
+
 	// https://www.w3.org/TR/html52/interactive-elements.html#htmldialogelement
 	HTMLDialogElement interface {
 		HTMLElement

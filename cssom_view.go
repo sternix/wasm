@@ -46,7 +46,34 @@ type (
 	// (Element or ProcessingInstruction)
 	//StyleSheetOwnerNode Node
 
-	// TODO: https://drafts.csswg.org/cssom-view/#geometryutils
+	// typedef (Text or Element or CSSPseudoElement or Document) GeometryNode;
+	// https://drafts.csswg.org/cssom-view/#typedefdef-geometrynode
+	GeometryNode interface {
+		js.Wrapper
+	}
+
+	// https://drafts.csswg.org/cssom-view/#geometryutils
+	GeometryUtils interface {
+		BoxQuads(...BoxQuadOptions) []DOMQuad
+		ConvertQuadFromNode(DOMQuadInit, GeometryNode, ...ConvertCoordinateOptions) DOMQuad
+		ConvertRectFromNode(DOMRectReadOnly, GeometryNode, ...ConvertCoordinateOptions) DOMQuad
+		ConvertPointFromNode(DOMPointInit, GeometryNode, ...ConvertCoordinateOptions) DOMPoint
+	}
+
+	// https://drafts.csswg.org/css-pseudo-4/#csspseudoelement
+	CSSPseudoElement interface {
+		EventTarget
+
+		Type() string
+		Style() CSSStyleDeclaration
+	}
+
+	// https://drafts.csswg.org/css-pseudo-4/#csspseudoelementlist
+	CSSPseudoElementList interface {
+		Length() int
+		Item(int) CSSPseudoElement
+		ByType(string) CSSPseudoElement
+	}
 )
 
 // -------------8<---------------------------------------

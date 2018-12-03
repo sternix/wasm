@@ -397,6 +397,18 @@ func (p *windowImpl) ComputedStyle(Element, ...string) CSSStyleDeclaration {
 	return newCSSStyleDeclaration(p.Call("getComputedStyle"))
 }
 
+func (p *windowImpl) PseudoElements(elt Element, typ string) []CSSPseudoElement {
+	l := newCSSPseudoElementList(p.Call("getPseudoElements", elt.JSValue(), typ))
+	if l != nil && l.Length() > 0 {
+		ret := make([]CSSPseudoElement, l.Length())
+		for i := range ret {
+			ret[i] = l.Item(i)
+		}
+		return ret
+	}
+	return nil
+}
+
 // -------------8<---------------------------------------
 
 type barPropImpl struct {

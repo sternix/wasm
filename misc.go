@@ -146,6 +146,8 @@ func wrapObject(v js.Value) interface{} {
 		return newCSSGroupingRule(v)
 	case "CSSPageRule":
 		return newCSSPageRule(v)
+	case "CSSPseudoElement":
+		return newCSSPseudoElement(v)
 	case "CSSMarginRule":
 		return newCSSMarginRule(v)
 	case "CSSNamespaceRule":

@@ -76,6 +76,9 @@ type (
 
 		// https://drafts.csswg.org/cssom/#extensions-to-the-window-interface
 		ComputedStyle(Element, ...string) CSSStyleDeclaration
+
+		// https://drafts.csswg.org/css-pseudo-4/#window-interface
+		PseudoElements(Element, string) []CSSPseudoElement
 	}
 
 	// https://www.w3.org/TR/html52/browsers.html#barprop

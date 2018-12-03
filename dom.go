@@ -13,6 +13,7 @@ type (
 		NonElementParentNode
 		DocumentOrShadowRoot
 		ParentNode
+		GeometryUtils
 
 		Implementation() DOMImplementation
 		URL() string
@@ -199,7 +200,6 @@ type (
 	}
 
 	// https://dom.spec.whatwg.org/#staticrange
-
 	StaticRange interface {
 		AbstractRange
 	}
@@ -224,8 +224,10 @@ type (
 
 	// https://dom.spec.whatwg.org/#text
 	Text interface {
+		js.Wrapper
 		CharacterData
 		Slotable
+		GeometryUtils
 
 		SplitText(int) Text
 		WholeText() string
@@ -299,6 +301,7 @@ type (
 		NonDocumentTypeChildNode
 		ChildNode
 		Slotable
+		GeometryUtils
 
 		NamespaceURI() string
 		Prefix() string
@@ -535,7 +538,7 @@ type (
 	}
 )
 
-type NodeType int
+type NodeType uint
 
 const (
 	NodeTypeElement               NodeType = 1
@@ -552,7 +555,8 @@ const (
 	NodeTypeNotation              NodeType = 12
 )
 
-type DocumentPosition int
+// https://dom.spec.whatwg.org/#dom-node-comparedocumentposition
+type DocumentPosition uint
 
 const (
 	DocumentPositionDisconnected           DocumentPosition = 0x01
