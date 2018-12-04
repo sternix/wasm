@@ -90,7 +90,7 @@ type (
 		CSSRule
 
 		CSSRules() []CSSRule
-		insertRule(string, ...int) int
+		InsertRule(string, ...int) int
 		DeleteRule(int)
 	}
 

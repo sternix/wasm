@@ -45,14 +45,15 @@ func main() {
 	}
 	doc.Body().AppendChild(clock)
 
+	var rafcb int
 	fn := func(cb wasm.FrameRequestCallback, t time.Time) {
 		clock.SetInnerHTML(time.Now().Format("15:04:05"))
-		win.RequestAnimationFrame(cb)
+		rafcb = win.RequestAnimationFrame(cb)
 	}
 
 	frcb := wasm.NewFrameRequestCallback(fn)
 
-	win.RequestAnimationFrame(frcb)
+	rafcb = win.RequestAnimationFrame(frcb)
 
 	TestWebSocket(doc)
 
@@ -234,6 +235,9 @@ func main() {
 	fmt.Println("All Tests completed")
 
 	wasm.Wait()
+
+	win.CancelAnimationFrame(rafcb)
+	frcb.Release()
 }
 
 // skip for now

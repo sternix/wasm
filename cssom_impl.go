@@ -350,7 +350,7 @@ func (p *cssGroupingRuleImpl) CSSRules() []CSSRule {
 	return nil
 }
 
-func (p *cssGroupingRuleImpl) insertRule(rule string, index ...int) int {
+func (p *cssGroupingRuleImpl) InsertRule(rule string, index ...int) int {
 	switch len(index) {
 	case 0:
 		return p.Call("insertRule", rule).Int()
