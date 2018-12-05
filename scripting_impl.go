@@ -181,6 +181,35 @@ func (p *htmlCanvasElementImpl) Context2D(alpha ...bool) CanvasRenderingContext2
 	return newCanvasRenderingContext2D(p.Call("getContext", "2d"))
 }
 
+func (p *htmlCanvasElementImpl) ContextWebGL(attrs ...WebGLContextAttributes) WebGLRenderingContext {
+	var v js.Value
+
+	switch len(attrs) {
+	case 0:
+		v = p.Call("getContext", "webgl")
+		if v == js.Undefined() {
+			v = p.Call("getContext", "experimental-webgl")
+		}
+
+		if isNil(v) {
+			return nil
+		}
+	default:
+		v = p.Call("getContext", "webgl", attrs[0].toDict())
+		if v == js.Undefined() {
+			v = p.Call("getContext", "experimental-webgl", attrs[0].toDict())
+		}
+
+		if isNil(v) {
+			return nil
+		}
+	}
+
+	return newWebGLRenderingContext(v)
+}
+
+// TODO: removed from standart
+// https://github.com/whatwg/html/commit/2cfb8e3f03d3166842d2ad0f661459d26e2a40eb
 func (p *htmlCanvasElementImpl) ProbablySupportsContext(ctxId string, args ...interface{}) bool {
 	// TODO
 	return p.Call("probablySupportsContext", ctxId).Bool()
