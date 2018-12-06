@@ -291,7 +291,14 @@ func (p *webGLRenderingContextBaseImpl) BindAttribLocation(program WebGLProgram,
 }
 
 func (p *webGLRenderingContextBaseImpl) BindBuffer(target GLenum, buffer WebGLBuffer) {
-	p.Call("bindBuffer", uint(target), buffer.JSValue())
+	var b js.Value
+	if buffer != nil {
+		b = buffer.JSValue()
+	} else {
+		b = js.Null()
+	}
+
+	p.Call("bindBuffer", uint(target), b)
 }
 
 func (p *webGLRenderingContextBaseImpl) BindFramebuffer(target GLenum, framebuffer WebGLFramebuffer) {

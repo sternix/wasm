@@ -33,7 +33,6 @@ func ws_time(w http.ResponseWriter, r *http.Request) {
 }
 
 func index(w http.ResponseWriter, r *http.Request) {
-
 	if len(r.URL.Path[1:]) > 0 {
 		http.ServeFile(w, r, r.URL.Path[1:])
 	} else {
