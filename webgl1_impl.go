@@ -302,7 +302,11 @@ func (p *webGLRenderingContextBaseImpl) BindBuffer(target GLenum, buffer WebGLBu
 }
 
 func (p *webGLRenderingContextBaseImpl) BindFramebuffer(target GLenum, framebuffer WebGLFramebuffer) {
-	p.Call("bindFramebuffer", uint(target), framebuffer.JSValue())
+	if framebuffer != nil {
+		p.Call("bindFramebuffer", uint(target), framebuffer.JSValue())
+	} else {
+		p.Call("bindFramebuffer", uint(target), js.Null())
+	}
 }
 
 func (p *webGLRenderingContextBaseImpl) BindRenderbuffer(target GLenum, renderbuffer WebGLRenderbuffer) {
@@ -313,7 +317,7 @@ func (p *webGLRenderingContextBaseImpl) BindTexture(target GLenum, texture WebGL
 	p.Call("bindTexture", uint(target), texture.JSValue())
 }
 
-func (p *webGLRenderingContextBaseImpl) BlendColor(red, green, blue, alpha float64) {
+func (p *webGLRenderingContextBaseImpl) BlendColor(red, green, blue, alpha float32) {
 	p.Call("blendColor", red, green, blue, alpha)
 }
 
@@ -337,12 +341,12 @@ func (p *webGLRenderingContextBaseImpl) BufferData(target GLenum, size int, usag
 	p.Call("bufferData", uint(target), size, uint(usage))
 }
 
-func (p *webGLRenderingContextBaseImpl) BufferDataSource(target GLenum, data ArrayBufferView, usage GLenum) {
+func (p *webGLRenderingContextBaseImpl) BufferDataSource(target GLenum, data BufferSource, usage GLenum) {
 	p.Call("bufferData", uint(target), data.JSValue(), uint(usage))
 }
 
-func (p *webGLRenderingContextBaseImpl) BufferSubData(target GLenum, offset int, data ArrayBufferView) {
-	p.Call("bufferSubData", uint(target), offset, data)
+func (p *webGLRenderingContextBaseImpl) BufferSubData(target GLenum, offset int, data BufferSource) {
+	p.Call("bufferSubData", uint(target), offset, data.JSValue())
 }
 
 func (p *webGLRenderingContextBaseImpl) CheckFramebufferStatus(target GLenum) GLenum {
@@ -353,11 +357,11 @@ func (p *webGLRenderingContextBaseImpl) Clear(mask GLenum) {
 	p.Call("clear", uint(mask))
 }
 
-func (p *webGLRenderingContextBaseImpl) ClearColor(red, green, blue, alpha float64) {
+func (p *webGLRenderingContextBaseImpl) ClearColor(red, green, blue, alpha float32) {
 	p.Call("clearColor", red, green, blue, alpha)
 }
 
-func (p *webGLRenderingContextBaseImpl) ClearDepth(depth float64) {
+func (p *webGLRenderingContextBaseImpl) ClearDepth(depth float32) {
 	p.Call("clearDepth", depth)
 }
 
@@ -449,7 +453,7 @@ func (p *webGLRenderingContextBaseImpl) DepthMask(flag bool) {
 	p.Call("depthMask", flag)
 }
 
-func (p *webGLRenderingContextBaseImpl) DepthRange(zNear, zFar float64) {
+func (p *webGLRenderingContextBaseImpl) DepthRange(zNear, zFar float32) {
 	p.Call("depthRange", zNear, zFar)
 }
 
@@ -627,7 +631,7 @@ func (p *webGLRenderingContextBaseImpl) IsTexture(texture WebGLTexture) bool {
 	return p.Call("isTexture", texture.JSValue()).Bool()
 }
 
-func (p *webGLRenderingContextBaseImpl) LineWidth(width float64) {
+func (p *webGLRenderingContextBaseImpl) LineWidth(width float32) {
 	p.Call("lineWidth", width)
 }
 
@@ -639,7 +643,7 @@ func (p *webGLRenderingContextBaseImpl) PixelStorei(pname GLenum, param int) {
 	p.Call("pixelStorei", uint(pname), param)
 }
 
-func (p *webGLRenderingContextBaseImpl) PolygonOffset(factor float64, units float64) {
+func (p *webGLRenderingContextBaseImpl) PolygonOffset(factor float32, units float32) {
 	p.Call("polygonOffset", factor, units)
 }
 
@@ -651,7 +655,7 @@ func (p *webGLRenderingContextBaseImpl) RenderbufferStorage(target GLenum, forma
 	p.Call("renderbufferStorage", uint(target), uint(format), width, height)
 }
 
-func (p *webGLRenderingContextBaseImpl) SampleCoverage(value float64, invert bool) {
+func (p *webGLRenderingContextBaseImpl) SampleCoverage(value float32, invert bool) {
 	p.Call("sampleCoverage", value, invert)
 }
 
@@ -688,14 +692,18 @@ func (p *webGLRenderingContextBaseImpl) StencilOpSeparate(face, fail, zfail, zpa
 }
 
 func (p *webGLRenderingContextBaseImpl) TexImage2DBuffer(target GLenum, level int, internalFormat int, width int, height int, border int, format GLenum, typ GLenum, pixels ArrayBufferView) {
-	p.Call("texImage2D", uint(target), level, internalFormat, width, height, border, uint(format), uint(typ), pixels.JSValue())
+	if pixels != nil {
+		p.Call("texImage2D", uint(target), level, internalFormat, width, height, border, uint(format), uint(typ), pixels.JSValue())
+	} else {
+		p.Call("texImage2D", uint(target), level, internalFormat, width, height, border, uint(format), uint(typ), nil)
+	}
 }
 
 func (p *webGLRenderingContextBaseImpl) TexImage2DSource(target GLenum, level int, internalFormat int, format GLenum, typ GLenum, source TexImageSource) {
 	p.Call("texImage2D", uint(target), level, internalFormat, uint(format), uint(typ), source.JSValue())
 }
 
-func (p *webGLRenderingContextBaseImpl) TexParameterf(target GLenum, pname GLenum, param float64) {
+func (p *webGLRenderingContextBaseImpl) TexParameterf(target GLenum, pname GLenum, param float32) {
 	p.Call("texParameterf", uint(target), uint(pname), param)
 }
 
@@ -711,19 +719,19 @@ func (p *webGLRenderingContextBaseImpl) TexSubImage2DSource(target GLenum, level
 	p.Call("texSubImage2D", uint(target), level, xoffset, yoffset, uint(format), uint(typ), source.JSValue())
 }
 
-func (p *webGLRenderingContextBaseImpl) Uniform1f(location WebGLUniformLocation, x float64) {
+func (p *webGLRenderingContextBaseImpl) Uniform1f(location WebGLUniformLocation, x float32) {
 	p.Call("uniform1f", location.JSValue(), x)
 }
 
-func (p *webGLRenderingContextBaseImpl) Uniform2f(location WebGLUniformLocation, x float64, y float64) {
+func (p *webGLRenderingContextBaseImpl) Uniform2f(location WebGLUniformLocation, x float32, y float32) {
 	p.Call("uniform2f", location.JSValue(), x, y)
 }
 
-func (p *webGLRenderingContextBaseImpl) Uniform3f(location WebGLUniformLocation, x float64, y float64, z float64) {
+func (p *webGLRenderingContextBaseImpl) Uniform3f(location WebGLUniformLocation, x float32, y float32, z float32) {
 	p.Call("uniform3f", location.JSValue(), x, y, z)
 }
 
-func (p *webGLRenderingContextBaseImpl) Uniform4f(location WebGLUniformLocation, x float64, y float64, z float64, w float64) {
+func (p *webGLRenderingContextBaseImpl) Uniform4f(location WebGLUniformLocation, x float32, y float32, z float32, w float32) {
 	p.Call("uniform4f", location.JSValue(), x, y, z, w)
 }
 
@@ -817,19 +825,19 @@ func (p *webGLRenderingContextBaseImpl) ValidateProgram(program WebGLProgram) {
 	p.Call("validateProgram", program.JSValue())
 }
 
-func (p *webGLRenderingContextBaseImpl) VertexAttrib1f(index uint, x float64) {
+func (p *webGLRenderingContextBaseImpl) VertexAttrib1f(index uint, x float32) {
 	p.Call("vertexAttrib1f", index, x)
 }
 
-func (p *webGLRenderingContextBaseImpl) VertexAttrib2f(index uint, x, y float64) {
+func (p *webGLRenderingContextBaseImpl) VertexAttrib2f(index uint, x, y float32) {
 	p.Call("vertexAttrib2f", index, x, y)
 }
 
-func (p *webGLRenderingContextBaseImpl) VertexAttrib3f(index uint, x, y, z float64) {
+func (p *webGLRenderingContextBaseImpl) VertexAttrib3f(index uint, x, y, z float32) {
 	p.Call("vertexAttrib3f", index, x, y, z)
 }
 
-func (p *webGLRenderingContextBaseImpl) VertexAttrib4f(index uint, x, y, z, w float64) {
+func (p *webGLRenderingContextBaseImpl) VertexAttrib4f(index uint, x, y, z, w float32) {
 	p.Call("vertexAttrib4f", index, x, y, z, w)
 }
 

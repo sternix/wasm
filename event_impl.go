@@ -185,11 +185,11 @@ func (p *eventImpl) Type() string {
 }
 
 func (p *eventImpl) Target() EventTarget {
-	return newEventTargetImpl(p.Get("target"))
+	return wrapEventTarget(p.Get("target"))
 }
 
 func (p *eventImpl) CurrentTarget() EventTarget {
-	return newEventTargetImpl(p.Get("currentTarget"))
+	return wrapEventTarget(p.Get("currentTarget"))
 }
 
 func (p *eventImpl) ComposedPath() []EventTarget {
