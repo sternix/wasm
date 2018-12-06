@@ -349,8 +349,8 @@ func (p *webGLRenderingContextBaseImpl) CheckFramebufferStatus(target GLenum) GL
 	return GLenum(p.Call("checkFramebufferStatus", uint(target)).Int())
 }
 
-func (p *webGLRenderingContextBaseImpl) Clear(mask uint) {
-	p.Call("clear", mask)
+func (p *webGLRenderingContextBaseImpl) Clear(mask GLenum) {
+	p.Call("clear", uint(mask))
 }
 
 func (p *webGLRenderingContextBaseImpl) ClearColor(red, green, blue, alpha float64) {
@@ -743,25 +743,25 @@ func (p *webGLRenderingContextBaseImpl) Uniform4i(location WebGLUniformLocation,
 	p.Call("uniform4i", location.JSValue(), x, y, z, w)
 }
 
-func (p *webGLRenderingContextBaseImpl) Uniform1fv(location WebGLUniformLocation, v []float64) {
+func (p *webGLRenderingContextBaseImpl) Uniform1fv(location WebGLUniformLocation, v []float32) {
 	ta := js.TypedArrayOf(v)
 	p.Call("uniform1fv", location.JSValue(), ta)
 	ta.Release()
 }
 
-func (p *webGLRenderingContextBaseImpl) Uniform2fv(location WebGLUniformLocation, v []float64) {
+func (p *webGLRenderingContextBaseImpl) Uniform2fv(location WebGLUniformLocation, v []float32) {
 	ta := js.TypedArrayOf(v)
 	p.Call("uniform2fv", location.JSValue(), ta)
 	ta.Release()
 }
 
-func (p *webGLRenderingContextBaseImpl) Uniform3fv(location WebGLUniformLocation, v []float64) {
+func (p *webGLRenderingContextBaseImpl) Uniform3fv(location WebGLUniformLocation, v []float32) {
 	ta := js.TypedArrayOf(v)
 	p.Call("uniform3fv", location.JSValue(), ta)
 	ta.Release()
 }
 
-func (p *webGLRenderingContextBaseImpl) Uniform4fv(location WebGLUniformLocation, v []float64) {
+func (p *webGLRenderingContextBaseImpl) Uniform4fv(location WebGLUniformLocation, v []float32) {
 	ta := js.TypedArrayOf(v)
 	p.Call("uniform4fv", location.JSValue(), ta)
 	ta.Release()
@@ -791,19 +791,19 @@ func (p *webGLRenderingContextBaseImpl) Uniform4iv(location WebGLUniformLocation
 	ta.Release()
 }
 
-func (p *webGLRenderingContextBaseImpl) UniformMatrix2fv(location WebGLUniformLocation, transpose bool, v []float64) {
+func (p *webGLRenderingContextBaseImpl) UniformMatrix2fv(location WebGLUniformLocation, transpose bool, v []float32) {
 	ta := js.TypedArrayOf(v)
 	p.Call("uniformMatrix2fv", location.JSValue(), transpose, ta)
 	ta.Release()
 }
 
-func (p *webGLRenderingContextBaseImpl) UniformMatrix3fv(location WebGLUniformLocation, transpose bool, v []float64) {
+func (p *webGLRenderingContextBaseImpl) UniformMatrix3fv(location WebGLUniformLocation, transpose bool, v []float32) {
 	ta := js.TypedArrayOf(v)
 	p.Call("uniformMatrix3fv", location.JSValue(), transpose, ta)
 	ta.Release()
 }
 
-func (p *webGLRenderingContextBaseImpl) UniformMatrix4fv(location WebGLUniformLocation, transpose bool, v []float64) {
+func (p *webGLRenderingContextBaseImpl) UniformMatrix4fv(location WebGLUniformLocation, transpose bool, v []float32) {
 	ta := js.TypedArrayOf(v)
 	p.Call("uniformMatrix4fv", location.JSValue(), transpose, ta)
 	ta.Release()
@@ -833,25 +833,25 @@ func (p *webGLRenderingContextBaseImpl) VertexAttrib4f(index uint, x, y, z, w fl
 	p.Call("vertexAttrib4f", index, x, y, z, w)
 }
 
-func (p *webGLRenderingContextBaseImpl) VertexAttrib1fv(index uint, values []float64) {
+func (p *webGLRenderingContextBaseImpl) VertexAttrib1fv(index uint, values []float32) {
 	ta := js.TypedArrayOf(values)
 	p.Call("vertexAttrib1fv", index, ta)
 	ta.Release()
 }
 
-func (p *webGLRenderingContextBaseImpl) VertexAttrib2fv(index uint, values []float64) {
+func (p *webGLRenderingContextBaseImpl) VertexAttrib2fv(index uint, values []float32) {
 	ta := js.TypedArrayOf(values)
 	p.Call("vertexAttrib2fv", index, ta)
 	ta.Release()
 }
 
-func (p *webGLRenderingContextBaseImpl) VertexAttrib3fv(index uint, values []float64) {
+func (p *webGLRenderingContextBaseImpl) VertexAttrib3fv(index uint, values []float32) {
 	ta := js.TypedArrayOf(values)
 	p.Call("vertexAttrib3fv", index, ta)
 	ta.Release()
 }
 
-func (p *webGLRenderingContextBaseImpl) VertexAttrib4fv(index uint, values []float64) {
+func (p *webGLRenderingContextBaseImpl) VertexAttrib4fv(index uint, values []float32) {
 	ta := js.TypedArrayOf(values)
 	p.Call("vertexAttrib4fv", index, ta)
 	ta.Release()

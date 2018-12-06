@@ -1,7 +1,7 @@
 // +build js,wasm
 
 /*
-Code forked from 
+Code forked from
 
 https://github.com/bobcob7/wasm-basic-triangle
 */
@@ -139,7 +139,7 @@ func main() {
 
 	// Clear the canvas
 	gl.ClearColor(0.5, 0.5, 0.5, 0.9)
-	gl.Clear(uint(wasm.COLOR_BUFFER_BIT))
+	gl.Clear(wasm.COLOR_BUFFER_BIT)
 
 	// Enable the depth test
 	gl.Enable(wasm.DEPTH_TEST)

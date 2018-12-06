@@ -4,7 +4,6 @@ package wasm
 
 import (
 	"syscall/js"
-	"time"
 )
 
 type (
@@ -103,7 +102,7 @@ func (p *timerCallbackImpl) jsFunc(this js.Value, args []js.Value) interface{} {
 
 // -------------8<---------------------------------------
 
-func NewFrameRequestCallback(fn func(FrameRequestCallback, time.Time)) FrameRequestCallback {
+func NewFrameRequestCallback(fn func(FrameRequestCallback, float64)) FrameRequestCallback {
 	h := &frameRequestCallbackImpl{
 		callbackImpl: newCallbackImpl(),
 		fn:           fn,
@@ -115,11 +114,11 @@ func NewFrameRequestCallback(fn func(FrameRequestCallback, time.Time)) FrameRequ
 
 type frameRequestCallbackImpl struct {
 	*callbackImpl
-	fn func(FrameRequestCallback, time.Time)
+	fn func(FrameRequestCallback, float64)
 }
 
 func (p *frameRequestCallbackImpl) jsFunc(this js.Value, args []js.Value) interface{} {
-	p.fn(p, highResTimeStampToTime(args[0]))
+	p.fn(p, args[0].Float())
 	return nil
 }
 

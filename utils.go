@@ -305,12 +305,6 @@ func domStringListToSlice(dsl js.Value) []string {
 
 // -------------8<---------------------------------------
 
-func highResTimeStampToTime(v js.Value) time.Time {
-	return time.Unix(0, int64(v.Float())*int64(time.Millisecond))
-}
-
-// -------------8<---------------------------------------
-
 func touchListToSlice(v js.Value) []Touch {
 	if isNil(v) {
 		return nil

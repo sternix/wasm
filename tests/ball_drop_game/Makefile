@@ -1,8 +1,12 @@
-ballgame.wasm:
+wasm:
 	GOOS=js GOARCH=wasm go build -o ballgame.wasm main.go
 
-serve: ballgame.wasm
-	go run server.go
+server:
+	go build server.go
+
+serve: wasm server
+	./server
 
 clean:
 	rm -f ballgame.wasm
+	rm -f server

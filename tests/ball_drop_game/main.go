@@ -47,7 +47,7 @@ type line struct {
 func main() {
 	done := make(chan struct{}, 0)
 
-	wasm.On("beforeunload", func(Event) {
+	wasm.On("beforeunload", func(wasm.Event) {
 		done <- struct{}{}
 	})
 
