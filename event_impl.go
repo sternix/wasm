@@ -3,6 +3,7 @@
 package wasm
 
 import (
+	"fmt"
 	"syscall/js"
 	"time"
 )
@@ -903,8 +904,35 @@ func (p *windowOrWorkerGlobalScopeImpl) IndexedDB() IDBFactory {
 	return newIDBFactory(p.Get("indexedDB"))
 }
 
-func (p *windowOrWorkerGlobalScopeImpl) Fetch(input RequestInfo, ri ...RequestInit) Promise {
-	return newPromiseImpl(p.Call("fetch"))
+func (p *windowOrWorkerGlobalScopeImpl) Fetch(input RequestInfo, ri ...RequestInit) func() (Response, error) {
+	return func() (Response, error) {
+		var in js.Value
+		switch x := input.(type) {
+		case string:
+			in = js.ValueOf(x)
+		case Request:
+			in = x.JSValue()
+		default:
+			return nil, fmt.Errorf("Wrong parameter type for RequestInfo")
+		}
+
+		var (
+			result js.Value
+			ok     bool
+		)
+
+		switch len(ri) {
+		case 0:
+			result, ok = Await(p.Call("fetch", in))
+		default:
+			result, ok = Await(p.Call("fetch", in, ri[0].toDict()))
+		}
+
+		if ok {
+			return newResponse(result), nil
+		}
+		return nil, newDOMException(result)
+	}
 }
 
 // -------------8<---------------------------------------

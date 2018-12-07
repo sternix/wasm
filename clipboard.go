@@ -18,10 +18,10 @@ type (
 	Clipboard interface {
 		EventTarget
 
-		Read() Promise              //Promise<DataTransfer>
-		ReadText() Promise          // Promise<DOMString>
-		Write(DataTransfer) Promise // Promise<void>
-		WriteText(string) Promise   // Promise<void>
+		Read() func() (DataTransfer, error) //Promise<DataTransfer>
+		ReadText() func() (string, bool)    // Promise<DOMString>
+		Write(DataTransfer) func() bool     // Promise<void>
+		WriteText(string) func() bool       // Promise<void>
 	}
 )
 

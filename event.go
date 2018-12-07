@@ -207,7 +207,8 @@ type (
 		Promise<ImageBitmap> createImageBitmap(ImageBitmapSource image, long sx, long sy, long sw, long sh);
 		*/
 
-		Fetch(RequestInfo, ...RequestInit) Promise
+		// https://fetch.spec.whatwg.org/#fetch-method
+		Fetch(RequestInfo, ...RequestInit) func() (Response, error)
 	}
 
 	// https://www.w3.org/TR/uievents/#uievent-uievent

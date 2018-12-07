@@ -22,20 +22,38 @@ func newClipboard(v js.Value) Clipboard {
 	}
 }
 
-func (p *clipboardImpl) Read() Promise {
-	return newPromiseImpl(p.Call("read"))
+func (p *clipboardImpl) Read() func() (DataTransfer, error) {
+	return func() (DataTransfer, error) {
+		result, ok := Await(p.Call("read"))
+		if ok {
+			return newDataTransfer(result), nil
+		}
+		return nil, newDOMException(result)
+	}
 }
 
-func (p *clipboardImpl) ReadText() Promise {
-	return newPromiseImpl(p.Call("readText"))
+func (p *clipboardImpl) ReadText() func() (string, bool) {
+	return func() (string, bool) {
+		result, ok := Await(p.Call("readText"))
+		if ok {
+			return result.String(), true
+		}
+		return "", false
+	}
 }
 
-func (p *clipboardImpl) Write(data DataTransfer) Promise {
-	return newPromiseImpl(p.Call("write", data.JSValue()))
+func (p *clipboardImpl) Write(data DataTransfer) func() bool {
+	return func() bool {
+		_, ok := Await(p.Call("write", data.JSValue()))
+		return ok
+	}
 }
 
-func (p *clipboardImpl) WriteText(data string) Promise {
-	return newPromiseImpl(p.Call("writeText", data))
+func (p *clipboardImpl) WriteText(data string) func() bool {
+	return func() bool {
+		_, ok := Await(p.Call("writeText", data))
+		return ok
+	}
 }
 
 // -------------8<---------------------------------------

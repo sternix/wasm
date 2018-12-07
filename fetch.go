@@ -45,6 +45,7 @@ type (
 	RequestInfo interface{}
 
 	Request interface {
+		js.Wrapper
 		Body
 
 		Method() string
@@ -77,7 +78,7 @@ type (
 		Ok() bool
 		StatusText() string
 		Headers() Headers
-		Trailer() Promise
+		Trailer() func() (Headers, bool)
 		Clone() Response
 	}
 )

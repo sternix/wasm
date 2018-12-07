@@ -249,8 +249,14 @@ func (p *responseImpl) Headers() Headers {
 	return newHeaders(p.Get("headers"))
 }
 
-func (p *responseImpl) Trailer() Promise {
-	return newPromiseImpl(p.Call("trailer"))
+func (p *responseImpl) Trailer() func() (Headers, bool) {
+	return func() (Headers, bool) {
+		res, ok := Await(p.Call("trailer"))
+		if ok {
+			return newHeaders(res), true
+		}
+		return nil, false
+	}
 }
 
 func (p *responseImpl) Clone() Response {

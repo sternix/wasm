@@ -13,6 +13,7 @@ type (
 		Name() string
 		Message() string
 		Code() DOMError
+		Error() string
 	}
 )
 
@@ -20,6 +21,22 @@ type (
 
 type domExceptionImpl struct {
 	js.Value
+}
+
+func NewDOMException(args ...string) DOMException {
+	jsEx := js.Global().Get("DOMException")
+	if isNil(jsEx) {
+		return nil
+	}
+
+	switch len(args) {
+	case 0:
+		return newDOMException(jsEx.New())
+	case 1:
+		return newDOMException(jsEx.New(args[0])) // message
+	default:
+		return newDOMException(jsEx.New(args[0], args[1])) // message, name
+	}
 }
 
 func newDOMException(v js.Value) DOMException {
@@ -42,6 +59,10 @@ func (p *domExceptionImpl) Message() string {
 
 func (p *domExceptionImpl) Code() DOMError {
 	return DOMError(p.Get("code").Int())
+}
+
+func (p *domExceptionImpl) Error() string {
+	return fmt.Sprintf("%s : %s\n", p.Name(), p.Message())
 }
 
 // -------------8<---------------------------------------
