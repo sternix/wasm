@@ -44,7 +44,7 @@ type (
 
 		// https://fullscreen.spec.whatwg.org/
 		FullscreenEnabled() bool
-		ExitFullscreen() Promise // Promise<void>
+		ExitFullscreen() func() error // Promise<void>
 		OnFullscreenChange(func(Event)) EventHandler
 		OnFullscreenError(func(Event)) EventHandler
 
@@ -365,7 +365,7 @@ type (
 		InsertAdjacentHTML(string, string)
 
 		// https://fullscreen.spec.whatwg.org/
-		RequestFullscreen(...FullscreenOptions) Promise
+		RequestFullscreen(...FullscreenOptions) func() error // Promise<void>
 		OnFullScreenChange(func(Event)) EventHandler
 		OnFullScreenError(func(Event)) EventHandler
 

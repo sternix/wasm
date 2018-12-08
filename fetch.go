@@ -31,14 +31,15 @@ type (
 		js.Wrapper
 	}
 
+	// https://fetch.spec.whatwg.org/#body
 	Body interface {
 		Body() ReadableStream
 		BodyUsed() bool
-		ArrayBuffer() Promise
-		Blob() Promise
-		FormData() Promise
-		JSON() Promise
-		Text() Promise
+		ArrayBuffer() Promise // Promise <ArrayBuffer>
+		Blob() Promise	// Promise<Blob>
+		FormData() Promise // Promise<FormData>
+		JSON() Promise // Promise<any>
+		Text() Promise // Promise<string>
 	}
 
 	// typedef (Request or USVString) RequestInfo;

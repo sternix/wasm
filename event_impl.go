@@ -900,6 +900,50 @@ func (p *windowOrWorkerGlobalScopeImpl) QueueMicrotask(vfn VoidFunction) {
 	p.Call("queueMicrotask", vfn.jsCallback())
 }
 
+func (p *windowOrWorkerGlobalScopeImpl) CreateImageBitmap(image ImageBitmapSource, options ...ImageBitmapOptions) func() (ImageBitmap, error) {
+	return func() (ImageBitmap, error) {
+		var (
+			result js.Value
+			ok     bool
+		)
+
+		switch len(options) {
+		case 0:
+			result, ok = Await(p.Call("createImageBitmap", image.JSValue()))
+		default:
+			result, ok = Await(p.Call("createImageBitmap", image.JSValue(), options[0].toDict()))
+		}
+
+		if ok {
+			return newImageBitmap(result), nil
+		}
+
+		return nil, newDOMException(result)
+	}
+}
+
+func (p *windowOrWorkerGlobalScopeImpl) CreateImageBitmapWithSize(image ImageBitmapSource, sx int, sy int, sw int, sh int, options ...ImageBitmapOptions) func() (ImageBitmap, error) {
+	return func() (ImageBitmap, error) {
+		var (
+			result js.Value
+			ok     bool
+		)
+
+		switch len(options) {
+		case 0:
+			result, ok = Await(p.Call("createImageBitmap", image.JSValue(), sx, sy, sw, sh))
+		default:
+			result, ok = Await(p.Call("createImageBitmap", image.JSValue(), sx, sy, sw, sh, options[0].toDict()))
+		}
+
+		if ok {
+			return newImageBitmap(result), nil
+		}
+
+		return nil, newDOMException(result)
+	}
+}
+
 func (p *windowOrWorkerGlobalScopeImpl) IndexedDB() IDBFactory {
 	return newIDBFactory(p.Get("indexedDB"))
 }

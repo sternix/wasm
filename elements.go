@@ -615,7 +615,7 @@ type (
 		OnRemoveTrack(func(Event)) EventHandler
 	}
 
-	// https://www.w3.org/TR/mediacapture-streams/#dom-mediastream
+	// https://www.w3.org/TR/mediacapture-streams/#media-stream-track-interface-definition
 	MediaStreamTrack interface {
 		EventTarget
 
@@ -634,8 +634,7 @@ type (
 		Capabilities() MediaTrackCapabilities
 		Constraints() MediaTrackConstraints
 		Settings() MediaTrackSettings
-		// TODO: Promise needed
-		//  Promise<void> applyConstraints(optional MediaTrackConstraints constraints);
+		ApplyConstraints(...MediaTrackConstraints) func() error
 		OnOverConstrained(func(Event)) EventHandler
 	}
 )

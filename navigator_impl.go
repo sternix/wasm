@@ -210,6 +210,10 @@ func (p *imageBitmapImpl) Height() int {
 	return p.Get("height").Int()
 }
 
+func (p *imageBitmapImpl) Close() {
+	p.Call("close")
+}
+
 // -------------8<---------------------------------------
 
 /*

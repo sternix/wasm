@@ -198,14 +198,11 @@ type (
 		SetInterval(TimerCallback, int) int
 		ClearInterval(int)
 		QueueMicrotask(VoidFunction)
+		CreateImageBitmap(ImageBitmapSource, ...ImageBitmapOptions) func() (ImageBitmap, error)
+		CreateImageBitmapWithSize(ImageBitmapSource, int, int, int, int, ...ImageBitmapOptions) func() (ImageBitmap, error)
 
 		// https://www.w3.org/TR/IndexedDB/#idbfactory
 		IndexedDB() IDBFactory
-
-		/* TODO: Promise ???
-		Promise<ImageBitmap> createImageBitmap(ImageBitmapSource image);
-		Promise<ImageBitmap> createImageBitmap(ImageBitmapSource image, long sx, long sy, long sw, long sh);
-		*/
 
 		// https://fetch.spec.whatwg.org/#fetch-method
 		Fetch(RequestInfo, ...RequestInit) func() (Response, error)

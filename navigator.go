@@ -2,6 +2,10 @@
 
 package wasm
 
+import (
+	"syscall/js"
+)
+
 type (
 	// https://www.w3.org/TR/html52/webappapis.html#navigator
 	Navigator interface {
@@ -103,10 +107,11 @@ type (
 		}
 	*/
 
-	// https://www.w3.org/TR/html52/webappapis.html#imagebitmap
+	// https://html.spec.whatwg.org/multipage/imagebitmap-and-animations.html#imagebitmap
 	ImageBitmap interface {
 		Width() int
 		Height() int
+		Close()
 	}
 
 	/*
@@ -119,6 +124,74 @@ type (
 			ImageBitmap) ImageBitmapSource;
 	*/
 
-	// https://www.w3.org/TR/html52/webappapis.html#typedefdef-imagebitmapsource
-	ImageBitmapSource interface{}
+	// https://html.spec.whatwg.org/multipage/imagebitmap-and-animations.html#imagebitmapsource
+	// typedef (CanvasImageSource or Blob or ImageData) ImageBitmapSource;
+	ImageBitmapSource interface {
+		js.Wrapper
+	}
 )
+
+type ImageOrientation string
+
+const (
+	ImageOrientationNone  ImageOrientation = "none"
+	ImageOrientationFlipY ImageOrientation = "flipY"
+)
+
+type PremultiplyAlpha string
+
+const (
+	PremultiplyAlphaNone        PremultiplyAlpha = "none"
+	PremultiplyAlphaPremultiply PremultiplyAlpha = "premultiply"
+	PremultiplyAlphaDefault     PremultiplyAlpha = "default"
+)
+
+type ColorSpaceConversion string
+
+const (
+	ColorSpaceConversionNone    ColorSpaceConversion = "none"
+	ColorSpaceConversionDefault ColorSpaceConversion = "default"
+)
+
+type ResizeQuality string
+
+const (
+	ResizeQualityPixelated ResizeQuality = "pixelated"
+	ResizeQualityLow       ResizeQuality = "low"
+	ResizeQualityMedium    ResizeQuality = "medium"
+	ResizeQualityHigh      ResizeQuality = "high"
+)
+
+type ImageBitmapOptions struct {
+	ImageOrientation     ImageOrientation
+	PremultiplyAlpha     PremultiplyAlpha
+	ColorSpaceConversion ColorSpaceConversion
+	ResizeWidth          uint
+	ResizeHeight         uint
+	ResizeQuality        ResizeQuality
+}
+
+func (p ImageBitmapOptions) toDict() js.Value {
+	o := jsObject.New()
+
+	if p.ImageOrientation != "none" {
+		o.Set("imageOrientation", string(p.ImageOrientation))
+	}
+
+	if p.PremultiplyAlpha != "default" {
+		o.Set("premultiplyAlpha", string(p.PremultiplyAlpha))
+	}
+
+	if p.ColorSpaceConversion != "default" {
+		o.Set("colorSpaceConversion", string(p.ColorSpaceConversion))
+	}
+
+	o.Set("resizeWidth", p.ResizeWidth)
+	o.Set("resizeHeight", p.ResizeHeight)
+
+	if p.ResizeQuality != "low" {
+		o.Set("resizeQuality", string(p.ResizeQuality))
+	}
+
+	return o
+}

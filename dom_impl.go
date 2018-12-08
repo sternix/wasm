@@ -176,8 +176,14 @@ func (p *documentImpl) FullscreenEnabled() bool {
 	return p.Get("fullscreenEnabled").Bool()
 }
 
-func (p *documentImpl) ExitFullscreen() Promise {
-	return newPromiseImpl(p.Call("exitFullscreen"))
+func (p *documentImpl) ExitFullscreen() func() error {
+	return func() error {
+		result, ok := Await(p.Call("exitFullscreen"))
+		if ok {
+			return nil
+		}
+		return newDOMException(result)
+	}
 }
 
 func (p *documentImpl) OnFullscreenChange(fn func(Event)) EventHandler {
@@ -1470,8 +1476,14 @@ func (p *elementImpl) InsertAdjacentHTML(position string, text string) {
 	p.Call("insertAdjacentHTML", position, text)
 }
 
-func (p *elementImpl) RequestFullscreen(...FullscreenOptions) Promise {
-	return newPromiseImpl(p.Call("requestFullscreen"))
+func (p *elementImpl) RequestFullscreen(...FullscreenOptions) func() error {
+	return func() error {
+		res, ok := Await(p.Call("requestFullscreen"))
+		if ok {
+			return nil
+		}
+		return newDOMException(res)
+	}
 }
 
 func (p *elementImpl) OnFullScreenChange(fn func(Event)) EventHandler {

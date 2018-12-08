@@ -101,14 +101,6 @@ func sliceToJsArray(slc interface{}) js.Value {
 			arr.SetIndex(i, s)
 		}
 		return arr
-
-	case []Promise:
-		arr := jsArray.New(len(x))
-		for i, p := range x {
-			arr.SetIndex(i, p.JSValue())
-		}
-		return arr
-
 	case []bool:
 		arr := jsArray.New(len(x))
 		for i, b := range x {

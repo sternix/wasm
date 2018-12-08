@@ -2512,6 +2512,27 @@ func (p *mediaStreamTrackImpl) Settings() MediaTrackSettings {
 	}
 }
 
+func (p *mediaStreamTrackImpl) ApplyConstraints(constraints ...MediaTrackConstraints) func() error {
+	return func() error {
+		var (
+			res js.Value
+			ok  bool
+		)
+
+		switch len(constraints) {
+		case 0:
+			res, ok = Await(p.Call("applyConstraints"))
+		default:
+			res, ok = Await(p.Call("applyConstraints", constraints[0].toDict()))
+		}
+
+		if ok {
+			return nil
+		}
+		return newDOMException(res)
+	}
+}
+
 func (p *mediaStreamTrackImpl) OnOverConstrained(fn func(Event)) EventHandler {
 	return p.On("overconstrained", fn)
 }
