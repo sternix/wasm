@@ -93,24 +93,54 @@ func (p *bodyImpl) BodyUsed() bool {
 	return p.Get("bodyUsed").Bool()
 }
 
-func (p *bodyImpl) ArrayBuffer() Promise {
-	return newPromiseImpl(p.Call("arrayBuffer"))
+func (p *bodyImpl) ArrayBuffer() func() (ArrayBuffer, bool) {
+	return func() (ArrayBuffer, bool) {
+		res, ok := await(p.Call("arrayBuffer"))
+		if ok {
+			return newArrayBuffer(res), true
+		}
+		return nil, false
+	}
 }
 
-func (p *bodyImpl) Blob() Promise {
-	return newPromiseImpl(p.Call("blob"))
+func (p *bodyImpl) Blob() func() (Blob, bool) {
+	return func() (Blob, bool) {
+		res, ok := await(p.Call("blob"))
+		if ok {
+			return newBlob(res), true
+		}
+		return nil, false
+	}
 }
 
-func (p *bodyImpl) FormData() Promise {
-	return newPromiseImpl(p.Call("formData"))
+func (p *bodyImpl) FormData() func() (FormData, bool) {
+	return func() (FormData, bool) {
+		res, ok := await(p.Call("formData"))
+		if ok {
+			return newFormData(res), true
+		}
+		return nil, false
+	}
 }
 
-func (p *bodyImpl) JSON() Promise {
-	return newPromiseImpl(p.Call("json"))
+func (p *bodyImpl) JSON() func() ([]byte, bool) {
+	return func() ([]byte, bool) {
+		res, ok := await(p.Call("json"))
+		if ok {
+			return []byte(jsJSON.Call("stringify", res).String()), true
+		}
+		return nil, false
+	}
 }
 
-func (p *bodyImpl) Text() Promise {
-	return newPromiseImpl(p.Call("text"))
+func (p *bodyImpl) Text() func() (string, bool) {
+	return func() (string, bool) {
+		res, ok := await(p.Call("text"))
+		if ok {
+			return res.String(), true
+		}
+		return "", false
+	}
 }
 
 // -------------8<---------------------------------------
@@ -251,7 +281,7 @@ func (p *responseImpl) Headers() Headers {
 
 func (p *responseImpl) Trailer() func() (Headers, bool) {
 	return func() (Headers, bool) {
-		res, ok := Await(p.Call("trailer"))
+		res, ok := await(p.Call("trailer"))
 		if ok {
 			return newHeaders(res), true
 		}
@@ -261,6 +291,120 @@ func (p *responseImpl) Trailer() func() (Headers, bool) {
 
 func (p *responseImpl) Clone() Response {
 	return newResponse(p.Call("clone"))
+}
+
+// -------------8<---------------------------------------
+
+type formDataImpl struct {
+	js.Value
+}
+
+func NewFormData(form ...HTMLFormElement) FormData {
+	jsFormData := js.Global().Get("FormData")
+	if isNil(jsFormData) {
+		return nil
+	}
+
+	switch len(form) {
+	case 0:
+		return newFormData(jsFormData.New())
+	default:
+		return newFormData(jsFormData.New(form[0].JSValue()))
+	}
+}
+
+func newFormData(v js.Value) FormData {
+	if isNil(v) {
+		return nil
+	}
+
+	return &formDataImpl{
+		Value: v,
+	}
+}
+
+func (p *formDataImpl) Append(name string, value interface{}, filename ...string) {
+	switch x := value.(type) {
+	case string:
+		p.Call("append", x)
+	case Blob:
+		switch len(filename) {
+		case 0:
+			p.Call("append", x.JSValue())
+		default:
+			p.Call("append", x.JSValue(), filename[0])
+		}
+	}
+}
+
+func (p *formDataImpl) Delete(name string) {
+	p.Call("delete", name)
+}
+
+func (p *formDataImpl) Get(name string) FormDataEntryValue {
+	return newFormDataEntryValue(p.Call("get", name))
+}
+
+func (p *formDataImpl) GetAll(name string) []FormDataEntryValue {
+	slc := arrayToSlice(p.Call("getAll", name))
+	if slc == nil {
+		return nil
+	}
+
+	var ret []FormDataEntryValue
+	for _, v := range slc {
+		if fd := newFormDataEntryValue(v); fd != nil {
+			ret = append(ret, fd)
+		}
+	}
+	return ret
+}
+
+func (p *formDataImpl) Has(name string) bool {
+	return p.Call("has", name).Bool()
+}
+
+func (p *formDataImpl) Set(name string, value interface{}, filename ...string) {
+	switch x := value.(type) {
+	case string:
+		p.Call("set", x)
+	case Blob:
+		switch len(filename) {
+		case 0:
+			p.Call("set", x.JSValue())
+		default:
+			p.Call("set", x.JSValue(), filename[0])
+		}
+	}
+}
+
+func (p *formDataImpl) Values() []FormDataEntryValue {
+	slc := arrayToSlice(p.Call("values"))
+	if slc == nil {
+		return nil
+	}
+
+	var ret []FormDataEntryValue
+	for _, v := range slc {
+		if fd := newFormDataEntryValue(v); fd != nil {
+			ret = append(ret, fd)
+		}
+	}
+	return ret
+}
+
+// -------------8<---------------------------------------
+
+var jsFile = js.Global().Get("File")
+
+func newFormDataEntryValue(v js.Value) FormDataEntryValue {
+	if v.Type() == js.TypeString {
+		return v.String()
+	} else if v.InstanceOf(jsFile) {
+		return newFile(v)
+	}
+
+	return nil
 }
 
 // -------------8<---------------------------------------

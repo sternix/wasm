@@ -909,9 +909,9 @@ func (p *windowOrWorkerGlobalScopeImpl) CreateImageBitmap(image ImageBitmapSourc
 
 		switch len(options) {
 		case 0:
-			result, ok = Await(p.Call("createImageBitmap", image.JSValue()))
+			result, ok = await(p.Call("createImageBitmap", image.JSValue()))
 		default:
-			result, ok = Await(p.Call("createImageBitmap", image.JSValue(), options[0].toDict()))
+			result, ok = await(p.Call("createImageBitmap", image.JSValue(), options[0].toDict()))
 		}
 
 		if ok {
@@ -931,9 +931,9 @@ func (p *windowOrWorkerGlobalScopeImpl) CreateImageBitmapWithSize(image ImageBit
 
 		switch len(options) {
 		case 0:
-			result, ok = Await(p.Call("createImageBitmap", image.JSValue(), sx, sy, sw, sh))
+			result, ok = await(p.Call("createImageBitmap", image.JSValue(), sx, sy, sw, sh))
 		default:
-			result, ok = Await(p.Call("createImageBitmap", image.JSValue(), sx, sy, sw, sh, options[0].toDict()))
+			result, ok = await(p.Call("createImageBitmap", image.JSValue(), sx, sy, sw, sh, options[0].toDict()))
 		}
 
 		if ok {
@@ -967,9 +967,9 @@ func (p *windowOrWorkerGlobalScopeImpl) Fetch(input RequestInfo, ri ...RequestIn
 
 		switch len(ri) {
 		case 0:
-			result, ok = Await(p.Call("fetch", in))
+			result, ok = await(p.Call("fetch", in))
 		default:
-			result, ok = Await(p.Call("fetch", in, ri[0].toDict()))
+			result, ok = await(p.Call("fetch", in, ri[0].toDict()))
 		}
 
 		if ok {

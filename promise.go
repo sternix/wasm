@@ -19,7 +19,7 @@ const (
 
 // taken from https://go-review.googlesource.com/c/go/+/150917/
 // modified as standalone func
-func Await(v js.Value) (result js.Value, ok bool) {
+func await(v js.Value) (result js.Value, ok bool) {
 	if v.Type() != js.TypeObject || v.Get("then").Type() != js.TypeFunction {
 		return v, true
 

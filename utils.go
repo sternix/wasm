@@ -23,6 +23,7 @@ var (
 	jsUint8Array  = js.Global().Get("Uint8Array")
 	//jsUint8ClampedArray = js.Global().Get("Uint8ClampedArray")
 	//jsBufferSource      = js.Global().Get("BufferSource") --> typedef
+	jsJSON = js.Global().Get("JSON")
 )
 
 // -------------8<---------------------------------------

@@ -178,7 +178,7 @@ func (p *documentImpl) FullscreenEnabled() bool {
 
 func (p *documentImpl) ExitFullscreen() func() error {
 	return func() error {
-		result, ok := Await(p.Call("exitFullscreen"))
+		result, ok := await(p.Call("exitFullscreen"))
 		if ok {
 			return nil
 		}
@@ -1478,7 +1478,7 @@ func (p *elementImpl) InsertAdjacentHTML(position string, text string) {
 
 func (p *elementImpl) RequestFullscreen(...FullscreenOptions) func() error {
 	return func() error {
-		res, ok := Await(p.Call("requestFullscreen"))
+		res, ok := await(p.Call("requestFullscreen"))
 		if ok {
 			return nil
 		}

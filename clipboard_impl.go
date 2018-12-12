@@ -24,7 +24,7 @@ func newClipboard(v js.Value) Clipboard {
 
 func (p *clipboardImpl) Read() func() (DataTransfer, error) {
 	return func() (DataTransfer, error) {
-		result, ok := Await(p.Call("read"))
+		result, ok := await(p.Call("read"))
 		if ok {
 			return newDataTransfer(result), nil
 		}
@@ -34,7 +34,7 @@ func (p *clipboardImpl) Read() func() (DataTransfer, error) {
 
 func (p *clipboardImpl) ReadText() func() (string, bool) {
 	return func() (string, bool) {
-		result, ok := Await(p.Call("readText"))
+		result, ok := await(p.Call("readText"))
 		if ok {
 			return result.String(), true
 		}
@@ -44,14 +44,14 @@ func (p *clipboardImpl) ReadText() func() (string, bool) {
 
 func (p *clipboardImpl) Write(data DataTransfer) func() bool {
 	return func() bool {
-		_, ok := Await(p.Call("write", data.JSValue()))
+		_, ok := await(p.Call("write", data.JSValue()))
 		return ok
 	}
 }
 
 func (p *clipboardImpl) WriteText(data string) func() bool {
 	return func() bool {
-		_, ok := Await(p.Call("writeText", data))
+		_, ok := await(p.Call("writeText", data))
 		return ok
 	}
 }

@@ -35,11 +35,11 @@ type (
 	Body interface {
 		Body() ReadableStream
 		BodyUsed() bool
-		ArrayBuffer() Promise // Promise <ArrayBuffer>
-		Blob() Promise	// Promise<Blob>
-		FormData() Promise // Promise<FormData>
-		JSON() Promise // Promise<any>
-		Text() Promise // Promise<string>
+		ArrayBuffer() func() (ArrayBuffer, bool) // Promise <ArrayBuffer>
+		Blob() func() (Blob, bool)               // Promise<Blob>
+		FormData() func() (FormData, bool)       // Promise<FormData>
+		JSON() func() ([]byte, bool)             // Promise<any>
+		Text() func() (string, bool)             // Promise<string>
 	}
 
 	// typedef (Request or USVString) RequestInfo;
@@ -81,6 +81,21 @@ type (
 		Headers() Headers
 		Trailer() func() (Headers, bool)
 		Clone() Response
+	}
+
+	// https://xhr.spec.whatwg.org/#formdataentryvalue
+	// typedef (File or USVString) FormDataEntryValue;
+	FormDataEntryValue interface{}
+
+	// https://xhr.spec.whatwg.org/#formdata
+	FormData interface {
+		Append(string, interface{}, ...string)
+		Delete(string)
+		Get(string) FormDataEntryValue
+		GetAll(string) []FormDataEntryValue
+		Has(string) bool
+		Set(string, interface{}, ...string)
+		Values() []FormDataEntryValue
 	}
 )
 
