@@ -10,6 +10,10 @@ import (
 
 // https://streams.spec.whatwg.org/
 
+// for compiled successfully
+// TODO: remove when types completed
+type Promise interface{}
+
 type (
 	ReadableStream interface {
 		js.Wrapper

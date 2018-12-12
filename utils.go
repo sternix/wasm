@@ -28,6 +28,39 @@ var (
 
 // -------------8<---------------------------------------
 
+// taken from https://go-review.googlesource.com/c/go/+/150917/
+// modified as standalone func
+func await(v js.Value) (result js.Value, ok bool) {
+	if v.Type() != js.TypeObject || v.Get("then").Type() != js.TypeFunction {
+		return v, true
+
+	}
+
+	done := make(chan struct{})
+
+	onResolve := js.NewCallback(func(this js.Value, args []js.Value) interface{} {
+		result = args[0]
+		ok = true
+		close(done)
+		return nil
+	})
+	defer onResolve.Release()
+
+	onReject := js.NewCallback(func(this js.Value, args []js.Value) interface{} {
+		result = args[0]
+		ok = false
+		close(done)
+		return nil
+	})
+	defer onReject.Release()
+
+	v.Call("then", onResolve, onReject)
+	<-done
+	return
+}
+
+// -------------8<---------------------------------------
+
 func JSType(v js.Value) string {
 	if v.Type() == js.TypeObject {
 		str := jsTypeFunc.Call("call", v).String()
