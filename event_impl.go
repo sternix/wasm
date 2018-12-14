@@ -152,7 +152,7 @@ func (p *eventTargetImpl) On(event string, fn func(ev Event)) EventHandler {
 		typ:   event,
 	}
 
-	eh.jsCb = js.NewCallback(eh.jsFunc)
+	eh.jsCb = js.FuncOf(eh.jsFunc)
 	p.Call("addEventListener", event, eh.jsCb)
 
 	return eh

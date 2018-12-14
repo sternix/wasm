@@ -9,7 +9,7 @@ import (
 // -------------8<---------------------------------------
 
 type eventHandlerImpl struct {
-	jsCb js.Callback
+	jsCb js.Func
 	fn   func(Event)
 	typ  string
 }
@@ -48,7 +48,7 @@ func EventHandlerFunc(typ string, fn func(Event)) EventHandler {
 		typ: typ,
 	}
 
-	eh.jsCb = js.NewCallback(eh.jsFunc)
+	eh.jsCb = js.FuncOf(eh.jsFunc)
 
 	js.Global().Get("addEventListener").Invoke(typ, eh.jsCb)
 	return eh
@@ -58,7 +58,7 @@ func EventHandlerFunc(typ string, fn func(Event)) EventHandler {
 
 type elementEventHandlerImpl struct {
 	js.Value
-	jsCb js.Callback
+	jsCb js.Func
 	fn   func(Event)
 	typ  string
 }

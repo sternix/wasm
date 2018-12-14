@@ -38,7 +38,7 @@ func await(v js.Value) (result js.Value, ok bool) {
 
 	done := make(chan struct{})
 
-	onResolve := js.NewCallback(func(this js.Value, args []js.Value) interface{} {
+	onResolve := js.FuncOf(func(this js.Value, args []js.Value) interface{} {
 		result = args[0]
 		ok = true
 		close(done)
@@ -46,7 +46,7 @@ func await(v js.Value) (result js.Value, ok bool) {
 	})
 	defer onResolve.Release()
 
-	onReject := js.NewCallback(func(this js.Value, args []js.Value) interface{} {
+	onReject := js.FuncOf(func(this js.Value, args []js.Value) interface{} {
 		result = args[0]
 		ok = false
 		close(done)

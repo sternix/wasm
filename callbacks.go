@@ -11,7 +11,7 @@ type (
 		js.Wrapper
 
 		Release()
-		jsCallback() js.Callback
+		jsCallback() js.Func
 		jsFunc(js.Value, []js.Value) interface{}
 	}
 
@@ -59,7 +59,7 @@ type (
 // -------------8<---------------------------------------
 
 type callbackImpl struct {
-	js.Callback
+	js.Func
 }
 
 func newCallbackImpl() *callbackImpl {
@@ -67,13 +67,13 @@ func newCallbackImpl() *callbackImpl {
 }
 
 func (p *callbackImpl) Release() {
-	if !isNil(p.Callback.Value) {
-		p.Callback.Release()
+	if !isNil(p.Func.Value) {
+		p.Func.Release()
 	}
 }
 
-func (p *callbackImpl) jsCallback() js.Callback {
-	return p.Callback
+func (p *callbackImpl) jsCallback() js.Func {
+	return p.Func
 }
 
 // -------------8<---------------------------------------
@@ -85,7 +85,7 @@ func NewTimerCallback(fn func(...interface{}), args ...interface{}) TimerCallbac
 		args:         args,
 	}
 
-	h.Callback = js.NewCallback(h.jsFunc)
+	h.Func = js.FuncOf(h.jsFunc)
 	return h
 }
 
@@ -108,7 +108,7 @@ func NewFrameRequestCallback(fn func(FrameRequestCallback, float64)) FrameReques
 		fn:           fn,
 	}
 
-	h.Callback = js.NewCallback(h.jsFunc)
+	h.Func = js.FuncOf(h.jsFunc)
 	return h
 }
 
@@ -130,7 +130,7 @@ func NewBlobCallback(fn func(Blob)) BlobCallback {
 		fn:           fn,
 	}
 
-	cb.Callback = js.NewCallback(cb.jsFunc)
+	cb.Func = js.FuncOf(cb.jsFunc)
 	return cb
 }
 
@@ -156,7 +156,7 @@ func NewMutationCallback(fn func([]MutationRecord, MutationObserver)) MutationCa
 		fn:           fn,
 	}
 
-	cb.Callback = js.NewCallback(cb.jsFunc)
+	cb.Func = js.FuncOf(cb.jsFunc)
 	return cb
 }
 
@@ -180,7 +180,7 @@ func NewPositionCallback(fn func(Position)) PositionCallback {
 		fn:           fn,
 	}
 
-	cb.Callback = js.NewCallback(cb.jsFunc)
+	cb.Func = js.FuncOf(cb.jsFunc)
 	return cb
 }
 
@@ -204,7 +204,7 @@ func NewPositionErrorCallback(fn func(PositionError)) PositionErrorCallback {
 		fn:           fn,
 	}
 
-	cb.Callback = js.NewCallback(cb.jsFunc)
+	cb.Func = js.FuncOf(cb.jsFunc)
 	return cb
 }
 
@@ -228,7 +228,7 @@ func NewFunctionStringCallback(fn func(string)) FunctionStringCallback {
 		fn:           fn,
 	}
 
-	cb.Callback = js.NewCallback(cb.jsFunc)
+	cb.Func = js.FuncOf(cb.jsFunc)
 	return cb
 }
 
@@ -252,7 +252,7 @@ func NewVoidFunction(fn func()) VoidFunction {
 		fn:           fn,
 	}
 
-	cb.Callback = js.NewCallback(cb.jsFunc)
+	cb.Func = js.FuncOf(cb.jsFunc)
 	return cb
 }
 
