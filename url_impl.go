@@ -37,9 +37,9 @@ func NewURL(url string, base ...string) URL {
 
 	switch len(base) {
 	case 0:
-		return newURL(jsURL.New(url))
+		return wrapURL(jsURL.New(url))
 	default:
-		return newURL(jsURL.New(url, base[0]))
+		return wrapURL(jsURL.New(url, base[0]))
 	}
 }
 
@@ -51,9 +51,9 @@ func NewURLSearchParams(args ...string) URLSearchParams {
 
 	switch len(args) {
 	case 0:
-		return newURLSearchParams(jsURLSearchParams.New())
+		return wrapURLSearchParams(jsURLSearchParams.New())
 	default:
-		return newURLSearchParams(jsURLSearchParams.New(args[0]))
+		return wrapURLSearchParams(jsURLSearchParams.New(args[0]))
 	}
 }
 
@@ -63,7 +63,7 @@ type urlImpl struct {
 	js.Value
 }
 
-func newURL(v js.Value) URL {
+func wrapURL(v js.Value) URL {
 	if isNil(v) {
 		return nil
 	}
@@ -150,7 +150,7 @@ func (p *urlImpl) SetSearch(search string) {
 }
 
 func (p *urlImpl) SearchParams() URLSearchParams {
-	return newURLSearchParams(p.Get("searchParams"))
+	return wrapURLSearchParams(p.Get("searchParams"))
 }
 
 func (p *urlImpl) Hash() string {
@@ -171,7 +171,7 @@ type urlSearchParamsImpl struct {
 	js.Value
 }
 
-func newURLSearchParams(v js.Value) URLSearchParams {
+func wrapURLSearchParams(v js.Value) URLSearchParams {
 	if isNil(v) {
 		return nil
 	}

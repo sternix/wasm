@@ -12,7 +12,7 @@ type screenImpl struct {
 	js.Value
 }
 
-func newScreen(v js.Value) Screen {
+func wrapScreen(v js.Value) Screen {
 	if isNil(v) {
 		return nil
 	}
@@ -52,7 +52,7 @@ type mediaQueryListImpl struct {
 	*eventTargetImpl
 }
 
-func newMediaQueryList(v js.Value) MediaQueryList {
+func wrapMediaQueryList(v js.Value) MediaQueryList {
 	if isNil(v) {
 		return nil
 	}
@@ -80,7 +80,7 @@ type mediaQueryListEventImpl struct {
 	*eventImpl
 }
 
-func newMediaQueryListEvent(v js.Value) MediaQueryListEvent {
+func wrapMediaQueryListEvent(v js.Value) MediaQueryListEvent {
 	if isNil(v) {
 		return nil
 	}
@@ -104,7 +104,7 @@ type caretPositionImpl struct {
 	js.Value
 }
 
-func newCaretPosition(v js.Value) CaretPosition {
+func wrapCaretPosition(v js.Value) CaretPosition {
 	if isNil(v) {
 		return nil
 	}
@@ -115,7 +115,7 @@ func newCaretPosition(v js.Value) CaretPosition {
 }
 
 func (p *caretPositionImpl) OffsetNode() Node {
-	return newNode(p.Get("offsetNode"))
+	return wrapNode(p.Get("offsetNode"))
 }
 
 func (p *caretPositionImpl) Offset() int {
@@ -123,7 +123,7 @@ func (p *caretPositionImpl) Offset() int {
 }
 
 func (p *caretPositionImpl) ClientRect() DOMRect {
-	return newDOMRect(p.Call("getClientRect"))
+	return wrapDOMRect(p.Call("getClientRect"))
 }
 
 // -------------8<---------------------------------------
@@ -132,7 +132,7 @@ type geometryUtilsImpl struct {
 	js.Value
 }
 
-func newGeometryUtils(v js.Value) GeometryUtils {
+func wrapGeometryUtils(v js.Value) GeometryUtils {
 	if p := newGeometryUtilsImpl(v); p != nil {
 		return p
 	}
@@ -160,27 +160,27 @@ func (p *geometryUtilsImpl) BoxQuads(options ...BoxQuadOptions) []DOMQuad {
 func (p *geometryUtilsImpl) ConvertQuadFromNode(quad DOMQuadInit, from GeometryNode, options ...ConvertCoordinateOptions) DOMQuad {
 	switch len(options) {
 	case 0:
-		return newDOMQuad(p.Call("convertQuadFromNode", quad.toDict(), from.JSValue()))
+		return wrapDOMQuad(p.Call("convertQuadFromNode", quad.toDict(), from.JSValue()))
 	default:
-		return newDOMQuad(p.Call("convertQuadFromNode", quad.toDict(), from.JSValue(), options[0].toDict()))
+		return wrapDOMQuad(p.Call("convertQuadFromNode", quad.toDict(), from.JSValue(), options[0].toDict()))
 	}
 }
 
 func (p *geometryUtilsImpl) ConvertRectFromNode(rect DOMRectReadOnly, from GeometryNode, options ...ConvertCoordinateOptions) DOMQuad {
 	switch len(options) {
 	case 0:
-		return newDOMQuad(p.Call("convertRectFromNode", rect.JSValue(), from.JSValue()))
+		return wrapDOMQuad(p.Call("convertRectFromNode", rect.JSValue(), from.JSValue()))
 	default:
-		return newDOMQuad(p.Call("convertRectFromNode", rect.JSValue(), from.JSValue(), options[0].toDict()))
+		return wrapDOMQuad(p.Call("convertRectFromNode", rect.JSValue(), from.JSValue(), options[0].toDict()))
 	}
 }
 
 func (p *geometryUtilsImpl) ConvertPointFromNode(point DOMPointInit, from GeometryNode, options ...ConvertCoordinateOptions) DOMPoint {
 	switch len(options) {
 	case 0:
-		return newDOMPoint(p.Call("convertPointFromNode", point.toDict(), from.JSValue()))
+		return wrapDOMPoint(p.Call("convertPointFromNode", point.toDict(), from.JSValue()))
 	default:
-		return newDOMPoint(p.Call("convertPointFromNode", point.toDict(), from.JSValue(), options[0].toDict()))
+		return wrapDOMPoint(p.Call("convertPointFromNode", point.toDict(), from.JSValue(), options[0].toDict()))
 	}
 }
 
@@ -190,7 +190,7 @@ type cssPseudoElementImpl struct {
 	*eventTargetImpl
 }
 
-func newCSSPseudoElement(v js.Value) CSSPseudoElement {
+func wrapCSSPseudoElement(v js.Value) CSSPseudoElement {
 	if isNil(v) {
 		return nil
 	}
@@ -204,7 +204,7 @@ func (p *cssPseudoElementImpl) Type() string {
 }
 
 func (p *cssPseudoElementImpl) Style() CSSStyleDeclaration {
-	return newCSSStyleDeclaration(p.Get("style"))
+	return wrapCSSStyleDeclaration(p.Get("style"))
 }
 
 // -------------8<---------------------------------------
@@ -213,7 +213,7 @@ type cssPseudoElementListImpl struct {
 	js.Value
 }
 
-func newCSSPseudoElementList(v js.Value) CSSPseudoElementList {
+func wrapCSSPseudoElementList(v js.Value) CSSPseudoElementList {
 	if isNil(v) {
 		return nil
 	}
@@ -227,11 +227,11 @@ func (p *cssPseudoElementListImpl) Length() int {
 }
 
 func (p *cssPseudoElementListImpl) Item(index int) CSSPseudoElement {
-	return newCSSPseudoElement(p.Call("item", index))
+	return wrapCSSPseudoElement(p.Call("item", index))
 }
 
 func (p *cssPseudoElementListImpl) ByType(typ string) CSSPseudoElement {
-	return newCSSPseudoElement(p.Call("getByType", typ))
+	return wrapCSSPseudoElement(p.Call("getByType", typ))
 }
 
 // -------------8<---------------------------------------
@@ -240,8 +240,8 @@ func NewMediaQueryListEvent(typ string, eventInitDict ...MediaQueryListEventInit
 
 	switch len(eventInitDict) {
 	case 0:
-		return newMediaQueryListEvent(jsMQLE.New(typ))
+		return wrapMediaQueryListEvent(jsMQLE.New(typ))
 	default:
-		return newMediaQueryListEvent(jsMQLE.New(typ, eventInitDict[0].toDict()))
+		return wrapMediaQueryListEvent(jsMQLE.New(typ, eventInitDict[0].toDict()))
 	}
 }

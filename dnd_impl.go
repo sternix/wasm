@@ -12,7 +12,7 @@ type dataTransferImpl struct {
 	js.Value
 }
 
-func newDataTransfer(v js.Value) DataTransfer {
+func wrapDataTransfer(v js.Value) DataTransfer {
 	if isNil(v) {
 		return nil
 	}
@@ -39,7 +39,7 @@ func (p *dataTransferImpl) SetEffectAllowed(param string) {
 }
 
 func (p *dataTransferImpl) Items() DataTransferItemList {
-	return newDataTransferItemList(p.Get("items"))
+	return wrapDataTransferItemList(p.Get("items"))
 }
 
 func (p *dataTransferImpl) SetDragImage(image Element, x int, y int) {
@@ -77,7 +77,7 @@ type dataTransferItemListImpl struct {
 	js.Value
 }
 
-func newDataTransferItemList(v js.Value) DataTransferItemList {
+func wrapDataTransferItemList(v js.Value) DataTransferItemList {
 	if isNil(v) {
 		return nil
 	}
@@ -92,15 +92,15 @@ func (p *dataTransferItemListImpl) Length() int {
 }
 
 func (p *dataTransferItemListImpl) Index(index int) DataTransferItem {
-	return newDataTransferItem(p.Call("DataTransferItem", index))
+	return wrapDataTransferItem(p.Call("DataTransferItem", index))
 }
 
 func (p *dataTransferItemListImpl) Add(data string, typ string) DataTransferItem {
-	return newDataTransferItem(p.Call("add", data, typ))
+	return wrapDataTransferItem(p.Call("add", data, typ))
 }
 
 func (p *dataTransferItemListImpl) AddFile(data File) DataTransferItem {
-	return newDataTransferItem(p.Call("add", data.JSValue()))
+	return wrapDataTransferItem(p.Call("add", data.JSValue()))
 }
 
 func (p *dataTransferItemListImpl) Remove(index int) {
@@ -117,7 +117,7 @@ type dataTransferItemImpl struct {
 	js.Value
 }
 
-func newDataTransferItem(v js.Value) DataTransferItem {
+func wrapDataTransferItem(v js.Value) DataTransferItem {
 	if isNil(v) {
 		return nil
 	}
@@ -140,7 +140,7 @@ func (p *dataTransferItemImpl) AsString(cb FunctionStringCallback) {
 }
 
 func (p *dataTransferItemImpl) AsFile() File {
-	return newFile(p.Call("getAsFile"))
+	return wrapFile(p.Call("getAsFile"))
 }
 
 // -------------8<---------------------------------------
@@ -149,7 +149,7 @@ type dragEventImpl struct {
 	*mouseEventImpl
 }
 
-func newDragEvent(v js.Value) DragEvent {
+func wrapDragEvent(v js.Value) DragEvent {
 	if isNil(v) {
 		return nil
 	}
@@ -160,7 +160,7 @@ func newDragEvent(v js.Value) DragEvent {
 }
 
 func (p *dragEventImpl) DataTransfer() DataTransfer {
-	return newDataTransfer(p.Get("dataTransfer"))
+	return wrapDataTransfer(p.Get("dataTransfer"))
 }
 
 // -------------8<---------------------------------------
@@ -172,8 +172,8 @@ func NewDragEvent(typ string, dei ...DragEventInit) DragEvent {
 	}
 
 	if len(dei) > 0 {
-		return newDragEvent(jsDragEvent.New(typ, dei[0].toDict()))
+		return wrapDragEvent(jsDragEvent.New(typ, dei[0].toDict()))
 	}
 
-	return newDragEvent(jsDragEvent.New(typ))
+	return wrapDragEvent(jsDragEvent.New(typ))
 }

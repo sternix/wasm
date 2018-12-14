@@ -171,7 +171,7 @@ func nodeListToSlice(nl js.Value) []Node {
 	ret := make([]Node, nl.Length())
 
 	for i := range ret {
-		ret[i] = newNode(nl.Index(i))
+		ret[i] = wrapNode(nl.Index(i))
 	}
 
 	return ret
@@ -183,7 +183,7 @@ func elementArrayToSlice(v js.Value) []Element {
 	ret := make([]Element, v.Length())
 
 	for i := range ret {
-		ret[i] = wrapElement(v.Index(i))
+		ret[i] = wrapAsElement(v.Index(i))
 	}
 
 	return ret
@@ -195,7 +195,7 @@ func domQuadArrayToSlice(v js.Value) []DOMQuad {
 	if !isNil(v) && v.Length() > 0 {
 		ret := make([]DOMQuad, v.Length())
 		for i := range ret {
-			ret[i] = newDOMQuad(v.Index(i))
+			ret[i] = wrapDOMQuad(v.Index(i))
 		}
 		return ret
 	}
@@ -254,7 +254,7 @@ func mutationRecordSequenceToSlice(v js.Value) []MutationRecord {
 
 	ret := make([]MutationRecord, v.Length())
 	for i := range ret {
-		ret[i] = newMutationRecord(v.Index(i))
+		ret[i] = wrapMutationRecord(v.Index(i))
 	}
 	return ret
 }
@@ -264,7 +264,7 @@ func mutationRecordSequenceToSlice(v js.Value) []MutationRecord {
 func fileListToSlice(v js.Value) []File {
 	ret := make([]File, v.Length())
 	for i := range ret {
-		ret[i] = newFile(v.Index(i))
+		ret[i] = wrapFile(v.Index(i))
 	}
 	return ret
 }
@@ -338,7 +338,7 @@ func touchListToSlice(v js.Value) []Touch {
 
 	ret := make([]Touch, v.Length())
 	for i := range ret {
-		ret[i] = newTouch(v.Index(i))
+		ret[i] = wrapTouch(v.Index(i))
 	}
 
 	return ret
@@ -377,7 +377,7 @@ func toFloat64Slice(v js.Value) []float64 {
 // -------------8<---------------------------------------
 
 func htmlCollectionToElementSlice(v js.Value) []Element {
-	if c := newHTMLCollection(v); c != nil && c.Length() > 0 {
+	if c := wrapHTMLCollection(v); c != nil && c.Length() > 0 {
 		ret := make([]Element, c.Length())
 		for i := 0; i < c.Length(); i++ {
 			ret[i] = c.Item(i)
@@ -390,7 +390,7 @@ func htmlCollectionToElementSlice(v js.Value) []Element {
 // -------------8<---------------------------------------
 
 func htmlCollectionToHTMLElementSlice(v js.Value) []HTMLElement {
-	if c := newHTMLCollection(v); c != nil && c.Length() > 0 {
+	if c := wrapHTMLCollection(v); c != nil && c.Length() > 0 {
 		var ret []HTMLElement
 		for i := 0; i < c.Length(); i++ {
 			if el, ok := c.Item(i).(HTMLElement); ok {
@@ -405,7 +405,7 @@ func htmlCollectionToHTMLElementSlice(v js.Value) []HTMLElement {
 // -------------8<---------------------------------------
 
 func htmlCollectionToHTMLOptionElementSlice(v js.Value) []HTMLOptionElement {
-	if c := newHTMLCollection(v); c != nil && c.Length() > 0 {
+	if c := wrapHTMLCollection(v); c != nil && c.Length() > 0 {
 		var ret []HTMLOptionElement
 		for i := 0; i < c.Length(); i++ {
 			if el, ok := c.Item(i).(HTMLOptionElement); ok {

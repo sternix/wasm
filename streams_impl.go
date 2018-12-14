@@ -12,7 +12,7 @@ type readableStreamImpl struct {
 	js.Value
 }
 
-func newReadableStream(v js.Value) ReadableStream {
+func wrapReadableStream(v js.Value) ReadableStream {
 	if isNil(v) {
 		return nil
 	}
@@ -56,7 +56,7 @@ type writableStreamImpl struct {
 	js.Value
 }
 
-func newWritableStream(v js.Value) WritableStream {
+func wrapWritableStream(v js.Value) WritableStream {
 	if isNil(v) {
 		return nil
 	}

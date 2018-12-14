@@ -67,7 +67,7 @@ func NewArrayBuffer(length int) ArrayBuffer {
 		return nil
 	}
 
-	return newArrayBuffer(jsArrayBuffer.New(length))
+	return wrapArrayBuffer(jsArrayBuffer.New(length))
 }
 
 func NewDataView(buf ArrayBuffer, args ...int) DataView {
@@ -78,11 +78,11 @@ func NewDataView(buf ArrayBuffer, args ...int) DataView {
 
 	switch len(args) {
 	case 0:
-		return newDataView(jsDataView.New(buf.JSValue()))
+		return wrapDataView(jsDataView.New(buf.JSValue()))
 	case 1:
-		return newDataView(jsDataView.New(buf.JSValue(), args[0]))
+		return wrapDataView(jsDataView.New(buf.JSValue(), args[0]))
 	default:
-		return newDataView(jsDataView.New(buf.JSValue(), args[0], args[1]))
+		return wrapDataView(jsDataView.New(buf.JSValue(), args[0], args[1]))
 	}
 }
 
@@ -92,7 +92,7 @@ type arrayBufferViewImpl struct {
 	js.Value
 }
 
-func newArrayBufferView(v js.Value) ArrayBufferView {
+func wrapArrayBufferView(v js.Value) ArrayBufferView {
 	if isNil(v) {
 		return nil
 	}
@@ -108,7 +108,7 @@ type arrayBufferImpl struct {
 	js.Value
 }
 
-func newArrayBuffer(v js.Value) ArrayBuffer {
+func wrapArrayBuffer(v js.Value) ArrayBuffer {
 	if isNil(v) {
 		return nil
 	}
@@ -133,9 +133,9 @@ func (p *arrayBufferImpl) IsView(arg interface{}) bool {
 func (p *arrayBufferImpl) Slice(begin int, end ...int) ArrayBuffer {
 	switch len(end) {
 	case 0:
-		return newArrayBuffer(p.Call("slice", begin))
+		return wrapArrayBuffer(p.Call("slice", begin))
 	default:
-		return newArrayBuffer(p.Call("slice", begin, end[0]))
+		return wrapArrayBuffer(p.Call("slice", begin, end[0]))
 	}
 }
 
@@ -149,7 +149,7 @@ type dataViewImpl struct {
 	js.Value
 }
 
-func newDataView(v js.Value) DataView {
+func wrapDataView(v js.Value) DataView {
 	if isNil(v) {
 		return nil
 	}
@@ -160,7 +160,7 @@ func newDataView(v js.Value) DataView {
 }
 
 func (p *dataViewImpl) Buffer() ArrayBuffer {
-	return newArrayBuffer(p.Get("buffer"))
+	return wrapArrayBuffer(p.Get("buffer"))
 }
 
 func (p *dataViewImpl) ByteLength() int {
@@ -241,7 +241,7 @@ type bufferSourceImpl struct {
 	js.Value
 }
 
-func newBufferSource(v js.Value) BufferSource {
+func wrapBufferSource(v js.Value) BufferSource {
 	if isNil(v) {
 		return nil
 	}

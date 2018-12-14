@@ -12,7 +12,7 @@ type clipboardImpl struct {
 	*eventTargetImpl
 }
 
-func newClipboard(v js.Value) Clipboard {
+func wrapClipboard(v js.Value) Clipboard {
 	if isNil(v) {
 		return nil
 	}
@@ -26,9 +26,9 @@ func (p *clipboardImpl) Read() func() (DataTransfer, error) {
 	return func() (DataTransfer, error) {
 		result, ok := await(p.Call("read"))
 		if ok {
-			return newDataTransfer(result), nil
+			return wrapDataTransfer(result), nil
 		}
-		return nil, newDOMException(result)
+		return nil, wrapDOMException(result)
 	}
 }
 
@@ -62,7 +62,7 @@ type clipboardEventImpl struct {
 	*eventImpl
 }
 
-func newClipboardEvent(v js.Value) ClipboardEvent {
+func wrapClipboardEvent(v js.Value) ClipboardEvent {
 	if isNil(v) {
 		return nil
 	}
@@ -73,7 +73,7 @@ func newClipboardEvent(v js.Value) ClipboardEvent {
 }
 
 func (p *clipboardEventImpl) ClipboardData() DataTransfer {
-	return newDataTransfer(p.Get("clipboardData"))
+	return wrapDataTransfer(p.Get("clipboardData"))
 }
 
 // -------------8<---------------------------------------
@@ -86,8 +86,8 @@ func NewClipboardEvent(typ string, eventInitDict ...ClipboardEventInit) Clipboar
 
 	switch len(eventInitDict) {
 	case 0:
-		return newClipboardEvent(jsClipboardEvent.New(typ))
+		return wrapClipboardEvent(jsClipboardEvent.New(typ))
 	default:
-		return newClipboardEvent(jsClipboardEvent.New(typ, eventInitDict[0].toDict()))
+		return wrapClipboardEvent(jsClipboardEvent.New(typ, eventInitDict[0].toDict()))
 	}
 }

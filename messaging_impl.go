@@ -12,7 +12,7 @@ type messageChannelImpl struct {
 	js.Value
 }
 
-func newMessageChannel(v js.Value) MessageChannel {
+func wrapMessageChannel(v js.Value) MessageChannel {
 	if isNil(v) {
 		return nil
 	}
@@ -23,11 +23,11 @@ func newMessageChannel(v js.Value) MessageChannel {
 }
 
 func (p *messageChannelImpl) Port1() MessagePort {
-	return newMessagePort(p.Get("port1"))
+	return wrapMessagePort(p.Get("port1"))
 }
 
 func (p *messageChannelImpl) Port2() MessagePort {
-	return newMessagePort(p.Get("port2"))
+	return wrapMessagePort(p.Get("port2"))
 }
 
 // -------------8<---------------------------------------
@@ -36,7 +36,7 @@ type messagePortImpl struct {
 	*eventTargetImpl
 }
 
-func newMessagePort(v js.Value) MessagePort {
+func wrapMessagePort(v js.Value) MessagePort {
 	if isNil(v) {
 		return nil
 	}
@@ -78,7 +78,7 @@ type broadcastChannelImpl struct {
 	*eventTargetImpl
 }
 
-func newBroadcastChannel(v js.Value) BroadcastChannel {
+func wrapBroadcastChannel(v js.Value) BroadcastChannel {
 	if isNil(v) {
 		return nil
 	}
@@ -118,7 +118,7 @@ type messageEventImpl struct {
 	*eventImpl
 }
 
-func newMessageEvent(v js.Value) MessageEvent {
+func wrapMessageEvent(v js.Value) MessageEvent {
 	if isNil(v) {
 		return nil
 	}
@@ -147,11 +147,11 @@ func (p *messageEventImpl) Source() MessageEventSource {
 	}
 
 	if v.InstanceOf(jsWindowProxy) {
-		return newWindowProxy(v)
+		return wrapWindowProxy(v)
 	} else if v.InstanceOf(jsMessagePort) {
-		return newMessagePort(v)
+		return wrapMessagePort(v)
 	} /* TODO: ServiceWorker  else if v.InstanceOf(jsServiceWorker) {
-		return newServiceWorker(v)
+		return wrapServiceWorker(v)
 	}*/
 
 	return nil
@@ -162,7 +162,7 @@ func (p *messageEventImpl) Ports() []MessagePort {
 
 	ports := arrayToSlice(p.Get("ports"))
 	for _, port := range ports {
-		ret = append(ret, newMessagePort(port))
+		ret = append(ret, wrapMessagePort(port))
 	}
 
 	return ret
@@ -227,7 +227,7 @@ type messageEventSourceImpl struct {
 	js.Value
 }
 
-func newMessageEventSource(v js.Value) MessageEventSource {
+func wrapMessageEventSource(v js.Value) MessageEventSource {
 	if isNil(v) {
 		return nil
 	}
@@ -245,7 +245,7 @@ func NewBroadcastChannel(name string) BroadcastChannel {
 		return nil
 	}
 
-	return newBroadcastChannel(jsBroadcastChannel.New(name))
+	return wrapBroadcastChannel(jsBroadcastChannel.New(name))
 }
 
 func NewMessageChannel() MessageChannel {
@@ -254,5 +254,5 @@ func NewMessageChannel() MessageChannel {
 		return nil
 	}
 
-	return newMessageChannel(jsMessageChannel.New())
+	return wrapMessageChannel(jsMessageChannel.New())
 }

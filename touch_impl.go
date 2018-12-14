@@ -12,7 +12,7 @@ type touchImpl struct {
 	js.Value
 }
 
-func newTouch(v js.Value) Touch {
+func wrapTouch(v js.Value) Touch {
 	if isNil(v) {
 		return nil
 	}
@@ -88,7 +88,7 @@ type touchEventImpl struct {
 	*uiEventImpl
 }
 
-func newTouchEvent(v js.Value) TouchEvent {
+func wrapTouchEvent(v js.Value) TouchEvent {
 	if isNil(v) {
 		return nil
 	}
@@ -134,7 +134,7 @@ func NewTouch(ti TouchInit) Touch {
 		return nil
 	}
 
-	return newTouch(jsTouch.New(ti.toDict()))
+	return wrapTouch(jsTouch.New(ti.toDict()))
 }
 
 func NewTouchEvent(typ string, tei ...TouchEventInit) TouchEvent {
@@ -145,9 +145,9 @@ func NewTouchEvent(typ string, tei ...TouchEventInit) TouchEvent {
 
 	switch len(tei) {
 	case 0:
-		return newTouchEvent(jsTouchEvent.New(typ))
+		return wrapTouchEvent(jsTouchEvent.New(typ))
 	default:
-		return newTouchEvent(jsTouchEvent.New(typ, tei[0].toDict()))
+		return wrapTouchEvent(jsTouchEvent.New(typ, tei[0].toDict()))
 	}
 }
 

@@ -21,7 +21,7 @@ func NewHTMLScriptElement() HTMLScriptElement {
 	return nil
 }
 
-func newHTMLScriptElement(v js.Value) HTMLScriptElement {
+func wrapHTMLScriptElement(v js.Value) HTMLScriptElement {
 	if isNil(v) {
 		return nil
 	}
@@ -110,7 +110,7 @@ func NewHTMLTemplateElement() HTMLTemplateElement {
 	return nil
 }
 
-func newHTMLTemplateElement(v js.Value) HTMLTemplateElement {
+func wrapHTMLTemplateElement(v js.Value) HTMLTemplateElement {
 	if isNil(v) {
 		return nil
 	}
@@ -121,7 +121,7 @@ func newHTMLTemplateElement(v js.Value) HTMLTemplateElement {
 }
 
 func (p *htmlTemplateElementImpl) Content() DocumentFragment {
-	return newDocumentFragment(p.Get("content"))
+	return wrapDocumentFragment(p.Get("content"))
 }
 
 // -------------8<---------------------------------------
@@ -143,7 +143,7 @@ func NewHTMLCanvasElement(size ...int) HTMLCanvasElement {
 	return nil
 }
 
-func newHTMLCanvasElement(v js.Value) HTMLCanvasElement {
+func wrapHTMLCanvasElement(v js.Value) HTMLCanvasElement {
 	if isNil(v) {
 		return nil
 	}
@@ -178,7 +178,7 @@ func (p *htmlCanvasElementImpl) Context(ctxId string, args ...interface{}) Rende
 
 func (p *htmlCanvasElementImpl) Context2D(alpha ...bool) CanvasRenderingContext2D {
 	// TODO: alpha param omitted
-	return newCanvasRenderingContext2D(p.Call("getContext", "2d"))
+	return wrapCanvasRenderingContext2D(p.Call("getContext", "2d"))
 }
 
 func (p *htmlCanvasElementImpl) ContextWebGL(attrs ...WebGLContextAttributes) WebGLRenderingContext {
@@ -205,7 +205,7 @@ func (p *htmlCanvasElementImpl) ContextWebGL(attrs ...WebGLContextAttributes) We
 		}
 	}
 
-	return newWebGLRenderingContext(v)
+	return wrapWebGLRenderingContext(v)
 }
 
 // TODO: removed from standart

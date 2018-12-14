@@ -15,10 +15,10 @@ func NewPopStateEvent(typ string, p ...PopStateEventInit) PopStateEvent {
 	}
 
 	if len(p) > 0 {
-		return newPopStateEvent(jsPopStateEvent.New(typ, p[0].toDict()))
+		return wrapPopStateEvent(jsPopStateEvent.New(typ, p[0].toDict()))
 	}
 
-	return newPopStateEvent(jsPopStateEvent.New(typ))
+	return wrapPopStateEvent(jsPopStateEvent.New(typ))
 }
 
 func NewHashChangeEvent(typ string, p ...HashChangeEventInit) HashChangeEvent {
@@ -28,10 +28,10 @@ func NewHashChangeEvent(typ string, p ...HashChangeEventInit) HashChangeEvent {
 	}
 
 	if len(p) > 0 {
-		return newHashChangeEvent(jsHashChangeEvent.New(typ, p[0].toDict()))
+		return wrapHashChangeEvent(jsHashChangeEvent.New(typ, p[0].toDict()))
 	}
 
-	return newHashChangeEvent(jsHashChangeEvent.New(typ))
+	return wrapHashChangeEvent(jsHashChangeEvent.New(typ))
 }
 
 func NewPageTransitionEvent(typ string, p ...PageTransitionEventInit) PageTransitionEvent {
@@ -41,10 +41,10 @@ func NewPageTransitionEvent(typ string, p ...PageTransitionEventInit) PageTransi
 	}
 
 	if len(p) > 0 {
-		return newPageTransitionEvent(jsPageTransitionEvent.New(typ, p[0].toDict()))
+		return wrapPageTransitionEvent(jsPageTransitionEvent.New(typ, p[0].toDict()))
 	}
 
-	return newPageTransitionEvent(jsPageTransitionEvent.New(typ))
+	return wrapPageTransitionEvent(jsPageTransitionEvent.New(typ))
 }
 
 // -------------8<---------------------------------------
@@ -57,7 +57,7 @@ type windowImpl struct {
 	js.Value
 }
 
-func newWindow(v js.Value) Window {
+func wrapWindow(v js.Value) Window {
 	if p := newWindowImpl(v); p != nil {
 		return p
 	}
@@ -79,19 +79,19 @@ func newWindowImpl(v js.Value) *windowImpl {
 }
 
 func (p *windowImpl) Console() Console {
-	return newConsole(p.Get("console"))
+	return wrapConsole(p.Get("console"))
 }
 
 func (p *windowImpl) Window() WindowProxy {
-	return newWindowProxy(p.Get("window"))
+	return wrapWindowProxy(p.Get("window"))
 }
 
 func (p *windowImpl) Self() WindowProxy {
-	return newWindowProxy(p.Get("self"))
+	return wrapWindowProxy(p.Get("self"))
 }
 
 func (p *windowImpl) Document() Document {
-	return newDocument(p.Get("document"))
+	return wrapDocument(p.Get("document"))
 }
 
 func (p *windowImpl) Name() string {
@@ -103,35 +103,35 @@ func (p *windowImpl) SetName(name string) {
 }
 
 func (p *windowImpl) Location() Location {
-	return newLocation(p.Get("location"))
+	return wrapLocation(p.Get("location"))
 }
 
 func (p *windowImpl) History() History {
-	return newHistory(p.Get("history"))
+	return wrapHistory(p.Get("history"))
 }
 
 func (p *windowImpl) Locationbar() BarProp {
-	return newBarProp(p.Get("locationbar"))
+	return wrapBarProp(p.Get("locationbar"))
 }
 
 func (p *windowImpl) Menubar() BarProp {
-	return newBarProp(p.Get("menubar"))
+	return wrapBarProp(p.Get("menubar"))
 }
 
 func (p *windowImpl) Personalbar() BarProp {
-	return newBarProp(p.Get("personalbar"))
+	return wrapBarProp(p.Get("personalbar"))
 }
 
 func (p *windowImpl) Scrollbars() BarProp {
-	return newBarProp(p.Get("scrollbars"))
+	return wrapBarProp(p.Get("scrollbars"))
 }
 
 func (p *windowImpl) Statusbar() BarProp {
-	return newBarProp(p.Get("statusbar"))
+	return wrapBarProp(p.Get("statusbar"))
 }
 
 func (p *windowImpl) Toolbar() BarProp {
-	return newBarProp(p.Get("toolbar"))
+	return wrapBarProp(p.Get("toolbar"))
 }
 
 func (p *windowImpl) Status() string {
@@ -163,7 +163,7 @@ func (p *windowImpl) Blur() {
 }
 
 func (p *windowImpl) Frames() WindowProxy {
-	return newWindowProxy(p.Get("frames"))
+	return wrapWindowProxy(p.Get("frames"))
 }
 
 func (p *windowImpl) Length() int {
@@ -171,38 +171,38 @@ func (p *windowImpl) Length() int {
 }
 
 func (p *windowImpl) Top() WindowProxy {
-	return newWindowProxy(p.Get("top"))
+	return wrapWindowProxy(p.Get("top"))
 }
 
 func (p *windowImpl) Opener() WindowProxy {
-	return newWindowProxy(p.Get("opener"))
+	return wrapWindowProxy(p.Get("opener"))
 }
 
 func (p *windowImpl) Parent() WindowProxy {
-	return newWindowProxy(p.Get("parent"))
+	return wrapWindowProxy(p.Get("parent"))
 }
 
 func (p *windowImpl) FrameElement() Element {
-	return wrapElement(p.Get("frameElement"))
+	return wrapAsElement(p.Get("frameElement"))
 }
 
 func (p *windowImpl) Open(args ...interface{}) WindowProxy {
 	switch len(args) {
 	case 1:
 		if url, ok := args[0].(string); ok {
-			return newWindowProxy(p.Call("open", url))
+			return wrapWindowProxy(p.Call("open", url))
 		}
 	case 2:
 		if url, ok := args[0].(string); ok {
 			if target, ok := args[1].(string); ok {
-				return newWindowProxy(p.Call("open", url, target))
+				return wrapWindowProxy(p.Call("open", url, target))
 			}
 		}
 	case 3:
 		if url, ok := args[0].(string); ok {
 			if target, ok := args[1].(string); ok {
 				if features, ok := args[2].(string); ok {
-					return newWindowProxy(p.Call("open", url, target, features))
+					return wrapWindowProxy(p.Call("open", url, target, features))
 				}
 			}
 		}
@@ -211,18 +211,18 @@ func (p *windowImpl) Open(args ...interface{}) WindowProxy {
 			if target, ok := args[1].(string); ok {
 				if features, ok := args[2].(string); ok {
 					if replace, ok := args[3].(bool); ok {
-						return newWindowProxy(p.Call("open", url, target, features, replace))
+						return wrapWindowProxy(p.Call("open", url, target, features, replace))
 					}
 				}
 			}
 		}
 	}
 
-	return newWindowProxy(p.Call("open"))
+	return wrapWindowProxy(p.Call("open"))
 }
 
 func (p *windowImpl) Navigator() Navigator {
-	return newNavigator(p.Get("navigator"))
+	return wrapNavigator(p.Get("navigator"))
 }
 
 func (p *windowImpl) Alert(msg ...string) {
@@ -267,11 +267,11 @@ func (p *windowImpl) CancelAnimationFrame(handle int) {
 }
 
 func (p *windowImpl) MatchMedia(query string) MediaQueryList {
-	return newMediaQueryList(p.Call("matchMedia", query))
+	return wrapMediaQueryList(p.Call("matchMedia", query))
 }
 
 func (p *windowImpl) Screen() Screen {
-	return newScreen(p.Get("screen"))
+	return wrapScreen(p.Get("screen"))
 }
 
 func (p *windowImpl) MoveTo(x int, y int) {
@@ -394,11 +394,11 @@ func (p *windowImpl) DevicePixelRatio() float64 {
 }
 
 func (p *windowImpl) ComputedStyle(Element, ...string) CSSStyleDeclaration {
-	return newCSSStyleDeclaration(p.Call("getComputedStyle"))
+	return wrapCSSStyleDeclaration(p.Call("getComputedStyle"))
 }
 
 func (p *windowImpl) PseudoElements(elt Element, typ string) []CSSPseudoElement {
-	l := newCSSPseudoElementList(p.Call("getPseudoElements", elt.JSValue(), typ))
+	l := wrapCSSPseudoElementList(p.Call("getPseudoElements", elt.JSValue(), typ))
 	if l != nil && l.Length() > 0 {
 		ret := make([]CSSPseudoElement, l.Length())
 		for i := range ret {
@@ -415,7 +415,7 @@ type barPropImpl struct {
 	js.Value
 }
 
-func newBarProp(v js.Value) BarProp {
+func wrapBarProp(v js.Value) BarProp {
 	if isNil(v) {
 		return nil
 	}
@@ -435,7 +435,7 @@ type locationImpl struct {
 	*workerLocationImpl
 }
 
-func newLocation(v js.Value) Location {
+func wrapLocation(v js.Value) Location {
 	if isNil(v) {
 		return nil
 	}
@@ -498,7 +498,7 @@ type historyImpl struct {
 	js.Value
 }
 
-func newHistory(v js.Value) History {
+func wrapHistory(v js.Value) History {
 	if isNil(v) {
 		return nil
 	}
@@ -565,7 +565,7 @@ type popStateEventImpl struct {
 	*eventImpl
 }
 
-func newPopStateEvent(v js.Value) PopStateEvent {
+func wrapPopStateEvent(v js.Value) PopStateEvent {
 	if isNil(v) {
 		return nil
 	}
@@ -589,7 +589,7 @@ type hashChangeEventImpl struct {
 	*eventImpl
 }
 
-func newHashChangeEvent(v js.Value) HashChangeEvent {
+func wrapHashChangeEvent(v js.Value) HashChangeEvent {
 	if isNil(v) {
 		return nil
 	}
@@ -613,7 +613,7 @@ type pageTransitionEventImpl struct {
 	*eventImpl
 }
 
-func newPageTransitionEvent(v js.Value) PageTransitionEvent {
+func wrapPageTransitionEvent(v js.Value) PageTransitionEvent {
 	if isNil(v) {
 		return nil
 	}
@@ -633,7 +633,7 @@ type windowProxyImpl struct {
 	*windowImpl
 }
 
-func newWindowProxy(v js.Value) WindowProxy {
+func wrapWindowProxy(v js.Value) WindowProxy {
 	if isNil(v) {
 		return nil
 	}
@@ -649,7 +649,7 @@ type navigatorOnLineImpl struct {
 	js.Value
 }
 
-func newNavigatorOnLine(v js.Value) NavigatorOnLine {
+func wrapNavigatorOnLine(v js.Value) NavigatorOnLine {
 	if p := newNavigatorOnLineImpl(v); p != nil {
 		return p
 	}
@@ -676,7 +676,7 @@ type beforeUnloadEventImpl struct {
 	*eventImpl
 }
 
-func newBeforeUnloadEvent(v js.Value) BeforeUnloadEvent {
+func wrapBeforeUnloadEvent(v js.Value) BeforeUnloadEvent {
 	if isNil(v) {
 		return nil
 	}

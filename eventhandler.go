@@ -20,7 +20,7 @@ func (p *eventHandlerImpl) Type() string {
 
 func (p *eventHandlerImpl) jsFunc(this js.Value, args []js.Value) interface{} {
 	if len(args) > 0 {
-		p.Handle(wrapEvent(args[0]))
+		p.Handle(wrapAsEvent(args[0]))
 	}
 	return nil
 }
@@ -69,7 +69,7 @@ func (p *elementEventHandlerImpl) Type() string {
 
 func (p *elementEventHandlerImpl) jsFunc(this js.Value, args []js.Value) interface{} {
 	if len(args) > 0 {
-		p.Handle(wrapEvent(args[0]))
+		p.Handle(wrapAsEvent(args[0]))
 	}
 	return nil
 }

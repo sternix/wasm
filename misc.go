@@ -31,15 +31,15 @@ func NewDOMException(args ...string) DOMException {
 
 	switch len(args) {
 	case 0:
-		return newDOMException(jsEx.New())
+		return wrapDOMException(jsEx.New())
 	case 1:
-		return newDOMException(jsEx.New(args[0])) // message
+		return wrapDOMException(jsEx.New(args[0])) // message
 	default:
-		return newDOMException(jsEx.New(args[0], args[1])) // message, name
+		return wrapDOMException(jsEx.New(args[0], args[1])) // message, name
 	}
 }
 
-func newDOMException(v js.Value) DOMException {
+func wrapDOMException(v js.Value) DOMException {
 	if isNil(v) {
 		return nil
 	}
@@ -92,542 +92,554 @@ func wrapObject(v js.Value) interface{} {
 
 	switch t {
 	case "AbortController":
-		return newAbortController(v)
+		return wrapAbortController(v)
 	case "AbortSignal":
-		return newAbortSignal(v)
+		return wrapAbortSignal(v)
 	case "AbstractRange":
-		return newAbstractRange(v)
+		return wrapAbstractRange(v)
 	case "AbstractWorker":
-		return newAbstractWorker(v)
+		return wrapAbstractWorker(v)
 	case "ApplicationCache":
-		return newApplicationCache(v)
+		return wrapApplicationCache(v)
 	case "ArrayBuffer":
-		return newArrayBuffer(v)
+		return wrapArrayBuffer(v)
 	case "ArrayBufferView":
-		return newArrayBufferView(v)
+		return wrapArrayBufferView(v)
 	case "Attr":
-		return newAttr(v)
+		return wrapAttr(v)
 	case "AudioTrack":
-		return newAudioTrack(v)
+		return wrapAudioTrack(v)
 	case "AudioTrackList":
-		return newAudioTrackList(v)
+		return wrapAudioTrackList(v)
 	case "BarProp":
-		return newBarProp(v)
+		return wrapBarProp(v)
 	case "BeforeUnloadEvent":
-		return newBeforeUnloadEvent(v)
+		return wrapBeforeUnloadEvent(v)
 	case "Blob":
-		return newBlob(v)
+		return wrapBlob(v)
 	case "Body":
-		return newBody(v)
+		return wrapBody(v)
 	case "BroadcastChannel":
-		return newBroadcastChannel(v)
+		return wrapBroadcastChannel(v)
 	case "BufferSource":
-		return newBufferSource(v)
+		return wrapBufferSource(v)
 	case "CDATASection":
-		return newCDATASection(v)
+		return wrapCDATASection(v)
 	case "CanvasDrawingStyles":
-		return newCanvasDrawingStyles(v)
+		return wrapCanvasDrawingStyles(v)
 	case "CanvasGradient":
-		return newCanvasGradient(v)
+		return wrapCanvasGradient(v)
 	case "CanvasPathMethods":
-		return newCanvasPathMethods(v)
+		return wrapCanvasPathMethods(v)
 	case "CanvasPattern":
-		return newCanvasPattern(v)
+		return wrapCanvasPattern(v)
 	case "CanvasRenderingContext2D":
-		return newCanvasRenderingContext2D(v)
+		return wrapCanvasRenderingContext2D(v)
 	case "CaretPosition":
-		return newCaretPosition(v)
+		return wrapCaretPosition(v)
 	case "CharacterData":
-		return newCharacterData(v)
+		return wrapCharacterData(v)
 	case "Clipboard":
-		return newClipboard(v)
+		return wrapClipboard(v)
 	case "ClipboardEvent":
-		return newClipboardEvent(v)
+		return wrapClipboardEvent(v)
 	case "CloseEvent":
-		return newCloseEvent(v)
+		return wrapCloseEvent(v)
 	case "Comment":
-		return newComment(v)
+		return wrapComment(v)
 	case "CompositionEvent":
-		return newCompositionEvent(v)
+		return wrapCompositionEvent(v)
 	case "Console":
-		return newConsole(v)
+		return wrapConsole(v)
 	case "Coordinates":
-		return newCoordinates(v)
+		return wrapCoordinates(v)
 	case "CSSStyleSheet":
-		return newCSSStyleSheet(v)
+		return wrapCSSStyleSheet(v)
 	case "CSSRule":
-		return newCSSRule(v)
+		return wrapCSSRule(v)
 	case "CSSRuleList":
-		return newCSSRuleList(v)
+		return wrapCSSRuleList(v)
 	case "CSSStyleRule":
-		return newCSSStyleRule(v)
+		return wrapCSSStyleRule(v)
 	case "CSSImportRule":
-		return newCSSImportRule(v)
+		return wrapCSSImportRule(v)
 	case "CSSGroupingRule":
-		return newCSSGroupingRule(v)
+		return wrapCSSGroupingRule(v)
 	case "CSSPageRule":
-		return newCSSPageRule(v)
+		return wrapCSSPageRule(v)
 	case "CSSPseudoElement":
-		return newCSSPseudoElement(v)
+		return wrapCSSPseudoElement(v)
 	case "CSSMarginRule":
-		return newCSSMarginRule(v)
+		return wrapCSSMarginRule(v)
 	case "CSSNamespaceRule":
-		return newCSSNamespaceRule(v)
+		return wrapCSSNamespaceRule(v)
 	case "CSSStyleDeclaration":
-		return newCSSStyleDeclaration(v)
+		return wrapCSSStyleDeclaration(v)
 	case "CustomEvent":
-		return newCustomEvent(v)
+		return wrapCustomEvent(v)
 	case "DOMException":
-		return newDOMException(v)
+		return wrapDOMException(v)
 	case "DOMImplementation":
-		return newDOMImplementation(v)
+		return wrapDOMImplementation(v)
 	case "DOMMatrix":
-		return newDOMMatrix(v)
+		return wrapDOMMatrix(v)
 	case "DOMMatrixReadOnly":
-		return newDOMMatrixReadOnly(v)
+		return wrapDOMMatrixReadOnly(v)
 	case "DOMPoint":
-		return newDOMPoint(v)
+		return wrapDOMPoint(v)
 	case "DOMPointReadOnly":
-		return newDOMPointReadOnly(v)
+		return wrapDOMPointReadOnly(v)
 	case "DOMQuad":
-		return newDOMQuad(v)
+		return wrapDOMQuad(v)
 	case "DOMRect":
-		return newDOMRect(v)
+		return wrapDOMRect(v)
 	case "DOMRectReadOnly":
-		return newDOMRectReadOnly(v)
+		return wrapDOMRectReadOnly(v)
 	case "DOMStringMap":
-		return newDOMStringMap(v)
+		return wrapDOMStringMap(v)
 	case "DOMTokenList":
-		return newDOMTokenList(v)
+		return wrapDOMTokenList(v)
 	case "DataTransfer":
-		return newDataTransfer(v)
+		return wrapDataTransfer(v)
 	case "DataTransferItem":
-		return newDataTransferItem(v)
+		return wrapDataTransferItem(v)
 	case "DataTransferItemList":
-		return newDataTransferItemList(v)
+		return wrapDataTransferItemList(v)
 	case "DataView":
-		return newDataView(v)
+		return wrapDataView(v)
 	case "DedicatedWorkerGlobalScope":
-		return newDedicatedWorkerGlobalScope(v)
+		return wrapDedicatedWorkerGlobalScope(v)
 	case "DocumentFragment":
-		return newDocumentFragment(v)
+		return wrapDocumentFragment(v)
 	case "Document":
-		return newDocument(v)
+		return wrapDocument(v)
 	case "DocumentType":
-		return newDocumentType(v)
+		return wrapDocumentType(v)
 	case "DragEvent":
-		return newDragEvent(v)
+		return wrapDragEvent(v)
 	case "ElementContentEditable":
-		return newElementContentEditable(v)
+		return wrapElementContentEditable(v)
 	case "Element":
-		return newElement(v)
+		return wrapElement(v)
 	case "ErrorEvent":
-		return newErrorEvent(v)
+		return wrapErrorEvent(v)
 	case "Event":
-		return newEvent(v)
+		return wrapEvent(v)
 	case "EventTarget":
-		return newEventTarget(v)
+		return wrapEventTarget(v)
 	case "File":
-		return newFile(v)
+		return wrapFile(v)
 	case "FileReader":
-		return newFileReader(v)
+		return wrapFileReader(v)
 	case "FileReaderSync":
-		return newFileReaderSync(v)
+		return wrapFileReaderSync(v)
 	case "FocusEvent":
-		return newFocusEvent(v)
+		return wrapFocusEvent(v)
 	case "GenericTransformStream":
-		return newGenericTransformStream(v)
+		return wrapGenericTransformStream(v)
 	case "Geolocation":
-		return newGeolocation(v)
-	case "GlobalEventHandlers":
-		return newGlobalEventHandlersImpl(v)
+		return wrapGeolocation(v)
+		/*
+			case "GlobalEventHandlers":
+				return wrapGlobalEventHandlersImpl(v)
+		*/
 	case "HTMLAnchorElement":
-		return newHTMLAnchorElement(v)
+		return wrapHTMLAnchorElement(v)
 	case "HTMLAreaElement":
-		return newHTMLAreaElement(v)
+		return wrapHTMLAreaElement(v)
 	case "HTMLAudioElement":
-		return newHTMLAudioElement(v)
+		return wrapHTMLAudioElement(v)
 	case "HTMLBRElement":
-		return newHTMLBRElement(v)
+		return wrapHTMLBRElement(v)
 	case "HTMLBaseElement":
-		return newHTMLBaseElement(v)
+		return wrapHTMLBaseElement(v)
 	case "HTMLBodyElement":
-		return newHTMLBodyElement(v)
+		return wrapHTMLBodyElement(v)
 	case "HTMLButtonElement":
-		return newHTMLButtonElement(v)
+		return wrapHTMLButtonElement(v)
 	case "HTMLCanvasElement":
-		return newHTMLCanvasElement(v)
+		return wrapHTMLCanvasElement(v)
 	case "HTMLCollection":
-		return newHTMLCollection(v)
+		return wrapHTMLCollection(v)
 	case "HTMLDListElement":
-		return newHTMLDListElement(v)
+		return wrapHTMLDListElement(v)
 	case "HTMLDataElement":
-		return newHTMLDataElement(v)
+		return wrapHTMLDataElement(v)
 	case "HTMLDataListElement":
-		return newHTMLDataListElement(v)
+		return wrapHTMLDataListElement(v)
 	case "HTMLDetailsElement":
-		return newHTMLDetailsElement(v)
+		return wrapHTMLDetailsElement(v)
 	case "HTMLDialogElement":
-		return newHTMLDialogElement(v)
+		return wrapHTMLDialogElement(v)
 	case "HTMLDivElement":
-		return newHTMLDivElement(v)
+		return wrapHTMLDivElement(v)
 	case "HTMLElement":
-		return newHTMLElement(v)
+		return wrapHTMLElement(v)
 	case "HTMLEmbedElement":
-		return newHTMLEmbedElement(v)
+		return wrapHTMLEmbedElement(v)
 	case "HTMLFieldSetElement":
-		return newHTMLFieldSetElement(v)
+		return wrapHTMLFieldSetElement(v)
 	case "HTMLFormControl":
-		return newHTMLFormControl(v)
+		return wrapHTMLFormControl(v)
 	case "HTMLFormControlsCollection":
-		return newHTMLFormControlsCollection(v)
+		return wrapHTMLFormControlsCollection(v)
 	case "HTMLFormElement":
-		return newHTMLFormElement(v)
+		return wrapHTMLFormElement(v)
 	case "HTMLHRElement":
-		return newHTMLHRElement(v)
+		return wrapHTMLHRElement(v)
 	case "HTMLHeadElement":
-		return newHTMLHeadElement(v)
+		return wrapHTMLHeadElement(v)
 	case "HTMLHeadingElement":
-		return newHTMLHeadingElement(v)
+		return wrapHTMLHeadingElement(v)
 	case "HTMLHtmlElement":
-		return newHTMLHtmlElement(v)
-	case "HTMLHyperlinkElementUtils":
-		return newHTMLHyperlinkElementUtilsImpl(v)
+		return wrapHTMLHtmlElement(v)
+		/*
+			case "HTMLHyperlinkElementUtils":
+				return newHTMLHyperlinkElementUtilsImpl(v)
+		*/
 	case "HTMLIFrameElement":
-		return newHTMLIFrameElement(v)
+		return wrapHTMLIFrameElement(v)
 	case "HTMLImageElement":
-		return newHTMLImageElement(v)
+		return wrapHTMLImageElement(v)
 	case "HTMLInputElement":
-		return newHTMLInputElement(v)
+		return wrapHTMLInputElement(v)
 	case "HTMLLIElement":
-		return newHTMLLIElement(v)
+		return wrapHTMLLIElement(v)
 	case "HTMLLabelElement":
-		return newHTMLLabelElement(v)
+		return wrapHTMLLabelElement(v)
 	case "HTMLLegendElement":
-		return newHTMLLegendElement(v)
+		return wrapHTMLLegendElement(v)
 	case "HTMLLinkElement":
-		return newHTMLLinkElement(v)
+		return wrapHTMLLinkElement(v)
 	case "HTMLMapElement":
-		return newHTMLMapElement(v)
+		return wrapHTMLMapElement(v)
 	case "HTMLMediaElement":
-		return newHTMLMediaElement(v)
+		return wrapHTMLMediaElement(v)
 	case "HTMLMetaElement":
-		return newHTMLMetaElement(v)
+		return wrapHTMLMetaElement(v)
 	case "HTMLMeterElement":
-		return newHTMLMeterElement(v)
+		return wrapHTMLMeterElement(v)
 	case "HTMLModElement":
-		return newHTMLModElement(v)
+		return wrapHTMLModElement(v)
 	case "HTMLOListElement":
-		return newHTMLOListElement(v)
+		return wrapHTMLOListElement(v)
 	case "HTMLObjectElement":
-		return newHTMLObjectElement(v)
+		return wrapHTMLObjectElement(v)
 	case "HTMLOptGroupElement":
-		return newHTMLOptGroupElement(v)
+		return wrapHTMLOptGroupElement(v)
 	case "HTMLOptionElement":
-		return newHTMLOptionElement(v)
+		return wrapHTMLOptionElement(v)
 	case "HTMLOptionsCollection":
-		return newHTMLOptionsCollection(v)
+		return wrapHTMLOptionsCollection(v)
 	case "HTMLOrSVGElement":
-		return newHTMLOrSVGElement(v)
+		return wrapHTMLOrSVGElement(v)
 	case "HTMLOrSVGScriptElement":
-		return newHTMLOrSVGScriptElement(v)
+		return wrapHTMLOrSVGScriptElement(v)
 	case "HTMLOutputElement":
-		return newHTMLOutputElement(v)
+		return wrapHTMLOutputElement(v)
 	case "HTMLParagraphElement":
-		return newHTMLParagraphElement(v)
+		return wrapHTMLParagraphElement(v)
 	case "HTMLParamElement":
-		return newHTMLParamElement(v)
+		return wrapHTMLParamElement(v)
 	case "HTMLPictureElement":
-		return newHTMLPictureElement(v)
+		return wrapHTMLPictureElement(v)
 	case "HTMLPreElement":
-		return newHTMLPreElement(v)
+		return wrapHTMLPreElement(v)
 	case "HTMLProgressElement":
-		return newHTMLProgressElement(v)
+		return wrapHTMLProgressElement(v)
 	case "HTMLQuoteElement":
-		return newHTMLQuoteElement(v)
+		return wrapHTMLQuoteElement(v)
 	case "HTMLScriptElement":
-		return newHTMLScriptElement(v)
+		return wrapHTMLScriptElement(v)
 	case "HTMLSelectElement":
-		return newHTMLSelectElement(v)
+		return wrapHTMLSelectElement(v)
 	case "HTMLSlotElement":
-		return newHTMLSlotElement(v)
+		return wrapHTMLSlotElement(v)
 	case "HTMLSourceElement":
-		return newHTMLSourceElement(v)
+		return wrapHTMLSourceElement(v)
 	case "HTMLSpanElement":
-		return newHTMLSpanElement(v)
+		return wrapHTMLSpanElement(v)
 	case "HTMLStyleElement":
-		return newHTMLStyleElement(v)
+		return wrapHTMLStyleElement(v)
 	case "HTMLTableCaptionElement":
-		return newHTMLTableCaptionElement(v)
+		return wrapHTMLTableCaptionElement(v)
 	case "HTMLTableCellElement":
-		return newHTMLTableCellElement(v)
+		return wrapHTMLTableCellElement(v)
 	case "HTMLTableColElement":
-		return newHTMLTableColElement(v)
+		return wrapHTMLTableColElement(v)
 	case "HTMLTableDataCellElement":
-		return newHTMLTableDataCellElement(v)
+		return wrapHTMLTableDataCellElement(v)
 	case "HTMLTableElement":
-		return newHTMLTableElement(v)
+		return wrapHTMLTableElement(v)
 	case "HTMLTableHeaderCellElement":
-		return newHTMLTableHeaderCellElement(v)
+		return wrapHTMLTableHeaderCellElement(v)
 	case "HTMLTableRowElement":
-		return newHTMLTableRowElement(v)
+		return wrapHTMLTableRowElement(v)
 	case "HTMLTableSectionElement":
-		return newHTMLTableSectionElement(v)
+		return wrapHTMLTableSectionElement(v)
 	case "HTMLTemplateElement":
-		return newHTMLTemplateElement(v)
+		return wrapHTMLTemplateElement(v)
 	case "HTMLTextAreaElement":
-		return newHTMLTextAreaElement(v)
+		return wrapHTMLTextAreaElement(v)
 	case "HTMLTimeElement":
-		return newHTMLTimeElement(v)
+		return wrapHTMLTimeElement(v)
 	case "HTMLTitleElement":
-		return newHTMLTitleElement(v)
+		return wrapHTMLTitleElement(v)
 	case "HTMLTrackElement":
-		return newHTMLTrackElement(v)
+		return wrapHTMLTrackElement(v)
 	case "HTMLUListElement":
-		return newHTMLUListElement(v)
+		return wrapHTMLUListElement(v)
 	case "HTMLUnknownElement":
-		return newHTMLUnknownElement(v)
+		return wrapHTMLUnknownElement(v)
 	case "HTMLVideoElement":
-		return newHTMLVideoElement(v)
+		return wrapHTMLVideoElement(v)
 	case "HashChangeEvent":
-		return newHashChangeEvent(v)
+		return wrapHashChangeEvent(v)
 	case "Headers":
-		return newHeaders(v)
+		return wrapHeaders(v)
 	case "History":
-		return newHistory(v)
+		return wrapHistory(v)
 	case "IDBCursor":
-		return newIDBCursor(v)
+		return wrapIDBCursor(v)
 	case "IDBCursorSource":
-		return newIDBCursorSource(v)
+		return wrapIDBCursorSource(v)
 	case "IDBCursorWithValue":
-		return newIDBCursorWithValue(v)
+		return wrapIDBCursorWithValue(v)
 	case "IDBDatabase":
-		return newIDBDatabase(v)
+		return wrapIDBDatabase(v)
 	case "IDBFactory":
-		return newIDBFactory(v)
+		return wrapIDBFactory(v)
 	case "IDBIndex":
-		return newIDBIndex(v)
+		return wrapIDBIndex(v)
 	case "IDBKeyRange":
-		return newIDBKeyRange(v)
+		return wrapIDBKeyRange(v)
 	case "IDBObjectStore":
-		return newIDBObjectStore(v)
+		return wrapIDBObjectStore(v)
 	case "IDBOpenDBRequest":
-		return newIDBOpenDBRequest(v)
+		return wrapIDBOpenDBRequest(v)
 	case "IDBRequest":
-		return newIDBRequest(v)
+		return wrapIDBRequest(v)
 	case "IDBRequestSource":
-		return newIDBRequestSource(v)
+		return wrapIDBRequestSource(v)
 	case "IDBTransaction":
-		return newIDBTransaction(v)
+		return wrapIDBTransaction(v)
 	case "IDBVersionChangeEvent":
-		return newIDBVersionChangeEvent(v)
+		return wrapIDBVersionChangeEvent(v)
 	case "ImageBitmap":
-		return newImageBitmap(v)
+		return wrapImageBitmap(v)
 	case "ImageData":
-		return newImageData(v)
+		return wrapImageData(v)
 	case "InputEvent":
-		return newInputEvent(v)
+		return wrapInputEvent(v)
 	case "KeyboardEvent":
-		return newKeyboardEvent(v)
+		return wrapKeyboardEvent(v)
 	case "LinkStyle":
-		return newLinkStyle(v)
+		return wrapLinkStyle(v)
 	case "Location":
-		return newLocation(v)
+		return wrapLocation(v)
 	case "MediaError":
-		return newMediaError(v)
+		return wrapMediaError(v)
 	case "MediaList":
-		return newMediaList(v)
+		return wrapMediaList(v)
 	case "MediaProvider":
-		return newMediaProvider(v)
+		return wrapMediaProvider(v)
 	case "MediaQueryListEvent":
-		return newMediaQueryListEvent(v)
+		return wrapMediaQueryListEvent(v)
 	case "MediaQueryList":
-		return newMediaQueryList(v)
+		return wrapMediaQueryList(v)
 	case "MediaStream":
-		return newMediaStream(v)
+		return wrapMediaStream(v)
 	case "MediaStreamTrack":
-		return newMediaStreamTrack(v)
+		return wrapMediaStreamTrack(v)
 	case "MessageChannel":
-		return newMessageChannel(v)
+		return wrapMessageChannel(v)
 	case "MessageEvent":
-		return newMessageEvent(v)
+		return wrapMessageEvent(v)
 	case "MessageEventSource":
-		return newMessageEventSource(v)
+		return wrapMessageEventSource(v)
 	case "MessagePort":
-		return newMessagePort(v)
+		return wrapMessagePort(v)
 	case "MouseEvent":
-		return newMouseEvent(v)
+		return wrapMouseEvent(v)
 	case "MutationObserver":
-		return newMutationObserver(v)
+		return wrapMutationObserver(v)
 	case "MutationRecord":
-		return newMutationRecord(v)
+		return wrapMutationRecord(v)
 	case "NamedNodeMap":
-		return newNamedNodeMap(v)
-	case "NavigatorConcurrentHardware":
-		return newNavigatorConcurrentHardwareImpl(v)
-	case "NavigatorContentUtils":
-		return newNavigatorContentUtilsImpl(v)
-	case "NavigatorCookies":
-		return newNavigatorCookiesImpl(v)
-	case "NavigatorID":
-		return newNavigatorIDImpl(v)
+		return wrapNamedNodeMap(v)
+		/*
+			case "NavigatorConcurrentHardware":
+				return newNavigatorConcurrentHardwareImpl(v)
+			case "NavigatorContentUtils":
+				return newNavigatorContentUtilsImpl(v)
+			case "NavigatorCookies":
+				return newNavigatorCookiesImpl(v)
+			case "NavigatorID":
+				return newNavigatorIDImpl(v)
+		*/
 	case "Navigator":
-		return newNavigator(v)
-	case "NavigatorLanguage":
-		return newNavigatorLanguageImpl(v)
-	case "NavigatorOnLine":
-		return newNavigatorOnLineImpl(v)
+		return wrapNavigator(v)
+		/*
+			case "NavigatorLanguage":
+				return newNavigatorLanguageImpl(v)
+			case "NavigatorOnLine":
+				return newNavigatorOnLineImpl(v)
+		*/
 	case "NodeFilter":
-		return newNodeFilter(v)
+		return wrapNodeFilter(v)
 	case "Node":
-		return newNode(v)
+		return wrapNode(v)
 	case "NodeIterator":
-		return newNodeIterator(v)
+		return wrapNodeIterator(v)
 	case "NodeList":
-		return newNodeList(v)
+		return wrapNodeList(v)
 	case "PageTransitionEvent":
-		return newPageTransitionEvent(v)
+		return wrapPageTransitionEvent(v)
 	case "PointerEvent":
-		return newPointerEvent(v)
+		return wrapPointerEvent(v)
 	case "PopStateEvent":
-		return newPopStateEvent(v)
+		return wrapPopStateEvent(v)
 	case "PositionError":
-		return newPositionError(v)
+		return wrapPositionError(v)
 	case "Position":
-		return newPosition(v)
+		return wrapPosition(v)
 	case "ProcessingInstruction":
-		return newProcessingInstruction(v)
+		return wrapProcessingInstruction(v)
 	case "ProgressEvent":
-		return newProgressEvent(v)
+		return wrapProgressEvent(v)
 	case "RadioNodeList":
-		return newRadioNodeList(v)
+		return wrapRadioNodeList(v)
 	case "Range":
-		return newRange(v)
+		return wrapRange(v)
 	case "ReadableStream":
-		return newReadableStream(v)
+		return wrapReadableStream(v)
 	case "Request":
-		return newRequest(v)
+		return wrapRequest(v)
 	case "Response":
-		return newResponse(v)
+		return wrapResponse(v)
 	case "Screen":
-		return newScreen(v)
+		return wrapScreen(v)
 	case "ShadowRoot":
-		return newShadowRoot(v)
+		return wrapShadowRoot(v)
 	case "SharedWorkerGlobalScope":
-		return newSharedWorkerGlobalScope(v)
+		return wrapSharedWorkerGlobalScope(v)
 	case "SharedWorker":
-		return newSharedWorker(v)
+		return wrapSharedWorker(v)
 	case "SourceBuffer":
-		return newSourceBuffer(v)
+		return wrapSourceBuffer(v)
 	case "StaticRange":
-		return newStaticRange(v)
+		return wrapStaticRange(v)
 	case "StorageEvent":
-		return newStorageEvent(v)
+		return wrapStorageEvent(v)
 	case "Storage":
-		return newStorage(v)
+		return wrapStorage(v)
 	case "StyleSheet":
-		return newStyleSheet(v)
+		return wrapStyleSheet(v)
 	case "StyleSheetList":
-		return newStyleSheetList(v)
+		return wrapStyleSheetList(v)
 	case "TexImageSource":
-		return newTexImageSource(v)
+		return wrapTexImageSource(v)
 	case "TextDecoderCommon":
-		return newTextDecoderCommon(v)
+		return wrapTextDecoderCommon(v)
 	case "TextDecoder":
-		return newTextDecoder(v)
+		return wrapTextDecoder(v)
 	case "TextDecoderStream":
-		return newTextDecoderStream(v)
+		return wrapTextDecoderStream(v)
 	case "TextEncoderCommon":
-		return newTextEncoderCommon(v)
+		return wrapTextEncoderCommon(v)
 	case "TextEncoder":
-		return newTextEncoder(v)
+		return wrapTextEncoder(v)
 	case "TextEncoderStream":
-		return newTextEncoderStream(v)
+		return wrapTextEncoderStream(v)
 	case "Text":
-		return newText(v)
+		return wrapText(v)
 	case "TextMetrics":
-		return newTextMetrics(v)
+		return wrapTextMetrics(v)
 	case "TextTrackCue":
-		return newTextTrackCue(v)
+		return wrapTextTrackCue(v)
 	case "TextTrackCueList":
-		return newTextTrackCueList(v)
+		return wrapTextTrackCueList(v)
 	case "TextTrack":
-		return newTextTrack(v)
+		return wrapTextTrack(v)
 	case "TextTrackList":
-		return newTextTrackList(v)
+		return wrapTextTrackList(v)
 	case "TimeRanges":
-		return newTimeRanges(v)
+		return wrapTimeRanges(v)
 	case "TouchEvent":
-		return newTouchEvent(v)
+		return wrapTouchEvent(v)
 	case "Touch":
-		return newTouch(v)
+		return wrapTouch(v)
 	case "TreeWalker":
-		return newTreeWalker(v)
+		return wrapTreeWalker(v)
 	case "TransitionEvent":
-		return newTransitionEvent(v)
+		return wrapTransitionEvent(v)
 	case "UIEvent":
-		return newUIEvent(v)
+		return wrapUIEvent(v)
 	case "URL":
-		return newURL(v)
+		return wrapURL(v)
 	case "URLSearchParams":
-		return newURLSearchParams(v)
+		return wrapURLSearchParams(v)
 	case "ValidityState":
-		return newValidityState(v)
+		return wrapValidityState(v)
 	case "VideoTrack":
-		return newVideoTrack(v)
+		return wrapVideoTrack(v)
 	case "VideoTrackList":
-		return newVideoTrackList(v)
+		return wrapVideoTrackList(v)
 	case "WebGLActiveInfo":
-		return newWebGLActiveInfo(v)
+		return wrapWebGLActiveInfo(v)
 	case "WebGLBuffer":
-		return newWebGLBuffer(v)
+		return wrapWebGLBuffer(v)
 	case "WebGLObject":
-		return newWebGLObject(v)
+		return wrapWebGLObject(v)
 	case "WebGLProgram":
-		return newWebGLProgram(v)
+		return wrapWebGLProgram(v)
 	case "WebGLRenderbuffer":
-		return newWebGLRenderbuffer(v)
-	case "WebGLRenderingContextBase":
-		return newWebGLRenderingContextBaseImpl(v)
+		return wrapWebGLRenderbuffer(v)
+		/*
+			case "WebGLRenderingContextBase":
+				return newWebGLRenderingContextBaseImpl(v)
+		*/
 	case "WebGLRenderingContext":
-		return newWebGLRenderingContext(v)
+		return wrapWebGLRenderingContext(v)
 	case "WebGLShader":
-		return newWebGLShader(v)
+		return wrapWebGLShader(v)
 	case "WebGLShaderPrecisionFormat":
-		return newWebGLShaderPrecisionFormat(v)
+		return wrapWebGLShaderPrecisionFormat(v)
 	case "WebGLTexture":
-		return newWebGLTexture(v)
+		return wrapWebGLTexture(v)
 	case "WebGLUniformLocation":
-		return newWebGLUniformLocation(v)
+		return wrapWebGLUniformLocation(v)
 	case "WebSocket":
-		return newWebSocket(v)
+		return wrapWebSocket(v)
 	case "WheelEvent":
-		return newWheelEvent(v)
-	case "WindowEventHandlers":
-		return newWindowEventHandlersImpl(v)
+		return wrapWheelEvent(v)
+		/*
+			case "WindowEventHandlers":
+				return newWindowEventHandlersImpl(v)
+		*/
 	case "Window":
-		return newWindow(v)
+		return wrapWindow(v)
 	case "WindowProxy":
-		return newWindowProxy(v)
+		return wrapWindowProxy(v)
 	case "WorkerGlobalScope":
-		return newWorkerGlobalScopeImpl(v)
+		return wrapWorkerGlobalScope(v)
 	case "Worker":
-		return newWorker(v)
+		return wrapWorker(v)
 	case "WorkerLocation":
-		return newWorkerLocation(v)
+		return wrapWorkerLocation(v)
 	case "WorkerNavigator":
-		return newWorkerNavigator(v)
+		return wrapWorkerNavigator(v)
 	case "WritableStream":
-		return newWritableStream(v)
+		return wrapWritableStream(v)
 	case "XMLDocument":
-		return newXMLDocument(v)
+		return wrapXMLDocument(v)
 	default:
-		fmt.Printf("Not supported type: %s", t)
+		fmt.Printf("Not supported type: %s\n", t)
 		return nil
 	}
 }
 
-func wrapElement(v js.Value) Element {
+func wrapAsElement(v js.Value) Element {
 	if isNil(v) {
 		return nil
 	}
@@ -641,7 +653,7 @@ func wrapElement(v js.Value) Element {
 	return nil
 }
 
-func wrapEvent(v js.Value) Event {
+func wrapAsEvent(v js.Value) Event {
 	if isNil(v) {
 		return nil
 	}
@@ -655,7 +667,7 @@ func wrapEvent(v js.Value) Event {
 	return nil
 }
 
-func wrapEventTarget(v js.Value) EventTarget {
+func wrapAsEventTarget(v js.Value) EventTarget {
 	if isNil(v) {
 		return nil
 	}

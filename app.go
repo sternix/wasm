@@ -34,7 +34,7 @@ func On(event string, fn func(ev Event)) EventHandler {
 func CurrentWindow() Window {
 	windowOnce.Do(func() {
 		if currentWindow == nil {
-			currentWindow = newWindow(js.Global())
+			currentWindow = wrapWindow(js.Global())
 		}
 	})
 	return currentWindow
@@ -50,9 +50,9 @@ func CurrentDocument() Document {
 }
 
 func SessionStorage() Storage {
-	return newStorage(js.Global().Get("sessionStorage"))
+	return wrapStorage(js.Global().Get("sessionStorage"))
 }
 
 func LocalStorage() Storage {
-	return newStorage(js.Global().Get("localStorage"))
+	return wrapStorage(js.Global().Get("localStorage"))
 }

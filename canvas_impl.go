@@ -14,7 +14,7 @@ type canvasRenderingContext2DImpl struct {
 	js.Value
 }
 
-func newCanvasRenderingContext2D(v js.Value) CanvasRenderingContext2D {
+func wrapCanvasRenderingContext2D(v js.Value) CanvasRenderingContext2D {
 	if isNil(v) {
 		return nil
 	}
@@ -27,7 +27,7 @@ func newCanvasRenderingContext2D(v js.Value) CanvasRenderingContext2D {
 }
 
 func (p *canvasRenderingContext2DImpl) Canvas() HTMLCanvasElement {
-	return newHTMLCanvasElement(p.Get("canvas"))
+	return wrapHTMLCanvasElement(p.Get("canvas"))
 }
 
 func (p *canvasRenderingContext2DImpl) Save() {
@@ -107,11 +107,11 @@ func (p *canvasRenderingContext2DImpl) SetFillStyle(style interface{}) {
 }
 
 func (p *canvasRenderingContext2DImpl) CreateLinearGradient(x0 float64, y0 float64, x1 float64, y1 float64) CanvasGradient {
-	return newCanvasGradient(p.Call("createLinearGradient", x0, y0, x1, y1))
+	return wrapCanvasGradient(p.Call("createLinearGradient", x0, y0, x1, y1))
 }
 
 func (p *canvasRenderingContext2DImpl) CreateRadialGradient(x0 float64, y0 float64, r0 float64, x1 float64, y1 float64, r1 float64) CanvasGradient {
-	return newCanvasGradient(p.Call("createRadialGradient", x0, y0, r0, x1, y1, r1))
+	return wrapCanvasGradient(p.Call("createRadialGradient", x0, y0, r0, x1, y1, r1))
 }
 
 func (p *canvasRenderingContext2DImpl) CreatePattern(image CanvasImageSource, repetition string) {
@@ -205,7 +205,7 @@ func (p *canvasRenderingContext2DImpl) StrokeText(text string, x float64, y floa
 }
 
 func (p *canvasRenderingContext2DImpl) MeasureText(text string) TextMetrics {
-	return newTextMetrics(p.Call("measureText", text))
+	return wrapTextMetrics(p.Call("measureText", text))
 }
 
 func (p *canvasRenderingContext2DImpl) DrawImage(image CanvasImageSource, args ...float64) {
@@ -232,15 +232,15 @@ func (p *canvasRenderingContext2DImpl) ClearHitRegions() {
 }
 
 func (p *canvasRenderingContext2DImpl) CreateImageData(sw float64, sh float64) ImageData {
-	return newImageData(p.Call("createImageData", sw, sh))
+	return wrapImageData(p.Call("createImageData", sw, sh))
 }
 
 func (p *canvasRenderingContext2DImpl) CreateImageDataFromImageData(imageData ImageData) ImageData {
-	return newImageData(p.Call("createImageData", imageData.JSValue()))
+	return wrapImageData(p.Call("createImageData", imageData.JSValue()))
 }
 
 func (p *canvasRenderingContext2DImpl) ImageData(sx float64, sy float64, sw float64, sh float64) ImageData {
-	return newImageData(p.Call("getImageData", sx, sy, sw, sh))
+	return wrapImageData(p.Call("getImageData", sx, sy, sw, sh))
 }
 
 func (p *canvasRenderingContext2DImpl) PutImageData(imageData ImageData, dx float64, dy float64) {
@@ -257,7 +257,7 @@ type canvasDrawingStylesImpl struct {
 	js.Value
 }
 
-func newCanvasDrawingStyles(v js.Value) CanvasDrawingStyles {
+func wrapCanvasDrawingStyles(v js.Value) CanvasDrawingStyles {
 	if p := newCanvasDrawingStylesImpl(v); p != nil {
 		return p
 	}
@@ -349,7 +349,7 @@ type canvasPathMethodsImpl struct {
 	js.Value
 }
 
-func newCanvasPathMethods(v js.Value) CanvasPathMethods {
+func wrapCanvasPathMethods(v js.Value) CanvasPathMethods {
 	if p := newCanvasPathMethodsImpl(v); p != nil {
 		return p
 	}
@@ -409,7 +409,7 @@ type canvasGradientImpl struct {
 	js.Value
 }
 
-func newCanvasGradient(v js.Value) CanvasGradient {
+func wrapCanvasGradient(v js.Value) CanvasGradient {
 	if isNil(v) {
 		return nil
 	}
@@ -429,7 +429,7 @@ type canvasPatternImpl struct {
 	js.Value
 }
 
-func newCanvasPattern(v js.Value) CanvasPattern {
+func wrapCanvasPattern(v js.Value) CanvasPattern {
 	if isNil(v) {
 		return nil
 	}
@@ -445,7 +445,7 @@ type textMetricsImpl struct {
 	js.Value
 }
 
-func newTextMetrics(v js.Value) TextMetrics {
+func wrapTextMetrics(v js.Value) TextMetrics {
 	if isNil(v) {
 		return nil
 	}
@@ -465,7 +465,7 @@ type imageDataImpl struct {
 	js.Value
 }
 
-func newImageData(v js.Value) ImageData {
+func wrapImageData(v js.Value) ImageData {
 	if isNil(v) {
 		return nil
 	}

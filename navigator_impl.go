@@ -18,7 +18,7 @@ type navigatorImpl struct {
 	js.Value
 }
 
-func newNavigator(v js.Value) Navigator {
+func wrapNavigator(v js.Value) Navigator {
 	if isNil(v) {
 		return nil
 	}
@@ -35,11 +35,11 @@ func newNavigator(v js.Value) Navigator {
 }
 
 func (p *navigatorImpl) Geolocation() Geolocation {
-	return newGeolocation(p.Get("geolocation"))
+	return wrapGeolocation(p.Get("geolocation"))
 }
 
 func (p *navigatorImpl) Clipboard() Clipboard {
-	return newClipboard(p.Get("clipboard"))
+	return wrapClipboard(p.Get("clipboard"))
 }
 
 func (p *navigatorImpl) MaxTouchPoints() int {
@@ -192,7 +192,7 @@ type imageBitmapImpl struct {
 	js.Value
 }
 
-func newImageBitmap(v js.Value) ImageBitmap {
+func wrapImageBitmap(v js.Value) ImageBitmap {
 	if isNil(v) {
 		return nil
 	}

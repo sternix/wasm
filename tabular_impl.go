@@ -21,7 +21,7 @@ func NewHTMLTableElement() HTMLTableElement {
 	return nil
 }
 
-func newHTMLTableElement(v js.Value) HTMLTableElement {
+func wrapHTMLTableElement(v js.Value) HTMLTableElement {
 	if isNil(v) {
 		return nil
 	}
@@ -32,7 +32,7 @@ func newHTMLTableElement(v js.Value) HTMLTableElement {
 }
 
 func (p *htmlTableElementImpl) Caption() HTMLTableCaptionElement {
-	return newHTMLTableCaptionElement(p.Get("caption"))
+	return wrapHTMLTableCaptionElement(p.Get("caption"))
 }
 
 func (p *htmlTableElementImpl) SetCaption(caption HTMLTableCaptionElement) {
@@ -40,7 +40,7 @@ func (p *htmlTableElementImpl) SetCaption(caption HTMLTableCaptionElement) {
 }
 
 func (p *htmlTableElementImpl) CreateCaption() HTMLTableCaptionElement {
-	return newHTMLTableCaptionElement(p.Call("createCaption"))
+	return wrapHTMLTableCaptionElement(p.Call("createCaption"))
 }
 
 func (p *htmlTableElementImpl) DeleteCaption() {
@@ -48,7 +48,7 @@ func (p *htmlTableElementImpl) DeleteCaption() {
 }
 
 func (p *htmlTableElementImpl) THead() HTMLTableSectionElement {
-	return newHTMLTableSectionElement(p.Get("tHead"))
+	return wrapHTMLTableSectionElement(p.Get("tHead"))
 }
 
 func (p *htmlTableElementImpl) SetTHead(section HTMLTableSectionElement) {
@@ -56,7 +56,7 @@ func (p *htmlTableElementImpl) SetTHead(section HTMLTableSectionElement) {
 }
 
 func (p *htmlTableElementImpl) CreateTHead() HTMLTableSectionElement {
-	return newHTMLTableSectionElement(p.Call("createTHead"))
+	return wrapHTMLTableSectionElement(p.Call("createTHead"))
 }
 
 func (p *htmlTableElementImpl) DeleteTHead() {
@@ -64,7 +64,7 @@ func (p *htmlTableElementImpl) DeleteTHead() {
 }
 
 func (p *htmlTableElementImpl) TFoot() HTMLTableSectionElement {
-	return newHTMLTableSectionElement(p.Get("tFoot"))
+	return wrapHTMLTableSectionElement(p.Get("tFoot"))
 }
 
 func (p *htmlTableElementImpl) SetTFoot(section HTMLTableSectionElement) {
@@ -72,7 +72,7 @@ func (p *htmlTableElementImpl) SetTFoot(section HTMLTableSectionElement) {
 }
 
 func (p *htmlTableElementImpl) CreateTFoot() HTMLTableSectionElement {
-	return newHTMLTableSectionElement(p.Call("createTFoot"))
+	return wrapHTMLTableSectionElement(p.Call("createTFoot"))
 }
 
 func (p *htmlTableElementImpl) DeleteTFoot() {
@@ -80,7 +80,7 @@ func (p *htmlTableElementImpl) DeleteTFoot() {
 }
 
 func (p *htmlTableElementImpl) TBodies() []HTMLTableSectionElement {
-	if bodies := newHTMLCollection(p.Get("tBodies")); bodies != nil && bodies.Length() > 0 {
+	if bodies := wrapHTMLCollection(p.Get("tBodies")); bodies != nil && bodies.Length() > 0 {
 		var ret []HTMLTableSectionElement
 		for i := 0; i < bodies.Length(); i++ {
 			if r, ok := bodies.Item(i).(HTMLTableSectionElement); ok {
@@ -94,11 +94,11 @@ func (p *htmlTableElementImpl) TBodies() []HTMLTableSectionElement {
 }
 
 func (p *htmlTableElementImpl) CreateTBody() HTMLTableSectionElement {
-	return newHTMLTableSectionElement(p.Call("createTBody"))
+	return wrapHTMLTableSectionElement(p.Call("createTBody"))
 }
 
 func (p *htmlTableElementImpl) Rows() []HTMLTableRowElement {
-	if rows := newHTMLCollection(p.Get("rows")); rows != nil && rows.Length() > 0 {
+	if rows := wrapHTMLCollection(p.Get("rows")); rows != nil && rows.Length() > 0 {
 		var ret []HTMLTableRowElement
 		for i := 0; i < rows.Length(); i++ {
 			if r, ok := rows.Item(i).(HTMLTableRowElement); ok {
@@ -113,9 +113,9 @@ func (p *htmlTableElementImpl) Rows() []HTMLTableRowElement {
 func (p *htmlTableElementImpl) InsertRow(index ...int) HTMLTableRowElement {
 	switch len(index) {
 	case 0:
-		return newHTMLTableRowElement(p.Call("insertRow"))
+		return wrapHTMLTableRowElement(p.Call("insertRow"))
 	default:
-		return newHTMLTableRowElement(p.Call("insertRow", index[0]))
+		return wrapHTMLTableRowElement(p.Call("insertRow", index[0]))
 	}
 
 }
@@ -130,7 +130,7 @@ type htmlTableCaptionElementImpl struct {
 	*htmlElementImpl
 }
 
-func newHTMLTableCaptionElement(v js.Value) HTMLTableCaptionElement {
+func wrapHTMLTableCaptionElement(v js.Value) HTMLTableCaptionElement {
 	if isNil(v) {
 		return nil
 	}
@@ -146,7 +146,7 @@ type htmlTableSectionElementImpl struct {
 	*htmlElementImpl
 }
 
-func newHTMLTableSectionElement(v js.Value) HTMLTableSectionElement {
+func wrapHTMLTableSectionElement(v js.Value) HTMLTableSectionElement {
 	if isNil(v) {
 		return nil
 	}
@@ -157,7 +157,7 @@ func newHTMLTableSectionElement(v js.Value) HTMLTableSectionElement {
 }
 
 func (p *htmlTableSectionElementImpl) Rows() []HTMLTableRowElement {
-	if rows := newHTMLCollection(p.Get("rows")); rows != nil && rows.Length() > 0 {
+	if rows := wrapHTMLCollection(p.Get("rows")); rows != nil && rows.Length() > 0 {
 		var ret []HTMLTableRowElement
 		for i := 0; i < rows.Length(); i++ {
 			if r, ok := rows.Item(i).(HTMLTableRowElement); ok {
@@ -172,9 +172,9 @@ func (p *htmlTableSectionElementImpl) Rows() []HTMLTableRowElement {
 func (p *htmlTableSectionElementImpl) InsertRow(index ...int) HTMLTableRowElement {
 	switch len(index) {
 	case 0:
-		return newHTMLTableRowElement(p.Call("insertRow"))
+		return wrapHTMLTableRowElement(p.Call("insertRow"))
 	default:
-		return newHTMLTableRowElement(p.Call("insertRow", index[0]))
+		return wrapHTMLTableRowElement(p.Call("insertRow", index[0]))
 	}
 }
 
@@ -188,7 +188,7 @@ type htmlTableRowElementImpl struct {
 	*htmlElementImpl
 }
 
-func newHTMLTableRowElement(v js.Value) HTMLTableRowElement {
+func wrapHTMLTableRowElement(v js.Value) HTMLTableRowElement {
 	if isNil(v) {
 		return nil
 	}
@@ -207,7 +207,7 @@ func (p *htmlTableRowElementImpl) SectionRowIndex() int {
 }
 
 func (p *htmlTableRowElementImpl) Cells() []HTMLTableCellElement {
-	if cells := newHTMLCollection(p.Get("cells")); cells != nil && cells.Length() > 0 {
+	if cells := wrapHTMLCollection(p.Get("cells")); cells != nil && cells.Length() > 0 {
 		var ret []HTMLTableCellElement
 		for i := 0; i < cells.Length(); i++ {
 			if c, ok := cells.Item(i).(HTMLTableCellElement); ok {
@@ -223,9 +223,9 @@ func (p *htmlTableRowElementImpl) Cells() []HTMLTableCellElement {
 func (p *htmlTableRowElementImpl) InsertCell(index ...int) HTMLTableCellElement {
 	switch len(index) {
 	case 0:
-		return newHTMLTableCellElement(p.Call("insertCell"))
+		return wrapHTMLTableCellElement(p.Call("insertCell"))
 	default:
-		return newHTMLTableCellElement(p.Call("insertCell", index[0]))
+		return wrapHTMLTableCellElement(p.Call("insertCell", index[0]))
 	}
 }
 
@@ -257,7 +257,7 @@ func NewHTMLTableColGroupElement() HTMLTableColElement {
 	return nil
 }
 
-func newHTMLTableColElement(v js.Value) HTMLTableColElement {
+func wrapHTMLTableColElement(v js.Value) HTMLTableColElement {
 	if isNil(v) {
 		return nil
 	}
@@ -281,7 +281,7 @@ type htmlTableCellElementImpl struct {
 	*htmlElementImpl
 }
 
-func newHTMLTableCellElement(v js.Value) HTMLTableCellElement {
+func wrapHTMLTableCellElement(v js.Value) HTMLTableCellElement {
 	if p := newHTMLTableCellElementImpl(v); p != nil {
 		return p
 	}
@@ -315,7 +315,7 @@ func (p *htmlTableCellElementImpl) SetRowSpan(rowspan int) {
 }
 
 func (p *htmlTableCellElementImpl) Headers() DOMTokenList {
-	return newDOMTokenList(p.Get("headers"))
+	return wrapDOMTokenList(p.Get("headers"))
 }
 
 func (p *htmlTableCellElementImpl) CellIndex() int {
@@ -328,7 +328,7 @@ type htmlTableDataCellElementImpl struct {
 	*htmlTableCellElementImpl
 }
 
-func newHTMLTableDataCellElement(v js.Value) HTMLTableDataCellElement {
+func wrapHTMLTableDataCellElement(v js.Value) HTMLTableDataCellElement {
 	if isNil(v) {
 		return nil
 	}
@@ -353,7 +353,7 @@ func NewHTMLTableHeaderCellElement() HTMLTableHeaderCellElement {
 	return nil
 }
 
-func newHTMLTableHeaderCellElement(v js.Value) HTMLTableHeaderCellElement {
+func wrapHTMLTableHeaderCellElement(v js.Value) HTMLTableHeaderCellElement {
 	if isNil(v) {
 		return nil
 	}

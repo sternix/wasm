@@ -44,7 +44,7 @@ type consoleImpl struct {
 	js.Value
 }
 
-func newConsole(v js.Value) Console {
+func wrapConsole(v js.Value) Console {
 	if isNil(v) {
 		return nil
 	}

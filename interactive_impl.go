@@ -12,7 +12,7 @@ type htmlDetailsElementImpl struct {
 	*htmlElementImpl
 }
 
-func newHTMLDetailsElement(v js.Value) HTMLDetailsElement {
+func wrapHTMLDetailsElement(v js.Value) HTMLDetailsElement {
 	if isNil(v) {
 		return nil
 	}
@@ -36,7 +36,7 @@ type htmlDialogElementImpl struct {
 	*htmlElementImpl
 }
 
-func newHTMLDialogElement(v js.Value) HTMLDialogElement {
+func wrapHTMLDialogElement(v js.Value) HTMLDialogElement {
 	if isNil(v) {
 		return nil
 	}

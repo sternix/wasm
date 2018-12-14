@@ -1,5 +1,5 @@
 wasm:
-	GOOS=js GOARCH=wasm go build -o ballgame.wasm main.go
+	GOOS=js GOARCH=wasm go112 build -o ballgame.wasm main.go
 
 server:
 	go build server.go

@@ -16,9 +16,9 @@ func NewStorageEvent(typ string, sei ...StorageEventInit) StorageEvent {
 
 	switch len(sei) {
 	case 0:
-		return newStorageEvent(jsStorageEvent.New(typ))
+		return wrapStorageEvent(jsStorageEvent.New(typ))
 	default:
-		return newStorageEvent(jsStorageEvent.New(typ, sei[0].toDict()))
+		return wrapStorageEvent(jsStorageEvent.New(typ, sei[0].toDict()))
 	}
 }
 
@@ -28,7 +28,7 @@ type storageImpl struct {
 	js.Value
 }
 
-func newStorage(v js.Value) Storage {
+func wrapStorage(v js.Value) Storage {
 	if isNil(v) {
 		return nil
 	}
@@ -68,7 +68,7 @@ type storageEventImpl struct {
 	*eventImpl
 }
 
-func newStorageEvent(v js.Value) StorageEvent {
+func wrapStorageEvent(v js.Value) StorageEvent {
 	if isNil(v) {
 		return nil
 	}
@@ -95,7 +95,7 @@ func (p *storageEventImpl) Url() string {
 }
 
 func (p *storageEventImpl) StorageArea() Storage {
-	return newStorage(p.Get("storageArea"))
+	return wrapStorage(p.Get("storageArea"))
 }
 
 // -------------8<---------------------------------------

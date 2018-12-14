@@ -12,7 +12,7 @@ type htmlSlotElementImpl struct {
 	*htmlElementImpl
 }
 
-func newHTMLSlotElement(v js.Value) HTMLSlotElement {
+func wrapHTMLSlotElement(v js.Value) HTMLSlotElement {
 	if isNil(v) {
 		return nil
 	}
@@ -49,7 +49,7 @@ type htmlOrSVGElementImpl struct {
 	js.Value
 }
 
-func newHTMLOrSVGElement(v js.Value) HTMLOrSVGElement {
+func wrapHTMLOrSVGElement(v js.Value) HTMLOrSVGElement {
 	if isNil(v) {
 		return nil
 	}
@@ -96,7 +96,7 @@ type elementContentEditableImpl struct {
 	js.Value
 }
 
-func newElementContentEditable(v js.Value) ElementContentEditable {
+func wrapElementContentEditable(v js.Value) ElementContentEditable {
 	if isNil(v) {
 		return nil
 	}
@@ -131,7 +131,7 @@ type abortSignalImpl struct {
 	*eventTargetImpl
 }
 
-func newAbortSignal(v js.Value) AbortSignal {
+func wrapAbortSignal(v js.Value) AbortSignal {
 	if isNil(v) {
 		return nil
 	}
@@ -155,7 +155,7 @@ type abortControllerImpl struct {
 	js.Value
 }
 
-func newAbortController(v js.Value) AbortController {
+func wrapAbortController(v js.Value) AbortController {
 	if isNil(v) {
 		return nil
 	}
@@ -165,7 +165,7 @@ func newAbortController(v js.Value) AbortController {
 }
 
 func (p *abortControllerImpl) Signal() AbortSignal {
-	return newAbortSignal(p.Get("signal"))
+	return wrapAbortSignal(p.Get("signal"))
 }
 
 func (p *abortControllerImpl) Abort() {
@@ -175,7 +175,7 @@ func (p *abortControllerImpl) Abort() {
 // -------------8<---------------------------------------
 
 func NewAbortController() AbortController {
-	return newAbortController(js.Global().Get("AbortController"))
+	return wrapAbortController(js.Global().Get("AbortController"))
 }
 
 // -------------8<---------------------------------------

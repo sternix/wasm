@@ -16,9 +16,9 @@ func NewDOMPoint(dpi ...DOMPointInit) DOMPoint {
 
 	switch len(dpi) {
 	case 0:
-		return newDOMPoint(jsDOMPoint.New())
+		return wrapDOMPoint(jsDOMPoint.New())
 	default:
-		return newDOMPoint(jsDOMPoint.New(dpi[0].toDict()))
+		return wrapDOMPoint(jsDOMPoint.New(dpi[0].toDict()))
 	}
 }
 
@@ -28,7 +28,7 @@ func NewDOMPointReadOnly(x, y, z, w float64) DOMPointReadOnly {
 		return nil
 	}
 
-	return newDOMPointReadOnly(jsDOMPointReadOnly.New(x, y, z, w))
+	return wrapDOMPointReadOnly(jsDOMPointReadOnly.New(x, y, z, w))
 }
 
 func NewDOMRectReadOnly(x, y, width, height float64) DOMRectReadOnly {
@@ -37,7 +37,7 @@ func NewDOMRectReadOnly(x, y, width, height float64) DOMRectReadOnly {
 		return nil
 	}
 
-	return newDOMRectReadOnly(jsDOMRectReadOnly.New(x, y, width, height))
+	return wrapDOMRectReadOnly(jsDOMRectReadOnly.New(x, y, width, height))
 }
 
 func NewDOMRect(x, y, width, height float64) DOMRect {
@@ -46,7 +46,7 @@ func NewDOMRect(x, y, width, height float64) DOMRect {
 		return nil
 	}
 
-	return newDOMRect(jsDOMRect.New(x, y, width, height))
+	return wrapDOMRect(jsDOMRect.New(x, y, width, height))
 }
 
 func NewDOMQuad(dri ...DOMRectInit) DOMQuad {
@@ -57,27 +57,27 @@ func NewDOMQuad(dri ...DOMRectInit) DOMQuad {
 
 	switch len(dri) {
 	case 0:
-		return newDOMQuad(jsDOMQuad.New())
+		return wrapDOMQuad(jsDOMQuad.New())
 	default:
-		return newDOMQuad(jsDOMQuad.New(dri[0].toDict()))
+		return wrapDOMQuad(jsDOMQuad.New(dri[0].toDict()))
 	}
 }
 
 func DOMQuadFromRect(other ...DOMRectInit) DOMQuad {
 	switch len(other) {
 	case 0:
-		return newDOMQuad(js.Global().Invoke("DOMQuad.fromRect"))
+		return wrapDOMQuad(js.Global().Invoke("DOMQuad.fromRect"))
 	default:
-		return newDOMQuad(js.Global().Invoke("DOMQuad.fromRect", other[0].toDict()))
+		return wrapDOMQuad(js.Global().Invoke("DOMQuad.fromRect", other[0].toDict()))
 	}
 }
 
 func DOMQuadFromQuad(other ...DOMQuadInit) DOMQuad {
 	switch len(other) {
 	case 0:
-		return newDOMQuad(js.Global().Invoke("DOMQuad.fromQuad"))
+		return wrapDOMQuad(js.Global().Invoke("DOMQuad.fromQuad"))
 	default:
-		return newDOMQuad(js.Global().Invoke("DOMQuad.fromQuad", other[0].toDict()))
+		return wrapDOMQuad(js.Global().Invoke("DOMQuad.fromQuad", other[0].toDict()))
 	}
 }
 
@@ -92,7 +92,7 @@ func NewDOMMatrixReadOnly(numberSequence []float64) DOMMatrixReadOnly {
 		param = append(param, n)
 	}
 
-	return newDOMMatrixReadOnly(jsDOMMatrixReadOnly.New(param))
+	return wrapDOMMatrixReadOnly(jsDOMMatrixReadOnly.New(param))
 }
 
 func NewDOMMatrix(numberSequence []float64) DOMMatrix {
@@ -106,7 +106,7 @@ func NewDOMMatrix(numberSequence []float64) DOMMatrix {
 		param = append(param, n)
 	}
 
-	return newDOMMatrix(jsDOMMatrix.New(param))
+	return wrapDOMMatrix(jsDOMMatrix.New(param))
 }
 
 // -------------8<---------------------------------------
@@ -115,7 +115,7 @@ type domPointReadOnlyImpl struct {
 	js.Value
 }
 
-func newDOMPointReadOnly(v js.Value) DOMPointReadOnly {
+func wrapDOMPointReadOnly(v js.Value) DOMPointReadOnly {
 	if p := newDOMPointReadOnlyImpl(v); p != nil {
 		return p
 	}
@@ -149,7 +149,7 @@ func (p *domPointReadOnlyImpl) W() float64 {
 }
 
 func (p *domPointReadOnlyImpl) MatrixTransform(matrix DOMMatrixReadOnly) DOMPoint {
-	return newDOMPoint(p.Call("matrixTransform", matrix.JSValue()))
+	return wrapDOMPoint(p.Call("matrixTransform", matrix.JSValue()))
 }
 
 // -------------8<---------------------------------------
@@ -158,7 +158,7 @@ type domPointImpl struct {
 	*domPointReadOnlyImpl
 }
 
-func newDOMPoint(v js.Value) DOMPoint {
+func wrapDOMPoint(v js.Value) DOMPoint {
 	if isNil(v) {
 		return nil
 	}
@@ -174,7 +174,7 @@ type domRectImpl struct {
 	*domRectReadOnlyImpl
 }
 
-func newDOMRect(v js.Value) DOMRect {
+func wrapDOMRect(v js.Value) DOMRect {
 	if isNil(v) {
 		return nil
 	}
@@ -190,7 +190,7 @@ type domRectReadOnlyImpl struct {
 	js.Value
 }
 
-func newDOMRectReadOnly(v js.Value) DOMRectReadOnly {
+func wrapDOMRectReadOnly(v js.Value) DOMRectReadOnly {
 	if p := newDOMRectReadOnlyImpl(v); p != nil {
 		return p
 	}
@@ -245,7 +245,7 @@ type domQuadImpl struct {
 	js.Value
 }
 
-func newDOMQuad(v js.Value) DOMQuad {
+func wrapDOMQuad(v js.Value) DOMQuad {
 	if isNil(v) {
 		return nil
 	}
@@ -256,23 +256,23 @@ func newDOMQuad(v js.Value) DOMQuad {
 }
 
 func (p *domQuadImpl) P1() DOMPoint {
-	return newDOMPoint(p.Get("p1"))
+	return wrapDOMPoint(p.Get("p1"))
 }
 
 func (p *domQuadImpl) P2() DOMPoint {
-	return newDOMPoint(p.Get("p2"))
+	return wrapDOMPoint(p.Get("p2"))
 }
 
 func (p *domQuadImpl) P3() DOMPoint {
-	return newDOMPoint(p.Get("p3"))
+	return wrapDOMPoint(p.Get("p3"))
 }
 
 func (p *domQuadImpl) P4() DOMPoint {
-	return newDOMPoint(p.Get("p4"))
+	return wrapDOMPoint(p.Get("p4"))
 }
 
 func (p *domQuadImpl) Bounds() DOMRectReadOnly {
-	return newDOMRectReadOnly(p.Get("bounds"))
+	return wrapDOMRectReadOnly(p.Get("bounds"))
 }
 
 // -------------8<---------------------------------------
@@ -281,7 +281,7 @@ type domMatrixReadOnlyImpl struct {
 	js.Value
 }
 
-func newDOMMatrixReadOnly(v js.Value) DOMMatrixReadOnly {
+func wrapDOMMatrixReadOnly(v js.Value) DOMMatrixReadOnly {
 	if p := newDOMMatrixReadOnlyImpl(v); p != nil {
 		return p
 	}
@@ -397,102 +397,102 @@ func (p *domMatrixReadOnlyImpl) IsIdentity() bool {
 func (p *domMatrixReadOnlyImpl) Translate(tx float64, ty float64, tz ...float64) DOMMatrix {
 	switch len(tz) {
 	case 0:
-		return newDOMMatrix(p.Call("translate", tx, ty))
+		return wrapDOMMatrix(p.Call("translate", tx, ty))
 	default:
-		return newDOMMatrix(p.Call("translate", tx, ty, tz[0]))
+		return wrapDOMMatrix(p.Call("translate", tx, ty, tz[0]))
 	}
 }
 
 func (p *domMatrixReadOnlyImpl) Scale(scale float64, args ...float64) DOMMatrix {
 	switch len(args) {
 	case 0:
-		return newDOMMatrix(p.Call("scale", scale))
+		return wrapDOMMatrix(p.Call("scale", scale))
 	case 1:
-		return newDOMMatrix(p.Call("scale", scale, args[0]))
+		return wrapDOMMatrix(p.Call("scale", scale, args[0]))
 	default:
-		return newDOMMatrix(p.Call("scale", scale, args[0], args[1]))
+		return wrapDOMMatrix(p.Call("scale", scale, args[0], args[1]))
 	}
 }
 
 func (p *domMatrixReadOnlyImpl) Scale3d(scale float64, args ...float64) DOMMatrix {
 	switch len(args) {
 	case 0:
-		return newDOMMatrix(p.Call("scale3d", scale))
+		return wrapDOMMatrix(p.Call("scale3d", scale))
 	case 1:
-		return newDOMMatrix(p.Call("scale3d", scale, args[0]))
+		return wrapDOMMatrix(p.Call("scale3d", scale, args[0]))
 	case 2:
-		return newDOMMatrix(p.Call("scale3d", scale, args[0], args[1]))
+		return wrapDOMMatrix(p.Call("scale3d", scale, args[0], args[1]))
 	default:
-		return newDOMMatrix(p.Call("scale3d", scale, args[0], args[1], args[2]))
+		return wrapDOMMatrix(p.Call("scale3d", scale, args[0], args[1], args[2]))
 	}
 }
 
 func (p *domMatrixReadOnlyImpl) ScaleNonUniform(scaleX float64, args ...float64) DOMMatrix {
 	switch len(args) {
 	case 0:
-		return newDOMMatrix(p.Call("scaleNonUniform", scaleX))
+		return wrapDOMMatrix(p.Call("scaleNonUniform", scaleX))
 	case 1:
-		return newDOMMatrix(p.Call("scaleNonUniform", scaleX, args[0]))
+		return wrapDOMMatrix(p.Call("scaleNonUniform", scaleX, args[0]))
 	case 2:
-		return newDOMMatrix(p.Call("scaleNonUniform", scaleX, args[0], args[1]))
+		return wrapDOMMatrix(p.Call("scaleNonUniform", scaleX, args[0], args[1]))
 	case 3:
-		return newDOMMatrix(p.Call("scaleNonUniform", scaleX, args[0], args[1], args[2]))
+		return wrapDOMMatrix(p.Call("scaleNonUniform", scaleX, args[0], args[1], args[2]))
 	case 4:
-		return newDOMMatrix(p.Call("scaleNonUniform", scaleX, args[0], args[1], args[2], args[3]))
+		return wrapDOMMatrix(p.Call("scaleNonUniform", scaleX, args[0], args[1], args[2], args[3]))
 	default:
-		return newDOMMatrix(p.Call("scaleNonUniform", scaleX, args[0], args[1], args[2], args[3], args[4]))
+		return wrapDOMMatrix(p.Call("scaleNonUniform", scaleX, args[0], args[1], args[2], args[3], args[4]))
 	}
 }
 
 func (p *domMatrixReadOnlyImpl) Rotate(angle float64, args ...float64) DOMMatrix {
 	switch len(args) {
 	case 0:
-		return newDOMMatrix(p.Call("rotate", angle))
+		return wrapDOMMatrix(p.Call("rotate", angle))
 	case 1:
-		return newDOMMatrix(p.Call("rotate", angle, args[0]))
+		return wrapDOMMatrix(p.Call("rotate", angle, args[0]))
 	default:
-		return newDOMMatrix(p.Call("rotate", angle, args[0], args[1]))
+		return wrapDOMMatrix(p.Call("rotate", angle, args[0], args[1]))
 	}
 }
 
 func (p *domMatrixReadOnlyImpl) RotateFromVector(x float64, y float64) DOMMatrix {
-	return newDOMMatrix(p.Call("rotateFromVector", x, y))
+	return wrapDOMMatrix(p.Call("rotateFromVector", x, y))
 }
 
 func (p *domMatrixReadOnlyImpl) RotateAxisAngle(x float64, y float64, z float64, angle float64) DOMMatrix {
-	return newDOMMatrix(p.Call("rotateAxisAngle", x, y, z, angle))
+	return wrapDOMMatrix(p.Call("rotateAxisAngle", x, y, z, angle))
 }
 
 func (p *domMatrixReadOnlyImpl) SkewX(sx float64) DOMMatrix {
-	return newDOMMatrix(p.Call("skewX", sx))
+	return wrapDOMMatrix(p.Call("skewX", sx))
 }
 
 func (p *domMatrixReadOnlyImpl) SkewY(sy float64) DOMMatrix {
-	return newDOMMatrix(p.Call("skewY", sy))
+	return wrapDOMMatrix(p.Call("skewY", sy))
 }
 
 func (p *domMatrixReadOnlyImpl) Multiply(other DOMMatrix) DOMMatrix {
-	return newDOMMatrix(p.Call("multiply", other.JSValue()))
+	return wrapDOMMatrix(p.Call("multiply", other.JSValue()))
 }
 
 func (p *domMatrixReadOnlyImpl) FlipX() DOMMatrix {
-	return newDOMMatrix(p.Call("flipX"))
+	return wrapDOMMatrix(p.Call("flipX"))
 }
 
 func (p *domMatrixReadOnlyImpl) FlipY() DOMMatrix {
-	return newDOMMatrix(p.Call("flipY"))
+	return wrapDOMMatrix(p.Call("flipY"))
 }
 
 func (p *domMatrixReadOnlyImpl) Inverse() DOMMatrix {
-	return newDOMMatrix(p.Call("inverse"))
+	return wrapDOMMatrix(p.Call("inverse"))
 }
 
 func (p *domMatrixReadOnlyImpl) TransformPoint(point ...DOMPointInit) DOMPoint {
 	switch len(point) {
 	case 0:
-		return newDOMPoint(p.Call("transformPoint"))
+		return wrapDOMPoint(p.Call("transformPoint"))
 	default:
-		return newDOMPoint(p.Call("transformPoint", point[0].toDict()))
+		return wrapDOMPoint(p.Call("transformPoint", point[0].toDict()))
 	}
 }
 
@@ -514,7 +514,7 @@ type domMatrixImpl struct {
 	*domMatrixReadOnlyImpl
 }
 
-func newDOMMatrix(v js.Value) DOMMatrix {
+func wrapDOMMatrix(v js.Value) DOMMatrix {
 	if isNil(v) {
 		return nil
 	}
@@ -525,96 +525,96 @@ func newDOMMatrix(v js.Value) DOMMatrix {
 }
 
 func (p *domMatrixImpl) MultiplySelf(other DOMMatrix) DOMMatrix {
-	return newDOMMatrix(p.Call("multiplySelf", other.JSValue()))
+	return wrapDOMMatrix(p.Call("multiplySelf", other.JSValue()))
 }
 
 func (p *domMatrixImpl) PreMultiplySelf(other DOMMatrix) DOMMatrix {
-	return newDOMMatrix(p.Call("preMultiplySelf", other.JSValue()))
+	return wrapDOMMatrix(p.Call("preMultiplySelf", other.JSValue()))
 }
 
 func (p *domMatrixImpl) TranslateSelf(tx float64, ty float64, tz ...float64) DOMMatrix {
 	switch len(tz) {
 	case 0:
-		return newDOMMatrix(p.Call("translateSelf", tx, ty))
+		return wrapDOMMatrix(p.Call("translateSelf", tx, ty))
 	default:
-		return newDOMMatrix(p.Call("translateSelf", tx, ty, tz[0]))
+		return wrapDOMMatrix(p.Call("translateSelf", tx, ty, tz[0]))
 	}
 }
 
 func (p *domMatrixImpl) ScaleSelf(scale float64, args ...float64) DOMMatrix {
 	switch len(args) {
 	case 0:
-		return newDOMMatrix(p.Call("scaleSelf", scale))
+		return wrapDOMMatrix(p.Call("scaleSelf", scale))
 	case 1:
-		return newDOMMatrix(p.Call("scaleSelf", scale, args[0]))
+		return wrapDOMMatrix(p.Call("scaleSelf", scale, args[0]))
 	default:
-		return newDOMMatrix(p.Call("scaleSelf", scale, args[0], args[1]))
+		return wrapDOMMatrix(p.Call("scaleSelf", scale, args[0], args[1]))
 	}
 }
 
 func (p *domMatrixImpl) Scale3dSelf(scale float64, args ...float64) DOMMatrix {
 	switch len(args) {
 	case 0:
-		return newDOMMatrix(p.Call("scale3dSelf", scale))
+		return wrapDOMMatrix(p.Call("scale3dSelf", scale))
 	case 1:
-		return newDOMMatrix(p.Call("scale3dSelf", scale, args[0]))
+		return wrapDOMMatrix(p.Call("scale3dSelf", scale, args[0]))
 	case 2:
-		return newDOMMatrix(p.Call("scale3dSelf", scale, args[0], args[1]))
+		return wrapDOMMatrix(p.Call("scale3dSelf", scale, args[0], args[1]))
 	default:
-		return newDOMMatrix(p.Call("scale3dSelf", scale, args[0], args[1], args[2]))
+		return wrapDOMMatrix(p.Call("scale3dSelf", scale, args[0], args[1], args[2]))
 	}
 }
 
 func (p *domMatrixImpl) ScaleNonUniformSelf(scaleX float64, args ...float64) DOMMatrix {
 	switch len(args) {
 	case 0:
-		return newDOMMatrix(p.Call("scaleNonUniformSelf", scaleX))
+		return wrapDOMMatrix(p.Call("scaleNonUniformSelf", scaleX))
 	case 1:
-		return newDOMMatrix(p.Call("scaleNonUniformSelf", scaleX, args[0]))
+		return wrapDOMMatrix(p.Call("scaleNonUniformSelf", scaleX, args[0]))
 	case 2:
-		return newDOMMatrix(p.Call("scaleNonUniformSelf", scaleX, args[0], args[1]))
+		return wrapDOMMatrix(p.Call("scaleNonUniformSelf", scaleX, args[0], args[1]))
 	case 3:
-		return newDOMMatrix(p.Call("scaleNonUniformSelf", scaleX, args[0], args[1], args[2]))
+		return wrapDOMMatrix(p.Call("scaleNonUniformSelf", scaleX, args[0], args[1], args[2]))
 	case 4:
-		return newDOMMatrix(p.Call("scaleNonUniformSelf", scaleX, args[0], args[1], args[2], args[3]))
+		return wrapDOMMatrix(p.Call("scaleNonUniformSelf", scaleX, args[0], args[1], args[2], args[3]))
 	default:
-		return newDOMMatrix(p.Call("scaleNonUniformSelf", scaleX, args[0], args[1], args[2], args[3], args[4]))
+		return wrapDOMMatrix(p.Call("scaleNonUniformSelf", scaleX, args[0], args[1], args[2], args[3], args[4]))
 	}
 }
 
 func (p *domMatrixImpl) RotateSelf(angle float64, args ...float64) DOMMatrix {
 	switch len(args) {
 	case 0:
-		return newDOMMatrix(p.Call("rotateSelf", angle))
+		return wrapDOMMatrix(p.Call("rotateSelf", angle))
 	case 1:
-		return newDOMMatrix(p.Call("rotateSelf", angle, args[0]))
+		return wrapDOMMatrix(p.Call("rotateSelf", angle, args[0]))
 	default:
-		return newDOMMatrix(p.Call("rotateSelf", angle, args[0], args[1]))
+		return wrapDOMMatrix(p.Call("rotateSelf", angle, args[0], args[1]))
 	}
 }
 
 func (p *domMatrixImpl) RotateFromVectorSelf(x float64, y float64) DOMMatrix {
-	return newDOMMatrix(p.Call("rotateFromVectorSelf", x, y))
+	return wrapDOMMatrix(p.Call("rotateFromVectorSelf", x, y))
 }
 
 func (p *domMatrixImpl) RotateAxisAngleSelf(x float64, y float64, z float64, angle float64) DOMMatrix {
-	return newDOMMatrix(p.Call("rotateAxisAngleSelf", x, y, z, angle))
+	return wrapDOMMatrix(p.Call("rotateAxisAngleSelf", x, y, z, angle))
 }
 
 func (p *domMatrixImpl) SkewXSelf(sx float64) DOMMatrix {
-	return newDOMMatrix(p.Call("skewXSelf", sx))
+	return wrapDOMMatrix(p.Call("skewXSelf", sx))
 }
 
 func (p *domMatrixImpl) SkewYSelf(sy float64) DOMMatrix {
-	return newDOMMatrix(p.Call("skewYSelf", sy))
+	return wrapDOMMatrix(p.Call("skewYSelf", sy))
 }
 
 func (p *domMatrixImpl) InverseSelf() DOMMatrix {
-	return newDOMMatrix(p.Call("invertSelf"))
+	return wrapDOMMatrix(p.Call("invertSelf"))
 }
 
 func (p *domMatrixImpl) SetMatrixValue(transformList string) DOMMatrix {
-	return newDOMMatrix(p.Call("setMatrixValue", transformList))
+	return wrapDOMMatrix(p.Call("setMatrixValue", transformList))
 }
 
 // -------------8<---------------------------------------

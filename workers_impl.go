@@ -16,9 +16,9 @@ func NewWorker(scriptURL string, wo ...WorkerOptions) Worker {
 
 	switch len(wo) {
 	case 0:
-		return newWorker(jsWorker.New(scriptURL))
+		return wrapWorker(jsWorker.New(scriptURL))
 	default:
-		return newWorker(jsWorker.New(scriptURL, wo[0].toDict()))
+		return wrapWorker(jsWorker.New(scriptURL, wo[0].toDict()))
 	}
 }
 
@@ -30,7 +30,7 @@ type workerGlobalScopeImpl struct {
 	js.Value
 }
 
-func newWorkerGlobalScope(v js.Value) WorkerGlobalScope {
+func wrapWorkerGlobalScope(v js.Value) WorkerGlobalScope {
 	if p := newWorkerGlobalScopeImpl(v); p != nil {
 		return p
 	}
@@ -50,15 +50,15 @@ func newWorkerGlobalScopeImpl(v js.Value) *workerGlobalScopeImpl {
 }
 
 func (p *workerGlobalScopeImpl) Self() WorkerGlobalScope {
-	return newWorkerGlobalScope(p.Get("self"))
+	return wrapWorkerGlobalScope(p.Get("self"))
 }
 
 func (p *workerGlobalScopeImpl) Location() WorkerLocation {
-	return newWorkerLocation(p.Get("location"))
+	return wrapWorkerLocation(p.Get("location"))
 }
 
 func (p *workerGlobalScopeImpl) Navigator() WorkerNavigator {
-	return newWorkerNavigator(p.Get("navigator"))
+	return wrapWorkerNavigator(p.Get("navigator"))
 }
 
 func (p *workerGlobalScopeImpl) ImportScripts(urls ...string) {
@@ -105,7 +105,7 @@ type dedicatedWorkerGlobalScopeImpl struct {
 	*workerGlobalScopeImpl
 }
 
-func newDedicatedWorkerGlobalScope(v js.Value) DedicatedWorkerGlobalScope {
+func wrapDedicatedWorkerGlobalScope(v js.Value) DedicatedWorkerGlobalScope {
 	if isNil(v) {
 		return nil
 	}
@@ -137,7 +137,7 @@ type sharedWorkerGlobalScopeImpl struct {
 	*workerGlobalScopeImpl
 }
 
-func newSharedWorkerGlobalScope(v js.Value) SharedWorkerGlobalScope {
+func wrapSharedWorkerGlobalScope(v js.Value) SharedWorkerGlobalScope {
 	if isNil(v) {
 		return nil
 	}
@@ -152,7 +152,7 @@ func (p *workerGlobalScopeImpl) Name() string {
 }
 
 func (p *workerGlobalScopeImpl) ApplicationCache() ApplicationCache {
-	return newApplicationCache(p.Get("applicationCache"))
+	return wrapApplicationCache(p.Get("applicationCache"))
 }
 
 func (p *workerGlobalScopeImpl) OnConnect(fn func(Event)) EventHandler {
@@ -165,7 +165,7 @@ type applicationCacheImpl struct {
 	*eventTargetImpl
 }
 
-func newApplicationCache(v js.Value) ApplicationCache {
+func wrapApplicationCache(v js.Value) ApplicationCache {
 	if isNil(v) {
 		return nil
 	}
@@ -225,7 +225,7 @@ type abstractWorkerImpl struct {
 	js.Value
 }
 
-func newAbstractWorker(v js.Value) AbstractWorker {
+func wrapAbstractWorker(v js.Value) AbstractWorker {
 	if p := newAbstractWorkerImpl(v); p != nil {
 		return p
 	}
@@ -254,7 +254,7 @@ type workerImpl struct {
 	js.Value
 }
 
-func newWorker(v js.Value) Worker {
+func wrapWorker(v js.Value) Worker {
 	if isNil(v) {
 		return nil
 	}
@@ -290,7 +290,7 @@ type sharedWorkerImpl struct {
 	js.Value
 }
 
-func newSharedWorker(v js.Value) SharedWorker {
+func wrapSharedWorker(v js.Value) SharedWorker {
 	if isNil(v) {
 		return nil
 	}
@@ -303,7 +303,7 @@ func newSharedWorker(v js.Value) SharedWorker {
 }
 
 func (p *sharedWorkerImpl) Port() MessagePort {
-	return newMessagePort(p.Get("port"))
+	return wrapMessagePort(p.Get("port"))
 }
 
 // -------------8<---------------------------------------
@@ -337,7 +337,7 @@ type workerNavigatorImpl struct {
 	*navigatorConcurrentHardwareImpl
 }
 
-func newWorkerNavigator(v js.Value) WorkerNavigator {
+func wrapWorkerNavigator(v js.Value) WorkerNavigator {
 	if isNil(v) {
 		return nil
 	}
@@ -356,7 +356,7 @@ type workerLocationImpl struct {
 	js.Value
 }
 
-func newWorkerLocation(v js.Value) WorkerLocation {
+func wrapWorkerLocation(v js.Value) WorkerLocation {
 	if p := newWorkerLocationImpl(v); p != nil {
 		return p
 	}

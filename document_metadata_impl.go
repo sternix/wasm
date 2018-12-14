@@ -21,7 +21,7 @@ func NewHTMLHtmlElement() HTMLHtmlElement {
 	return nil
 }
 
-func newHTMLHtmlElement(v js.Value) HTMLHtmlElement {
+func wrapHTMLHtmlElement(v js.Value) HTMLHtmlElement {
 	if isNil(v) {
 		return nil
 	}
@@ -46,7 +46,7 @@ func NewHTMLHeadElement() HTMLHeadElement {
 	return nil
 }
 
-func newHTMLHeadElement(v js.Value) HTMLHeadElement {
+func wrapHTMLHeadElement(v js.Value) HTMLHeadElement {
 	if isNil(v) {
 		return nil
 	}
@@ -71,7 +71,7 @@ func NewHTMLTitleElement() HTMLTitleElement {
 	return nil
 }
 
-func newHTMLTitleElement(v js.Value) HTMLTitleElement {
+func wrapHTMLTitleElement(v js.Value) HTMLTitleElement {
 	if isNil(v) {
 		return nil
 	}
@@ -104,7 +104,7 @@ func NewHTMLBaseElement() HTMLBaseElement {
 	return nil
 }
 
-func newHTMLBaseElement(v js.Value) HTMLBaseElement {
+func wrapHTMLBaseElement(v js.Value) HTMLBaseElement {
 	if isNil(v) {
 		return nil
 	}
@@ -147,7 +147,7 @@ func NewHTMLLinkElement() HTMLLinkElement {
 	return nil
 }
 
-func newHTMLLinkElement(v js.Value) HTMLLinkElement {
+func wrapHTMLLinkElement(v js.Value) HTMLLinkElement {
 	if isNil(v) {
 		return nil
 	}
@@ -192,7 +192,7 @@ func (p *htmlLinkElementImpl) SetRev(rev string) {
 }
 
 func (p *htmlLinkElementImpl) RelList() DOMTokenList {
-	return newDOMTokenList(p.Get("relList"))
+	return wrapDOMTokenList(p.Get("relList"))
 }
 
 func (p *htmlLinkElementImpl) Media() string {
@@ -228,7 +228,7 @@ func (p *htmlLinkElementImpl) SetType(typ string) {
 }
 
 func (p *htmlLinkElementImpl) Sizes() DOMTokenList {
-	return newDOMTokenList(p.Get("sizes"))
+	return wrapDOMTokenList(p.Get("sizes"))
 }
 
 func (p *htmlLinkElementImpl) ReferrerPolicy() string {
@@ -254,7 +254,7 @@ func NewHTMLMetaElement() HTMLMetaElement {
 	return nil
 }
 
-func newHTMLMetaElement(v js.Value) HTMLMetaElement {
+func wrapHTMLMetaElement(v js.Value) HTMLMetaElement {
 	if isNil(v) {
 		return nil
 	}
@@ -305,7 +305,7 @@ func NewHTMLStyleElement() HTMLStyleElement {
 	return nil
 }
 
-func newHTMLStyleElement(v js.Value) HTMLStyleElement {
+func wrapHTMLStyleElement(v js.Value) HTMLStyleElement {
 	if isNil(v) {
 		return nil
 	}

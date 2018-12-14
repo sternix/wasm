@@ -18,9 +18,9 @@ func NewEvent(typ string, ei ...EventInit) Event {
 
 	switch len(ei) {
 	case 0:
-		return newEvent(jsEvent.New(typ))
+		return wrapEvent(jsEvent.New(typ))
 	default:
-		return newEvent(jsEvent.New(typ, ei[0].toDict()))
+		return wrapEvent(jsEvent.New(typ, ei[0].toDict()))
 	}
 }
 
@@ -32,9 +32,9 @@ func NewCustomEvent(typ string, cei ...CustomEventInit) CustomEvent {
 
 	switch len(cei) {
 	case 0:
-		return newCustomEvent(jsCustomEvent.New(typ))
+		return wrapCustomEvent(jsCustomEvent.New(typ))
 	default:
-		return newCustomEvent(jsCustomEvent.New(typ, cei[0].toDict()))
+		return wrapCustomEvent(jsCustomEvent.New(typ, cei[0].toDict()))
 	}
 }
 
@@ -46,9 +46,9 @@ func NewFocusEvent(typ string, ini ...FocusEventInit) FocusEvent {
 
 	switch len(ini) {
 	case 0:
-		return newFocusEvent(jsFocusEvent.New(typ))
+		return wrapFocusEvent(jsFocusEvent.New(typ))
 	default:
-		return newFocusEvent(jsFocusEvent.New(typ, ini[0].toDict()))
+		return wrapFocusEvent(jsFocusEvent.New(typ, ini[0].toDict()))
 	}
 }
 
@@ -60,9 +60,9 @@ func NewMouseEvent(typ string, ini ...MouseEventInit) MouseEvent {
 
 	switch len(ini) {
 	case 0:
-		return newMouseEvent(jsMouseEvent.New(typ))
+		return wrapMouseEvent(jsMouseEvent.New(typ))
 	default:
-		return newMouseEvent(jsMouseEvent.New(typ, ini[0].toDict()))
+		return wrapMouseEvent(jsMouseEvent.New(typ, ini[0].toDict()))
 	}
 }
 
@@ -74,9 +74,9 @@ func NewWheelEvent(typ string, ini ...WheelEventInit) WheelEvent {
 
 	switch len(ini) {
 	case 0:
-		return newWheelEvent(jsWheelEvent.New(typ))
+		return wrapWheelEvent(jsWheelEvent.New(typ))
 	default:
-		return newWheelEvent(jsWheelEvent.New(typ, ini[0].toDict()))
+		return wrapWheelEvent(jsWheelEvent.New(typ, ini[0].toDict()))
 	}
 }
 
@@ -88,9 +88,9 @@ func NewInputEvent(typ string, ini ...InputEventInit) InputEvent {
 
 	switch len(ini) {
 	case 0:
-		return newInputEvent(jsInputEvent.New(typ))
+		return wrapInputEvent(jsInputEvent.New(typ))
 	default:
-		return newInputEvent(jsInputEvent.New(typ, ini[0].toDict()))
+		return wrapInputEvent(jsInputEvent.New(typ, ini[0].toDict()))
 	}
 }
 
@@ -102,9 +102,9 @@ func NewKeyboardEvent(typ string, ini ...KeyboardEventInit) KeyboardEvent {
 
 	switch len(ini) {
 	case 0:
-		return newKeyboardEvent(jsKeyboardEvent.New(typ))
+		return wrapKeyboardEvent(jsKeyboardEvent.New(typ))
 	default:
-		return newKeyboardEvent(jsKeyboardEvent.New(typ, ini[0].toDict()))
+		return wrapKeyboardEvent(jsKeyboardEvent.New(typ, ini[0].toDict()))
 	}
 }
 
@@ -116,9 +116,9 @@ func NewErrorEvent(typ string, eei ...ErrorEventInit) ErrorEvent {
 
 	switch len(eei) {
 	case 0:
-		return newErrorEvent(jsErrorEvent.New(typ))
+		return wrapErrorEvent(jsErrorEvent.New(typ))
 	default:
-		return newErrorEvent(jsErrorEvent.New(typ, eei[0].toDict()))
+		return wrapErrorEvent(jsErrorEvent.New(typ, eei[0].toDict()))
 	}
 }
 
@@ -128,7 +128,7 @@ type eventTargetImpl struct {
 	js.Value
 }
 
-func newEventTarget(v js.Value) EventTarget {
+func wrapEventTarget(v js.Value) EventTarget {
 	if p := newEventTargetImpl(v); p != nil {
 		return p
 	}
@@ -164,7 +164,7 @@ type eventImpl struct {
 	js.Value
 }
 
-func newEvent(v js.Value) Event {
+func wrapEvent(v js.Value) Event {
 	if p := newEventImpl(v); p != nil {
 		return p
 	}
@@ -186,11 +186,11 @@ func (p *eventImpl) Type() string {
 }
 
 func (p *eventImpl) Target() EventTarget {
-	return wrapEventTarget(p.Get("target"))
+	return wrapAsEventTarget(p.Get("target"))
 }
 
 func (p *eventImpl) CurrentTarget() EventTarget {
-	return wrapEventTarget(p.Get("currentTarget"))
+	return wrapAsEventTarget(p.Get("currentTarget"))
 }
 
 func (p *eventImpl) ComposedPath() []EventTarget {
@@ -201,7 +201,7 @@ func (p *eventImpl) ComposedPath() []EventTarget {
 
 	ret := make([]EventTarget, len(s))
 	for i, v := range s {
-		ret[i] = newEventTargetImpl(v)
+		ret[i] = wrapEventTarget(v)
 	}
 	return ret
 }
@@ -253,7 +253,7 @@ type customEventImpl struct {
 	*eventImpl
 }
 
-func newCustomEvent(v js.Value) CustomEvent {
+func wrapCustomEvent(v js.Value) CustomEvent {
 	if isNil(v) {
 		return nil
 	}
@@ -915,10 +915,10 @@ func (p *windowOrWorkerGlobalScopeImpl) CreateImageBitmap(image ImageBitmapSourc
 		}
 
 		if ok {
-			return newImageBitmap(result), nil
+			return wrapImageBitmap(result), nil
 		}
 
-		return nil, newDOMException(result)
+		return nil, wrapDOMException(result)
 	}
 }
 
@@ -937,15 +937,15 @@ func (p *windowOrWorkerGlobalScopeImpl) CreateImageBitmapWithSize(image ImageBit
 		}
 
 		if ok {
-			return newImageBitmap(result), nil
+			return wrapImageBitmap(result), nil
 		}
 
-		return nil, newDOMException(result)
+		return nil, wrapDOMException(result)
 	}
 }
 
 func (p *windowOrWorkerGlobalScopeImpl) IndexedDB() IDBFactory {
-	return newIDBFactory(p.Get("indexedDB"))
+	return wrapIDBFactory(p.Get("indexedDB"))
 }
 
 func (p *windowOrWorkerGlobalScopeImpl) Fetch(input RequestInfo, ri ...RequestInit) func() (Response, error) {
@@ -973,9 +973,9 @@ func (p *windowOrWorkerGlobalScopeImpl) Fetch(input RequestInfo, ri ...RequestIn
 		}
 
 		if ok {
-			return newResponse(result), nil
+			return wrapResponse(result), nil
 		}
-		return nil, newDOMException(result)
+		return nil, wrapDOMException(result)
 	}
 }
 
@@ -1095,7 +1095,7 @@ type uiEventImpl struct {
 	*eventImpl
 }
 
-func newUIEvent(v js.Value) UIEvent {
+func wrapUIEvent(v js.Value) UIEvent {
 	if p := newUIEventImpl(v); p != nil {
 		return p
 	}
@@ -1113,7 +1113,7 @@ func newUIEventImpl(v js.Value) *uiEventImpl {
 }
 
 func (p *uiEventImpl) View() Window {
-	return newWindowImpl(p.Get("view"))
+	return wrapWindow(p.Get("view"))
 }
 
 func (p *uiEventImpl) Detail() int {
@@ -1126,7 +1126,7 @@ type mouseEventImpl struct {
 	*uiEventImpl
 }
 
-func newMouseEvent(v js.Value) MouseEvent {
+func wrapMouseEvent(v js.Value) MouseEvent {
 	if p := newMouseEventImpl(v); p != nil {
 		return p
 	}
@@ -1184,7 +1184,7 @@ func (p *mouseEventImpl) Buttons() int {
 }
 
 func (p *mouseEventImpl) RelatedTarget() EventTarget {
-	return newEventTargetImpl(p.Get("relatedTarget"))
+	return wrapEventTarget(p.Get("relatedTarget"))
 }
 
 func (p *mouseEventImpl) ModifierState(keyArg string) bool {
@@ -1221,7 +1221,7 @@ type focusEventImpl struct {
 	*uiEventImpl
 }
 
-func newFocusEvent(v js.Value) FocusEvent {
+func wrapFocusEvent(v js.Value) FocusEvent {
 	if isNil(v) {
 		return nil
 	}
@@ -1241,7 +1241,7 @@ type wheelEventImpl struct {
 	*mouseEventImpl
 }
 
-func newWheelEvent(v js.Value) WheelEvent {
+func wrapWheelEvent(v js.Value) WheelEvent {
 	if isNil(v) {
 		return nil
 	}
@@ -1273,7 +1273,7 @@ type inputEventImpl struct {
 	*uiEventImpl
 }
 
-func newInputEvent(v js.Value) InputEvent {
+func wrapInputEvent(v js.Value) InputEvent {
 	if isNil(v) {
 		return nil
 	}
@@ -1297,7 +1297,7 @@ type keyboardEventImpl struct {
 	*uiEventImpl
 }
 
-func newKeyboardEvent(v js.Value) KeyboardEvent {
+func wrapKeyboardEvent(v js.Value) KeyboardEvent {
 	if isNil(v) {
 		return nil
 	}
@@ -1353,7 +1353,7 @@ type compositionEventImpl struct {
 	*uiEventImpl
 }
 
-func newCompositionEvent(v js.Value) CompositionEvent {
+func wrapCompositionEvent(v js.Value) CompositionEvent {
 	if isNil(v) {
 		return nil
 	}
@@ -1373,7 +1373,7 @@ type errorEventImpl struct {
 	*eventImpl
 }
 
-func newErrorEvent(v js.Value) ErrorEvent {
+func wrapErrorEvent(v js.Value) ErrorEvent {
 	if isNil(v) {
 		return nil
 	}
@@ -1417,13 +1417,13 @@ func NewTransitionEvent(typ string, tei ...TransitionEventInit) TransitionEvent 
 
 	switch len(tei) {
 	case 0:
-		return newTransitionEvent(jsTe.New(typ))
+		return wrapTransitionEvent(jsTe.New(typ))
 	default:
-		return newTransitionEvent(jsTe.New(typ, tei[0].toDict()))
+		return wrapTransitionEvent(jsTe.New(typ, tei[0].toDict()))
 	}
 }
 
-func newTransitionEvent(v js.Value) TransitionEvent {
+func wrapTransitionEvent(v js.Value) TransitionEvent {
 	if isNil(v) {
 		return nil
 	}
@@ -1458,13 +1458,13 @@ func NewPointerEvent(typ string, pei ...PointerEventInit) PointerEvent {
 
 	switch len(pei) {
 	case 0:
-		return newPointerEvent(jsPe.New(typ))
+		return wrapPointerEvent(jsPe.New(typ))
 	default:
-		return newPointerEvent(jsPe.New(typ, pei[0].toDict()))
+		return wrapPointerEvent(jsPe.New(typ, pei[0].toDict()))
 	}
 }
 
-func newPointerEvent(v js.Value) PointerEvent {
+func wrapPointerEvent(v js.Value) PointerEvent {
 	if isNil(v) {
 		return nil
 	}

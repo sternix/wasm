@@ -12,7 +12,7 @@ type webGLObjectImpl struct {
 	js.Value
 }
 
-func newWebGLObject(v js.Value) WebGLObject {
+func wrapWebGLObject(v js.Value) WebGLObject {
 	if p := newWebGLObjectImpl(v); p != nil {
 		return p
 	}
@@ -35,7 +35,7 @@ type webGLBufferImpl struct {
 	*webGLObjectImpl
 }
 
-func newWebGLBuffer(v js.Value) WebGLBuffer {
+func wrapWebGLBuffer(v js.Value) WebGLBuffer {
 	if isNil(v) {
 		return nil
 	}
@@ -51,7 +51,7 @@ type webGLFramebufferImpl struct {
 	*webGLObjectImpl
 }
 
-func newWebGLFramebuffer(v js.Value) WebGLFramebuffer {
+func wrapWebGLFramebuffer(v js.Value) WebGLFramebuffer {
 	if isNil(v) {
 		return nil
 	}
@@ -67,7 +67,7 @@ type webGLProgramImpl struct {
 	*webGLObjectImpl
 }
 
-func newWebGLProgram(v js.Value) WebGLProgram {
+func wrapWebGLProgram(v js.Value) WebGLProgram {
 	if isNil(v) {
 		return nil
 	}
@@ -83,7 +83,7 @@ type webGLRenderbufferImpl struct {
 	*webGLObjectImpl
 }
 
-func newWebGLRenderbuffer(v js.Value) WebGLRenderbuffer {
+func wrapWebGLRenderbuffer(v js.Value) WebGLRenderbuffer {
 	if isNil(v) {
 		return nil
 	}
@@ -99,7 +99,7 @@ type webGLShaderImpl struct {
 	*webGLObjectImpl
 }
 
-func newWebGLShader(v js.Value) WebGLShader {
+func wrapWebGLShader(v js.Value) WebGLShader {
 	if isNil(v) {
 		return nil
 	}
@@ -115,7 +115,7 @@ type webGLTextureImpl struct {
 	*webGLObjectImpl
 }
 
-func newWebGLTexture(v js.Value) WebGLTexture {
+func wrapWebGLTexture(v js.Value) WebGLTexture {
 	if isNil(v) {
 		return nil
 	}
@@ -131,7 +131,7 @@ type webGLUniformLocationImpl struct {
 	js.Value
 }
 
-func newWebGLUniformLocation(v js.Value) WebGLUniformLocation {
+func wrapWebGLUniformLocation(v js.Value) WebGLUniformLocation {
 	if isNil(v) {
 		return nil
 	}
@@ -147,7 +147,7 @@ type webGLActiveInfoImpl struct {
 	js.Value
 }
 
-func newWebGLActiveInfo(v js.Value) WebGLActiveInfo {
+func wrapWebGLActiveInfo(v js.Value) WebGLActiveInfo {
 	if isNil(v) {
 		return nil
 	}
@@ -175,7 +175,7 @@ type webGLShaderPrecisionFormatImpl struct {
 	js.Value
 }
 
-func newWebGLShaderPrecisionFormat(v js.Value) WebGLShaderPrecisionFormat {
+func wrapWebGLShaderPrecisionFormat(v js.Value) WebGLShaderPrecisionFormat {
 	if isNil(v) {
 		return nil
 	}
@@ -199,7 +199,7 @@ func (p *webGLShaderPrecisionFormatImpl) Precision() int {
 
 // -------------8<---------------------------------------
 
-func newWebGLContextAttributes(v js.Value) WebGLContextAttributes {
+func wrapWebGLContextAttributes(v js.Value) WebGLContextAttributes {
 	if isNil(v) {
 		return WebGLContextAttributes{}
 	}
@@ -222,7 +222,7 @@ type texImageSourceImpl struct {
 	js.Value
 }
 
-func newTexImageSource(v js.Value) TexImageSource {
+func wrapTexImageSource(v js.Value) TexImageSource {
 	if isNil(v) {
 		return nil
 	}
@@ -251,7 +251,7 @@ func newWebGLRenderingContextBaseImpl(v js.Value) *webGLRenderingContextBaseImpl
 }
 
 func (p *webGLRenderingContextBaseImpl) Canvas() HTMLCanvasElement {
-	return newHTMLCanvasElement(p.Get("canvas"))
+	return wrapHTMLCanvasElement(p.Get("canvas"))
 }
 
 func (p *webGLRenderingContextBaseImpl) DrawingBufferWidth() int {
@@ -263,7 +263,7 @@ func (p *webGLRenderingContextBaseImpl) drawingBufferHeight() int {
 }
 
 func (p *webGLRenderingContextBaseImpl) GetContextAttributes() WebGLContextAttributes {
-	return newWebGLContextAttributes(p.Call("getContextAttributes"))
+	return wrapWebGLContextAttributes(p.Call("getContextAttributes"))
 }
 
 func (p *webGLRenderingContextBaseImpl) IsContextLost() bool {
@@ -394,27 +394,27 @@ func (p *webGLRenderingContextBaseImpl) CopyTexSubImage2D(target GLenum, level i
 }
 
 func (p *webGLRenderingContextBaseImpl) CreateBuffer() WebGLBuffer {
-	return newWebGLBuffer(p.Call("createBuffer"))
+	return wrapWebGLBuffer(p.Call("createBuffer"))
 }
 
 func (p *webGLRenderingContextBaseImpl) CreateFramebuffer() WebGLFramebuffer {
-	return newWebGLFramebuffer(p.Call("createFramebuffer"))
+	return wrapWebGLFramebuffer(p.Call("createFramebuffer"))
 }
 
 func (p *webGLRenderingContextBaseImpl) CreateProgram() WebGLProgram {
-	return newWebGLProgram(p.Call("createProgram"))
+	return wrapWebGLProgram(p.Call("createProgram"))
 }
 
 func (p *webGLRenderingContextBaseImpl) CreateRenderbuffer() WebGLRenderbuffer {
-	return newWebGLRenderbuffer(p.Call("createRenderbuffer"))
+	return wrapWebGLRenderbuffer(p.Call("createRenderbuffer"))
 }
 
 func (p *webGLRenderingContextBaseImpl) CreateShader(typ GLenum) WebGLShader {
-	return newWebGLShader(p.Call("createShader", uint(typ)))
+	return wrapWebGLShader(p.Call("createShader", uint(typ)))
 }
 
 func (p *webGLRenderingContextBaseImpl) CreateTexture() WebGLTexture {
-	return newWebGLTexture(p.Call("createTexture"))
+	return wrapWebGLTexture(p.Call("createTexture"))
 }
 
 func (p *webGLRenderingContextBaseImpl) CullFace(mode GLenum) {
@@ -510,11 +510,11 @@ func (p *webGLRenderingContextBaseImpl) GenerateMipmap(target GLenum) {
 }
 
 func (p *webGLRenderingContextBaseImpl) GetActiveAttrib(program WebGLProgram, index uint) WebGLActiveInfo {
-	return newWebGLActiveInfo(p.Call("getActiveAttrib", program.JSValue(), index))
+	return wrapWebGLActiveInfo(p.Call("getActiveAttrib", program.JSValue(), index))
 }
 
 func (p *webGLRenderingContextBaseImpl) GetActiveUniform(program WebGLProgram, index uint) WebGLActiveInfo {
-	return newWebGLActiveInfo(p.Call("getActiveUniform", program.JSValue(), index))
+	return wrapWebGLActiveInfo(p.Call("getActiveUniform", program.JSValue(), index))
 }
 
 func (p *webGLRenderingContextBaseImpl) GetAttachedShaders(program WebGLProgram) []WebGLShader {
@@ -525,7 +525,7 @@ func (p *webGLRenderingContextBaseImpl) GetAttachedShaders(program WebGLProgram)
 
 	ret := make([]WebGLShader, len(s))
 	for i, v := range s {
-		ret[i] = newWebGLShader(v)
+		ret[i] = wrapWebGLShader(v)
 	}
 
 	return ret
@@ -568,7 +568,7 @@ func (p *webGLRenderingContextBaseImpl) GetShaderParameter(shader WebGLShader, p
 }
 
 func (p *webGLRenderingContextBaseImpl) GetShaderPrecisionFormat(shaderType GLenum, precisiontype GLenum) WebGLShaderPrecisionFormat {
-	return newWebGLShaderPrecisionFormat(p.Call("getShaderPrecisionFormat", uint(shaderType), uint(precisiontype)))
+	return wrapWebGLShaderPrecisionFormat(p.Call("getShaderPrecisionFormat", uint(shaderType), uint(precisiontype)))
 }
 
 func (p *webGLRenderingContextBaseImpl) GetShaderInfoLog(shader WebGLShader) string {
@@ -588,7 +588,7 @@ func (p *webGLRenderingContextBaseImpl) GetUniform(program WebGLProgram, locatio
 }
 
 func (p *webGLRenderingContextBaseImpl) GetUniformLocation(program WebGLProgram, name string) WebGLUniformLocation {
-	return newWebGLUniformLocation(p.Call("getUniformLocation", program.JSValue(), name))
+	return wrapWebGLUniformLocation(p.Call("getUniformLocation", program.JSValue(), name))
 }
 
 func (p *webGLRenderingContextBaseImpl) GetVertexAttrib(index uint, pname GLenum) interface{} {
@@ -879,7 +879,7 @@ type webGLRenderingContextImpl struct {
 	*webGLRenderingContextBaseImpl
 }
 
-func newWebGLRenderingContext(v js.Value) WebGLRenderingContext {
+func wrapWebGLRenderingContext(v js.Value) WebGLRenderingContext {
 	if isNil(v) {
 		return nil
 	}

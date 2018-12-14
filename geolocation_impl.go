@@ -13,7 +13,7 @@ type geolocationImpl struct {
 	js.Value
 }
 
-func newGeolocation(v js.Value) Geolocation {
+func wrapGeolocation(v js.Value) Geolocation {
 	if isNil(v) {
 		return nil
 	}
@@ -67,7 +67,7 @@ type positionImpl struct {
 	js.Value
 }
 
-func newPosition(v js.Value) Position {
+func wrapPosition(v js.Value) Position {
 	if isNil(v) {
 		return nil
 	}
@@ -78,7 +78,7 @@ func newPosition(v js.Value) Position {
 }
 
 func (p *positionImpl) Coords() Coordinates {
-	return newCoordinates(p.Get("coords"))
+	return wrapCoordinates(p.Get("coords"))
 }
 
 func (p *positionImpl) Timestamp() time.Time {
@@ -91,7 +91,7 @@ type coordinatesImpl struct {
 	js.Value
 }
 
-func newCoordinates(v js.Value) Coordinates {
+func wrapCoordinates(v js.Value) Coordinates {
 	if isNil(v) {
 		return nil
 	}
@@ -135,7 +135,7 @@ type positionErrorImpl struct {
 	js.Value
 }
 
-func newPositionError(v js.Value) PositionError {
+func wrapPositionError(v js.Value) PositionError {
 	if isNil(v) {
 		return nil
 	}

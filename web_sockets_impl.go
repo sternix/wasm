@@ -16,11 +16,11 @@ func NewWebSocket(url string, protocols ...string) WebSocket {
 
 	switch len(protocols) {
 	case 0:
-		return newWebSocket(jsWebSocket.New(url))
+		return wrapWebSocket(jsWebSocket.New(url))
 	case 1:
-		return newWebSocket(jsWebSocket.New(url, protocols[0]))
+		return wrapWebSocket(jsWebSocket.New(url, protocols[0]))
 	default:
-		return newWebSocket(jsWebSocket.New(url, sliceToJsArray(protocols)))
+		return wrapWebSocket(jsWebSocket.New(url, sliceToJsArray(protocols)))
 	}
 }
 
@@ -32,9 +32,9 @@ func NewCloseEvent(typ string, cei ...CloseEventInit) CloseEvent {
 
 	switch len(cei) {
 	case 0:
-		return newCloseEvent(jsCloseEvent.New(typ))
+		return wrapCloseEvent(jsCloseEvent.New(typ))
 	default:
-		return newCloseEvent(jsCloseEvent.New(typ, cei[0].toDict()))
+		return wrapCloseEvent(jsCloseEvent.New(typ, cei[0].toDict()))
 	}
 }
 
@@ -44,7 +44,7 @@ type webSocketImpl struct {
 	*eventTargetImpl
 }
 
-func newWebSocket(v js.Value) WebSocket {
+func wrapWebSocket(v js.Value) WebSocket {
 	if isNil(v) {
 		return nil
 	}
@@ -151,7 +151,7 @@ type closeEventImpl struct {
 	*eventImpl
 }
 
-func newCloseEvent(v js.Value) CloseEvent {
+func wrapCloseEvent(v js.Value) CloseEvent {
 	if isNil(v) {
 		return nil
 	}

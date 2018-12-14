@@ -12,7 +12,7 @@ type headersImpl struct {
 	js.Value
 }
 
-func newHeaders(v js.Value) Headers {
+func wrapHeaders(v js.Value) Headers {
 	if isNil(v) {
 		return nil
 	}
@@ -67,7 +67,7 @@ type bodyImpl struct {
 	js.Value
 }
 
-func newBody(v js.Value) Body {
+func wrapBody(v js.Value) Body {
 	if p := newBodyImpl(v); p != nil {
 		return p
 	}
@@ -97,7 +97,7 @@ func (p *bodyImpl) ArrayBuffer() func() (ArrayBuffer, bool) {
 	return func() (ArrayBuffer, bool) {
 		res, ok := await(p.Call("arrayBuffer"))
 		if ok {
-			return newArrayBuffer(res), true
+			return wrapArrayBuffer(res), true
 		}
 		return nil, false
 	}
@@ -107,7 +107,7 @@ func (p *bodyImpl) Blob() func() (Blob, bool) {
 	return func() (Blob, bool) {
 		res, ok := await(p.Call("blob"))
 		if ok {
-			return newBlob(res), true
+			return wrapBlob(res), true
 		}
 		return nil, false
 	}
@@ -117,7 +117,7 @@ func (p *bodyImpl) FormData() func() (FormData, bool) {
 	return func() (FormData, bool) {
 		res, ok := await(p.Call("formData"))
 		if ok {
-			return newFormData(res), true
+			return wrapFormData(res), true
 		}
 		return nil, false
 	}
@@ -149,7 +149,7 @@ type requestImpl struct {
 	*bodyImpl
 }
 
-func newRequest(v js.Value) Request {
+func wrapRequest(v js.Value) Request {
 	if isNil(v) {
 		return nil
 	}
@@ -168,7 +168,7 @@ func (p *requestImpl) URL() string {
 }
 
 func (p *requestImpl) Headers() Headers {
-	return newHeaders(p.Get("headers"))
+	return wrapHeaders(p.Get("headers"))
 }
 
 func (p *requestImpl) Destination() RequestDestination {
@@ -216,11 +216,11 @@ func (p *requestImpl) IsHistoryNavigation() bool {
 }
 
 func (p *requestImpl) Signal() AbortSignal {
-	return newAbortSignal(p.Get("signal"))
+	return wrapAbortSignal(p.Get("signal"))
 }
 
 func (p *requestImpl) Clone() Request {
-	return newRequest(p.Call("clone"))
+	return wrapRequest(p.Call("clone"))
 }
 
 // -------------8<---------------------------------------
@@ -229,7 +229,7 @@ type responseImpl struct {
 	*bodyImpl
 }
 
-func newResponse(v js.Value) Response {
+func wrapResponse(v js.Value) Response {
 	if isNil(v) {
 		return nil
 	}
@@ -240,15 +240,15 @@ func newResponse(v js.Value) Response {
 }
 
 func (p *responseImpl) Error() Response {
-	return newResponse(p.Call("error"))
+	return wrapResponse(p.Call("error"))
 }
 
 func (p *responseImpl) Redirect(url string, status ...int) Response {
 	if len(status) > 0 {
-		return newResponse(p.Call("redirect", url, status[0]))
+		return wrapResponse(p.Call("redirect", url, status[0]))
 	}
 
-	return newResponse(p.Call("redirect", url))
+	return wrapResponse(p.Call("redirect", url))
 }
 
 func (p *responseImpl) Type() ResponseType {
@@ -276,21 +276,21 @@ func (p *responseImpl) StatusText() string {
 }
 
 func (p *responseImpl) Headers() Headers {
-	return newHeaders(p.Get("headers"))
+	return wrapHeaders(p.Get("headers"))
 }
 
 func (p *responseImpl) Trailer() func() (Headers, bool) {
 	return func() (Headers, bool) {
 		res, ok := await(p.Call("trailer"))
 		if ok {
-			return newHeaders(res), true
+			return wrapHeaders(res), true
 		}
 		return nil, false
 	}
 }
 
 func (p *responseImpl) Clone() Response {
-	return newResponse(p.Call("clone"))
+	return wrapResponse(p.Call("clone"))
 }
 
 // -------------8<---------------------------------------
@@ -307,13 +307,13 @@ func NewFormData(form ...HTMLFormElement) FormData {
 
 	switch len(form) {
 	case 0:
-		return newFormData(jsFormData.New())
+		return wrapFormData(jsFormData.New())
 	default:
-		return newFormData(jsFormData.New(form[0].JSValue()))
+		return wrapFormData(jsFormData.New(form[0].JSValue()))
 	}
 }
 
-func newFormData(v js.Value) FormData {
+func wrapFormData(v js.Value) FormData {
 	if isNil(v) {
 		return nil
 	}
@@ -342,7 +342,7 @@ func (p *formDataImpl) Delete(name string) {
 }
 
 func (p *formDataImpl) Get(name string) FormDataEntryValue {
-	return newFormDataEntryValue(p.Call("get", name))
+	return wrapFormDataEntryValue(p.Call("get", name))
 }
 
 func (p *formDataImpl) GetAll(name string) []FormDataEntryValue {
@@ -353,7 +353,7 @@ func (p *formDataImpl) GetAll(name string) []FormDataEntryValue {
 
 	var ret []FormDataEntryValue
 	for _, v := range slc {
-		if fd := newFormDataEntryValue(v); fd != nil {
+		if fd := wrapFormDataEntryValue(v); fd != nil {
 			ret = append(ret, fd)
 		}
 	}
@@ -386,7 +386,7 @@ func (p *formDataImpl) Values() []FormDataEntryValue {
 
 	var ret []FormDataEntryValue
 	for _, v := range slc {
-		if fd := newFormDataEntryValue(v); fd != nil {
+		if fd := wrapFormDataEntryValue(v); fd != nil {
 			ret = append(ret, fd)
 		}
 	}
@@ -397,11 +397,11 @@ func (p *formDataImpl) Values() []FormDataEntryValue {
 
 var jsFile = js.Global().Get("File")
 
-func newFormDataEntryValue(v js.Value) FormDataEntryValue {
+func wrapFormDataEntryValue(v js.Value) FormDataEntryValue {
 	if v.Type() == js.TypeString {
 		return v.String()
 	} else if v.InstanceOf(jsFile) {
-		return newFile(v)
+		return wrapFile(v)
 	}
 
 	return nil
@@ -412,20 +412,20 @@ func newFormDataEntryValue(v js.Value) FormDataEntryValue {
 func NewRequest(info RequestInfo, ri ...RequestInit) Request {
 	request := js.Global().Get("Request")
 	if len(ri) > 0 {
-		return newRequest(request.New(info, ri[0].toDict()))
+		return wrapRequest(request.New(info, ri[0].toDict()))
 	}
 
-	return newRequest(request.New(info))
+	return wrapRequest(request.New(info))
 }
 
 func NewHeaders(hi ...HeadersInit) Headers {
 	headers := js.Global().Get("Headers")
 
 	if len(hi) > 0 {
-		return newHeaders(headers.New(hi[0]))
+		return wrapHeaders(headers.New(hi[0]))
 	}
 
-	return newHeaders(headers.New())
+	return wrapHeaders(headers.New())
 }
 
 func NewResponse(args ...interface{}) Response {
@@ -434,15 +434,15 @@ func NewResponse(args ...interface{}) Response {
 	switch len(args) {
 	case 1:
 		if body, ok := args[0].(BodyInit); ok {
-			return newResponse(response.New(body))
+			return wrapResponse(response.New(body))
 		}
 	case 2:
 		if body, ok := args[0].(BodyInit); ok {
 			if ri, ok := args[1].(ResponseInit); ok {
-				return newResponse(response.New(body, ri.toDict()))
+				return wrapResponse(response.New(body, ri.toDict()))
 			}
 		}
 	}
 
-	return newResponse(response.New())
+	return wrapResponse(response.New())
 }

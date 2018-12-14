@@ -69,7 +69,7 @@ func newNonElementParentNodeImpl(v js.Value) *nonElementParentNodeImpl {
 }
 
 func (p *nonElementParentNodeImpl) ElementById(id string) Element {
-	return wrapElement(p.Call("getElementById", id))
+	return wrapAsElement(p.Call("getElementById", id))
 }
 
 // -------------8<---------------------------------------
@@ -104,7 +104,7 @@ type childNodeImpl struct {
 	js.Value
 }
 
-func newChildNode(v js.Value) ChildNode {
+func wrapChildNode(v js.Value) ChildNode {
 	if p := newChildNodeImpl(v); p != nil {
 		return p
 	}
@@ -195,7 +195,7 @@ func (p *documentOrShadowRootImpl) FullscreenElement() Element {
 }
 
 func (p *documentOrShadowRootImpl) StyleSheets() []CSSStyleSheet {
-	if list := newStyleSheetList(p.Get("styleSheets")); list != nil && list.Length() > 0 {
+	if list := wrapStyleSheetList(p.Get("styleSheets")); list != nil && list.Length() > 0 {
 		ret := make([]CSSStyleSheet, list.Length())
 		for i := 0; i < list.Length(); i++ {
 			ret[i] = list.Item(i)
@@ -212,7 +212,7 @@ type slotableImpl struct {
 }
 
 /*
-func newSlotable(v js.Value) Slotable {
+func wrapSlotable(v js.Value) Slotable {
 	if p := newSlotableImpl(v); p != nil {
 		return p
 	}
@@ -231,7 +231,7 @@ func newSlotableImpl(v js.Value) *slotableImpl {
 }
 
 func (p *slotableImpl) AssignedSlot() HTMLSlotElement {
-	return newHTMLSlotElement(p.Get("assignedSlot"))
+	return wrapHTMLSlotElement(p.Get("assignedSlot"))
 }
 
 // -------------8<---------------------------------------
