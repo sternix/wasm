@@ -2768,3 +2768,112 @@ func (p *sourceBufferImpl) Remove(start float64, end float64) {
 }
 
 // -------------8<---------------------------------------
+
+type mediaSourceImpl struct {
+	*eventTargetImpl
+}
+
+func wrapMediaSource(v js.Value) MediaSource {
+	if isNil(v) {
+		return nil
+	}
+
+	return &mediaSourceImpl{
+		eventTargetImpl: newEventTargetImpl(v),
+	}
+}
+
+func (p *mediaSourceImpl) SourceBuffers() SourceBufferList {
+	return wrapSourceBufferList(p.Get("sourceBuffers"))
+}
+
+func (p *mediaSourceImpl) ActiveSourceBuffers() SourceBufferList {
+	return wrapSourceBufferList(p.Get("activeSourceBuffers"))
+}
+
+func (p *mediaSourceImpl) ReadyState() ReadyState {
+	return ReadyState(p.Get("readyState").String())
+}
+
+func (p *mediaSourceImpl) Duration() float64 {
+	return p.Get("duration").Float()
+}
+
+func (p *mediaSourceImpl) SetDuration(d float64) {
+	p.Set("duration", d)
+}
+
+func (p *mediaSourceImpl) OnSourceOpen(fn func(Event)) EventHandler {
+	return p.On("sourceopen", fn)
+}
+
+func (p *mediaSourceImpl) OnSourceEnded(fn func(Event)) EventHandler {
+	return p.On("sourceended", fn)
+}
+
+func (p *mediaSourceImpl) OnSourceClose(fn func(Event)) EventHandler {
+	return p.On("sourceclose", fn)
+}
+
+func (p *mediaSourceImpl) AddSourceBuffer(typ string) SourceBuffer {
+	return wrapSourceBuffer(p.Call("addSourceBuffer", typ))
+}
+
+func (p *mediaSourceImpl) RemoveSourceBuffer(sb SourceBuffer) {
+	p.Call("removeSourceBuffer", sb.JSValue())
+}
+
+func (p *mediaSourceImpl) EndOfStream(err ...EndOfStreamError) {
+	switch len(err) {
+	case 0:
+		p.Call("endOfStream")
+	default:
+		p.Call("endOfStream", string(err[0]))
+	}
+}
+
+func (p *mediaSourceImpl) SetLiveSeekableRange(start float64, end float64) {
+	p.Call("setLiveSeekableRange", start, end)
+}
+
+func (p *mediaSourceImpl) ClearLiveSeekableRange() {
+	p.Call("clearLiveSeekableRange")
+}
+
+func (p *mediaSourceImpl) IsTypeSupported(string) bool { // static
+	return p.Call("isTypeSupported").Bool()
+}
+
+// -------------8<---------------------------------------
+
+type sourceBufferListImpl struct {
+	*eventTargetImpl
+}
+
+func wrapSourceBufferList(v js.Value) SourceBufferList {
+	if isNil(v) {
+		return nil
+	}
+
+	return &sourceBufferListImpl{
+		eventTargetImpl: newEventTargetImpl(v),
+	}
+}
+
+func (p *sourceBufferListImpl) Length() uint {
+	return uint(p.Get("length").Int())
+}
+
+func (p *sourceBufferListImpl) OnAddSourceBuffer(fn func(Event)) EventHandler {
+	return p.On("addsourcebuffer", fn)
+}
+
+func (p *sourceBufferListImpl) OnRemoveSourceBuffer(fn func(Event)) EventHandler {
+	return p.On("removesourcebuffer", fn)
+}
+
+func (p *sourceBufferListImpl) Item(index uint) SourceBuffer { // getter
+	return wrapSourceBuffer(p.Call("SourceBuffer", index))
+}
+
+// -------------8<---------------------------------------

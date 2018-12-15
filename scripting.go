@@ -2,6 +2,10 @@
 
 package wasm
 
+import (
+	"syscall/js"
+)
+
 type (
 	// https://www.w3.org/TR/html52/semantics-scripting.html#htmlscriptelement
 	HTMLScriptElement interface {
@@ -42,12 +46,20 @@ type (
 		SetWidth(int)
 		Height() int
 		SetHeight(int)
-		//Context(string, ...interface{}) RenderingContext
-		Context2D(alpha ...bool) CanvasRenderingContext2D
-		// TODO
+		Context2D(...CanvasRenderingContext2DSettings) CanvasRenderingContext2D
 		ContextWebGL(attrs ...WebGLContextAttributes) WebGLRenderingContext
 		ProbablySupportsContext(string, ...interface{}) bool
 		ToDataURL(...interface{}) string
 		ToBlob(BlobCallback, ...interface{})
 	}
 )
+
+type CanvasRenderingContext2DSettings struct {
+	Alpha bool // default true
+}
+
+func (p CanvasRenderingContext2DSettings) toDict() js.Value {
+	o := jsObject.New()
+	o.Set("alpha", p.Alpha)
+	return o
+}

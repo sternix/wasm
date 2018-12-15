@@ -198,7 +198,7 @@ type RequestInit struct {
 	Integrity      string
 	Keepalive      bool
 	Signal         AbortSignal
-	Window         js.Value
+	// Window         interface{}
 }
 
 func (p RequestInit) toDict() js.Value {
@@ -215,7 +215,7 @@ func (p RequestInit) toDict() js.Value {
 	o.Set("integrity", p.Integrity)
 	o.Set("keepalive", p.Keepalive)
 	o.Set("signal", p.Signal.JSValue())
-	o.Set("window", p.Window)
+	// o.Set("window", p.Window)
 	return o
 }
 

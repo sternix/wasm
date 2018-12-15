@@ -556,19 +556,28 @@ type (
 	// https://www.w3.org/TR/media-source/#idl-def-mediasource
 	MediaSource interface {
 		EventTarget
+		SourceBuffers() SourceBufferList
+		ActiveSourceBuffers() SourceBufferList
+		ReadyState() ReadyState
+		Duration() float64
+		SetDuration(float64)
+		OnSourceOpen(func(Event)) EventHandler
+		OnSourceEnded(func(Event)) EventHandler
+		OnSourceClose(func(Event)) EventHandler
+		AddSourceBuffer(string) SourceBuffer
+		RemoveSourceBuffer(SourceBuffer)
+		EndOfStream(...EndOfStreamError)
+		SetLiveSeekableRange(float64, float64)
+		ClearLiveSeekableRange()
+		IsTypeSupported(string) bool // static
+	}
 
-		/*
-			sourceBuffers
-			activeSourceBuffers
-			readyState
-			duration
-			onsourceopen
-			onsourceended
-			onsourceclose
-			....
-		*/
-
-		// TODO: implement
+	// https://www.w3.org/TR/media-source/#idl-def-sourcebufferlist
+	SourceBufferList interface {
+		Length() uint
+		OnAddSourceBuffer(func(Event)) EventHandler
+		OnRemoveSourceBuffer(func(Event)) EventHandler
+		Item(uint) SourceBuffer // getter
 	}
 
 	// https://www.w3.org/TR/media-source/#idl-def-sourcebuffer
@@ -978,3 +987,23 @@ func (p ConstrainBooleanParameters) toDict() js.Value {
 typedef (boolean or ConstrainBooleanParameters) ConstrainBoolean;
 */
 type ConstrainBoolean = ConstrainBooleanParameters
+
+// -------------8<---------------------------------------
+
+// https://www.w3.org/TR/media-source/#idl-def-endofstreamerror
+type EndOfStreamError string
+
+const (
+	EndOfStreamErrorNetwork EndOfStreamError = "network"
+	EndOfStreamErrorDecode  EndOfStreamError = "decode"
+)
+
+// https://www.w3.org/TR/media-source/#idl-def-readystate
+
+type ReadyState string
+
+const (
+	ReadyStateClosed ReadyState = "closed"
+	ReadyStateOpen   ReadyState = "open"
+	ReadyStateEnded  ReadyState = "ended"
+)

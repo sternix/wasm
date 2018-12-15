@@ -303,8 +303,8 @@ func domStringMapToMap(v js.Value) map[string]string {
 
 // expects v is js Date object
 func jsDateToTime(v js.Value) time.Time {
-	ms := int64(v.Call("getTime").Int())
-	return time.Unix(0, ms*int64(time.Millisecond))
+	ms := int64(v.Call("getTime").Float()) * int64(time.Millisecond)
+	return time.Unix(0, ms)
 }
 
 // -------------8<---------------------------------------

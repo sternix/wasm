@@ -169,16 +169,13 @@ func (p *htmlCanvasElementImpl) SetHeight(h int) {
 	p.Set("height", h)
 }
 
-/*
-func (p *htmlCanvasElementImpl) Context(ctxId string, args ...interface{}) RenderingContext {
-	// TODO
-	return nil
-}
-*/
-
-func (p *htmlCanvasElementImpl) Context2D(alpha ...bool) CanvasRenderingContext2D {
-	// TODO: alpha param omitted
-	return wrapCanvasRenderingContext2D(p.Call("getContext", "2d"))
+func (p *htmlCanvasElementImpl) Context2D(settings ...CanvasRenderingContext2DSettings) CanvasRenderingContext2D {
+	switch len(settings) {
+	case 0:
+		return wrapCanvasRenderingContext2D(p.Call("getContext", "2d"))
+	default:
+		return wrapCanvasRenderingContext2D(p.Call("getContext", "2d", settings[0].toDict()))
+	}
 }
 
 func (p *htmlCanvasElementImpl) ContextWebGL(attrs ...WebGLContextAttributes) WebGLRenderingContext {
