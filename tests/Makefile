@@ -6,7 +6,7 @@ wasm:
 	$(MAKE) -C webgl
 
 server:
-	go build -o server/server server/server.go
+	$(MAKE) -C server
 
 serve: server wasm
 	./server/server
