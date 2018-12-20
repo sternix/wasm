@@ -1,14 +1,6 @@
-all: wasm server
+all: wasm
 
 wasm:
-	GOOS=js GOARCH=wasm go112 build -o webgltriangle.wasm main.go
+	GOOS=js GOARCH=wasm go build -o ../../server/assets/webgltriangle.wasm main.go
 
-server:
-	go build server.go
 
-serve: server wasm
-	./server
-
-clean:
-	rm -f *.wasm
-	rm -f server

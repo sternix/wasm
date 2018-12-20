@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 	//	"github.com/sternix/wasm"
-	wasm ".."
+	wasm "../.."
 )
 
 func TestConsole(console wasm.Console) {

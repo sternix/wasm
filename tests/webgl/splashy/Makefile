@@ -1,14 +1,5 @@
-all: wasm server
+all: wasm
 
 wasm:
-	GOOS=js GOARCH=wasm go112 build -o splashy.wasm main.go
+	GOOS=js GOARCH=wasm go build -o ../../server/assets/splashy.wasm main.go
 
-server:
-	go build server.go
-
-serve: server wasm
-	./server
-
-clean:
-	rm -f *.wasm
-	rm -f server

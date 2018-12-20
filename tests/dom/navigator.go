@@ -3,8 +3,7 @@ package main
 import (
 	"fmt"
 	//"github.com/sternix/wasm"
-
-	wasm ".."
+	wasm "../.."
 )
 
 func TestNavigator(nav wasm.Navigator) {

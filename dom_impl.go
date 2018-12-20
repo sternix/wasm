@@ -19,6 +19,13 @@ type documentImpl struct {
 	js.Value
 }
 
+func NewDocument() Document {
+	if jsDoc := js.Global().Get("Document"); !isNil(jsDoc) {
+		return wrapDocument(jsDoc.New())
+	}
+	return nil
+}
+
 func wrapDocument(v js.Value) Document {
 	if p := newDocumentImpl(v); p != nil {
 		return p
