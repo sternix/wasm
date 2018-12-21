@@ -83,10 +83,8 @@ func (p *canvasRenderingContext2DImpl) SetStrokeStyle(style interface{}) {
 	switch x := style.(type) {
 	case string:
 		p.Set("strokeStyle", x)
-	case CanvasGradient:
-		p.Set("strokeStyle", x.JSValue())
-	case CanvasPattern:
-		p.Set("strokeStyle", x.JSValue())
+	case CanvasGradient, CanvasPattern:
+		p.Set("strokeStyle", JSValue(x))
 	}
 }
 
@@ -99,10 +97,8 @@ func (p *canvasRenderingContext2DImpl) SetFillStyle(style interface{}) {
 	switch x := style.(type) {
 	case string:
 		p.Set("fillStyle", x)
-	case CanvasGradient:
-		p.Set("fillStyle", x.JSValue())
-	case CanvasPattern:
-		p.Set("fillStyle", x.JSValue())
+	case CanvasGradient, CanvasPattern:
+		p.Set("fillStyle", JSValue(x))
 	}
 }
 
@@ -115,7 +111,7 @@ func (p *canvasRenderingContext2DImpl) CreateRadialGradient(x0 float64, y0 float
 }
 
 func (p *canvasRenderingContext2DImpl) CreatePattern(image CanvasImageSource, repetition string) {
-	p.Call("createPattern", image.JSValue(), repetition)
+	p.Call("createPattern", JSValue(image), repetition)
 }
 
 func (p *canvasRenderingContext2DImpl) ShadowOffsetX() float64 {
@@ -175,7 +171,7 @@ func (p *canvasRenderingContext2DImpl) Stroke() {
 }
 
 func (p *canvasRenderingContext2DImpl) DrawFocusIfNeeded(elm Element) {
-	p.Call("drawFocusIfNeeded", elm.JSValue())
+	p.Call("drawFocusIfNeeded", JSValue(elm))
 }
 
 func (p *canvasRenderingContext2DImpl) Clip() {
@@ -211,11 +207,11 @@ func (p *canvasRenderingContext2DImpl) MeasureText(text string) TextMetrics {
 func (p *canvasRenderingContext2DImpl) DrawImage(image CanvasImageSource, args ...float64) {
 	switch len(args) {
 	case 2:
-		p.Call("drawImage", image.JSValue(), args[0], args[1])
+		p.Call("drawImage", JSValue(image), args[0], args[1])
 	case 4:
-		p.Call("drawImage", image.JSValue(), args[0], args[1], args[2], args[3])
+		p.Call("drawImage", JSValue(image), args[0], args[1], args[2], args[3])
 	case 8:
-		p.Call("drawImage", image.JSValue(), args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7])
+		p.Call("drawImage", JSValue(image), args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7])
 	}
 }
 
@@ -236,7 +232,7 @@ func (p *canvasRenderingContext2DImpl) CreateImageData(sw float64, sh float64) I
 }
 
 func (p *canvasRenderingContext2DImpl) CreateImageDataFromImageData(imageData ImageData) ImageData {
-	return wrapImageData(p.Call("createImageData", imageData.JSValue()))
+	return wrapImageData(p.Call("createImageData", JSValue(imageData)))
 }
 
 func (p *canvasRenderingContext2DImpl) ImageData(sx float64, sy float64, sw float64, sh float64) ImageData {
@@ -244,11 +240,11 @@ func (p *canvasRenderingContext2DImpl) ImageData(sx float64, sy float64, sw floa
 }
 
 func (p *canvasRenderingContext2DImpl) PutImageData(imageData ImageData, dx float64, dy float64) {
-	p.Call("putImageData", imageData.JSValue(), dx, dy)
+	p.Call("putImageData", JSValue(imageData), dx, dy)
 }
 
 func (p *canvasRenderingContext2DImpl) PutImageDataDirty(imageData ImageData, dx float64, dy float64, dirtyX float64, dirtyY float64, dirtyWidth float64, dirtyHeight float64) {
-	p.Call("putImageData", imageData.JSValue(), dx, dy, dirtyX, dirtyY, dirtyWidth, dirtyHeight)
+	p.Call("putImageData", JSValue(imageData), dx, dy, dirtyX, dirtyY, dirtyWidth, dirtyHeight)
 }
 
 // -------------8<---------------------------------------

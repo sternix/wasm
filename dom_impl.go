@@ -139,14 +139,14 @@ func (p *documentImpl) CreateProcessingInstruction(target string, data string) P
 func (p *documentImpl) ImportNode(node Node, deep ...bool) Node {
 	switch len(deep) {
 	case 0:
-		return wrapNode(p.Call("importNode", node.JSValue()))
+		return wrapNode(p.Call("importNode", JSValue(node)))
 	default:
-		return wrapNode(p.Call("importNode", node.JSValue(), deep[0]))
+		return wrapNode(p.Call("importNode", JSValue(node), deep[0]))
 	}
 }
 
 func (p *documentImpl) AdoptNode(node Node) Node {
-	return wrapNode(p.Call("adoptNode", node.JSValue()))
+	return wrapNode(p.Call("adoptNode", JSValue(node)))
 }
 
 func (p *documentImpl) CreateAttribute(localName string) Attr {
@@ -164,18 +164,18 @@ func (p *documentImpl) CreateRange() Range {
 func (p *documentImpl) CreateNodeIterator(node Node, whatToShow NodeFilterShow, filter ...NodeFilter) NodeIterator {
 	switch len(filter) {
 	case 0:
-		return wrapNodeIterator(p.Call("createNodeIterator", node.JSValue(), uint(whatToShow)))
+		return wrapNodeIterator(p.Call("createNodeIterator", JSValue(node), uint(whatToShow)))
 	default:
-		return wrapNodeIterator(p.Call("createNodeIterator", node.JSValue(), uint(whatToShow), filter[0].JSValue()))
+		return wrapNodeIterator(p.Call("createNodeIterator", JSValue(node), uint(whatToShow), JSValue(filter[0])))
 	}
 }
 
 func (p *documentImpl) CreateTreeWalker(node Node, whatToShow NodeFilterShow, filter ...NodeFilter) TreeWalker {
 	switch len(filter) {
 	case 0:
-		return wrapTreeWalker(p.Call("createTreeWalker", node.JSValue(), uint(whatToShow)))
+		return wrapTreeWalker(p.Call("createTreeWalker", JSValue(node), uint(whatToShow)))
 	default:
-		return wrapTreeWalker(p.Call("createTreeWalker", node.JSValue(), uint(whatToShow), filter[0].JSValue()))
+		return wrapTreeWalker(p.Call("createTreeWalker", JSValue(node), uint(whatToShow), JSValue(filter[0])))
 	}
 }
 
@@ -260,7 +260,7 @@ func (p *documentImpl) Body() HTMLBodyElement {
 }
 
 func (p *documentImpl) SetBody(body HTMLBodyElement) {
-	p.Set("body", body.JSValue())
+	p.Set("body", JSValue(body))
 }
 
 func (p *documentImpl) Head() HTMLHeadElement {
@@ -502,7 +502,7 @@ func (p *domImplementationImpl) CreateDocument(namespace string, qualifiedName s
 	case 0:
 		return wrapXMLDocument(p.Call("createDocument", namespace, qualifiedName))
 	default:
-		return wrapXMLDocument(p.Call("createDocument", namespace, qualifiedName, doctype[0].JSValue()))
+		return wrapXMLDocument(p.Call("createDocument", namespace, qualifiedName, JSValue(doctype[0])))
 	}
 }
 
@@ -561,7 +561,7 @@ func (p *treeWalkerImpl) CurrentNode() Node {
 }
 
 func (p *treeWalkerImpl) SetCurrentNode(node Node) {
-	p.Set("currentNode", node.JSValue())
+	p.Set("currentNode", JSValue(node))
 }
 
 func (p *treeWalkerImpl) ParentNode() Node {
@@ -608,7 +608,7 @@ func wrapNodeFilter(v js.Value) NodeFilter {
 }
 
 func (p *nodeFilterImpl) AcceptNode(node Node) NodeFilterResult {
-	return NodeFilterResult(p.Call("acceptNode", node.JSValue()).Int())
+	return NodeFilterResult(p.Call("acceptNode", JSValue(node)).Int())
 }
 
 // -------------8<---------------------------------------
@@ -685,27 +685,27 @@ func (p *rangeImpl) CommonAncestorContainer() Node {
 }
 
 func (p *rangeImpl) SetStart(node Node, offset int) {
-	p.Call("setStart", node.JSValue(), offset)
+	p.Call("setStart", JSValue(node), offset)
 }
 
 func (p *rangeImpl) SetEnd(node Node, offset int) {
-	p.Call("setEnd", node.JSValue(), offset)
+	p.Call("setEnd", JSValue(node), offset)
 }
 
 func (p *rangeImpl) SetStartBefore(node Node) {
-	p.Call("setStartBefore", node.JSValue())
+	p.Call("setStartBefore", JSValue(node))
 }
 
 func (p *rangeImpl) SetStartAfter(node Node) {
-	p.Call("setStartAfter", node.JSValue())
+	p.Call("setStartAfter", JSValue(node))
 }
 
 func (p *rangeImpl) SetEndBefore(node Node) {
-	p.Call("setEndBefore", node.JSValue())
+	p.Call("setEndBefore", JSValue(node))
 }
 
 func (p *rangeImpl) SetEndAfter(node Node) {
-	p.Call("setEndAfter", node.JSValue())
+	p.Call("setEndAfter", JSValue(node))
 }
 
 func (p *rangeImpl) Collapse(toStart ...bool) {
@@ -718,15 +718,15 @@ func (p *rangeImpl) Collapse(toStart ...bool) {
 }
 
 func (p *rangeImpl) SelectNode(node Node) {
-	p.Call("selectNode", node.JSValue())
+	p.Call("selectNode", JSValue(node))
 }
 
 func (p *rangeImpl) SelectNodeContents(node Node) {
-	p.Call("selectNodeContents", node.JSValue())
+	p.Call("selectNodeContents", JSValue(node))
 }
 
 func (p *rangeImpl) CompareBoundaryPoints(how RangeCompare, source Range) int {
-	return p.Call("compareBoundaryPoints", int(how), source.JSValue()).Int()
+	return p.Call("compareBoundaryPoints", int(how), JSValue(source)).Int()
 }
 
 func (p *rangeImpl) DeleteContents() {
@@ -742,11 +742,11 @@ func (p *rangeImpl) CloneContents() DocumentFragment {
 }
 
 func (p *rangeImpl) InsertNode(node Node) {
-	p.Call("insertNode", node.JSValue())
+	p.Call("insertNode", JSValue(node))
 }
 
 func (p *rangeImpl) SurroundContents(newParent Node) {
-	p.Call("surroundContents", newParent.JSValue())
+	p.Call("surroundContents", JSValue(newParent))
 }
 
 func (p *rangeImpl) CloneRange() Range {
@@ -758,15 +758,15 @@ func (p *rangeImpl) Detach() {
 }
 
 func (p *rangeImpl) IsPointInRange(node Node, offset int) bool {
-	return p.Call("isPointInRange", node.JSValue(), offset).Bool()
+	return p.Call("isPointInRange", JSValue(node), offset).Bool()
 }
 
 func (p *rangeImpl) ComparePoint(node Node, offset int) int {
-	return p.Call("comparePoint", node.JSValue(), offset).Int()
+	return p.Call("comparePoint", JSValue(node), offset).Int()
 }
 
 func (p *rangeImpl) IntersectsNode(node Node) bool {
-	return p.Call("intersectsNode", node.JSValue()).Bool()
+	return p.Call("intersectsNode", JSValue(node)).Bool()
 }
 
 func (p *rangeImpl) ClientRects() []DOMRect {
@@ -1148,19 +1148,19 @@ func (p *nodeImpl) CloneNode(deep ...bool) Node {
 }
 
 func (p *nodeImpl) IsEqualNode(otherNode Node) bool {
-	return p.Call("isEqualNode", otherNode.JSValue()).Bool()
+	return p.Call("isEqualNode", JSValue(otherNode)).Bool()
 }
 
 func (p *nodeImpl) IsSameNode(otherNode Node) bool {
-	return p.Call("isSameNode", otherNode.JSValue()).Bool()
+	return p.Call("isSameNode", JSValue(otherNode)).Bool()
 }
 
 func (p *nodeImpl) CompareDocumentPosition(other Node) DocumentPosition {
-	return DocumentPosition(p.Call("compareDocumentPosition", other.JSValue()).Int())
+	return DocumentPosition(p.Call("compareDocumentPosition", JSValue(other)).Int())
 }
 
 func (p *nodeImpl) Contains(other Node) bool {
-	return p.Call("contains", other.JSValue()).Bool()
+	return p.Call("contains", JSValue(other)).Bool()
 }
 
 func (p *nodeImpl) LookupPrefix(namespace string) string {
@@ -1177,21 +1177,21 @@ func (p *nodeImpl) IsDefaultNamespace(namespace string) bool {
 
 func (p *nodeImpl) InsertBefore(node Node, child Node) Node {
 	if child != nil {
-		return wrapNode(p.Call("insertBefore", node.JSValue(), child.JSValue()))
+		return wrapNode(p.Call("insertBefore", JSValue(node), JSValue(child)))
 	}
-	return wrapNode(p.Call("insertBefore", node.JSValue()))
+	return wrapNode(p.Call("insertBefore", JSValue(node)))
 }
 
 func (p *nodeImpl) AppendChild(node Node) Node {
-	return wrapNode(p.Call("appendChild", node.JSValue()))
+	return wrapNode(p.Call("appendChild", JSValue(node)))
 }
 
 func (p *nodeImpl) ReplaceChild(node Node, child Node) Node {
-	return wrapNode(p.Call("replaceChild", node.JSValue(), child.JSValue()))
+	return wrapNode(p.Call("replaceChild", JSValue(node), JSValue(child)))
 }
 
 func (p *nodeImpl) RemoveChild(child Node) Node {
-	return wrapNode(p.Call("removeChild", child.JSValue()))
+	return wrapNode(p.Call("removeChild", JSValue(child)))
 }
 
 // -------------8<---------------------------------------
@@ -1333,15 +1333,15 @@ func (p *elementImpl) AttributeNodeNS(namespace string, name string) Attr {
 }
 
 func (p *elementImpl) SetAttributeNode(attr Attr) Attr {
-	return wrapAttr(p.Call("setAttributeNode", attr.JSValue()))
+	return wrapAttr(p.Call("setAttributeNode", JSValue(attr)))
 }
 
 func (p *elementImpl) SetAttributeNodeNS(attr Attr) Attr {
-	return wrapAttr(p.Call("setAttributeNodeNS", attr.JSValue()))
+	return wrapAttr(p.Call("setAttributeNodeNS", JSValue(attr)))
 }
 
 func (p *elementImpl) RemoveAttributeNode(attr Attr) Attr {
-	return wrapAttr(p.Call("removeAttributeNode", attr.JSValue()))
+	return wrapAttr(p.Call("removeAttributeNode", JSValue(attr)))
 }
 
 func (p *elementImpl) AttachShadow(si ShadowRootInit) ShadowRoot {
@@ -1686,11 +1686,11 @@ func (p *namedNodeMapImpl) NamedItemNS(namespace string, name string) Attr {
 }
 
 func (p *namedNodeMapImpl) SetNamedItem(attr Attr) Attr {
-	return wrapAttr(p.Call("setNamedItem", attr.JSValue()))
+	return wrapAttr(p.Call("setNamedItem", JSValue(attr)))
 }
 
 func (p *namedNodeMapImpl) SetNamedItemNS(attr Attr) Attr {
-	return wrapAttr(p.Call("setNamedItemNS", attr.JSValue()))
+	return wrapAttr(p.Call("setNamedItemNS", JSValue(attr)))
 }
 
 func (p *namedNodeMapImpl) RemoveNamedItem(name string) Attr {
@@ -1847,9 +1847,9 @@ func wrapMutationObserver(v js.Value) MutationObserver {
 func (p *mutationObserverImpl) Observe(target Node, options ...MutationObserverInit) {
 	switch len(options) {
 	case 0:
-		p.Call("observe", target.JSValue())
+		p.Call("observe", JSValue(target))
 	default:
-		p.Call("observe", target.JSValue(), options[0].toDict())
+		p.Call("observe", JSValue(target), options[0].toDict())
 	}
 }
 
@@ -2167,7 +2167,7 @@ func newXMLSerializerImpl(v js.Value) XMLSerializer {
 }
 
 func (p *xmlSerializerImpl) SerializeToString(node Node) string {
-	return p.Call("serializeToString", node.JSValue()).String()
+	return p.Call("serializeToString", JSValue(node)).String()
 }
 
 // -------------8<---------------------------------------

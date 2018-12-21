@@ -9,8 +9,6 @@ import (
 type (
 	// https://www.w3.org/TR/html52/editing.html#datatransfer
 	DataTransfer interface {
-		js.Wrapper
-
 		DropEffect() string
 		SetDropEffect(string)
 		EffectAllowed() string
@@ -61,6 +59,6 @@ type DragEventInit struct {
 
 func (p DragEventInit) toDict() js.Value {
 	o := p.MouseEventInit.toDict()
-	o.Set("dataTransfer", p.DataTransfer.JSValue())
+	o.Set("dataTransfer", JSValue(p.DataTransfer))
 	return o
 }

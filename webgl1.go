@@ -9,9 +9,7 @@ import (
 // https://www.khronos.org/registry/webgl/specs/latest/1.0/
 
 type (
-	WebGLObject interface {
-		js.Wrapper
-	}
+	WebGLObject interface{}
 
 	WebGLBuffer interface {
 		WebGLObject
@@ -37,21 +35,15 @@ type (
 		WebGLObject
 	}
 
-	WebGLUniformLocation interface {
-		js.Wrapper
-	}
+	WebGLUniformLocation interface{}
 
 	WebGLActiveInfo interface {
-		js.Wrapper
-
 		Size() int
 		Type() GLenum
 		Name() string
 	}
 
 	WebGLShaderPrecisionFormat interface {
-		js.Wrapper
-
 		RangeMin() int
 		RangeMax() int
 		Precision() int
@@ -64,13 +56,9 @@ type (
 		         HTMLCanvasElement or
 		         HTMLVideoElement) TexImageSource;
 	*/
-	TexImageSource interface {
-		js.Wrapper
-	}
+	TexImageSource interface{}
 
 	WebGLRenderingContextBase interface {
-		js.Wrapper
-
 		Canvas() HTMLCanvasElement
 		DrawingBufferWidth() int
 		drawingBufferHeight() int

@@ -64,10 +64,8 @@ func (p *htmlDialogElementImpl) SetReturnValue(returnValue string) {
 func (p *htmlDialogElementImpl) Show(anchor ...interface{}) {
 	if len(anchor) > 0 {
 		switch x := anchor[0].(type) {
-		case MouseEvent:
-			p.Call("show", x.JSValue())
-		case Element:
-			p.Call("show", x.JSValue())
+		case MouseEvent, Element:
+			p.Call("show", JSValue(x))
 		}
 	} else {
 		p.Call("show")
@@ -78,9 +76,9 @@ func (p *htmlDialogElementImpl) ShowModal(anchor ...interface{}) {
 	if len(anchor) > 0 {
 		switch x := anchor[0].(type) {
 		case MouseEvent:
-			p.Call("showModal", x.JSValue())
+			p.Call("showModal", JSValue(x))
 		case Element:
-			p.Call("showModal", x.JSValue())
+			p.Call("showModal", JSValue(x))
 		}
 	} else {
 		p.Call("showModal")

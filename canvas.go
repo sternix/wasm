@@ -8,9 +8,7 @@ import (
 
 type (
 	// typedef (HTMLImageElement or HTMLVideoElement or HTMLCanvasElement) CanvasImageSource;
-	CanvasImageSource interface {
-		js.Wrapper
-	}
+	CanvasImageSource interface{}
 
 	// https://www.w3.org/TR/2dcontext/#canvasrenderingcontext2d
 	CanvasRenderingContext2D interface {
@@ -102,27 +100,19 @@ type (
 
 	// https://www.w3.org/TR/2dcontext/#canvasgradient
 	CanvasGradient interface {
-		js.Wrapper
-
 		AddColorStop(float64, string)
 	}
 
 	// https://www.w3.org/TR/2dcontext/#canvaspattern
-	CanvasPattern interface {
-		js.Wrapper
-	}
+	CanvasPattern interface{}
 
 	// https://www.w3.org/TR/2dcontext/#textmetrics
 	TextMetrics interface {
-		js.Wrapper
-
 		Width() float64
 	}
 
 	// https://www.w3.org/TR/2dcontext/#imagedata
 	ImageData interface {
-		js.Wrapper
-
 		Width() int
 		Height() int
 		Data() []byte // TODO Uint8ClampedArray
@@ -138,7 +128,7 @@ type HitRegionOptions struct {
 func (p HitRegionOptions) toDict() js.Value {
 	o := jsObject.New()
 	o.Set("id", p.Id)
-	o.Set("control", p.Control.JSValue())
+	o.Set("control", JSValue(p.Control))
 	return o
 }
 

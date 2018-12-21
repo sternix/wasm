@@ -36,7 +36,7 @@ func (p *htmlTableElementImpl) Caption() HTMLTableCaptionElement {
 }
 
 func (p *htmlTableElementImpl) SetCaption(caption HTMLTableCaptionElement) {
-	p.Set("caption", caption.JSValue())
+	p.Set("caption", JSValue(caption))
 }
 
 func (p *htmlTableElementImpl) CreateCaption() HTMLTableCaptionElement {
@@ -52,7 +52,7 @@ func (p *htmlTableElementImpl) THead() HTMLTableSectionElement {
 }
 
 func (p *htmlTableElementImpl) SetTHead(section HTMLTableSectionElement) {
-	p.Set("tHead", section.JSValue())
+	p.Set("tHead", JSValue(section))
 }
 
 func (p *htmlTableElementImpl) CreateTHead() HTMLTableSectionElement {
@@ -68,7 +68,7 @@ func (p *htmlTableElementImpl) TFoot() HTMLTableSectionElement {
 }
 
 func (p *htmlTableElementImpl) SetTFoot(section HTMLTableSectionElement) {
-	p.Set("tFoot", section.JSValue())
+	p.Set("tFoot", JSValue(section))
 }
 
 func (p *htmlTableElementImpl) CreateTFoot() HTMLTableSectionElement {

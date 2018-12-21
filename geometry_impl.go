@@ -149,7 +149,7 @@ func (p *domPointReadOnlyImpl) W() float64 {
 }
 
 func (p *domPointReadOnlyImpl) MatrixTransform(matrix DOMMatrixReadOnly) DOMPoint {
-	return wrapDOMPoint(p.Call("matrixTransform", matrix.JSValue()))
+	return wrapDOMPoint(p.Call("matrixTransform", JSValue(matrix)))
 }
 
 // -------------8<---------------------------------------
@@ -472,7 +472,7 @@ func (p *domMatrixReadOnlyImpl) SkewY(sy float64) DOMMatrix {
 }
 
 func (p *domMatrixReadOnlyImpl) Multiply(other DOMMatrix) DOMMatrix {
-	return wrapDOMMatrix(p.Call("multiply", other.JSValue()))
+	return wrapDOMMatrix(p.Call("multiply", JSValue(other)))
 }
 
 func (p *domMatrixReadOnlyImpl) FlipX() DOMMatrix {
@@ -525,11 +525,11 @@ func wrapDOMMatrix(v js.Value) DOMMatrix {
 }
 
 func (p *domMatrixImpl) MultiplySelf(other DOMMatrix) DOMMatrix {
-	return wrapDOMMatrix(p.Call("multiplySelf", other.JSValue()))
+	return wrapDOMMatrix(p.Call("multiplySelf", JSValue(other)))
 }
 
 func (p *domMatrixImpl) PreMultiplySelf(other DOMMatrix) DOMMatrix {
-	return wrapDOMMatrix(p.Call("preMultiplySelf", other.JSValue()))
+	return wrapDOMMatrix(p.Call("preMultiplySelf", JSValue(other)))
 }
 
 func (p *domMatrixImpl) TranslateSelf(tx float64, ty float64, tz ...float64) DOMMatrix {

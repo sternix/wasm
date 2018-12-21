@@ -16,8 +16,6 @@ type Promise interface{}
 
 type (
 	ReadableStream interface {
-		js.Wrapper
-
 		Locked() bool
 		Cancel(string) Promise // Promise<reason>
 		Reader() GenericReader
@@ -27,8 +25,6 @@ type (
 	}
 
 	GenericReader interface {
-		js.Wrapper
-
 		Closed() Promise
 		Cancel(string) Promise // Promise<reason>
 		Read() Promise         // Promise<result>
@@ -44,8 +40,6 @@ type (
 	}
 
 	WritableStream interface {
-		js.Wrapper
-
 		Locked() bool
 		Abort(string) Promise // Promise<reason>
 		Writer() WritableStreamDefaultWriter
@@ -92,7 +86,7 @@ type TransformStream struct {
 
 func (p TransformStream) toDict() js.Value {
 	o := jsObject.New()
-	o.Set("writable", p.Readable.JSValue())
-	o.Set("readable", p.Writable.JSValue())
+	o.Set("writable", JSValue(p.Readable))
+	o.Set("readable", JSValue(p.Writable))
 	return o
 }

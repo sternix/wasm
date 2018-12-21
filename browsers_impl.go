@@ -398,7 +398,7 @@ func (p *windowImpl) ComputedStyle(Element, ...string) CSSStyleDeclaration {
 }
 
 func (p *windowImpl) PseudoElements(elt Element, typ string) []CSSPseudoElement {
-	l := wrapCSSPseudoElementList(p.Call("getPseudoElements", elt.JSValue(), typ))
+	l := wrapCSSPseudoElementList(p.Call("getPseudoElements", JSValue(elt), typ))
 	if l != nil && l.Length() > 0 {
 		ret := make([]CSSPseudoElement, l.Length())
 		for i := range ret {

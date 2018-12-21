@@ -309,7 +309,7 @@ func NewFormData(form ...HTMLFormElement) FormData {
 	case 0:
 		return wrapFormData(jsFormData.New())
 	default:
-		return wrapFormData(jsFormData.New(form[0].JSValue()))
+		return wrapFormData(jsFormData.New(JSValue(form[0])))
 	}
 }
 
@@ -330,9 +330,9 @@ func (p *formDataImpl) Append(name string, value interface{}, filename ...string
 	case Blob:
 		switch len(filename) {
 		case 0:
-			p.Call("append", x.JSValue())
+			p.Call("append", JSValue(x))
 		default:
-			p.Call("append", x.JSValue(), filename[0])
+			p.Call("append", JSValue(x), filename[0])
 		}
 	}
 }
@@ -371,9 +371,9 @@ func (p *formDataImpl) Set(name string, value interface{}, filename ...string) {
 	case Blob:
 		switch len(filename) {
 		case 0:
-			p.Call("set", x.JSValue())
+			p.Call("set", JSValue(x))
 		default:
-			p.Call("set", x.JSValue(), filename[0])
+			p.Call("set", JSValue(x), filename[0])
 		}
 	}
 }

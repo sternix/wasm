@@ -44,7 +44,7 @@ func (p *clipboardImpl) ReadText() func() (string, bool) {
 
 func (p *clipboardImpl) Write(data DataTransfer) func() bool {
 	return func() bool {
-		_, ok := await(p.Call("write", data.JSValue()))
+		_, ok := await(p.Call("write", JSValue(data)))
 		return ok
 	}
 }

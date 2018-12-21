@@ -61,12 +61,12 @@ func (p *textDecoderImpl) Decode(args ...interface{}) string {
 	switch len(args) {
 	case 1:
 		if input, ok := args[0].(BufferSource); ok {
-			return p.Call("decode", input.JSValue()).String()
+			return p.Call("decode", JSValue(input)).String()
 		}
 	case 2:
 		if input, ok := args[0].(BufferSource); ok {
 			if options, ok := args[1].(TextDecodeOptions); ok {
-				return p.Call("decode", input.JSValue(), options.toDict()).String()
+				return p.Call("decode", JSValue(input), options.toDict()).String()
 			}
 		}
 	}

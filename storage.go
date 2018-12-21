@@ -10,8 +10,6 @@ type (
 
 	// https://www.w3.org/TR/webstorage/#storage-0
 	Storage interface {
-		js.Wrapper
-
 		Length() int
 		Key(int) string
 		Item(string) string
@@ -61,6 +59,6 @@ func (p StorageEventInit) toDict() js.Value {
 	o.Set("oldValue", p.OldValue)
 	o.Set("newValue", p.NewValue)
 	o.Set("url", p.Url)
-	o.Set("storageArea", p.StorageArea.JSValue())
+	o.Set("storageArea", JSValue(p.StorageArea))
 	return o
 }

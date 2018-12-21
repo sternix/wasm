@@ -134,14 +134,10 @@ func (p *webSocketImpl) Send(typ interface{}) {
 	case []byte:
 		ta := js.TypedArrayOf(x)
 		blob := NewBlob(ta)
-		p.Call("send", blob.JSValue())
+		p.Call("send", JSValue(blob))
 		ta.Release()
-	case Blob:
-		p.Call("send", x.JSValue())
-	case ArrayBuffer:
-		p.Call("send", x.JSValue())
-	case ArrayBufferView:
-		p.Call("send", x.JSValue())
+	case Blob, ArrayBuffer, ArrayBufferView:
+		p.Call("send", JSValue(x))
 	}
 }
 

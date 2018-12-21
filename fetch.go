@@ -11,13 +11,9 @@ import (
 type (
 
 	// typedef (sequence<sequence<ByteString>> or record<ByteString, ByteString>) HeadersInit;
-	HeadersInit interface {
-		js.Wrapper
-	}
+	HeadersInit interface{}
 
 	Headers interface {
-		js.Wrapper
-
 		Append(string, string)
 		Delete(string)
 		Get(string) string
@@ -27,9 +23,7 @@ type (
 	}
 
 	// typedef (Blob or BufferSource or FormData or URLSearchParams or ReadableStream or USVString) BodyInit;
-	BodyInit interface {
-		js.Wrapper
-	}
+	BodyInit interface{}
 
 	// https://fetch.spec.whatwg.org/#body
 	Body interface {
@@ -46,7 +40,6 @@ type (
 	RequestInfo interface{}
 
 	Request interface {
-		js.Wrapper
 		Body
 
 		Method() string
@@ -204,8 +197,8 @@ type RequestInit struct {
 func (p RequestInit) toDict() js.Value {
 	o := jsObject.New()
 	o.Set("method", p.Method)
-	o.Set("headers", p.Headers.JSValue())
-	o.Set("body", p.Body.JSValue())
+	o.Set("headers", JSValue(p.Headers))
+	o.Set("body", JSValue(p.Body))
 	o.Set("referrer", p.Referrer)
 	o.Set("referrerPolicy", string(p.ReferrerPolicy))
 	o.Set("mode", string(p.Mode))
@@ -214,7 +207,7 @@ func (p RequestInit) toDict() js.Value {
 	o.Set("redirect", string(p.Redirect))
 	o.Set("integrity", p.Integrity)
 	o.Set("keepalive", p.Keepalive)
-	o.Set("signal", p.Signal.JSValue())
+	o.Set("signal", JSValue(p.Signal))
 	// o.Set("window", p.Window)
 	return o
 }
@@ -231,6 +224,6 @@ func (p ResponseInit) toDict() js.Value {
 	o := jsObject.New()
 	o.Set("status", p.Status)
 	o.Set("statusText", p.StatusText)
-	o.Set("headers", p.Headers.JSValue())
+	o.Set("headers", JSValue(p.Headers))
 	return o
 }

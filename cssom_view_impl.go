@@ -160,27 +160,27 @@ func (p *geometryUtilsImpl) BoxQuads(options ...BoxQuadOptions) []DOMQuad {
 func (p *geometryUtilsImpl) ConvertQuadFromNode(quad DOMQuadInit, from GeometryNode, options ...ConvertCoordinateOptions) DOMQuad {
 	switch len(options) {
 	case 0:
-		return wrapDOMQuad(p.Call("convertQuadFromNode", quad.toDict(), from.JSValue()))
+		return wrapDOMQuad(p.Call("convertQuadFromNode", quad.toDict(), JSValue(from)))
 	default:
-		return wrapDOMQuad(p.Call("convertQuadFromNode", quad.toDict(), from.JSValue(), options[0].toDict()))
+		return wrapDOMQuad(p.Call("convertQuadFromNode", quad.toDict(), JSValue(from), options[0].toDict()))
 	}
 }
 
 func (p *geometryUtilsImpl) ConvertRectFromNode(rect DOMRectReadOnly, from GeometryNode, options ...ConvertCoordinateOptions) DOMQuad {
 	switch len(options) {
 	case 0:
-		return wrapDOMQuad(p.Call("convertRectFromNode", rect.JSValue(), from.JSValue()))
+		return wrapDOMQuad(p.Call("convertRectFromNode", JSValue(rect), JSValue(from)))
 	default:
-		return wrapDOMQuad(p.Call("convertRectFromNode", rect.JSValue(), from.JSValue(), options[0].toDict()))
+		return wrapDOMQuad(p.Call("convertRectFromNode", JSValue(rect), JSValue(from), options[0].toDict()))
 	}
 }
 
 func (p *geometryUtilsImpl) ConvertPointFromNode(point DOMPointInit, from GeometryNode, options ...ConvertCoordinateOptions) DOMPoint {
 	switch len(options) {
 	case 0:
-		return wrapDOMPoint(p.Call("convertPointFromNode", point.toDict(), from.JSValue()))
+		return wrapDOMPoint(p.Call("convertPointFromNode", point.toDict(), JSValue(from)))
 	default:
-		return wrapDOMPoint(p.Call("convertPointFromNode", point.toDict(), from.JSValue(), options[0].toDict()))
+		return wrapDOMPoint(p.Call("convertPointFromNode", point.toDict(), JSValue(from), options[0].toDict()))
 	}
 }
 

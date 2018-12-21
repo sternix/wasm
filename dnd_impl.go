@@ -43,7 +43,7 @@ func (p *dataTransferImpl) Items() DataTransferItemList {
 }
 
 func (p *dataTransferImpl) SetDragImage(image Element, x int, y int) {
-	p.Call("setDragImage", image.JSValue(), x, y)
+	p.Call("setDragImage", JSValue(image), x, y)
 }
 
 func (p *dataTransferImpl) Types() []string {
@@ -100,7 +100,7 @@ func (p *dataTransferItemListImpl) Add(data string, typ string) DataTransferItem
 }
 
 func (p *dataTransferItemListImpl) AddFile(data File) DataTransferItem {
-	return wrapDataTransferItem(p.Call("add", data.JSValue()))
+	return wrapDataTransferItem(p.Call("add", JSValue(data)))
 }
 
 func (p *dataTransferItemListImpl) Remove(index int) {

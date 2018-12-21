@@ -126,9 +126,7 @@ type (
 
 	// https://html.spec.whatwg.org/multipage/imagebitmap-and-animations.html#imagebitmapsource
 	// typedef (CanvasImageSource or Blob or ImageData) ImageBitmapSource;
-	ImageBitmapSource interface {
-		js.Wrapper
-	}
+	ImageBitmapSource interface{}
 )
 
 type ImageOrientation string

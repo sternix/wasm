@@ -9,25 +9,20 @@ import (
 type (
 	// https://www.w3.org/TR/FileAPI/#dfn-file
 	File interface {
-		js.Wrapper
-
 		Name() string
 		LastModified() int
 	}
 
 	// https://www.w3.org/TR/FileAPI/#dfn-Blob
 	Blob interface {
-		js.Wrapper
-
 		Size() int
 		Type() string
 		Slice(...interface{}) Blob
 	}
 
 	// https://www.w3.org/TR/FileAPI/#typedefdef-blobpart
-	BlobPart interface {
-		js.Wrapper
-	} // typedef (BufferSource or Blob or USVString) BlobPart;
+	// typedef (BufferSource or Blob or USVString) BlobPart;
+	BlobPart interface{}
 
 	// https://www.w3.org/TR/FileAPI/#dfn-filereader
 	FileReader interface {
@@ -54,8 +49,6 @@ type (
 
 	// https://www.w3.org/TR/FileAPI/#dfn-FileReaderSync
 	FileReaderSync interface {
-		js.Wrapper
-
 		ReadAsArrayBuffer(Blob) ArrayBuffer
 		ReadAsBinaryString(Blob) string
 		ReadAsText(Blob, ...string) string

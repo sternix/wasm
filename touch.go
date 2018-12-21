@@ -12,8 +12,6 @@ type (
 
 	// https://w3c.github.io/touch-events/#idl-def-touch
 	Touch interface {
-		js.Wrapper
-
 		Identifier() int
 		Target() EventTarget
 		ScreenX() float64
@@ -76,7 +74,7 @@ type TouchInit struct {
 func (p TouchInit) toDict() js.Value {
 	o := jsObject.New()
 	o.Set("identifier", p.Identifier)
-	o.Set("target", p.Target.JSValue())
+	o.Set("target", JSValue(p.Target))
 	o.Set("clientX", p.ClientX)
 	o.Set("clientY", p.ClientY)
 	o.Set("screenX", p.ScreenX)

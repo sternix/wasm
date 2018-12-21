@@ -19,8 +19,6 @@ type (
 	}
 
 	EventTarget interface {
-		js.Wrapper
-
 		On(string, func(ev Event)) EventHandler
 	}
 
@@ -226,7 +224,6 @@ type (
 	// https://www.w3.org/TR/uievents/#mouseevent
 	// https://www.w3.org/TR/cssom-view-1/#extensions-to-the-mouseevent-interface
 	MouseEvent interface {
-		js.Wrapper
 		UIEvent
 
 		ScreenX() float64
@@ -441,7 +438,7 @@ func (p MouseEventInit) toDict() js.Value {
 	o.Set("clientY", p.ClientY)
 	o.Set("button", p.Button)
 	o.Set("buttons", p.Buttons)
-	o.Set("relatedTarget", p.RelatedTarget.JSValue())
+	o.Set("relatedTarget", JSValue(p.RelatedTarget))
 	return o
 }
 

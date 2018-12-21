@@ -107,8 +107,6 @@ type (
 
 	// https://dom.spec.whatwg.org/#domimplementation
 	DOMImplementation interface {
-		js.Wrapper
-
 		CreateDocumentType(string, string, string) DocumentType
 		CreateDocument(string, string, ...DocumentType) XMLDocument
 		CreateHTMLDocument(...string) Document
@@ -137,8 +135,6 @@ type (
 
 	// https://dom.spec.whatwg.org/#callbackdef-nodefilter
 	NodeFilter interface {
-		js.Wrapper
-
 		AcceptNode(Node) NodeFilterResult
 	}
 
@@ -190,8 +186,6 @@ type (
 
 	// https://dom.spec.whatwg.org/#abstractrange
 	AbstractRange interface {
-		js.Wrapper
-
 		StartContainer() Node
 		StartOffset() int
 		EndContainer() Node
@@ -224,7 +218,6 @@ type (
 
 	// https://dom.spec.whatwg.org/#text
 	Text interface {
-		js.Wrapper
 		CharacterData
 		Slotable
 		GeometryUtils

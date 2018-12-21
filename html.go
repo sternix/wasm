@@ -19,8 +19,6 @@ type (
 
 	// https://html.spec.whatwg.org/multipage/dom.html#htmlorsvgelement
 	HTMLOrSVGElement interface {
-		js.Wrapper
-
 		DataSet() map[string]string // DomStringMap = map[string]string
 		Nonce() string
 		SetNonce(string)
@@ -32,8 +30,6 @@ type (
 
 	// https://html.spec.whatwg.org/multipage/interaction.html#elementcontenteditable
 	ElementContentEditable interface {
-		js.Wrapper
-
 		ContentEditable() string
 		SetContentEditable(string)
 		IsContentEditable() bool
@@ -51,8 +47,6 @@ type (
 
 	// https://dom.spec.whatwg.org/#abortcontroller
 	AbortController interface {
-		js.Wrapper
-
 		Signal() AbortSignal
 		Abort()
 	}

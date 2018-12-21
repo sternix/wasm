@@ -4,6 +4,7 @@ package wasm
 
 import (
 	"errors"
+	"reflect"
 	"syscall/js"
 	"time"
 )
@@ -61,6 +62,32 @@ func await(v js.Value) (result js.Value, ok bool) {
 
 // -------------8<---------------------------------------
 
+func Equal(x interface{}, y interface{}) bool {
+	return JSValue(x) == JSValue(y)
+}
+
+// -------------8<---------------------------------------
+
+// returns interface types underlying js.Value
+// it excepts js.Value is embedded in struct
+func JSValue(o interface{}) js.Value {
+	if o != nil {
+		// is typed array
+		if ta, ok := o.(js.Wrapper); ok {
+			return ta.JSValue()
+		}
+
+		// embedded js.Value
+		if v, ok := reflect.ValueOf(o).Elem().FieldByName("Value").Interface().(js.Value); ok {
+			return v
+		}
+	}
+	return js.Null()
+}
+
+// -------------8<---------------------------------------
+
+// returns object's type as string
 func JSType(v js.Value) string {
 	if v.Type() == js.TypeObject {
 		str := jsTypeFunc.Call("call", v).String()
@@ -144,14 +171,14 @@ func sliceToJsArray(slc interface{}) js.Value {
 	case []Touch:
 		arr := jsArray.New(len(x))
 		for i, t := range x {
-			arr.SetIndex(i, t.JSValue())
+			arr.SetIndex(i, JSValue(t))
 		}
 		return arr
 
 	case []MessagePort:
 		arr := jsArray.New(len(x))
 		for i, t := range x {
-			arr.SetIndex(i, t.JSValue())
+			arr.SetIndex(i, JSValue(t))
 		}
 		return arr
 	default:

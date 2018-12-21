@@ -95,24 +95,24 @@ func wrapFileReader(v js.Value) FileReader {
 }
 
 func (p *fileReaderImpl) ReadAsArrayBuffer(blob Blob) {
-	p.Call("readAsArrayBuffer", blob.JSValue())
+	p.Call("readAsArrayBuffer", JSValue(blob))
 }
 
 func (p *fileReaderImpl) ReadAsBinaryString(blob Blob) {
-	p.Call("readAsBinaryString", blob.JSValue())
+	p.Call("readAsBinaryString", JSValue(blob))
 }
 
 func (p *fileReaderImpl) ReadAsText(blob Blob, label ...string) {
 	switch len(label) {
 	case 0:
-		p.Call("readAsText", blob.JSValue())
+		p.Call("readAsText", JSValue(blob))
 	default: // 1 or more
-		p.Call("readAsText", blob.JSValue(), label[0])
+		p.Call("readAsText", JSValue(blob), label[0])
 	}
 }
 
 func (p *fileReaderImpl) ReadAsDataURL(blob Blob) {
-	p.Call("readAsDataURL", blob.JSValue())
+	p.Call("readAsDataURL", JSValue(blob))
 }
 
 func (p *fileReaderImpl) Abort() {
@@ -182,24 +182,24 @@ func wrapFileReaderSync(v js.Value) FileReaderSync {
 }
 
 func (p *fileReaderSyncImpl) ReadAsArrayBuffer(blob Blob) ArrayBuffer {
-	return wrapArrayBuffer(p.Call("readAsArrayBuffer", blob.JSValue()))
+	return wrapArrayBuffer(p.Call("readAsArrayBuffer", JSValue(blob)))
 }
 
 func (p *fileReaderSyncImpl) ReadAsBinaryString(blob Blob) string {
-	return p.Call("readAsBinaryString", blob.JSValue()).String()
+	return p.Call("readAsBinaryString", JSValue(blob)).String()
 }
 
 func (p *fileReaderSyncImpl) ReadAsText(blob Blob, label ...string) string {
 	switch len(label) {
 	case 0:
-		return p.Call("readAsText", blob.JSValue()).String()
+		return p.Call("readAsText", JSValue(blob)).String()
 	default:
-		return p.Call("readAsText", blob.JSValue(), label[0]).String()
+		return p.Call("readAsText", JSValue(blob), label[0]).String()
 	}
 }
 
 func (p *fileReaderSyncImpl) ReadAsDataURL(blob Blob) string {
-	return p.Call("readAsDataURL", blob.JSValue()).String()
+	return p.Call("readAsDataURL", JSValue(blob)).String()
 }
 
 // -------------8<---------------------------------------

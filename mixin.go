@@ -126,7 +126,7 @@ func (p *childNodeImpl) Before(nodes ...interface{}) {
 	for _, node := range nodes {
 		switch x := node.(type) {
 		case Node:
-			params = append(params, x.JSValue())
+			params = append(params, JSValue(x))
 		case string:
 			params = append(params, x)
 		}
@@ -141,7 +141,7 @@ func (p *childNodeImpl) After(nodes ...interface{}) {
 	for _, node := range nodes {
 		switch x := node.(type) {
 		case Node:
-			params = append(params, x.JSValue())
+			params = append(params, JSValue(x))
 		case string:
 			params = append(params, x)
 		}
@@ -157,7 +157,7 @@ func (p *childNodeImpl) ReplaceWith(nodes ...interface{}) {
 	for _, node := range nodes {
 		switch x := node.(type) {
 		case Node:
-			params = append(params, x.JSValue())
+			params = append(params, JSValue(x))
 		case string:
 			params = append(params, x)
 		}
@@ -274,7 +274,7 @@ func (p *parentNodeImpl) Prepend(nodes ...interface{}) {
 		case string:
 			params = append(params, x)
 		case Node:
-			params = append(params, x.JSValue())
+			params = append(params, JSValue(x))
 		}
 	}
 
@@ -290,7 +290,7 @@ func (p *parentNodeImpl) Append(nodes ...interface{}) {
 		case string:
 			params = append(params, x)
 		case Node:
-			params = append(params, x.JSValue())
+			params = append(params, JSValue(x))
 		}
 	}
 	if len(params) > 0 {

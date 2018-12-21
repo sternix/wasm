@@ -49,7 +49,7 @@ type ClipboardEventInit struct {
 
 func (p ClipboardEventInit) toDict() js.Value {
 	o := p.EventInit.toDict()
-	o.Set("clipboardData", p.ClipboardData.JSValue())
+	o.Set("clipboardData", JSValue(p.ClipboardData))
 	return o
 }
 

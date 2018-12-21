@@ -549,13 +549,12 @@ type (
 
 	// https://www.w3.org/TR/html52/semantics-embedded-content.html#typedefdef-mediaprovider
 	// typedef (MediaStream or MediaSource or Blob) MediaProvider;
-	MediaProvider interface {
-		js.Wrapper
-	}
+	MediaProvider interface{}
 
 	// https://www.w3.org/TR/media-source/#idl-def-mediasource
 	MediaSource interface {
 		EventTarget
+
 		SourceBuffers() SourceBufferList
 		ActiveSourceBuffers() SourceBufferList
 		ReadyState() ReadyState

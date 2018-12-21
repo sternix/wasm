@@ -48,9 +48,7 @@ type (
 
 	// typedef (Text or Element or CSSPseudoElement or Document) GeometryNode;
 	// https://drafts.csswg.org/cssom-view/#typedefdef-geometrynode
-	GeometryNode interface {
-		js.Wrapper
-	}
+	GeometryNode interface{}
 
 	// https://drafts.csswg.org/cssom-view/#geometryutils
 	GeometryUtils interface {
@@ -188,7 +186,7 @@ type BoxQuadOptions struct {
 func (p BoxQuadOptions) toDict() js.Value {
 	o := jsObject.New()
 	o.Set("box", string(p.Box))
-	o.Set("relativeTo", p.RelativeTo.JSValue())
+	o.Set("relativeTo", JSValue(p.RelativeTo))
 	return o
 }
 

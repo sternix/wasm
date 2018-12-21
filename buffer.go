@@ -9,18 +9,14 @@ import (
 type (
 	// https://heycam.github.io/webidl/#BufferSource
 	BufferSource interface {
-		js.Wrapper
 	}
 
 	// https://heycam.github.io/webidl/#ArrayBufferView
 	ArrayBufferView interface {
-		js.Wrapper
 	}
 
 	// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer
 	ArrayBuffer interface {
-		js.Wrapper
-
 		ByteLength() int
 		IsView(arg interface{}) bool
 		Slice(int, ...int) ArrayBuffer
@@ -29,8 +25,6 @@ type (
 
 	// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DataView
 	DataView interface {
-		js.Wrapper
-
 		Buffer() ArrayBuffer
 		ByteLength() int
 		ByteOffset() int
@@ -54,7 +48,6 @@ type (
 
 	// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8ClampedArray
 	Uint8ClampedArray interface {
-		js.Wrapper
 		// from , of
 	}
 )
@@ -78,11 +71,11 @@ func NewDataView(buf ArrayBuffer, args ...int) DataView {
 
 	switch len(args) {
 	case 0:
-		return wrapDataView(jsDataView.New(buf.JSValue()))
+		return wrapDataView(jsDataView.New(JSValue(buf)))
 	case 1:
-		return wrapDataView(jsDataView.New(buf.JSValue(), args[0]))
+		return wrapDataView(jsDataView.New(JSValue(buf), args[0]))
 	default:
-		return wrapDataView(jsDataView.New(buf.JSValue(), args[0], args[1]))
+		return wrapDataView(jsDataView.New(JSValue(buf), args[0], args[1]))
 	}
 }
 
@@ -123,8 +116,8 @@ func (p *arrayBufferImpl) ByteLength() int {
 }
 
 func (p *arrayBufferImpl) IsView(arg interface{}) bool {
-	if jv, ok := arg.(js.Wrapper); ok {
-		return p.Call("isView", jv.JSValue()).Bool()
+	if v := JSValue(arg); v != js.Null() {
+		return p.Call("isView", v).Bool()
 	}
 
 	return false

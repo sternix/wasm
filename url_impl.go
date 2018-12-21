@@ -12,12 +12,8 @@ func CreateObjectURL(source interface{}) (string, error) {
 	jsURL := js.Global().Get("URL")
 
 	switch x := source.(type) {
-	case File:
-		return jsURL.Call("createObjectURL", x.JSValue()).String(), nil
-	case Blob:
-		return jsURL.Call("createObjectURL", x.JSValue()).String(), nil
-	case MediaSource:
-		return jsURL.Call("createObjectURL", x.JSValue()).String(), nil
+	case File, Blob, MediaSource:
+		return jsURL.Call("createObjectURL", JSValue(x)).String(), nil
 	default:
 		return "", errInvalidType
 	}

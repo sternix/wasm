@@ -909,9 +909,9 @@ func (p *windowOrWorkerGlobalScopeImpl) CreateImageBitmap(image ImageBitmapSourc
 
 		switch len(options) {
 		case 0:
-			result, ok = await(p.Call("createImageBitmap", image.JSValue()))
+			result, ok = await(p.Call("createImageBitmap", JSValue(image)))
 		default:
-			result, ok = await(p.Call("createImageBitmap", image.JSValue(), options[0].toDict()))
+			result, ok = await(p.Call("createImageBitmap", JSValue(image), options[0].toDict()))
 		}
 
 		if ok {
@@ -931,9 +931,9 @@ func (p *windowOrWorkerGlobalScopeImpl) CreateImageBitmapWithSize(image ImageBit
 
 		switch len(options) {
 		case 0:
-			result, ok = await(p.Call("createImageBitmap", image.JSValue(), sx, sy, sw, sh))
+			result, ok = await(p.Call("createImageBitmap", JSValue(image), sx, sy, sw, sh))
 		default:
-			result, ok = await(p.Call("createImageBitmap", image.JSValue(), sx, sy, sw, sh, options[0].toDict()))
+			result, ok = await(p.Call("createImageBitmap", JSValue(image), sx, sy, sw, sh, options[0].toDict()))
 		}
 
 		if ok {
@@ -955,7 +955,7 @@ func (p *windowOrWorkerGlobalScopeImpl) Fetch(input RequestInfo, ri ...RequestIn
 		case string:
 			in = js.ValueOf(x)
 		case Request:
-			in = x.JSValue()
+			in = JSValue(x)
 		default:
 			return nil, fmt.Errorf("Wrong parameter type for RequestInfo")
 		}
