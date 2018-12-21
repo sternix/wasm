@@ -14,6 +14,8 @@ type (
 		DocumentOrShadowRoot
 		ParentNode
 		GeometryUtils
+		GlobalEventHandlers
+		DocumentAndElementEventHandlers
 
 		Implementation() DOMImplementation
 		URL() string
@@ -49,9 +51,6 @@ type (
 		OnFullscreenError(func(Event)) EventHandler
 
 		// https://www.w3.org/TR/html52/dom.html#elementdef-document
-		GlobalEventHandlers
-		DocumentAndElementEventHandlers
-
 		Location() Location
 		Domain() string
 		SetDomain(string)
@@ -245,6 +244,7 @@ type (
 	DocumentType interface {
 		Node
 		ChildNode
+
 		Name() string
 		PublicId() string
 		SystemId() string

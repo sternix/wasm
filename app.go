@@ -1,4 +1,5 @@
 // +build js,wasm
+
 package wasm
 
 import (
@@ -15,7 +16,7 @@ var (
 )
 
 func Wait() {
-	On("beforeunload", func(Event) {
+	CurrentWindow().On("beforeunload", func(Event) {
 		doneCh <- true
 	})
 
@@ -24,10 +25,6 @@ func Wait() {
 
 func Exit() {
 	doneCh <- true
-}
-
-func On(event string, fn func(ev Event)) EventHandler {
-	return EventHandlerFunc(event, fn)
 }
 
 func CurrentWindow() Window {

@@ -64,6 +64,7 @@ func NewMediaStream(args ...interface{}) MediaStream {
 // -------------8<---------------------------------------
 
 type htmlBodyElementImpl struct {
+	*eventTargetImpl
 	*htmlElementImpl
 	*windowEventHandlersImpl
 	js.Value
@@ -83,11 +84,14 @@ func wrapHTMLBodyElement(v js.Value) HTMLBodyElement {
 		return nil
 	}
 
-	return &htmlBodyElementImpl{
-		htmlElementImpl:         newHTMLElementImpl(v),
-		windowEventHandlersImpl: newWindowEventHandlersImpl(v),
-		Value:                   v,
+	hbi := &htmlBodyElementImpl{
+		htmlElementImpl: newHTMLElementImpl(v),
+		Value:           v,
 	}
+
+	hbi.eventTargetImpl = hbi.htmlElementImpl.eventTargetImpl
+	hbi.windowEventHandlersImpl = newWindowEventHandlersImpl(hbi.eventTargetImpl)
+	return hbi
 }
 
 // -------------8<---------------------------------------

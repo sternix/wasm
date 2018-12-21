@@ -222,28 +222,17 @@ func (p *applicationCacheImpl) OnObsolete(fn func(Event)) EventHandler {
 // -------------8<---------------------------------------
 
 type abstractWorkerImpl struct {
-	js.Value
+	*eventTargetImpl
 }
 
-func wrapAbstractWorker(v js.Value) AbstractWorker {
-	if p := newAbstractWorkerImpl(v); p != nil {
-		return p
-	}
-	return nil
-}
-
-func newAbstractWorkerImpl(v js.Value) *abstractWorkerImpl {
-	if isNil(v) {
-		return nil
-	}
-
+func newAbstractWorkerImpl(et *eventTargetImpl) *abstractWorkerImpl {
 	return &abstractWorkerImpl{
-		Value: v,
+		eventTargetImpl: et,
 	}
 }
 
 func (p *abstractWorkerImpl) OnError(fn func(Event)) EventHandler {
-	return On("error", fn)
+	return p.On("error", fn)
 }
 
 // -------------8<---------------------------------------
@@ -259,11 +248,12 @@ func wrapWorker(v js.Value) Worker {
 		return nil
 	}
 
-	return &workerImpl{
-		eventTargetImpl:    newEventTargetImpl(v),
-		abstractWorkerImpl: newAbstractWorkerImpl(v),
-		Value:              v,
+	wi := &workerImpl{
+		eventTargetImpl: newEventTargetImpl(v),
+		Value:           v,
 	}
+	wi.abstractWorkerImpl = newAbstractWorkerImpl(wi.eventTargetImpl)
+	return wi
 }
 
 func (p *workerImpl) Terminate() {
@@ -295,11 +285,12 @@ func wrapSharedWorker(v js.Value) SharedWorker {
 		return nil
 	}
 
-	return &sharedWorkerImpl{
-		eventTargetImpl:    newEventTargetImpl(v),
-		abstractWorkerImpl: newAbstractWorkerImpl(v),
-		Value:              v,
+	swi := &sharedWorkerImpl{
+		eventTargetImpl: newEventTargetImpl(v),
+		Value:           v,
 	}
+	swi.abstractWorkerImpl = newAbstractWorkerImpl(swi.eventTargetImpl)
+	return swi
 }
 
 func (p *sharedWorkerImpl) Port() MessagePort {

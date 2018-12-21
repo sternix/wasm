@@ -69,13 +69,14 @@ func newWindowImpl(v js.Value) *windowImpl {
 		return nil
 	}
 
-	return &windowImpl{
+	wi := &windowImpl{
 		eventTargetImpl:               newEventTargetImpl(v),
 		windowOrWorkerGlobalScopeImpl: newWindowOrWorkerGlobalScopeImpl(v),
-		globalEventHandlersImpl:       newGlobalEventHandlersImpl(v),
-		windowEventHandlersImpl:       newWindowEventHandlersImpl(v),
 		Value:                         v,
 	}
+	wi.globalEventHandlersImpl = newGlobalEventHandlersImpl(wi.eventTargetImpl)
+	wi.windowEventHandlersImpl = newWindowEventHandlersImpl(wi.eventTargetImpl)
+	return wi
 }
 
 func (p *windowImpl) Console() Console {

@@ -97,8 +97,10 @@ func wrapObject(v js.Value) interface{} {
 		return wrapAbortSignal(v)
 	case "AbstractRange":
 		return wrapAbstractRange(v)
-	case "AbstractWorker":
-		return wrapAbstractWorker(v)
+		/*
+			case "AbstractWorker":
+				return wrapAbstractWorker(v)
+		*/
 	case "ApplicationCache":
 		return wrapApplicationCache(v)
 	case "ArrayBuffer":

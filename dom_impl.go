@@ -9,6 +9,7 @@ import (
 // -------------8<---------------------------------------
 
 type documentImpl struct {
+	*eventTargetImpl
 	*nodeImpl
 	*nonElementParentNodeImpl
 	*documentOrShadowRootImpl
@@ -38,16 +39,18 @@ func newDocumentImpl(v js.Value) *documentImpl {
 		return nil
 	}
 
-	return &documentImpl{
-		nodeImpl:                            newNodeImpl(v),
-		nonElementParentNodeImpl:            newNonElementParentNodeImpl(v),
-		documentOrShadowRootImpl:            newDocumentOrShadowRootImpl(v),
-		parentNodeImpl:                      newParentNodeImpl(v),
-		globalEventHandlersImpl:             newGlobalEventHandlersImpl(v),
-		documentAndElementEventHandlersImpl: newDocumentAndElementEventHandlersImpl(v),
-		geometryUtilsImpl:                   newGeometryUtilsImpl(v),
-		Value:                               v,
+	di := &documentImpl{
+		nodeImpl:                 newNodeImpl(v),
+		nonElementParentNodeImpl: newNonElementParentNodeImpl(v),
+		documentOrShadowRootImpl: newDocumentOrShadowRootImpl(v),
+		parentNodeImpl:           newParentNodeImpl(v),
+		geometryUtilsImpl:        newGeometryUtilsImpl(v),
+		Value:                    v,
 	}
+	di.eventTargetImpl = di.nodeImpl.eventTargetImpl
+	di.globalEventHandlersImpl = newGlobalEventHandlersImpl(di.eventTargetImpl)
+	di.documentAndElementEventHandlersImpl = newDocumentAndElementEventHandlersImpl(di.eventTargetImpl)
+	return di
 }
 
 func (p *documentImpl) Implementation() DOMImplementation {
@@ -194,11 +197,11 @@ func (p *documentImpl) ExitFullscreen() func() error {
 }
 
 func (p *documentImpl) OnFullscreenChange(fn func(Event)) EventHandler {
-	return p.On("fullscreenchange", fn)
+	return p.nodeImpl.eventTargetImpl.On("fullscreenchange", fn)
 }
 
 func (p *documentImpl) OnFullscreenError(fn func(Event)) EventHandler {
-	return p.On("fullscreenerror", fn)
+	return p.nodeImpl.eventTargetImpl.On("fullscreenerror", fn)
 }
 
 func (p *documentImpl) Location() Location {
@@ -439,7 +442,7 @@ func (p *documentImpl) QueryCommandValue(commandId string) string {
 }
 
 func (p *documentImpl) OnReadyStateChange(fn func(Event)) EventHandler {
-	return On("readystatechange", fn)
+	return p.On("readystatechange", fn)
 }
 
 func (p *documentImpl) ElementFromPoint(x float64, y float64) Element {
@@ -1888,6 +1891,7 @@ func wrapHTMLUnknownElement(v js.Value) HTMLUnknownElement {
 // -------------8<---------------------------------------
 
 type htmlElementImpl struct {
+	*eventTargetImpl
 	*elementImpl
 	*globalEventHandlersImpl
 	*documentAndElementEventHandlersImpl
@@ -1905,12 +1909,15 @@ func newHTMLElementImpl(v js.Value) *htmlElementImpl {
 	if isNil(v) {
 		return nil
 	}
-	return &htmlElementImpl{
-		elementImpl:                         newElementImpl(v),
-		globalEventHandlersImpl:             newGlobalEventHandlersImpl(v),
-		documentAndElementEventHandlersImpl: newDocumentAndElementEventHandlersImpl(v),
-		Value:                               v,
+
+	ei := &htmlElementImpl{
+		elementImpl: newElementImpl(v),
+		Value:       v,
 	}
+	ei.eventTargetImpl = ei.elementImpl.eventTargetImpl
+	ei.globalEventHandlersImpl = newGlobalEventHandlersImpl(ei.eventTargetImpl)
+	ei.documentAndElementEventHandlersImpl = newDocumentAndElementEventHandlersImpl(ei.eventTargetImpl)
+	return ei
 }
 
 func (p *htmlElementImpl) Title() string {
