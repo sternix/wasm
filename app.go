@@ -1,5 +1,4 @@
 // +build js,wasm
-
 package wasm
 
 import (
