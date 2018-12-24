@@ -1774,11 +1774,11 @@ func (p *htmlCollectionImpl) Length() int {
 }
 
 func (p *htmlCollectionImpl) Item(index int) Element {
-	return wrapElement(p.Call("item", index))
+	return wrapAsElement(p.Call("item", index))
 }
 
 func (p *htmlCollectionImpl) NamedItem(name string) Element {
-	return wrapElement(p.Call("namedItem", name))
+	return wrapAsElement(p.Call("namedItem", name))
 }
 
 // -------------8<---------------------------------------
