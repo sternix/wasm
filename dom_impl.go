@@ -142,14 +142,14 @@ func (p *documentImpl) CreateProcessingInstruction(target string, data string) P
 func (p *documentImpl) ImportNode(node Node, deep ...bool) Node {
 	switch len(deep) {
 	case 0:
-		return wrapNode(p.Call("importNode", JSValue(node)))
+		return wrapAsNode(p.Call("importNode", JSValue(node)))
 	default:
-		return wrapNode(p.Call("importNode", JSValue(node), deep[0]))
+		return wrapAsNode(p.Call("importNode", JSValue(node), deep[0]))
 	}
 }
 
 func (p *documentImpl) AdoptNode(node Node) Node {
-	return wrapNode(p.Call("adoptNode", JSValue(node)))
+	return wrapAsNode(p.Call("adoptNode", JSValue(node)))
 }
 
 func (p *documentImpl) CreateAttribute(localName string) Attr {
@@ -389,7 +389,7 @@ func (p *documentImpl) DefaultView() WindowProxy {
 }
 
 func (p *documentImpl) ActiveElement() Element {
-	return wrapElement(p.Get("activeElement"))
+	return wrapAsElement(p.Get("activeElement"))
 }
 
 func (p *documentImpl) HasFocus() bool {
@@ -446,7 +446,7 @@ func (p *documentImpl) OnReadyStateChange(fn func(Event)) EventHandler {
 }
 
 func (p *documentImpl) ElementFromPoint(x float64, y float64) Element {
-	return wrapElement(p.Call("elementFromPoint", x, y))
+	return wrapAsElement(p.Call("elementFromPoint", x, y))
 }
 
 func (p *documentImpl) ElementsFromPoint(x float64, y float64) []Element {
@@ -455,7 +455,7 @@ func (p *documentImpl) ElementsFromPoint(x float64, y float64) []Element {
 	sl := arrayToSlice(p.Call("elementsFromPoint", x, y))
 	if sl != nil {
 		for _, v := range sl {
-			ret = append(ret, wrapElement(v))
+			ret = append(ret, wrapAsElement(v))
 		}
 	}
 
@@ -467,7 +467,7 @@ func (p *documentImpl) CaretPositionFromPoint(x float64, y float64) CaretPositio
 }
 
 func (p *documentImpl) ScrollingElement() Element {
-	return wrapElement(p.Get("scrollingElement"))
+	return wrapAsElement(p.Get("scrollingElement"))
 }
 
 // helper function type assert on new Element return HTMLElement
@@ -548,7 +548,7 @@ func wrapTreeWalker(v js.Value) TreeWalker {
 }
 
 func (p *treeWalkerImpl) Root() Node {
-	return wrapNode(p.Get("root"))
+	return wrapAsNode(p.Get("root"))
 }
 
 func (p *treeWalkerImpl) WhatToShow() NodeFilterShow {
@@ -560,7 +560,7 @@ func (p *treeWalkerImpl) Filter() NodeFilter {
 }
 
 func (p *treeWalkerImpl) CurrentNode() Node {
-	return wrapNode(p.Get("currentNode"))
+	return wrapAsNode(p.Get("currentNode"))
 }
 
 func (p *treeWalkerImpl) SetCurrentNode(node Node) {
@@ -568,31 +568,31 @@ func (p *treeWalkerImpl) SetCurrentNode(node Node) {
 }
 
 func (p *treeWalkerImpl) ParentNode() Node {
-	return wrapNode(p.Call("parentNode"))
+	return wrapAsNode(p.Call("parentNode"))
 }
 
 func (p *treeWalkerImpl) FirstChild() Node {
-	return wrapNode(p.Call("firstChild"))
+	return wrapAsNode(p.Call("firstChild"))
 }
 
 func (p *treeWalkerImpl) LastChild() Node {
-	return wrapNode(p.Call("lastChild"))
+	return wrapAsNode(p.Call("lastChild"))
 }
 
 func (p *treeWalkerImpl) PreviousSibling() Node {
-	return wrapNode(p.Call("previousSibling"))
+	return wrapAsNode(p.Call("previousSibling"))
 }
 
 func (p *treeWalkerImpl) NextSibling() Node {
-	return wrapNode(p.Call("nextSibling"))
+	return wrapAsNode(p.Call("nextSibling"))
 }
 
 func (p *treeWalkerImpl) PreviousNode() Node {
-	return wrapNode(p.Call("previousNode"))
+	return wrapAsNode(p.Call("previousNode"))
 }
 
 func (p *treeWalkerImpl) NextNode() Node {
-	return wrapNode(p.Call("nextNode"))
+	return wrapAsNode(p.Call("nextNode"))
 }
 
 // -------------8<---------------------------------------
@@ -630,11 +630,11 @@ func wrapNodeIterator(v js.Value) NodeIterator {
 }
 
 func (p *nodeIteratorImpl) Root() Node {
-	return wrapNode(p.Get("root"))
+	return wrapAsNode(p.Get("root"))
 }
 
 func (p *nodeIteratorImpl) ReferenceNode() Node {
-	return wrapNode(p.Get("referenceNode"))
+	return wrapAsNode(p.Get("referenceNode"))
 }
 
 func (p *nodeIteratorImpl) PointerBeforeReferenceNode() bool {
@@ -650,11 +650,11 @@ func (p *nodeIteratorImpl) Filter() NodeFilter {
 }
 
 func (p *nodeIteratorImpl) NextNode() Node {
-	return wrapNode(p.Call("nextNode"))
+	return wrapAsNode(p.Call("nextNode"))
 }
 
 func (p *nodeIteratorImpl) PreviousNode() Node {
-	return wrapNode(p.Call("previousNode"))
+	return wrapAsNode(p.Call("previousNode"))
 }
 
 func (p *nodeIteratorImpl) Detach() {
@@ -684,7 +684,7 @@ func newRangeImpl(v js.Value) *rangeImpl {
 }
 
 func (p *rangeImpl) CommonAncestorContainer() Node {
-	return wrapNode(p.Get("commonAncestorContainer"))
+	return wrapAsNode(p.Get("commonAncestorContainer"))
 }
 
 func (p *rangeImpl) SetStart(node Node, offset int) {
@@ -816,7 +816,7 @@ func newAbstractRangeImpl(v js.Value) *abstractRangeImpl {
 }
 
 func (p *abstractRangeImpl) StartContainer() Node {
-	return wrapNode(p.Get("startContainer"))
+	return wrapAsNode(p.Get("startContainer"))
 }
 
 func (p *abstractRangeImpl) StartOffset() int {
@@ -824,7 +824,7 @@ func (p *abstractRangeImpl) StartOffset() int {
 }
 
 func (p *abstractRangeImpl) EndContainer() Node {
-	return wrapNode(p.Get("endContainer"))
+	return wrapAsNode(p.Get("endContainer"))
 }
 
 func (p *abstractRangeImpl) EndOffset() int {
@@ -1085,18 +1085,18 @@ func (p *nodeImpl) OwnerDocument() Document {
 
 func (p *nodeImpl) RootNode(options ...RootNodeOptions) Node {
 	if len(options) > 0 {
-		return wrapNode(p.Call("getRootNode", options[0].toDict()))
+		return wrapAsNode(p.Call("getRootNode", options[0].toDict()))
 	}
 
-	return wrapNode(p.Call("getRootNode"))
+	return wrapAsNode(p.Call("getRootNode"))
 }
 
 func (p *nodeImpl) ParentNode() Node {
-	return wrapNode(p.Get("parentNode"))
+	return wrapAsNode(p.Get("parentNode"))
 }
 
 func (p *nodeImpl) ParentElement() Element {
-	return wrapElement(p.Get("parentElement"))
+	return wrapAsElement(p.Get("parentElement"))
 }
 
 func (p *nodeImpl) HasChildNodes() bool {
@@ -1108,19 +1108,19 @@ func (p *nodeImpl) ChildNodes() []Node {
 }
 
 func (p *nodeImpl) FirstChild() Node {
-	return wrapNode(p.Get("firstChild"))
+	return wrapAsNode(p.Get("firstChild"))
 }
 
 func (p *nodeImpl) LastChild() Node {
-	return wrapNode(p.Get("lastChild"))
+	return wrapAsNode(p.Get("lastChild"))
 }
 
 func (p *nodeImpl) PreviousSibling() Node {
-	return wrapNode(p.Get("previousSibling"))
+	return wrapAsNode(p.Get("previousSibling"))
 }
 
 func (p *nodeImpl) NextSibling() Node {
-	return wrapNode(p.Get("nextSibling"))
+	return wrapAsNode(p.Get("nextSibling"))
 }
 
 func (p *nodeImpl) NodeValue() string {
@@ -1145,9 +1145,9 @@ func (p *nodeImpl) Normalize() {
 
 func (p *nodeImpl) CloneNode(deep ...bool) Node {
 	if len(deep) > 0 {
-		return wrapNode(p.Call("cloneNode", deep[0]))
+		return wrapAsNode(p.Call("cloneNode", deep[0]))
 	}
-	return wrapNode(p.Call("cloneNode"))
+	return wrapAsNode(p.Call("cloneNode"))
 }
 
 func (p *nodeImpl) IsEqualNode(otherNode Node) bool {
@@ -1180,21 +1180,21 @@ func (p *nodeImpl) IsDefaultNamespace(namespace string) bool {
 
 func (p *nodeImpl) InsertBefore(node Node, child Node) Node {
 	if child != nil {
-		return wrapNode(p.Call("insertBefore", JSValue(node), JSValue(child)))
+		return wrapAsNode(p.Call("insertBefore", JSValue(node), JSValue(child)))
 	}
-	return wrapNode(p.Call("insertBefore", JSValue(node)))
+	return wrapAsNode(p.Call("insertBefore", JSValue(node)))
 }
 
 func (p *nodeImpl) AppendChild(node Node) Node {
-	return wrapNode(p.Call("appendChild", JSValue(node)))
+	return wrapAsNode(p.Call("appendChild", JSValue(node)))
 }
 
 func (p *nodeImpl) ReplaceChild(node Node, child Node) Node {
-	return wrapNode(p.Call("replaceChild", JSValue(node), JSValue(child)))
+	return wrapAsNode(p.Call("replaceChild", JSValue(node), JSValue(child)))
 }
 
 func (p *nodeImpl) RemoveChild(child Node) Node {
-	return wrapNode(p.Call("removeChild", JSValue(child)))
+	return wrapAsNode(p.Call("removeChild", JSValue(child)))
 }
 
 // -------------8<---------------------------------------
@@ -1356,7 +1356,7 @@ func (p *elementImpl) ShadowRoot() ShadowRoot {
 }
 
 func (p *elementImpl) Closest(selectors string) Element {
-	return wrapElement(p.Call("closest"))
+	return wrapAsElement(p.Call("closest"))
 }
 
 func (p *elementImpl) Matches(string) bool {
@@ -1542,7 +1542,7 @@ func (p *shadowRootImpl) Mode() ShadowRootMode {
 }
 
 func (p *shadowRootImpl) Host() Element {
-	return wrapElement(p.Get("host"))
+	return wrapAsElement(p.Get("host"))
 }
 
 // -------------8<---------------------------------------
@@ -1744,7 +1744,7 @@ func (p *attrImpl) SetValue(value string) {
 }
 
 func (p *attrImpl) OwnerElement() Element {
-	return wrapElement(p.Get("ownerElement"))
+	return wrapAsElement(p.Get("ownerElement"))
 }
 
 // -------------8<---------------------------------------
@@ -1801,7 +1801,7 @@ func (p *mutationRecordImpl) Type() string {
 }
 
 func (p *mutationRecordImpl) Target() Node {
-	return wrapNode(p.Get("target"))
+	return wrapAsNode(p.Get("target"))
 }
 
 func (p *mutationRecordImpl) AddedNodes() []Node {
@@ -1813,11 +1813,11 @@ func (p *mutationRecordImpl) RemovedNodes() []Node {
 }
 
 func (p *mutationRecordImpl) PreviousSibling() Node {
-	return wrapNode(p.Get("previousSibling"))
+	return wrapAsNode(p.Get("previousSibling"))
 }
 
 func (p *mutationRecordImpl) NextSibling() Node {
-	return wrapNode(p.Get("nextSibling"))
+	return wrapAsNode(p.Get("nextSibling"))
 }
 
 func (p *mutationRecordImpl) AttributeName() string {
@@ -2036,7 +2036,7 @@ func (p *htmlElementImpl) SetInnerText(text string) {
 }
 
 func (p *htmlElementImpl) OffsetParent() Element {
-	return wrapElement(p.Get("offsetParent"))
+	return wrapAsElement(p.Get("offsetParent"))
 }
 
 func (p *htmlElementImpl) OffsetTop() int {
@@ -2127,7 +2127,7 @@ func newNodeListImpl(v js.Value) *nodeListImpl {
 }
 
 func (p *nodeListImpl) Item(index int) Node {
-	return wrapNode(p.Call("item", index))
+	return wrapAsNode(p.Call("item", index))
 }
 
 func (p *nodeListImpl) Length() int {

@@ -683,4 +683,17 @@ func wrapAsEventTarget(v js.Value) EventTarget {
 	return nil
 }
 
+func wrapAsNode(v js.Value) Node {
+	if isNil(v) {
+		return nil
+	}
+
+	if o := wrapObject(v); o != nil {
+		if n, ok := o.(Node); ok {
+			return n
+		}
+	}
+	return nil
+}
+
 // -------------8<---------------------------------------

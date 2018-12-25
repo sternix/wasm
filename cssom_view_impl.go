@@ -115,7 +115,7 @@ func wrapCaretPosition(v js.Value) CaretPosition {
 }
 
 func (p *caretPositionImpl) OffsetNode() Node {
-	return wrapNode(p.Get("offsetNode"))
+	return wrapAsNode(p.Get("offsetNode"))
 }
 
 func (p *caretPositionImpl) Offset() int {

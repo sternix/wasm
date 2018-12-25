@@ -65,7 +65,7 @@ func (p *styleSheetImpl) Href() string {
 }
 
 func (p *styleSheetImpl) OwnerNode() Node {
-	return wrapNode(p.Get("ownerNode"))
+	return wrapAsNode(p.Get("ownerNode"))
 }
 
 func (p *styleSheetImpl) ParentStyleSheet() StyleSheet {

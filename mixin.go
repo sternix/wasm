@@ -91,11 +91,11 @@ func newNonDocumentTypeChildNodeImpl(v js.Value) *nonDocumentTypeChildNodeImpl {
 }
 
 func (p *nonDocumentTypeChildNodeImpl) PreviousElementSibling() Element {
-	return wrapElement(p.Get("previousElementSibling"))
+	return wrapAsElement(p.Get("previousElementSibling"))
 }
 
 func (p *nonDocumentTypeChildNodeImpl) NextElementSibling() Element {
-	return wrapElement(p.Get("nextElementSibling"))
+	return wrapAsElement(p.Get("nextElementSibling"))
 }
 
 // -------------8<---------------------------------------
@@ -191,7 +191,7 @@ func newDocumentOrShadowRootImpl(v js.Value) *documentOrShadowRootImpl {
 }
 
 func (p *documentOrShadowRootImpl) FullscreenElement() Element {
-	return wrapElement(p.Get("fullscreenElement"))
+	return wrapAsElement(p.Get("fullscreenElement"))
 }
 
 func (p *documentOrShadowRootImpl) StyleSheets() []CSSStyleSheet {
@@ -256,11 +256,11 @@ func (p *parentNodeImpl) Children() []Element {
 }
 
 func (p *parentNodeImpl) FirstElementChild() Element {
-	return wrapElement(p.Get("firstElementChild"))
+	return wrapAsElement(p.Get("firstElementChild"))
 }
 
 func (p *parentNodeImpl) LastElementChild() Element {
-	return wrapElement(p.Get("lastElementChild"))
+	return wrapAsElement(p.Get("lastElementChild"))
 }
 
 func (p *parentNodeImpl) ChildElementCount() int {
@@ -299,7 +299,7 @@ func (p *parentNodeImpl) Append(nodes ...interface{}) {
 }
 
 func (p *parentNodeImpl) QuerySelector(selectors string) Element {
-	return wrapElement(p.Call("querySelector", selectors))
+	return wrapAsElement(p.Call("querySelector", selectors))
 }
 
 func (p *parentNodeImpl) QuerySelectorAll(selectors string) []Node {
