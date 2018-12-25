@@ -1359,8 +1359,8 @@ func (p *elementImpl) Closest(selectors string) Element {
 	return wrapAsElement(p.Call("closest"))
 }
 
-func (p *elementImpl) Matches(string) bool {
-	return p.Call("matches").Bool()
+func (p *elementImpl) Matches(selector string) bool {
+	return p.Call("matches",selector).Bool()
 }
 
 func (p *elementImpl) ElementsByTagName(name string) []Element {
