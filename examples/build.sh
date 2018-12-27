@@ -5,16 +5,15 @@ go build -o server/server ./server/server.go
 
 DIRS='
 ball_drop_game
-calc
 dom
 webgl/rotating-cube
 webgl/splashy
 webgl/triangle
+w3schools/accordion
+w3schools/clickable_dropdown
+w3schools/modal
+w3schools/slideshow
 '
-#w3schools/accordion
-#w3schools/clickable_dropdown
-#w3schools/modal
-#w3schools/slideshow
 
 OUT_DIR="./server/assets"
 
