@@ -5,7 +5,7 @@
 		<script src="wasm_exec.js"></script>
 		<script>
 			const go = new Go();
-			WebAssembly.instantiateStreaming(fetch("ballgame.wasm"), go.importObject).then((result) => {
+			WebAssembly.instantiateStreaming(fetch("ball_drop_game.wasm"), go.importObject).then((result) => {
 				go.run(result.instance);
 			});
 		</script>
