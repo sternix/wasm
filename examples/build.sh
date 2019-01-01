@@ -15,6 +15,7 @@ w3schools/clickable_dropdown
 w3schools/modal
 w3schools/slideshow
 w3schools/draggable
+w3schools/closable_list_items
 '
 
 OUT_DIR="./server/assets"
