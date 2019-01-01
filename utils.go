@@ -198,7 +198,7 @@ func nodeListToSlice(nl js.Value) []Node {
 	ret := make([]Node, nl.Length())
 
 	for i := range ret {
-		ret[i] = wrapNode(nl.Index(i))
+		ret[i] = wrapAsNode(nl.Index(i))
 	}
 
 	return ret

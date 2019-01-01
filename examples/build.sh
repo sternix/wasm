@@ -6,6 +6,7 @@ go build -o server/server ./server/server.go
 DIRS='
 ball_drop_game
 dom
+life
 webgl/rotating-cube
 webgl/splashy
 webgl/triangle

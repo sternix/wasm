@@ -1360,7 +1360,7 @@ func (p *elementImpl) Closest(selectors string) Element {
 }
 
 func (p *elementImpl) Matches(selector string) bool {
-	return p.Call("matches",selector).Bool()
+	return p.Call("matches", selector).Bool()
 }
 
 func (p *elementImpl) ElementsByTagName(name string) []Element {
