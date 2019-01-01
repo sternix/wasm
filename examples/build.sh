@@ -14,6 +14,7 @@ w3schools/accordion
 w3schools/clickable_dropdown
 w3schools/modal
 w3schools/slideshow
+w3schools/draggable
 '
 
 OUT_DIR="./server/assets"
