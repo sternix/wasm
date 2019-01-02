@@ -17,6 +17,7 @@ w3schools/slideshow
 w3schools/draggable
 w3schools/closable_list_items
 w3schools/filter_list
+w3schools/filter_table
 '
 
 OUT_DIR="./server/assets"
