@@ -655,6 +655,20 @@ func wrapAsElement(v js.Value) Element {
 	return nil
 }
 
+func wrapAsHTMLElement(v js.Value) HTMLElement {
+	if isNil(v) {
+		return nil
+	}
+
+	if o := wrapObject(v); o != nil {
+		if e, ok := o.(HTMLElement); ok {
+			return e
+		}
+	}
+
+	return nil
+}
+
 func wrapAsEvent(v js.Value) Event {
 	if isNil(v) {
 		return nil

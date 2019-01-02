@@ -10,6 +10,8 @@ type (
 	// https://dom.spec.whatwg.org/#nonelementparentnode
 	NonElementParentNode interface {
 		ElementById(string) Element
+		// non standart helper method, eliminites type asserts to HTMLElement
+		HTMLElementById(string) HTMLElement
 	}
 
 	// https://dom.spec.whatwg.org/#documentorshadowroot
@@ -70,6 +72,10 @@ func newNonElementParentNodeImpl(v js.Value) *nonElementParentNodeImpl {
 
 func (p *nonElementParentNodeImpl) ElementById(id string) Element {
 	return wrapAsElement(p.Call("getElementById", id))
+}
+
+func (p *nonElementParentNodeImpl) HTMLElementById(id string) HTMLElement {
+	return wrapAsHTMLElement(p.Call("getElementById", id))
 }
 
 // -------------8<---------------------------------------
