@@ -66,7 +66,7 @@ func (p *textDecoderImpl) Decode(args ...interface{}) string {
 	case 2:
 		if input, ok := args[0].(BufferSource); ok {
 			if options, ok := args[1].(TextDecodeOptions); ok {
-				return p.Call("decode", JSValue(input), options.toDict()).String()
+				return p.Call("decode", JSValue(input), options.toJSObject()).String()
 			}
 		}
 	}
@@ -204,7 +204,7 @@ func NewTextDecoderStream(args ...interface{}) TextDecoderStream {
 	case 2:
 		if label, ok := args[0].(string); ok {
 			if options, ok := args[1].(TextDecoderOptions); ok {
-				return wrapTextDecoderStream(jsDecStream.New(label, options.toDict()))
+				return wrapTextDecoderStream(jsDecStream.New(label, options.toJSObject()))
 			}
 		}
 	}
@@ -222,7 +222,7 @@ func NewTextDecoder(args ...interface{}) TextDecoder {
 	case 2:
 		if label, ok := args[0].(string); ok {
 			if options, ok := args[1].(TextDecoderOptions); ok {
-				return wrapTextDecoder(jsTextDecoder.New(label, options.toDict()))
+				return wrapTextDecoder(jsTextDecoder.New(label, options.toJSObject()))
 			}
 		}
 	}

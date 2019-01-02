@@ -20,7 +20,7 @@ func NewEvent(typ string, ei ...EventInit) Event {
 	case 0:
 		return wrapEvent(jsEvent.New(typ))
 	default:
-		return wrapEvent(jsEvent.New(typ, ei[0].toDict()))
+		return wrapEvent(jsEvent.New(typ, ei[0].toJSObject()))
 	}
 }
 
@@ -34,7 +34,7 @@ func NewCustomEvent(typ string, cei ...CustomEventInit) CustomEvent {
 	case 0:
 		return wrapCustomEvent(jsCustomEvent.New(typ))
 	default:
-		return wrapCustomEvent(jsCustomEvent.New(typ, cei[0].toDict()))
+		return wrapCustomEvent(jsCustomEvent.New(typ, cei[0].toJSObject()))
 	}
 }
 
@@ -48,7 +48,7 @@ func NewFocusEvent(typ string, ini ...FocusEventInit) FocusEvent {
 	case 0:
 		return wrapFocusEvent(jsFocusEvent.New(typ))
 	default:
-		return wrapFocusEvent(jsFocusEvent.New(typ, ini[0].toDict()))
+		return wrapFocusEvent(jsFocusEvent.New(typ, ini[0].toJSObject()))
 	}
 }
 
@@ -62,7 +62,7 @@ func NewMouseEvent(typ string, ini ...MouseEventInit) MouseEvent {
 	case 0:
 		return wrapMouseEvent(jsMouseEvent.New(typ))
 	default:
-		return wrapMouseEvent(jsMouseEvent.New(typ, ini[0].toDict()))
+		return wrapMouseEvent(jsMouseEvent.New(typ, ini[0].toJSObject()))
 	}
 }
 
@@ -76,7 +76,7 @@ func NewWheelEvent(typ string, ini ...WheelEventInit) WheelEvent {
 	case 0:
 		return wrapWheelEvent(jsWheelEvent.New(typ))
 	default:
-		return wrapWheelEvent(jsWheelEvent.New(typ, ini[0].toDict()))
+		return wrapWheelEvent(jsWheelEvent.New(typ, ini[0].toJSObject()))
 	}
 }
 
@@ -90,7 +90,7 @@ func NewInputEvent(typ string, ini ...InputEventInit) InputEvent {
 	case 0:
 		return wrapInputEvent(jsInputEvent.New(typ))
 	default:
-		return wrapInputEvent(jsInputEvent.New(typ, ini[0].toDict()))
+		return wrapInputEvent(jsInputEvent.New(typ, ini[0].toJSObject()))
 	}
 }
 
@@ -104,7 +104,7 @@ func NewKeyboardEvent(typ string, ini ...KeyboardEventInit) KeyboardEvent {
 	case 0:
 		return wrapKeyboardEvent(jsKeyboardEvent.New(typ))
 	default:
-		return wrapKeyboardEvent(jsKeyboardEvent.New(typ, ini[0].toDict()))
+		return wrapKeyboardEvent(jsKeyboardEvent.New(typ, ini[0].toJSObject()))
 	}
 }
 
@@ -118,7 +118,7 @@ func NewErrorEvent(typ string, eei ...ErrorEventInit) ErrorEvent {
 	case 0:
 		return wrapErrorEvent(jsErrorEvent.New(typ))
 	default:
-		return wrapErrorEvent(jsErrorEvent.New(typ, eei[0].toDict()))
+		return wrapErrorEvent(jsErrorEvent.New(typ, eei[0].toJSObject()))
 	}
 }
 
@@ -941,7 +941,7 @@ func (p *windowOrWorkerGlobalScopeImpl) CreateImageBitmap(image ImageBitmapSourc
 		case 0:
 			result, ok = await(p.Call("createImageBitmap", JSValue(image)))
 		default:
-			result, ok = await(p.Call("createImageBitmap", JSValue(image), options[0].toDict()))
+			result, ok = await(p.Call("createImageBitmap", JSValue(image), options[0].toJSObject()))
 		}
 
 		if ok {
@@ -963,7 +963,7 @@ func (p *windowOrWorkerGlobalScopeImpl) CreateImageBitmapWithSize(image ImageBit
 		case 0:
 			result, ok = await(p.Call("createImageBitmap", JSValue(image), sx, sy, sw, sh))
 		default:
-			result, ok = await(p.Call("createImageBitmap", JSValue(image), sx, sy, sw, sh, options[0].toDict()))
+			result, ok = await(p.Call("createImageBitmap", JSValue(image), sx, sy, sw, sh, options[0].toJSObject()))
 		}
 
 		if ok {
@@ -999,7 +999,7 @@ func (p *windowOrWorkerGlobalScopeImpl) Fetch(input RequestInfo, ri ...RequestIn
 		case 0:
 			result, ok = await(p.Call("fetch", in))
 		default:
-			result, ok = await(p.Call("fetch", in, ri[0].toDict()))
+			result, ok = await(p.Call("fetch", in, ri[0].toJSObject()))
 		}
 
 		if ok {
@@ -1445,7 +1445,7 @@ func NewTransitionEvent(typ string, tei ...TransitionEventInit) TransitionEvent 
 	case 0:
 		return wrapTransitionEvent(jsTe.New(typ))
 	default:
-		return wrapTransitionEvent(jsTe.New(typ, tei[0].toDict()))
+		return wrapTransitionEvent(jsTe.New(typ, tei[0].toJSObject()))
 	}
 }
 
@@ -1486,7 +1486,7 @@ func NewPointerEvent(typ string, pei ...PointerEventInit) PointerEvent {
 	case 0:
 		return wrapPointerEvent(jsPe.New(typ))
 	default:
-		return wrapPointerEvent(jsPe.New(typ, pei[0].toDict()))
+		return wrapPointerEvent(jsPe.New(typ, pei[0].toJSObject()))
 	}
 }
 

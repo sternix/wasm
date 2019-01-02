@@ -69,7 +69,7 @@ type PipeToOptions struct {
 	PreventCancel bool
 }
 
-func (p PipeToOptions) toDict() js.Value {
+func (p PipeToOptions) toJSObject() js.Value {
 	o := jsObject.New()
 	o.Set("preventClose", p.PreventClose)
 	o.Set("preventAbort", p.PreventAbort)
@@ -84,7 +84,7 @@ type TransformStream struct {
 	Writable WritableStream
 }
 
-func (p TransformStream) toDict() js.Value {
+func (p TransformStream) toJSObject() js.Value {
 	o := jsObject.New()
 	o.Set("writable", JSValue(p.Readable))
 	o.Set("readable", JSValue(p.Writable))

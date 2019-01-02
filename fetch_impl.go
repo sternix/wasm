@@ -412,7 +412,7 @@ func wrapFormDataEntryValue(v js.Value) FormDataEntryValue {
 func NewRequest(info RequestInfo, ri ...RequestInit) Request {
 	request := js.Global().Get("Request")
 	if len(ri) > 0 {
-		return wrapRequest(request.New(info, ri[0].toDict()))
+		return wrapRequest(request.New(info, ri[0].toJSObject()))
 	}
 
 	return wrapRequest(request.New(info))
@@ -439,7 +439,7 @@ func NewResponse(args ...interface{}) Response {
 	case 2:
 		if body, ok := args[0].(BodyInit); ok {
 			if ri, ok := args[1].(ResponseInit); ok {
-				return wrapResponse(response.New(body, ri.toDict()))
+				return wrapResponse(response.New(body, ri.toJSObject()))
 			}
 		}
 	}

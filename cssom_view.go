@@ -112,7 +112,7 @@ type ScrollOptions struct {
 	Behavior ScrollBehavior // default auto
 }
 
-func (p ScrollOptions) toDict() js.Value {
+func (p ScrollOptions) toJSObject() js.Value {
 	o := jsObject.New()
 	if p.Behavior != "" && p.Behavior != ScrollBehaviorAuto {
 		o.Set("behavior", string(p.Behavior))
@@ -130,8 +130,8 @@ type ScrollToOptions struct {
 	Top  float64
 }
 
-func (p ScrollToOptions) toDict() js.Value {
-	o := p.ScrollOptions.toDict()
+func (p ScrollToOptions) toJSObject() js.Value {
+	o := p.ScrollOptions.toJSObject()
 	o.Set("left", p.Left)
 	o.Set("top", p.Top)
 	return o
@@ -147,8 +147,8 @@ type ScrollIntoViewOptions struct {
 	Inline ScrollLogicalPosition // default "nearest"
 }
 
-func (p ScrollIntoViewOptions) toDict() js.Value {
-	o := p.ScrollOptions.toDict()
+func (p ScrollIntoViewOptions) toJSObject() js.Value {
+	o := p.ScrollOptions.toJSObject()
 	if p.Block != "" && p.Block != ScrollLogicalPositionStart {
 		o.Set("block", string(p.Block))
 	}
@@ -168,8 +168,8 @@ type MediaQueryListEventInit struct {
 	Matches bool
 }
 
-func (p MediaQueryListEventInit) toDict() js.Value {
-	o := p.EventInit.toDict()
+func (p MediaQueryListEventInit) toJSObject() js.Value {
+	o := p.EventInit.toJSObject()
 	o.Set("media", p.Media)
 	o.Set("matches", p.Matches)
 	return o
@@ -183,7 +183,7 @@ type BoxQuadOptions struct {
 	RelativeTo GeometryNode
 }
 
-func (p BoxQuadOptions) toDict() js.Value {
+func (p BoxQuadOptions) toJSObject() js.Value {
 	o := jsObject.New()
 	o.Set("box", string(p.Box))
 	o.Set("relativeTo", JSValue(p.RelativeTo))
@@ -198,7 +198,7 @@ type ConvertCoordinateOptions struct {
 	ToBox   CSSBoxType // default "border"
 }
 
-func (p ConvertCoordinateOptions) toDict() js.Value {
+func (p ConvertCoordinateOptions) toJSObject() js.Value {
 	o := jsObject.New()
 	if p.FromBox != "" && p.FromBox != CSSBoxTypeBorder {
 		o.Set("fromBox", string(p.FromBox))

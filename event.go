@@ -360,7 +360,7 @@ type EventInit struct {
 	Composed   bool
 }
 
-func (p EventInit) toDict() js.Value {
+func (p EventInit) toJSObject() js.Value {
 	o := jsObject.New()
 	o.Set("bubbles", p.Bubbles)
 	o.Set("cancelable", p.Cancelable)
@@ -377,8 +377,8 @@ type CustomEventInit struct {
 	Detail interface{}
 }
 
-func (p CustomEventInit) toDict() js.Value {
-	o := p.EventInit.toDict()
+func (p CustomEventInit) toJSObject() js.Value {
+	o := p.EventInit.toJSObject()
 	o.Set("detail", p.Detail)
 	return o
 }
@@ -393,8 +393,8 @@ type UIEventInit struct {
 	Detail int
 }
 
-func (p UIEventInit) toDict() js.Value {
-	o := p.EventInit.toDict()
+func (p UIEventInit) toJSObject() js.Value {
+	o := p.EventInit.toJSObject()
 	o.Set("view", p.View)
 	o.Set("detail", p.Detail)
 	return o
@@ -409,8 +409,8 @@ type FocusEventInit struct {
 	RelatedTarget EventTarget
 }
 
-func (p FocusEventInit) toDict() js.Value {
-	o := p.UIEventInit.toDict()
+func (p FocusEventInit) toJSObject() js.Value {
+	o := p.UIEventInit.toJSObject()
 	o.Set("relatedTarget", p.RelatedTarget)
 	return o
 }
@@ -430,8 +430,8 @@ type MouseEventInit struct {
 	RelatedTarget EventTarget
 }
 
-func (p MouseEventInit) toDict() js.Value {
-	o := p.EventModifierInit.toDict()
+func (p MouseEventInit) toJSObject() js.Value {
+	o := p.EventModifierInit.toJSObject()
 	o.Set("screenX", p.ScreenX)
 	o.Set("screenY", p.ScreenY)
 	o.Set("clientX", p.ClientX)
@@ -464,8 +464,8 @@ type EventModifierInit struct {
 	ModifierSymbolLock bool
 }
 
-func (p EventModifierInit) toDict() js.Value {
-	o := p.UIEventInit.toDict()
+func (p EventModifierInit) toJSObject() js.Value {
+	o := p.UIEventInit.toJSObject()
 	o.Set("ctrlKey", p.CtrlKey)
 	o.Set("shiftKey", p.ShiftKey)
 	o.Set("altKey", p.AltKey)
@@ -495,8 +495,8 @@ type WheelEventInit struct {
 	DeltaMode WheelEventDeltaMode
 }
 
-func (p WheelEventInit) toDict() js.Value {
-	o := p.MouseEventInit.toDict()
+func (p WheelEventInit) toJSObject() js.Value {
+	o := p.MouseEventInit.toJSObject()
 	o.Set("deltaX", p.DeltaX)
 	o.Set("deltaY", p.DeltaY)
 	o.Set("deltaZ", p.DeltaZ)
@@ -514,8 +514,8 @@ type InputEventInit struct {
 	IsComposing bool
 }
 
-func (p InputEventInit) toDict() js.Value {
-	o := p.UIEventInit.toDict()
+func (p InputEventInit) toJSObject() js.Value {
+	o := p.UIEventInit.toJSObject()
 	o.Set("data", p.Data)
 	o.Set("isComposing", p.IsComposing)
 	return o
@@ -534,8 +534,8 @@ type KeyboardEventInit struct {
 	IsComposing bool
 }
 
-func (p KeyboardEventInit) toDict() js.Value {
-	o := p.EventModifierInit.toDict()
+func (p KeyboardEventInit) toJSObject() js.Value {
+	o := p.EventModifierInit.toJSObject()
 	o.Set("key", p.Key)
 	o.Set("code", p.Code)
 	o.Set("location", p.Location)
@@ -553,8 +553,8 @@ type CompositionEventInit struct {
 	Data string
 }
 
-func (p CompositionEventInit) toDict() js.Value {
-	o := p.UIEventInit.toDict()
+func (p CompositionEventInit) toJSObject() js.Value {
+	o := p.UIEventInit.toJSObject()
 	o.Set("data", p.Data)
 	return o
 }
@@ -572,8 +572,8 @@ type ErrorEventInit struct {
 	Error    string // any
 }
 
-func (p ErrorEventInit) toDict() js.Value {
-	o := p.EventInit.toDict()
+func (p ErrorEventInit) toJSObject() js.Value {
+	o := p.EventInit.toJSObject()
 	o.Set("message", p.Message)
 	o.Set("filename", p.Filename)
 	o.Set("lineno", p.Lineno)
@@ -593,8 +593,8 @@ type TransitionEventInit struct {
 	PseudoElement string
 }
 
-func (p TransitionEventInit) toDict() js.Value {
-	o := p.EventInit.toDict()
+func (p TransitionEventInit) toJSObject() js.Value {
+	o := p.EventInit.toJSObject()
 	o.Set("propertyName", p.PropertyName)
 	o.Set("elapsedTime", p.ElapsedTime)
 	o.Set("pseudoElement", p.PseudoElement)
@@ -619,8 +619,8 @@ type PointerEventInit struct {
 	IsPrimary          bool
 }
 
-func (p PointerEventInit) todict() js.Value {
-	o := p.MouseEventInit.toDict()
+func (p PointerEventInit) toJSObject() js.Value {
+	o := p.MouseEventInit.toJSObject()
 	o.Set("pointerId", p.PointerId)
 	o.Set("width", p.Width)
 	o.Set("height", p.Height)

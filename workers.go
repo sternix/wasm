@@ -129,7 +129,7 @@ type WorkerOptions struct {
 	Name        string
 }
 
-func (p WorkerOptions) toDict() js.Value {
+func (p WorkerOptions) toJSObject() js.Value {
 	o := jsObject.New()
 	o.Set("type", string(p.Type))
 	o.Set("credentials", string(p.Credentials))

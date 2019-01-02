@@ -33,8 +33,8 @@ type ClipboardPermissionDescriptor struct {
 	AllowWithoutGesture bool
 }
 
-func (p ClipboardPermissionDescriptor) toDict() js.Value {
-	o := p.PermissionDescriptor.toDict()
+func (p ClipboardPermissionDescriptor) toJSObject() js.Value {
+	o := p.PermissionDescriptor.toJSObject()
 	o.Set("allowWithoutGesture", p.AllowWithoutGesture)
 	return o
 }
@@ -47,8 +47,8 @@ type ClipboardEventInit struct {
 	ClipboardData DataTransfer
 }
 
-func (p ClipboardEventInit) toDict() js.Value {
-	o := p.EventInit.toDict()
+func (p ClipboardEventInit) toJSObject() js.Value {
+	o := p.EventInit.toJSObject()
 	o.Set("clipboardData", JSValue(p.ClipboardData))
 	return o
 }

@@ -61,7 +61,7 @@ type CloseEventInit struct {
 	Reason   string
 }
 
-func (p CloseEventInit) toDict() js.Value {
+func (p CloseEventInit) toJSObject() js.Value {
 	o := jsObject.New()
 	o.Set("wasClean", p.WasClean)
 	o.Set("code", p.Code)

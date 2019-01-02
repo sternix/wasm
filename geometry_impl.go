@@ -18,7 +18,7 @@ func NewDOMPoint(dpi ...DOMPointInit) DOMPoint {
 	case 0:
 		return wrapDOMPoint(jsDOMPoint.New())
 	default:
-		return wrapDOMPoint(jsDOMPoint.New(dpi[0].toDict()))
+		return wrapDOMPoint(jsDOMPoint.New(dpi[0].toJSObject()))
 	}
 }
 
@@ -59,7 +59,7 @@ func NewDOMQuad(dri ...DOMRectInit) DOMQuad {
 	case 0:
 		return wrapDOMQuad(jsDOMQuad.New())
 	default:
-		return wrapDOMQuad(jsDOMQuad.New(dri[0].toDict()))
+		return wrapDOMQuad(jsDOMQuad.New(dri[0].toJSObject()))
 	}
 }
 
@@ -68,7 +68,7 @@ func DOMQuadFromRect(other ...DOMRectInit) DOMQuad {
 	case 0:
 		return wrapDOMQuad(js.Global().Invoke("DOMQuad.fromRect"))
 	default:
-		return wrapDOMQuad(js.Global().Invoke("DOMQuad.fromRect", other[0].toDict()))
+		return wrapDOMQuad(js.Global().Invoke("DOMQuad.fromRect", other[0].toJSObject()))
 	}
 }
 
@@ -77,7 +77,7 @@ func DOMQuadFromQuad(other ...DOMQuadInit) DOMQuad {
 	case 0:
 		return wrapDOMQuad(js.Global().Invoke("DOMQuad.fromQuad"))
 	default:
-		return wrapDOMQuad(js.Global().Invoke("DOMQuad.fromQuad", other[0].toDict()))
+		return wrapDOMQuad(js.Global().Invoke("DOMQuad.fromQuad", other[0].toJSObject()))
 	}
 }
 
@@ -492,7 +492,7 @@ func (p *domMatrixReadOnlyImpl) TransformPoint(point ...DOMPointInit) DOMPoint {
 	case 0:
 		return wrapDOMPoint(p.Call("transformPoint"))
 	default:
-		return wrapDOMPoint(p.Call("transformPoint", point[0].toDict()))
+		return wrapDOMPoint(p.Call("transformPoint", point[0].toJSObject()))
 	}
 }
 

@@ -53,8 +53,8 @@ type StorageEventInit struct {
 	StorageArea Storage
 }
 
-func (p StorageEventInit) toDict() js.Value {
-	o := p.EventInit.toDict()
+func (p StorageEventInit) toJSObject() js.Value {
+	o := p.EventInit.toJSObject()
 	o.Set("key", p.Key)
 	o.Set("oldValue", p.OldValue)
 	o.Set("newValue", p.NewValue)

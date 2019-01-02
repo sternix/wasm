@@ -169,7 +169,7 @@ type ImageBitmapOptions struct {
 	ResizeQuality        ResizeQuality
 }
 
-func (p ImageBitmapOptions) toDict() js.Value {
+func (p ImageBitmapOptions) toJSObject() js.Value {
 	o := jsObject.New()
 
 	if p.ImageOrientation != "none" {

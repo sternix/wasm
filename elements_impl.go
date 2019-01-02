@@ -2527,7 +2527,7 @@ func (p *mediaStreamTrackImpl) ApplyConstraints(constraints ...MediaTrackConstra
 		case 0:
 			res, ok = await(p.Call("applyConstraints"))
 		default:
-			res, ok = await(p.Call("applyConstraints", constraints[0].toDict()))
+			res, ok = await(p.Call("applyConstraints", constraints[0].toJSObject()))
 		}
 
 		if ok {

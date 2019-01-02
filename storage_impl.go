@@ -18,7 +18,7 @@ func NewStorageEvent(typ string, sei ...StorageEventInit) StorageEvent {
 	case 0:
 		return wrapStorageEvent(jsStorageEvent.New(typ))
 	default:
-		return wrapStorageEvent(jsStorageEvent.New(typ, sei[0].toDict()))
+		return wrapStorageEvent(jsStorageEvent.New(typ, sei[0].toJSObject()))
 	}
 }
 

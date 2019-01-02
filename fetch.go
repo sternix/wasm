@@ -194,7 +194,7 @@ type RequestInit struct {
 	// Window         interface{}
 }
 
-func (p RequestInit) toDict() js.Value {
+func (p RequestInit) toJSObject() js.Value {
 	o := jsObject.New()
 	o.Set("method", p.Method)
 	o.Set("headers", JSValue(p.Headers))
@@ -220,7 +220,7 @@ type ResponseInit struct {
 	Headers    HeadersInit
 }
 
-func (p ResponseInit) toDict() js.Value {
+func (p ResponseInit) toJSObject() js.Value {
 	o := jsObject.New()
 	o.Set("status", p.Status)
 	o.Set("statusText", p.StatusText)

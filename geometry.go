@@ -125,7 +125,7 @@ type DOMPointInit struct {
 	W float64 //default 1
 }
 
-func (p DOMPointInit) toDict() js.Value {
+func (p DOMPointInit) toJSObject() js.Value {
 	o := jsObject.New()
 	o.Set("x", p.X)
 	o.Set("y", p.Y)
@@ -144,7 +144,7 @@ type DOMRectInit struct {
 	Height float64
 }
 
-func (p DOMRectInit) toDict() js.Value {
+func (p DOMRectInit) toJSObject() js.Value {
 	o := jsObject.New()
 	o.Set("x", p.X)
 	o.Set("y", p.Y)
@@ -164,11 +164,11 @@ type DOMQuadInit struct {
 	P4 DOMPointInit
 }
 
-func (p DOMQuadInit) toDict() js.Value {
+func (p DOMQuadInit) toJSObject() js.Value {
 	o := jsObject.New()
-	o.Set("p1", p.P1.toDict())
-	o.Set("p2", p.P2.toDict())
-	o.Set("p3", p.P3.toDict())
-	o.Set("p4", p.P4.toDict())
+	o.Set("p1", p.P1.toJSObject())
+	o.Set("p2", p.P2.toJSObject())
+	o.Set("p3", p.P3.toJSObject())
+	o.Set("p4", p.P4.toJSObject())
 	return o
 }

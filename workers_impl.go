@@ -18,7 +18,7 @@ func NewWorker(scriptURL string, wo ...WorkerOptions) Worker {
 	case 0:
 		return wrapWorker(jsWorker.New(scriptURL))
 	default:
-		return wrapWorker(jsWorker.New(scriptURL, wo[0].toDict()))
+		return wrapWorker(jsWorker.New(scriptURL, wo[0].toJSObject()))
 	}
 }
 

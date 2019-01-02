@@ -59,7 +59,7 @@ type AssignedNodesOptions struct {
 	Flatten bool // default false
 }
 
-func (p AssignedNodesOptions) toDict() js.Value {
+func (p AssignedNodesOptions) toJSObject() js.Value {
 	if p.Flatten {
 		o := jsObject.New()
 		o.Set("flatten", p.Flatten)
@@ -75,7 +75,7 @@ type FocusOptions struct {
 	PreventScroll bool
 }
 
-func (p FocusOptions) toDict() js.Value {
+func (p FocusOptions) toJSObject() js.Value {
 	o := jsObject.New()
 	o.Set("preventScroll", p.PreventScroll)
 	return o

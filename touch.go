@@ -71,7 +71,7 @@ type TouchInit struct {
 	TouchType     TouchType
 }
 
-func (p TouchInit) toDict() js.Value {
+func (p TouchInit) toJSObject() js.Value {
 	o := jsObject.New()
 	o.Set("identifier", p.Identifier)
 	o.Set("target", JSValue(p.Target))
@@ -101,8 +101,8 @@ type TouchEventInit struct {
 	ChangedTouches []Touch
 }
 
-func (p TouchEventInit) toDict() js.Value {
-	o := p.EventModifierInit.toDict()
+func (p TouchEventInit) toJSObject() js.Value {
+	o := p.EventModifierInit.toJSObject()
 	o.Set("touches", sliceToJsArray(p.Touches))
 	o.Set("targetTouches", sliceToJsArray(p.TargetTouches))
 	o.Set("changedTouches", sliceToJsArray(p.ChangedTouches))

@@ -229,7 +229,7 @@ type WebGLContextAttributes struct {
 	FailIfMajorPerformanceCaveat bool
 }
 
-func (p WebGLContextAttributes) toDict() js.Value {
+func (p WebGLContextAttributes) toJSObject() js.Value {
 	o := jsObject.New()
 	o.Set("alpha", p.Alpha)
 	o.Set("depth", p.Depth)

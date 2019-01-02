@@ -125,7 +125,7 @@ type HitRegionOptions struct {
 	Control Element
 }
 
-func (p HitRegionOptions) toDict() js.Value {
+func (p HitRegionOptions) toJSObject() js.Value {
 	o := jsObject.New()
 	o.Set("id", p.Id)
 	o.Set("control", JSValue(p.Control))

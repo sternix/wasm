@@ -53,7 +53,7 @@ type TextDecoderOptions struct {
 	IgnoreBOM bool
 }
 
-func (p TextDecoderOptions) toDict() js.Value {
+func (p TextDecoderOptions) toJSObject() js.Value {
 	o := jsObject.New()
 	o.Set("fatal", p.Fatal)
 	o.Set("ignoreBOM", p.IgnoreBOM)
@@ -66,7 +66,7 @@ type TextDecodeOptions struct {
 	Stream bool
 }
 
-func (p TextDecodeOptions) toDict() js.Value {
+func (p TextDecodeOptions) toJSObject() js.Value {
 	o := jsObject.New()
 	o.Set("stream", p.Stream)
 	return o

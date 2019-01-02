@@ -16,7 +16,7 @@ type PermissionDescriptor struct {
 	Name PermissionName
 }
 
-func (p PermissionDescriptor) toDict() js.Value {
+func (p PermissionDescriptor) toJSObject() js.Value {
 	o := jsObject.New()
 	o.Set("name", string(p.Name))
 	return o

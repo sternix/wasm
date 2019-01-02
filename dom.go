@@ -617,7 +617,7 @@ type ElementCreationOptions struct {
 	Is string
 }
 
-func (p ElementCreationOptions) toDict() js.Value {
+func (p ElementCreationOptions) toJSObject() js.Value {
 	o := jsObject.New()
 	o.Set("is", p.Is)
 	return o
@@ -630,7 +630,7 @@ type RootNodeOptions struct {
 	Composed bool
 }
 
-func (p RootNodeOptions) toDict() js.Value {
+func (p RootNodeOptions) toJSObject() js.Value {
 	o := jsObject.New()
 	o.Set("composed", p.Composed)
 	return o
@@ -643,7 +643,7 @@ type ShadowRootInit struct {
 	Mode ShadowRootMode
 }
 
-func (p ShadowRootInit) toDict() js.Value {
+func (p ShadowRootInit) toJSObject() js.Value {
 	o := jsObject.New()
 	o.Set("mode", p.Mode)
 	return o
@@ -662,7 +662,7 @@ type MutationObserverInit struct {
 	AttributeFilter       []string
 }
 
-func (p MutationObserverInit) toDict() js.Value {
+func (p MutationObserverInit) toJSObject() js.Value {
 	o := jsObject.New()
 	o.Set("childList", p.ChildList)
 	o.Set("attributes", p.Attributes)

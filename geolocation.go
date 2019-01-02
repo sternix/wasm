@@ -58,7 +58,7 @@ type PositionOptions struct {
 	MaximumAge         int
 }
 
-func (p PositionOptions) toDict() js.Value {
+func (p PositionOptions) toJSObject() js.Value {
 	o := jsObject.New()
 	o.Set("enableHighAccuracy", p.EnableHighAccuracy)
 	o.Set("timeout", p.Timeout)

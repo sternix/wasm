@@ -312,7 +312,7 @@ type FullscreenOptions struct {
 	NavigationUI FullscreenNavigationUI
 }
 
-func (p FullscreenOptions) toDict() js.Value {
+func (p FullscreenOptions) toJSObject() js.Value {
 	o := jsObject.New()
 	o.Set("navigationUI", string(p.NavigationUI))
 	return o

@@ -762,21 +762,21 @@ type MediaTrackCapabilities struct {
 	GroupId          string
 }
 
-func (p MediaTrackCapabilities) toDict() js.Value {
+func (p MediaTrackCapabilities) toJSObject() js.Value {
 	o := jsObject.New()
-	o.Set("width", p.Width.toDict())
-	o.Set("height", p.Heigth.toDict())
-	o.Set("aspectRatio", p.AspectRatio.toDict())
-	o.Set("frameRate", p.FrameRate.toDict())
+	o.Set("width", p.Width.toJSObject())
+	o.Set("height", p.Heigth.toJSObject())
+	o.Set("aspectRatio", p.AspectRatio.toJSObject())
+	o.Set("frameRate", p.FrameRate.toJSObject())
 	o.Set("facingMode", sliceToJsArray(p.FacingMode))
-	o.Set("volume", p.Volume.toDict())
-	o.Set("sampleRate", p.SampleRate.toDict())
-	o.Set("sampleSize", p.SampleSize.toDict())
+	o.Set("volume", p.Volume.toJSObject())
+	o.Set("sampleRate", p.SampleRate.toJSObject())
+	o.Set("sampleSize", p.SampleSize.toJSObject())
 	o.Set("echoCancellation", sliceToJsArray(p.EchoCancellation))
 	o.Set("autoGainControl", sliceToJsArray(p.AutoGainControl))
 	o.Set("noiseSuppression", sliceToJsArray(p.NoiseSuppression))
-	o.Set("latency", p.Latency.toDict())
-	o.Set("channelCount", p.ChannelCount.toDict())
+	o.Set("latency", p.Latency.toJSObject())
+	o.Set("channelCount", p.ChannelCount.toJSObject())
 	o.Set("deviceId", p.DeviceId)
 	o.Set("groupId", p.GroupId)
 	return o
@@ -803,23 +803,23 @@ type MediaTrackConstraintSet struct {
 	GroupId          ConstrainDOMString
 }
 
-func (p MediaTrackConstraintSet) toDict() js.Value {
+func (p MediaTrackConstraintSet) toJSObject() js.Value {
 	o := jsObject.New()
-	o.Set("width", p.Width.toDict())
-	o.Set("height", p.Height.toDict())
-	o.Set("aspectRatio", p.AspectRatio.toDict())
-	o.Set("frameRate", p.FrameRate.toDict())
-	o.Set("facingMode", p.FacingMode.toDict())
-	o.Set("volume", p.Volume.toDict())
-	o.Set("sampleRate", p.SampleRate.toDict())
-	o.Set("sampleSize", p.SampleSize.toDict())
-	o.Set("echoCancellation", p.EchoCancellation.toDict())
-	o.Set("autoGainControl", p.AutoGainControl.toDict())
-	o.Set("noiseSuppression", p.NoiseSuppression.toDict())
-	o.Set("latency", p.Latency.toDict())
-	o.Set("channelCount", p.ChannelCount.toDict())
-	o.Set("deviceId", p.DeviceId.toDict())
-	o.Set("groupId", p.GroupId.toDict())
+	o.Set("width", p.Width.toJSObject())
+	o.Set("height", p.Height.toJSObject())
+	o.Set("aspectRatio", p.AspectRatio.toJSObject())
+	o.Set("frameRate", p.FrameRate.toJSObject())
+	o.Set("facingMode", p.FacingMode.toJSObject())
+	o.Set("volume", p.Volume.toJSObject())
+	o.Set("sampleRate", p.SampleRate.toJSObject())
+	o.Set("sampleSize", p.SampleSize.toJSObject())
+	o.Set("echoCancellation", p.EchoCancellation.toJSObject())
+	o.Set("autoGainControl", p.AutoGainControl.toJSObject())
+	o.Set("noiseSuppression", p.NoiseSuppression.toJSObject())
+	o.Set("latency", p.Latency.toJSObject())
+	o.Set("channelCount", p.ChannelCount.toJSObject())
+	o.Set("deviceId", p.DeviceId.toJSObject())
+	o.Set("groupId", p.GroupId.toJSObject())
 	return o
 }
 
@@ -844,7 +844,7 @@ type MediaTrackSettings struct {
 	GroupId          string
 }
 
-func (p MediaTrackSettings) toDict() js.Value {
+func (p MediaTrackSettings) toJSObject() js.Value {
 	o := jsObject.New()
 	o.Set("width", p.Width)
 	o.Set("height", p.Height)
@@ -872,7 +872,7 @@ type LongRange struct {
 	Min int
 }
 
-func (p LongRange) toDict() js.Value {
+func (p LongRange) toJSObject() js.Value {
 	o := jsObject.New()
 	o.Set("max", p.Max)
 	o.Set("min", p.Min)
@@ -887,7 +887,7 @@ type DoubleRange struct {
 	Min float64
 }
 
-func (p DoubleRange) toDict() js.Value {
+func (p DoubleRange) toJSObject() js.Value {
 	o := jsObject.New()
 	o.Set("max", p.Max)
 	o.Set("min", p.Min)
@@ -904,8 +904,8 @@ type ConstrainLongRange struct {
 	Ideal int
 }
 
-func (p ConstrainLongRange) toDict() js.Value {
-	o := p.LongRange.toDict()
+func (p ConstrainLongRange) toJSObject() js.Value {
+	o := p.LongRange.toJSObject()
 	o.Set("exact", p.Exact)
 	o.Set("ideal", p.Ideal)
 	return o
@@ -926,8 +926,8 @@ type ConstrainDoubleRange struct {
 	Ideal float64
 }
 
-func (p ConstrainDoubleRange) toDict() js.Value {
-	o := p.DoubleRange.toDict()
+func (p ConstrainDoubleRange) toJSObject() js.Value {
+	o := p.DoubleRange.toJSObject()
 	o.Set("exact", p.Exact)
 	o.Set("ideal", p.Ideal)
 	return o
@@ -949,7 +949,7 @@ type ConstrainDOMStringParameters struct {
 	Ideal string
 }
 
-func (p ConstrainDOMStringParameters) toDict() js.Value {
+func (p ConstrainDOMStringParameters) toJSObject() js.Value {
 	o := jsObject.New()
 	o.Set("exact", p.Exact)
 	o.Set("ideal", p.Ideal)
@@ -972,7 +972,7 @@ type ConstrainBooleanParameters struct {
 	Ideal bool
 }
 
-func (p ConstrainBooleanParameters) toDict() js.Value {
+func (p ConstrainBooleanParameters) toJSObject() js.Value {
 	o := jsObject.New()
 	o.Set("exact", p.Exact)
 	o.Set("ideal", p.Ideal)

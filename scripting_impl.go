@@ -174,7 +174,7 @@ func (p *htmlCanvasElementImpl) Context2D(settings ...CanvasRenderingContext2DSe
 	case 0:
 		return wrapCanvasRenderingContext2D(p.Call("getContext", "2d"))
 	default:
-		return wrapCanvasRenderingContext2D(p.Call("getContext", "2d", settings[0].toDict()))
+		return wrapCanvasRenderingContext2D(p.Call("getContext", "2d", settings[0].toJSObject()))
 	}
 }
 
@@ -192,9 +192,9 @@ func (p *htmlCanvasElementImpl) ContextWebGL(attrs ...WebGLContextAttributes) We
 			return nil
 		}
 	default:
-		v = p.Call("getContext", "webgl", attrs[0].toDict())
+		v = p.Call("getContext", "webgl", attrs[0].toJSObject())
 		if v == js.Undefined() {
-			v = p.Call("getContext", "experimental-webgl", attrs[0].toDict())
+			v = p.Call("getContext", "experimental-webgl", attrs[0].toJSObject())
 		}
 
 		if isNil(v) {

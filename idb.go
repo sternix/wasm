@@ -191,7 +191,7 @@ type IDBVersionChangeEventInit struct {
 	NewVersion int // default null
 }
 
-func (p IDBVersionChangeEventInit) toDict() js.Value {
+func (p IDBVersionChangeEventInit) toJSObject() js.Value {
 	o := jsObject.New()
 	o.Set("oldVersion", p.OldVersion)
 	o.Set("newVersion", p.NewVersion)
@@ -206,7 +206,7 @@ type IDBObjectStoreParameters struct {
 	AutoIncrement bool
 }
 
-func (p IDBObjectStoreParameters) toDict() js.Value {
+func (p IDBObjectStoreParameters) toJSObject() js.Value {
 	o := jsObject.New()
 	o.Set("keyPath", sliceToJsArray(p.KeyPath))
 	o.Set("autoIncrement", p.AutoIncrement)
@@ -221,7 +221,7 @@ type IDBIndexParameters struct {
 	MultiEntry bool
 }
 
-func (p IDBIndexParameters) toDict() js.Value {
+func (p IDBIndexParameters) toJSObject() js.Value {
 	o := jsObject.New()
 	o.Set("unique", p.Unique)
 	o.Set("multiEntry", p.MultiEntry)
