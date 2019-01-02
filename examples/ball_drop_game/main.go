@@ -10,8 +10,8 @@ https://github.com/fewstera/go-wasm-ball-drop-game
 */
 
 import (
-	wasm "../.."
 	"fmt"
+	"github.com/sternix/wasm"
 	"math"
 	"math/rand"
 	"time"

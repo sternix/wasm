@@ -10,8 +10,8 @@ https://github.com/bobcob7/wasm-rotating-cube
 package main
 
 import (
-	wasm "../../.."
 	"github.com/go-gl/mathgl/mgl32"
+	"github.com/sternix/wasm"
 	"syscall/js"
 	"unsafe"
 )

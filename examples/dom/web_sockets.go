@@ -3,8 +3,8 @@
 package main
 
 import (
-	wasm "../.."
 	"fmt"
+	"github.com/sternix/wasm"
 )
 
 func TestWebSocket(doc wasm.Document) {

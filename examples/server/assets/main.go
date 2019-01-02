@@ -16,14 +16,11 @@ import (
 	"log"
 	"math/rand"
 	"strconv"
-
 	"syscall/js"
-
 	// this box2d throws some unexpected panics
 	"github.com/ByteArena/box2d"
-
-	wasm "../../.."
 	colorful "github.com/lucasb-eyer/go-colorful"
+	"github.com/sternix/wasm"
 )
 
 var (

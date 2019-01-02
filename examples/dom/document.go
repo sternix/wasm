@@ -3,9 +3,8 @@
 package main
 
 import (
-	//"github.com/sternix/wasm"
-	wasm "../.."
 	"fmt"
+	"github.com/sternix/wasm"
 )
 
 func TestDocument(doc wasm.Document) {

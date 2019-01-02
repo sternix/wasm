@@ -9,7 +9,7 @@ https://github.com/bobcob7/wasm-basic-triangle
 package main
 
 import (
-	wasm "../../.."
+	"github.com/sternix/wasm"
 	"syscall/js"
 )
 

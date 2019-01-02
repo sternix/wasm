@@ -3,7 +3,7 @@
 package main
 
 import (
-	wasm "../.."
+	"github.com/sternix/wasm"
 	"math"
 )
 

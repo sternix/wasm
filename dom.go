@@ -29,6 +29,7 @@ type (
 		ElementsByTagName(string) []Element
 		ElementsByTagNameNS(string, string) []Element
 		ElementsByClassName(string) []Element
+		HTMLElementsByClassName(string) []HTMLElement
 		CreateElement(string, ...ElementCreationOptions) Element
 		CreateElementNS(string, string, ...ElementCreationOptions) Element
 		CreateDocumentFragment() DocumentFragment

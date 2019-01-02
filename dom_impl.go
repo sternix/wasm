@@ -101,6 +101,10 @@ func (p *documentImpl) ElementsByClassName(classNames string) []Element {
 	return htmlCollectionToElementSlice(p.Call("getElementsByClassName", classNames))
 }
 
+func (p *documentImpl) HTMLElementsByClassName(classNames string) []HTMLElement {
+	return htmlCollectionToHTMLElementSlice(p.Call("getElementsByClassName", classNames))
+}
+
 func (p *documentImpl) CreateElement(localName string, options ...ElementCreationOptions) Element {
 	switch len(options) {
 	case 0:
