@@ -20,10 +20,6 @@ func Loop() {
 		doneCh <- true
 	})
 
-	CurrentWindow().On("popstate", func(Event) {
-		doneCh <- true
-	})
-
 	<-doneCh
 }
 
