@@ -1,36 +1,26 @@
 <!doctype html>
 <html>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Draggable Example</title>
-<style>
-	#mydiv {
-	  position: absolute;
-	  z-index: 9;
-	  background-color: #f1f1f1;
-	  text-align: center;
-	  border: 1px solid #d3d3d3;
-	}
+	<meta charset="utf-8">
+	<style>
+		#mydiv {
+			position: absolute;
+			z-index: 9;
+			background-color: #f1f1f1;
+			text-align: center;
+			border: 1px solid #d3d3d3;
+		}
 
-	#mydivheader {
-	  padding: 10px;
-	  cursor: move;
-	  z-index: 10;
-	  background-color: #2196F3;
-	  color: #fff;
-	}
-</style>
+		#mydivheader {
+			padding: 10px;
+			cursor: move;
+			z-index: 10;
+			background-color: #2196F3;
+			color: #fff;
+		}
+	</style>
 <body>
-
-<h1>Draggable DIV Element</h1>
-
-<p>Click and hold the mouse button down while moving the DIV element</p>
-
-<div id="mydiv">
-  <div id="mydivheader">Click here to move</div>
-  <p>Move</p>
-  <p>this</p>
-  <p>DIV</p>
-</div>
-
 <script src="wasm_exec.js"></script>
 <script>
 	const go = new Go();
@@ -39,6 +29,15 @@
 	});
 </script>
 
+<h1>Draggable DIV Element</h1>
+
+<p>Click and hold the mouse button down while moving the DIV element</p>
+
+<div id="mydiv">
+	<div id="mydivheader">Click here to move</div>
+	<p>Move</p>
+	<p>this</p>
+	<p>DIV</p>
+</div>
 </body>
 </html>
-
