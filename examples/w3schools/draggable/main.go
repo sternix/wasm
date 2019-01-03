@@ -13,7 +13,7 @@ import (
 func main() {
 	myDiv := wasm.CurrentDocument().ElementById("mydiv").(wasm.HTMLElement)
 	dragElement(myDiv)
-	wasm.Wait()
+	wasm.Loop()
 }
 
 func dragElement(elm wasm.HTMLElement) {

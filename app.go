@@ -15,8 +15,12 @@ var (
 	currentDocument Document
 )
 
-func Wait() {
+func Loop() {
 	CurrentWindow().On("beforeunload", func(Event) {
+		doneCh <- true
+	})
+
+	CurrentWindow().On("popstate", func(Event) {
 		doneCh <- true
 	})
 

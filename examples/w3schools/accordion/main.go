@@ -5,19 +5,19 @@ package main
 
 import (
 	"fmt"
-	. "github.com/sternix/wasm"
+	"github.com/sternix/wasm"
 )
 
 func main() {
-	doc := CurrentDocument()
+	doc := wasm.CurrentDocument()
 	acc := doc.ElementsByClassName("accordion")
 
 	for i := 0; i < len(acc); i++ {
-		btn := acc[i].(HTMLButtonElement)
-		btn.OnClick(func(MouseEvent) {
+		btn := acc[i].(wasm.HTMLButtonElement)
+		btn.OnClick(func(wasm.MouseEvent) {
 			this := btn
 			this.ClassList().Toggle("active")
-			panel := this.NextElementSibling().(HTMLDivElement)
+			panel := this.NextElementSibling().(wasm.HTMLDivElement)
 			if panel.Style().PropertyValue("max-height") != "" {
 				panel.Style().SetProperty("max-height", "")
 			} else {
@@ -26,5 +26,5 @@ func main() {
 		})
 	}
 
-	Wait()
+	wasm.Loop()
 }

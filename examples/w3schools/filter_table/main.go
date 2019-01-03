@@ -21,7 +21,7 @@ func main() {
 	input = doc.ElementById("myInput").(wasm.HTMLInputElement)
 	table = doc.ElementById("myTable")
 	input.OnKeyUp(filterTable)
-	wasm.Wait()
+	wasm.Loop()
 }
 
 func filterTable(wasm.KeyboardEvent) {

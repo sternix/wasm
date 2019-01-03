@@ -150,5 +150,5 @@ func main() {
 	// Draw the triangle
 	gl.DrawElements(wasm.TRIANGLES, len(indicesNative), wasm.UNSIGNED_SHORT, 0)
 
-	wasm.Wait()
+	wasm.Loop()
 }

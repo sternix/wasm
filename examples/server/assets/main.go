@@ -128,7 +128,7 @@ func main() {
 	// Start running
 	rafcb = win.RequestAnimationFrame(frcb)
 
-	wasm.Wait()
+	wasm.Loop()
 
 	win.CancelAnimationFrame(rafcb)
 	frcb.Release()

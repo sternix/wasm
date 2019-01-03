@@ -197,7 +197,7 @@ func main() {
 	frcb := wasm.NewFrameRequestCallback(renderFrame)
 	rafcb = win.RequestAnimationFrame(frcb)
 
-	wasm.Wait()
+	wasm.Loop()
 	win.CancelAnimationFrame(rafcb)
 	frcb.Release()
 }

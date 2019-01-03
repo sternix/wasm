@@ -235,7 +235,7 @@ func main() {
 
 	fmt.Println("All Tests completed")
 
-	wasm.Wait()
+	wasm.Loop()
 
 	win.CancelAnimationFrame(rafcb)
 	frcb.Release()

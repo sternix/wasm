@@ -21,5 +21,5 @@ func main() {
 		}
 	}
 
-	wasm.Wait()
+	wasm.Loop()
 }

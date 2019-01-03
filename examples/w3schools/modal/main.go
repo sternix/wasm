@@ -4,30 +4,30 @@
 package main
 
 import (
-	. "github.com/sternix/wasm"
+	"github.com/sternix/wasm"
 )
 
 func main() {
-	win := CurrentWindow()
+	win := wasm.CurrentWindow()
 	doc := win.Document()
 
-	modal := doc.ElementById("myModal").(HTMLDivElement)
-	btn := doc.ElementById("myBtn").(HTMLButtonElement)
-	span := doc.ElementsByClassName("close")[0].(HTMLElement)
+	modal := doc.ElementById("myModal").(wasm.HTMLDivElement)
+	btn := doc.ElementById("myBtn").(wasm.HTMLButtonElement)
+	span := doc.ElementsByClassName("close")[0].(wasm.HTMLElement)
 
-	btn.OnClick(func(MouseEvent) {
+	btn.OnClick(func(wasm.MouseEvent) {
 		modal.Style().SetProperty("display", "block")
 	})
 
-	span.OnClick(func(MouseEvent) {
+	span.OnClick(func(wasm.MouseEvent) {
 		modal.Style().SetProperty("display", "none")
 	})
 
-	win.OnClick(func(e MouseEvent) {
-		if Equal(e.Target(), modal) {
+	win.OnClick(func(e wasm.MouseEvent) {
+		if wasm.Equal(e.Target(), modal) {
 			modal.Style().SetProperty("display", "none")
 		}
 	})
 
-	Wait()
+	wasm.Loop()
 }

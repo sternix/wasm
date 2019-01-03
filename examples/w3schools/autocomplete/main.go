@@ -14,7 +14,7 @@ import (
 func main() {
 	input := wasm.CurrentDocument().ElementById("myInput").(wasm.HTMLInputElement)
 	Autocomplete(input, countries)
-	wasm.Wait()
+	wasm.Loop()
 }
 
 func Autocomplete(input wasm.HTMLInputElement, arr []string) {
