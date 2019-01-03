@@ -155,10 +155,6 @@ func (p *eventHandlerImpl) Remove() {
 	p.Release()
 }
 
-func (p *eventHandlerImpl) Dispatch() bool {
-	return p.Call("dispatchEvent", p.jsCb).Bool()
-}
-
 // -------------8<---------------------------------------
 
 type eventTargetImpl struct {
@@ -193,6 +189,10 @@ func (p *eventTargetImpl) On(event string, fn func(ev Event)) EventHandler {
 	p.Call("addEventListener", event, eh.jsCb)
 
 	return eh
+}
+
+func (p *eventTargetImpl) DispatchEvent(e Event) bool {
+	return p.Call("dispatchEvent", JSValue(e)).Bool()
 }
 
 // -------------8<---------------------------------------

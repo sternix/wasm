@@ -15,11 +15,11 @@ type (
 		Handle(Event)
 		Release()
 		Remove()
-		Dispatch() bool
 	}
 
 	EventTarget interface {
-		On(string, func(ev Event)) EventHandler
+		On(string, func(Event)) EventHandler
+		DispatchEvent(Event) bool
 	}
 
 	// https://dom.spec.whatwg.org/#event
