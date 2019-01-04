@@ -922,6 +922,20 @@ type textImpl struct {
 	js.Value
 }
 
+func NewText(data ...string) Text {
+	jsText := js.Global().Get("Text")
+	if isNil(jsText) {
+		return nil
+	}
+
+	switch len(data) {
+	case 0:
+		return wrapText(jsText.New())
+	default:
+		return wrapText(jsText.New(data[0]))
+	}
+}
+
 func wrapText(v js.Value) Text {
 	if p := newTextImpl(v); p != nil {
 		return p
@@ -957,6 +971,7 @@ func (p *textImpl) Length() int {
 // -------------8<---------------------------------------
 
 type characterDataImpl struct {
+	*nodeImpl
 	*nonDocumentTypeChildNodeImpl
 	*childNodeImpl
 	js.Value
@@ -975,6 +990,7 @@ func newCharacterDataImpl(v js.Value) *characterDataImpl {
 	}
 
 	return &characterDataImpl{
+		nodeImpl:                     newNodeImpl(v),
 		nonDocumentTypeChildNodeImpl: newNonDocumentTypeChildNodeImpl(v),
 		childNodeImpl:                newChildNodeImpl(v),
 		Value:                        v,

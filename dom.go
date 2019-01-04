@@ -228,6 +228,7 @@ type (
 
 	// https://dom.spec.whatwg.org/#characterdata
 	CharacterData interface {
+		Node
 		NonDocumentTypeChildNode
 		ChildNode
 
