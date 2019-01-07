@@ -4,7 +4,6 @@ package wasm
 
 import (
 	"fmt"
-	"syscall/js"
 	"time"
 )
 
@@ -110,7 +109,7 @@ func NewErrorEvent(typ string, eei ...ErrorEventInit) ErrorEvent {
 
 type eventHandlerImpl struct {
 	Value
-	jsCb js.Func
+	jsCb Func
 	fn   func(Event)
 	typ  string
 }
@@ -119,9 +118,9 @@ func (p *eventHandlerImpl) Type() string {
 	return p.typ
 }
 
-func (p *eventHandlerImpl) jsFunc(this js.Value, args []js.Value) interface{} {
+func (p *eventHandlerImpl) jsFunc(this Value, args []Value) interface{} {
 	if len(args) > 0 {
-		p.Handle(wrapAsEvent(Value{args[0]}))
+		p.Handle(wrapAsEvent(args[0]))
 	}
 	return nil
 }
@@ -168,7 +167,7 @@ func (p *eventTargetImpl) On(event string, fn func(ev Event)) EventHandler {
 		typ:   event,
 	}
 
-	eh.jsCb = js.FuncOf(eh.jsFunc)
+	eh.jsCb = FuncOf(eh.jsFunc)
 	p.Call("addEventListener", event, eh.jsCb)
 
 	return eh

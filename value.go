@@ -3,8 +3,8 @@
 package wasm
 
 import (
-	"syscall/js"
 	"reflect"
+	"syscall/js"
 )
 
 var (
@@ -196,6 +196,31 @@ func JSValue(o interface{}) Value {
 		}
 	}
 	return jsNull
+}
+
+// -------------8<---------------------------------------
+
+type Func struct {
+	js.Func
+}
+
+func FuncOf(fn func(this Value, args []Value) interface{}) Func {
+	fx := func(xthis js.Value, xargs []js.Value) interface{} {
+		var (
+			fxThis = Value{xthis}
+			fxArgs []Value
+		)
+
+		if xargs != nil && len(xargs) > 0 {
+			fxArgs = make([]Value, len(xargs))
+			for i, v := range xargs {
+				fxArgs[i] = Value{v}
+			}
+		}
+		fn(fxThis, fxArgs)
+		return nil
+	}
+	return Func{js.FuncOf(fx)}
 }
 
 // -------------8<---------------------------------------

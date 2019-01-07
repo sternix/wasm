@@ -2,17 +2,11 @@
 
 package wasm
 
-import (
-	"syscall/js"
-)
-
 type (
 	Callback interface {
-		js.Wrapper
-
 		Release()
-		jsCallback() js.Func
-		jsFunc(js.Value, []js.Value) interface{}
+		jsCallback() Func
+		jsFunc(Value, []Value) interface{}
 	}
 
 	// for SetTimeout and SetInterval
@@ -59,7 +53,7 @@ type (
 // -------------8<---------------------------------------
 
 type callbackImpl struct {
-	js.Func
+	Func
 }
 
 func newCallbackImpl() *callbackImpl {
@@ -70,7 +64,7 @@ func (p *callbackImpl) Release() {
 	p.Func.Release()
 }
 
-func (p *callbackImpl) jsCallback() js.Func {
+func (p *callbackImpl) jsCallback() Func {
 	return p.Func
 }
 
@@ -83,7 +77,7 @@ func NewTimerCallback(fn func(...interface{}), args ...interface{}) TimerCallbac
 		args:         args,
 	}
 
-	h.Func = js.FuncOf(h.jsFunc)
+	h.Func = FuncOf(h.jsFunc)
 	return h
 }
 
@@ -93,7 +87,7 @@ type timerCallbackImpl struct {
 	args []interface{}
 }
 
-func (p *timerCallbackImpl) jsFunc(this js.Value, args []js.Value) interface{} {
+func (p *timerCallbackImpl) jsFunc(this Value, args []Value) interface{} {
 	p.fn(p.args...)
 	return nil
 }
@@ -106,7 +100,7 @@ func NewFrameRequestCallback(fn func(FrameRequestCallback, float64)) FrameReques
 		fn:           fn,
 	}
 
-	h.Func = js.FuncOf(h.jsFunc)
+	h.Func = FuncOf(h.jsFunc)
 	return h
 }
 
@@ -115,7 +109,7 @@ type frameRequestCallbackImpl struct {
 	fn func(FrameRequestCallback, float64)
 }
 
-func (p *frameRequestCallbackImpl) jsFunc(this js.Value, args []js.Value) interface{} {
+func (p *frameRequestCallbackImpl) jsFunc(this Value, args []Value) interface{} {
 	p.fn(p, args[0].Float())
 	return nil
 }
@@ -128,7 +122,7 @@ func NewBlobCallback(fn func(Blob)) BlobCallback {
 		fn:           fn,
 	}
 
-	cb.Func = js.FuncOf(cb.jsFunc)
+	cb.Func = FuncOf(cb.jsFunc)
 	return cb
 }
 
@@ -137,9 +131,9 @@ type blobCallbackImpl struct {
 	fn func(Blob)
 }
 
-func (p *blobCallbackImpl) jsFunc(this js.Value, args []js.Value) interface{} {
+func (p *blobCallbackImpl) jsFunc(this Value, args []Value) interface{} {
 	if len(args) == 1 {
-		p.fn(wrapBlob(Value{args[0]})) // TODO func type
+		p.fn(wrapBlob(args[0]))
 	} else {
 		p.fn(nil)
 	}
@@ -154,7 +148,7 @@ func NewMutationCallback(fn func([]MutationRecord, MutationObserver)) MutationCa
 		fn:           fn,
 	}
 
-	cb.Func = js.FuncOf(cb.jsFunc)
+	cb.Func = FuncOf(cb.jsFunc)
 	return cb
 }
 
@@ -163,9 +157,9 @@ type mutationCallbackImpl struct {
 	fn func([]MutationRecord, MutationObserver)
 }
 
-func (p *mutationCallbackImpl) jsFunc(this js.Value, args []js.Value) interface{} {
+func (p *mutationCallbackImpl) jsFunc(this Value, args []Value) interface{} {
 	if len(args) == 2 {
-		p.fn(mutationRecordSequenceToSlice(Value{args[0]}), wrapMutationObserver(Value{args[1]}))
+		p.fn(mutationRecordSequenceToSlice(args[0]), wrapMutationObserver(args[1]))
 	}
 	return nil
 }
@@ -178,7 +172,7 @@ func NewPositionCallback(fn func(Position)) PositionCallback {
 		fn:           fn,
 	}
 
-	cb.Func = js.FuncOf(cb.jsFunc)
+	cb.Func = FuncOf(cb.jsFunc)
 	return cb
 }
 
@@ -187,9 +181,9 @@ type positionCallbackImpl struct {
 	fn func(Position)
 }
 
-func (p *positionCallbackImpl) jsFunc(this js.Value, args []js.Value) interface{} {
+func (p *positionCallbackImpl) jsFunc(this Value, args []Value) interface{} {
 	if len(args) == 1 {
-		p.fn(wrapPosition(Value{args[0]}))
+		p.fn(wrapPosition(args[0]))
 	}
 	return nil
 }
@@ -202,7 +196,7 @@ func NewPositionErrorCallback(fn func(PositionError)) PositionErrorCallback {
 		fn:           fn,
 	}
 
-	cb.Func = js.FuncOf(cb.jsFunc)
+	cb.Func = FuncOf(cb.jsFunc)
 	return cb
 }
 
@@ -211,9 +205,9 @@ type positionErrorCallbackImpl struct {
 	fn func(PositionError)
 }
 
-func (p *positionErrorCallbackImpl) jsFunc(this js.Value, args []js.Value) interface{} {
+func (p *positionErrorCallbackImpl) jsFunc(this Value, args []Value) interface{} {
 	if len(args) == 1 {
-		p.fn(wrapPositionError(Value{args[0]}))
+		p.fn(wrapPositionError(args[0]))
 	}
 	return nil
 }
@@ -226,7 +220,7 @@ func NewFunctionStringCallback(fn func(string)) FunctionStringCallback {
 		fn:           fn,
 	}
 
-	cb.Func = js.FuncOf(cb.jsFunc)
+	cb.Func = FuncOf(cb.jsFunc)
 	return cb
 }
 
@@ -235,7 +229,7 @@ type functionStringCallbackImpl struct {
 	fn func(string)
 }
 
-func (p *functionStringCallbackImpl) jsFunc(this js.Value, args []js.Value) interface{} {
+func (p *functionStringCallbackImpl) jsFunc(this Value, args []Value) interface{} {
 	if len(args) == 1 {
 		p.fn(args[0].String())
 	}
@@ -250,7 +244,7 @@ func NewVoidFunction(fn func()) VoidFunction {
 		fn:           fn,
 	}
 
-	cb.Func = js.FuncOf(cb.jsFunc)
+	cb.Func = FuncOf(cb.jsFunc)
 	return cb
 }
 
@@ -259,7 +253,7 @@ type voidFunctionImpl struct {
 	fn func()
 }
 
-func (p *voidFunctionImpl) jsFunc(this js.Value, args []js.Value) interface{} {
+func (p *voidFunctionImpl) jsFunc(this Value, args []Value) interface{} {
 	p.fn()
 	return nil
 }
