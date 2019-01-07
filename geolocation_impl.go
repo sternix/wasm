@@ -3,24 +3,22 @@
 package wasm
 
 import (
-	"syscall/js"
 	"time"
 )
 
 // -------------8<---------------------------------------
 
 type geolocationImpl struct {
-	js.Value
+	Value
 }
 
-func wrapGeolocation(v js.Value) Geolocation {
-	if isNil(v) {
-		return nil
+func wrapGeolocation(v Value) Geolocation {
+	if v.Valid() {
+		return &geolocationImpl{
+			Value: v,
+		}
 	}
-
-	return &geolocationImpl{
-		Value: v,
-	}
+	return nil
 }
 
 func (p *geolocationImpl) CurrentPosition(cb PositionCallback, args ...interface{}) {
@@ -64,17 +62,16 @@ func (p *geolocationImpl) ClearWatch(watchId int) {
 // -------------8<---------------------------------------
 
 type positionImpl struct {
-	js.Value
+	Value
 }
 
-func wrapPosition(v js.Value) Position {
-	if isNil(v) {
-		return nil
+func wrapPosition(v Value) Position {
+	if v.Valid() {
+		return &positionImpl{
+			Value: v,
+		}
 	}
-
-	return &positionImpl{
-		Value: v,
-	}
+	return nil
 }
 
 func (p *positionImpl) Coords() Coordinates {
@@ -88,17 +85,16 @@ func (p *positionImpl) Timestamp() time.Time {
 // -------------8<---------------------------------------
 
 type coordinatesImpl struct {
-	js.Value
+	Value
 }
 
-func wrapCoordinates(v js.Value) Coordinates {
-	if isNil(v) {
-		return nil
+func wrapCoordinates(v Value) Coordinates {
+	if v.Valid() {
+		return &coordinatesImpl{
+			Value: v,
+		}
 	}
-
-	return &coordinatesImpl{
-		Value: v,
-	}
+	return nil
 }
 
 func (p *coordinatesImpl) Latitude() float64 {
@@ -132,17 +128,16 @@ func (p *coordinatesImpl) Speed() float64 {
 // -------------8<---------------------------------------
 
 type positionErrorImpl struct {
-	js.Value
+	Value
 }
 
-func wrapPositionError(v js.Value) PositionError {
-	if isNil(v) {
-		return nil
+func wrapPositionError(v Value) PositionError {
+	if v.Valid() {
+		return &positionErrorImpl{
+			Value: v,
+		}
 	}
-
-	return &positionErrorImpl{
-		Value: v,
-	}
+	return nil
 }
 
 func (p *positionErrorImpl) Code() PositionErrorCode {

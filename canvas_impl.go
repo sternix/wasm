@@ -2,28 +2,23 @@
 
 package wasm
 
-import (
-	"syscall/js"
-)
-
 // -------------8<---------------------------------------
 
 type canvasRenderingContext2DImpl struct {
 	*canvasDrawingStylesImpl
 	*canvasPathMethodsImpl
-	js.Value
+	Value
 }
 
-func wrapCanvasRenderingContext2D(v js.Value) CanvasRenderingContext2D {
-	if isNil(v) {
-		return nil
+func wrapCanvasRenderingContext2D(v Value) CanvasRenderingContext2D {
+	if v.Valid() {
+		return &canvasRenderingContext2DImpl{
+			canvasDrawingStylesImpl: newCanvasDrawingStylesImpl(v),
+			canvasPathMethodsImpl:   newCanvasPathMethodsImpl(v),
+			Value:                   v,
+		}
 	}
-
-	return &canvasRenderingContext2DImpl{
-		canvasDrawingStylesImpl: newCanvasDrawingStylesImpl(v),
-		canvasPathMethodsImpl:   newCanvasPathMethodsImpl(v),
-		Value:                   v,
-	}
+	return nil
 }
 
 func (p *canvasRenderingContext2DImpl) Canvas() HTMLCanvasElement {
@@ -250,24 +245,23 @@ func (p *canvasRenderingContext2DImpl) PutImageDataDirty(imageData ImageData, dx
 // -------------8<---------------------------------------
 
 type canvasDrawingStylesImpl struct {
-	js.Value
+	Value
 }
 
-func wrapCanvasDrawingStyles(v js.Value) CanvasDrawingStyles {
+func wrapCanvasDrawingStyles(v Value) CanvasDrawingStyles {
 	if p := newCanvasDrawingStylesImpl(v); p != nil {
 		return p
 	}
 	return nil
 }
 
-func newCanvasDrawingStylesImpl(v js.Value) *canvasDrawingStylesImpl {
-	if isNil(v) {
-		return nil
+func newCanvasDrawingStylesImpl(v Value) *canvasDrawingStylesImpl {
+	if v.Valid() {
+		return &canvasDrawingStylesImpl{
+			Value: v,
+		}
 	}
-
-	return &canvasDrawingStylesImpl{
-		Value: v,
-	}
+	return nil
 }
 
 func (p *canvasDrawingStylesImpl) LineWidth() float64 {
@@ -342,24 +336,23 @@ func (p *canvasDrawingStylesImpl) SetTextBaseline(tbl TextBaseline) {
 // -------------8<---------------------------------------
 
 type canvasPathMethodsImpl struct {
-	js.Value
+	Value
 }
 
-func wrapCanvasPathMethods(v js.Value) CanvasPathMethods {
+func wrapCanvasPathMethods(v Value) CanvasPathMethods {
 	if p := newCanvasPathMethodsImpl(v); p != nil {
 		return p
 	}
 	return nil
 }
 
-func newCanvasPathMethodsImpl(v js.Value) *canvasPathMethodsImpl {
-	if isNil(v) {
-		return nil
+func newCanvasPathMethodsImpl(v Value) *canvasPathMethodsImpl {
+	if v.Valid() {
+		return &canvasPathMethodsImpl{
+			Value: v,
+		}
 	}
-
-	return &canvasPathMethodsImpl{
-		Value: v,
-	}
+	return nil
 }
 
 func (p *canvasPathMethodsImpl) ClosePath() {
@@ -402,17 +395,16 @@ func (p *canvasPathMethodsImpl) Arc(x float64, y float64, radius float64, startA
 // -------------8<---------------------------------------
 
 type canvasGradientImpl struct {
-	js.Value
+	Value
 }
 
-func wrapCanvasGradient(v js.Value) CanvasGradient {
-	if isNil(v) {
-		return nil
+func wrapCanvasGradient(v Value) CanvasGradient {
+	if v.Valid() {
+		return &canvasGradientImpl{
+			Value: v,
+		}
 	}
-
-	return &canvasGradientImpl{
-		Value: v,
-	}
+	return nil
 }
 
 func (p *canvasGradientImpl) AddColorStop(offset float64, color string) {
@@ -422,33 +414,31 @@ func (p *canvasGradientImpl) AddColorStop(offset float64, color string) {
 // -------------8<---------------------------------------
 
 type canvasPatternImpl struct {
-	js.Value
+	Value
 }
 
-func wrapCanvasPattern(v js.Value) CanvasPattern {
-	if isNil(v) {
-		return nil
+func wrapCanvasPattern(v Value) CanvasPattern {
+	if v.Valid() {
+		return &canvasPatternImpl{
+			Value: v,
+		}
 	}
-
-	return &canvasPatternImpl{
-		Value: v,
-	}
+	return nil
 }
 
 // -------------8<---------------------------------------
 
 type textMetricsImpl struct {
-	js.Value
+	Value
 }
 
-func wrapTextMetrics(v js.Value) TextMetrics {
-	if isNil(v) {
-		return nil
+func wrapTextMetrics(v Value) TextMetrics {
+	if v.Valid() {
+		return &textMetricsImpl{
+			Value: v,
+		}
 	}
-
-	return &textMetricsImpl{
-		Value: v,
-	}
+	return nil
 }
 
 func (p *textMetricsImpl) Width() float64 {
@@ -458,17 +448,16 @@ func (p *textMetricsImpl) Width() float64 {
 // -------------8<---------------------------------------
 
 type imageDataImpl struct {
-	js.Value
+	Value
 }
 
-func wrapImageData(v js.Value) ImageData {
-	if isNil(v) {
-		return nil
+func wrapImageData(v Value) ImageData {
+	if v.Valid() {
+		return &imageDataImpl{
+			Value: v,
+		}
 	}
-
-	return &imageDataImpl{
-		Value: v,
-	}
+	return nil
 }
 
 func (p *imageDataImpl) Width() int {

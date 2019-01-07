@@ -2,10 +2,6 @@
 
 package wasm
 
-import (
-	"syscall/js"
-)
-
 type (
 	// https://dom.spec.whatwg.org/#nonelementparentnode
 	NonElementParentNode interface {
@@ -57,17 +53,16 @@ type (
 var _ NonElementParentNode = &nonElementParentNodeImpl{}
 
 type nonElementParentNodeImpl struct {
-	js.Value
+	Value
 }
 
-func newNonElementParentNodeImpl(v js.Value) *nonElementParentNodeImpl {
-	if isNil(v) {
-		return nil
+func newNonElementParentNodeImpl(v Value) *nonElementParentNodeImpl {
+	if v.Valid() {
+		return &nonElementParentNodeImpl{
+			Value: v,
+		}
 	}
-
-	return &nonElementParentNodeImpl{
-		Value: v,
-	}
+	return nil
 }
 
 func (p *nonElementParentNodeImpl) ElementById(id string) Element {
@@ -83,17 +78,16 @@ func (p *nonElementParentNodeImpl) HTMLElementById(id string) HTMLElement {
 var _ NonDocumentTypeChildNode = &nonDocumentTypeChildNodeImpl{}
 
 type nonDocumentTypeChildNodeImpl struct {
-	js.Value
+	Value
 }
 
-func newNonDocumentTypeChildNodeImpl(v js.Value) *nonDocumentTypeChildNodeImpl {
-	if isNil(v) {
-		return nil
+func newNonDocumentTypeChildNodeImpl(v Value) *nonDocumentTypeChildNodeImpl {
+	if v.Valid() {
+		return &nonDocumentTypeChildNodeImpl{
+			Value: v,
+		}
 	}
-
-	return &nonDocumentTypeChildNodeImpl{
-		Value: v,
-	}
+	return nil
 }
 
 func (p *nonDocumentTypeChildNodeImpl) PreviousElementSibling() Element {
@@ -107,24 +101,23 @@ func (p *nonDocumentTypeChildNodeImpl) NextElementSibling() Element {
 // -------------8<---------------------------------------
 
 type childNodeImpl struct {
-	js.Value
+	Value
 }
 
-func wrapChildNode(v js.Value) ChildNode {
+func wrapChildNode(v Value) ChildNode {
 	if p := newChildNodeImpl(v); p != nil {
 		return p
 	}
 	return nil
 }
 
-func newChildNodeImpl(v js.Value) *childNodeImpl {
-	if isNil(v) {
-		return nil
+func newChildNodeImpl(v Value) *childNodeImpl {
+	if v.Valid() {
+		return &childNodeImpl{
+			Value: v,
+		}
 	}
-
-	return &childNodeImpl{
-		Value: v,
-	}
+	return nil
 }
 
 func (p *childNodeImpl) Before(nodes ...interface{}) {
@@ -183,17 +176,16 @@ func (p *childNodeImpl) Remove() {
 var _ DocumentOrShadowRoot = &documentOrShadowRootImpl{}
 
 type documentOrShadowRootImpl struct {
-	js.Value
+	Value
 }
 
-func newDocumentOrShadowRootImpl(v js.Value) *documentOrShadowRootImpl {
-	if isNil(v) {
-		return nil
+func newDocumentOrShadowRootImpl(v Value) *documentOrShadowRootImpl {
+	if v.Valid() {
+		return &documentOrShadowRootImpl{
+			Value: v,
+		}
 	}
-
-	return &documentOrShadowRootImpl{
-		Value: v,
-	}
+	return nil
 }
 
 func (p *documentOrShadowRootImpl) FullscreenElement() Element {
@@ -214,11 +206,11 @@ func (p *documentOrShadowRootImpl) StyleSheets() []CSSStyleSheet {
 // -------------8<---------------------------------------
 
 type slotableImpl struct {
-	js.Value
+	Value
 }
 
 /*
-func wrapSlotable(v js.Value) Slotable {
+func wrapSlotable(v Value) Slotable {
 	if p := newSlotableImpl(v); p != nil {
 		return p
 	}
@@ -226,14 +218,13 @@ func wrapSlotable(v js.Value) Slotable {
 }
 */
 
-func newSlotableImpl(v js.Value) *slotableImpl {
-	if isNil(v) {
-		return nil
+func newSlotableImpl(v Value) *slotableImpl {
+	if v.Valid() {
+		return &slotableImpl{
+			Value: v,
+		}
 	}
-
-	return &slotableImpl{
-		Value: v,
-	}
+	return nil
 }
 
 func (p *slotableImpl) AssignedSlot() HTMLSlotElement {
@@ -245,16 +236,16 @@ func (p *slotableImpl) AssignedSlot() HTMLSlotElement {
 var _ ParentNode = &parentNodeImpl{}
 
 type parentNodeImpl struct {
-	js.Value
+	Value
 }
 
-func newParentNodeImpl(v js.Value) *parentNodeImpl {
-	if isNil(v) {
-		return nil
+func newParentNodeImpl(v Value) *parentNodeImpl {
+	if v.Valid() {
+		return &parentNodeImpl{
+			Value: v,
+		}
 	}
-	return &parentNodeImpl{
-		Value: v,
-	}
+	return nil
 }
 
 func (p *parentNodeImpl) Children() []Element {
@@ -318,7 +309,7 @@ type FullscreenOptions struct {
 	NavigationUI FullscreenNavigationUI
 }
 
-func (p FullscreenOptions) toJSObject() js.Value {
+func (p FullscreenOptions) toJSObject() Value {
 	o := jsObject.New()
 	o.Set("navigationUI", string(p.NavigationUI))
 	return o

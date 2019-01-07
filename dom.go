@@ -2,10 +2,6 @@
 
 package wasm
 
-import (
-	"syscall/js"
-)
-
 type (
 	// https://dom.spec.whatwg.org/#document
 	Document interface {
@@ -60,7 +56,7 @@ type (
 		SetCookie(string)
 		LastModified() string
 		ReadyState() DocumentReadyState
-		//ByName(string) js.Value // ???
+		//ByName(string) Value // ???
 		// getter object (DOMString name);
 		Title() string
 		SetTitle(string)
@@ -619,7 +615,7 @@ type ElementCreationOptions struct {
 	Is string
 }
 
-func (p ElementCreationOptions) toJSObject() js.Value {
+func (p ElementCreationOptions) toJSObject() Value {
 	o := jsObject.New()
 	o.Set("is", p.Is)
 	return o
@@ -632,7 +628,7 @@ type RootNodeOptions struct {
 	Composed bool
 }
 
-func (p RootNodeOptions) toJSObject() js.Value {
+func (p RootNodeOptions) toJSObject() Value {
 	o := jsObject.New()
 	o.Set("composed", p.Composed)
 	return o
@@ -645,7 +641,7 @@ type ShadowRootInit struct {
 	Mode ShadowRootMode
 }
 
-func (p ShadowRootInit) toJSObject() js.Value {
+func (p ShadowRootInit) toJSObject() Value {
 	o := jsObject.New()
 	o.Set("mode", p.Mode)
 	return o
@@ -664,7 +660,7 @@ type MutationObserverInit struct {
 	AttributeFilter       []string
 }
 
-func (p MutationObserverInit) toJSObject() js.Value {
+func (p MutationObserverInit) toJSObject() Value {
 	o := jsObject.New()
 	o.Set("childList", p.ChildList)
 	o.Set("attributes", p.Attributes)

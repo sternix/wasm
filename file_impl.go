@@ -9,17 +9,16 @@ import (
 // -------------8<---------------------------------------
 
 type fileImpl struct {
-	js.Value
+	Value
 }
 
-func wrapFile(v js.Value) File {
-	if isNil(v) {
-		return nil
+func wrapFile(v Value) File {
+	if v.Valid() {
+		return &fileImpl{
+			Value: v,
+		}
 	}
-
-	return &fileImpl{
-		Value: v,
-	}
+	return nil
 }
 
 func (p *fileImpl) Name() string {
@@ -33,16 +32,16 @@ func (p *fileImpl) LastModified() int {
 // -------------8<---------------------------------------
 
 type blobImpl struct {
-	js.Value
+	Value
 }
 
-func wrapBlob(v js.Value) Blob {
-	if isNil(v) {
-		return nil
+func wrapBlob(v Value) Blob {
+	if v.Valid() {
+		return &blobImpl{
+			Value: v,
+		}
 	}
-	return &blobImpl{
-		Value: v,
-	}
+	return nil
 }
 
 func (p *blobImpl) Size() int {
@@ -84,14 +83,13 @@ type fileReaderImpl struct {
 	*eventTargetImpl
 }
 
-func wrapFileReader(v js.Value) FileReader {
-	if isNil(v) {
-		return nil
+func wrapFileReader(v Value) FileReader {
+	if v.Valid() {
+		return &fileReaderImpl{
+			eventTargetImpl: newEventTargetImpl(v),
+		}
 	}
-
-	return &fileReaderImpl{
-		eventTargetImpl: newEventTargetImpl(v),
-	}
+	return nil
 }
 
 func (p *fileReaderImpl) ReadAsArrayBuffer(blob Blob) {
@@ -128,9 +126,9 @@ func (p *fileReaderImpl) Result() []byte {
 	v := p.Get("result")
 
 	switch v.Type() {
-	case js.TypeString:
+	case TypeString:
 		return []byte(v.String())
-	case js.TypeObject: // ArrayBuffer
+	case TypeObject: // ArrayBuffer
 		return wrapArrayBuffer(v).ToByteSlice()
 	default:
 		return nil
@@ -168,17 +166,16 @@ func (p *fileReaderImpl) OnLoadEnd(fn func(Event)) EventHandler {
 // -------------8<---------------------------------------
 
 type fileReaderSyncImpl struct {
-	js.Value
+	Value
 }
 
-func wrapFileReaderSync(v js.Value) FileReaderSync {
-	if isNil(v) {
-		return nil
+func wrapFileReaderSync(v Value) FileReaderSync {
+	if v.Valid() {
+		return &fileReaderSyncImpl{
+			Value: v,
+		}
 	}
-
-	return &fileReaderSyncImpl{
-		Value: v,
-	}
+	return nil
 }
 
 func (p *fileReaderSyncImpl) ReadAsArrayBuffer(blob Blob) ArrayBuffer {
@@ -208,14 +205,13 @@ type progressEventImpl struct {
 	*eventImpl
 }
 
-func wrapProgressEvent(v js.Value) ProgressEvent {
-	if isNil(v) {
-		return nil
+func wrapProgressEvent(v Value) ProgressEvent {
+	if v.Valid() {
+		return &progressEventImpl{
+			eventImpl: newEventImpl(v),
+		}
 	}
-
-	return &progressEventImpl{
-		eventImpl: newEventImpl(v),
-	}
+	return nil
 }
 
 func (p *progressEventImpl) LengthComputable() bool {
@@ -233,74 +229,66 @@ func (p *progressEventImpl) Total() int {
 // -------------8<---------------------------------------
 
 func NewBlob(args ...interface{}) Blob {
-	jsBlob := js.Global().Get("Blob")
-	if isNil(jsBlob) {
-		return nil
-	}
-
-	switch len(args) {
-	case 1:
-		if ar, ok := args[0].([]byte); ok {
-			ta := js.TypedArrayOf(ar)
-			defer ta.Release()
-			return wrapBlob(jsBlob.New(ta))
-		}
-	case 2:
-		if ar, ok := args[0].([]byte); ok {
-			if options, ok := args[1].(BlobPropertyBag); ok {
+	if jsBlob := jsGlobal.Get("Blob"); jsBlob.Valid() {
+		switch len(args) {
+		case 1:
+			if ar, ok := args[0].([]byte); ok {
 				ta := js.TypedArrayOf(ar)
 				defer ta.Release()
-				return wrapBlob(jsBlob.New(ta, options.toJSObject()))
+				return wrapBlob(jsBlob.New(ta))
+			}
+		case 2:
+			if ar, ok := args[0].([]byte); ok {
+				if options, ok := args[1].(BlobPropertyBag); ok {
+					ta := js.TypedArrayOf(ar)
+					defer ta.Release()
+					return wrapBlob(jsBlob.New(ta, options.toJSObject()))
+				}
 			}
 		}
-	}
 
-	return wrapBlob(jsBlob.New())
+		return wrapBlob(jsBlob.New())
+	}
+	return nil
 }
 
 func NewFile(fileBits []byte, fileName string, options ...FilePropertyBag) File {
-	jsFile := js.Global().Get("File")
-	if isNil(jsFile) {
-		return nil
-	}
+	if jsFile := jsGlobal.Get("File"); jsFile.Valid() {
+		ta := js.TypedArrayOf(fileBits)
+		defer ta.Release()
 
-	ta := js.TypedArrayOf(fileBits)
-	defer ta.Release()
-
-	switch len(options) {
-	case 0:
-		return wrapFile(jsFile.New(ta, fileName))
-	default:
-		return wrapFile(jsFile.New(ta, fileName, options[0].toJSObject()))
+		switch len(options) {
+		case 0:
+			return wrapFile(jsFile.New(ta, fileName))
+		default:
+			return wrapFile(jsFile.New(ta, fileName, options[0].toJSObject()))
+		}
 	}
+	return nil
 }
 
 func NewFileReader() FileReader {
-	jsFileReader := js.Global().Get("FileReader")
-	if isNil(jsFileReader) {
-		return nil
+	if jsFileReader := jsGlobal.Get("FileReader"); jsFileReader.Valid() {
+		return wrapFileReader(jsFileReader.New())
 	}
-
-	return wrapFileReader(jsFileReader.New())
+	return nil
 }
 
 func NewFileReaderSync() FileReaderSync {
-	jsFileReaderSync := js.Global().Get("FileReaderSync")
-	if isNil(jsFileReaderSync) {
-		return nil
+	if jsFileReaderSync := jsGlobal.Get("FileReaderSync"); jsFileReaderSync.Valid() {
+		return wrapFileReaderSync(jsFileReaderSync.New())
 	}
-
-	return wrapFileReaderSync(jsFileReaderSync.New())
+	return nil
 }
 
 func NewProgressEvent(typ string, pei ...ProgressEventInit) ProgressEvent {
-	jsProgressEvent := js.Global().Get("ProgressEvent")
-	if isNil(jsProgressEvent) {
-		return nil
+	if jsProgressEvent := jsGlobal.Get("ProgressEvent"); jsProgressEvent.Valid() {
+		switch len(pei) {
+		case 0:
+			return wrapProgressEvent(jsProgressEvent.New(typ))
+		default:
+			return wrapProgressEvent(jsProgressEvent.New(typ, pei[0].toJSObject()))
+		}
 	}
-
-	if len(pei) > 0 {
-		return wrapProgressEvent(jsProgressEvent.New(typ, pei[0].toJSObject()))
-	}
-	return wrapProgressEvent(jsProgressEvent.New(typ))
+	return nil
 }

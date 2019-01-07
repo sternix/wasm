@@ -2,10 +2,6 @@
 
 package wasm
 
-import (
-	"syscall/js"
-)
-
 type (
 	// typedef (HTMLImageElement or HTMLVideoElement or HTMLCanvasElement) CanvasImageSource;
 	CanvasImageSource interface{}
@@ -125,7 +121,7 @@ type HitRegionOptions struct {
 	Control Element
 }
 
-func (p HitRegionOptions) toJSObject() js.Value {
+func (p HitRegionOptions) toJSObject() Value {
 	o := jsObject.New()
 	o.Set("id", p.Id)
 	o.Set("control", JSValue(p.Control))

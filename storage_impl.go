@@ -2,40 +2,33 @@
 
 package wasm
 
-import (
-	"syscall/js"
-)
-
 // -------------8<---------------------------------------
 
 func NewStorageEvent(typ string, sei ...StorageEventInit) StorageEvent {
-	jsStorageEvent := js.Global().Get("StorageEvent")
-	if isNil(jsStorageEvent) {
-		return nil
+	if jsStorageEvent := jsGlobal.Get("StorageEvent"); jsStorageEvent.Valid() {
+		switch len(sei) {
+		case 0:
+			return wrapStorageEvent(jsStorageEvent.New(typ))
+		default:
+			return wrapStorageEvent(jsStorageEvent.New(typ, sei[0].toJSObject()))
+		}
 	}
-
-	switch len(sei) {
-	case 0:
-		return wrapStorageEvent(jsStorageEvent.New(typ))
-	default:
-		return wrapStorageEvent(jsStorageEvent.New(typ, sei[0].toJSObject()))
-	}
+	return nil
 }
 
 // -------------8<---------------------------------------
 
 type storageImpl struct {
-	js.Value
+	Value
 }
 
-func wrapStorage(v js.Value) Storage {
-	if isNil(v) {
-		return nil
+func wrapStorage(v Value) Storage {
+	if v.Valid() {
+		return &storageImpl{
+			Value: v,
+		}
 	}
-
-	return &storageImpl{
-		Value: v,
-	}
+	return nil
 }
 
 func (p *storageImpl) SetItem(key, value string) {
@@ -68,14 +61,13 @@ type storageEventImpl struct {
 	*eventImpl
 }
 
-func wrapStorageEvent(v js.Value) StorageEvent {
-	if isNil(v) {
-		return nil
+func wrapStorageEvent(v Value) StorageEvent {
+	if v.Valid() {
+		return &storageEventImpl{
+			eventImpl: newEventImpl(v),
+		}
 	}
-
-	return &storageEventImpl{
-		eventImpl: newEventImpl(v),
-	}
+	return nil
 }
 
 func (p *storageEventImpl) Key() string {

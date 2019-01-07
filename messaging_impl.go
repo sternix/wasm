@@ -2,24 +2,19 @@
 
 package wasm
 
-import (
-	"syscall/js"
-)
-
 // -------------8<---------------------------------------
 
 type messageChannelImpl struct {
-	js.Value
+	Value
 }
 
-func wrapMessageChannel(v js.Value) MessageChannel {
-	if isNil(v) {
-		return nil
+func wrapMessageChannel(v Value) MessageChannel {
+	if v.Valid() {
+		return &messageChannelImpl{
+			Value: v,
+		}
 	}
-
-	return &messageChannelImpl{
-		Value: v,
-	}
+	return nil
 }
 
 func (p *messageChannelImpl) Port1() MessagePort {
@@ -36,14 +31,13 @@ type messagePortImpl struct {
 	*eventTargetImpl
 }
 
-func wrapMessagePort(v js.Value) MessagePort {
-	if isNil(v) {
-		return nil
+func wrapMessagePort(v Value) MessagePort {
+	if v.Valid() {
+		return &messagePortImpl{
+			eventTargetImpl: newEventTargetImpl(v),
+		}
 	}
-
-	return &messagePortImpl{
-		eventTargetImpl: newEventTargetImpl(v),
-	}
+	return nil
 }
 
 // TODO optional sequence<object> transfer = [] omitted
@@ -78,14 +72,13 @@ type broadcastChannelImpl struct {
 	*eventTargetImpl
 }
 
-func wrapBroadcastChannel(v js.Value) BroadcastChannel {
-	if isNil(v) {
-		return nil
+func wrapBroadcastChannel(v Value) BroadcastChannel {
+	if v.Valid() {
+		return &broadcastChannelImpl{
+			eventTargetImpl: newEventTargetImpl(v),
+		}
 	}
-
-	return &broadcastChannelImpl{
-		eventTargetImpl: newEventTargetImpl(v),
-	}
+	return nil
 }
 
 func (p *broadcastChannelImpl) Name() string {
@@ -118,14 +111,13 @@ type messageEventImpl struct {
 	*eventImpl
 }
 
-func wrapMessageEvent(v js.Value) MessageEvent {
-	if isNil(v) {
-		return nil
+func wrapMessageEvent(v Value) MessageEvent {
+	if v.Valid() {
+		return &messageEventImpl{
+			eventImpl: newEventImpl(v),
+		}
 	}
-
-	return &messageEventImpl{
-		eventImpl: newEventImpl(v),
-	}
+	return nil
 }
 
 func (p *messageEventImpl) Data() interface{} {
@@ -141,31 +133,27 @@ func (p *messageEventImpl) LastEventId() string {
 }
 
 func (p *messageEventImpl) Source() MessageEventSource {
-	v := p.Get("source")
-	if isNil(v) {
-		return nil
+	if v := p.Get("source"); v.Valid() {
+		if v.InstanceOf(jsWindowProxy) {
+			return wrapWindowProxy(v)
+		} else if v.InstanceOf(jsMessagePort) {
+			return wrapMessagePort(v)
+		} /* TODO: ServiceWorker  else if v.InstanceOf(jsServiceWorker) {
+			return wrapServiceWorker(v)
+		}*/
 	}
-
-	if v.InstanceOf(jsWindowProxy) {
-		return wrapWindowProxy(v)
-	} else if v.InstanceOf(jsMessagePort) {
-		return wrapMessagePort(v)
-	} /* TODO: ServiceWorker  else if v.InstanceOf(jsServiceWorker) {
-		return wrapServiceWorker(v)
-	}*/
-
 	return nil
 }
 
 func (p *messageEventImpl) Ports() []MessagePort {
-	var ret []MessagePort
-
-	ports := arrayToSlice(p.Get("ports"))
-	for _, port := range ports {
-		ret = append(ret, wrapMessagePort(port))
+	if ports := p.Get("ports").ToSlice(); ports != nil {
+		var ret []MessagePort
+		for _, port := range ports {
+			ret = append(ret, wrapMessagePort(port))
+		}
+		return ret
 	}
-
-	return ret
+	return nil
 }
 
 func (p *messageEventImpl) InitMessageEvent(typ string, args ...interface{}) {
@@ -224,35 +212,30 @@ func (p *messageEventImpl) InitMessageEvent(typ string, args ...interface{}) {
 // -------------8<---------------------------------------
 
 type messageEventSourceImpl struct {
-	js.Value
+	Value
 }
 
-func wrapMessageEventSource(v js.Value) MessageEventSource {
-	if isNil(v) {
-		return nil
+func wrapMessageEventSource(v Value) MessageEventSource {
+	if v.Valid() {
+		return &messageEventSourceImpl{
+			Value: v,
+		}
 	}
-
-	return &messageEventSourceImpl{
-		Value: v,
-	}
+	return nil
 }
 
 // -------------8<---------------------------------------
 
 func NewBroadcastChannel(name string) BroadcastChannel {
-	jsBroadcastChannel := js.Global().Get("BroadcastChannel")
-	if isNil(jsBroadcastChannel) {
-		return nil
+	if jsBroadcastChannel := jsGlobal.Get("BroadcastChannel"); jsBroadcastChannel.Valid() {
+		return wrapBroadcastChannel(jsBroadcastChannel.New(name))
 	}
-
-	return wrapBroadcastChannel(jsBroadcastChannel.New(name))
+	return nil
 }
 
 func NewMessageChannel() MessageChannel {
-	jsMessageChannel := js.Global().Get("MessageChannel")
-	if isNil(jsMessageChannel) {
-		return nil
+	if jsMessageChannel := jsGlobal.Get("MessageChannel"); jsMessageChannel.Valid() {
+		return wrapMessageChannel(jsMessageChannel.New())
 	}
-
-	return wrapMessageChannel(jsMessageChannel.New())
+	return nil
 }

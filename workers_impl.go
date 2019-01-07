@@ -2,24 +2,18 @@
 
 package wasm
 
-import (
-	"syscall/js"
-)
-
 // -------------8<---------------------------------------
 
 func NewWorker(scriptURL string, wo ...WorkerOptions) Worker {
-	jsWorker := js.Global().Get("Worker")
-	if isNil(jsWorker) {
-		return nil
+	if jsWorker := jsGlobal.Get("Worker"); jsWorker.Valid() {
+		switch len(wo) {
+		case 0:
+			return wrapWorker(jsWorker.New(scriptURL))
+		default:
+			return wrapWorker(jsWorker.New(scriptURL, wo[0].toJSObject()))
+		}
 	}
-
-	switch len(wo) {
-	case 0:
-		return wrapWorker(jsWorker.New(scriptURL))
-	default:
-		return wrapWorker(jsWorker.New(scriptURL, wo[0].toJSObject()))
-	}
+	return nil
 }
 
 // -------------8<---------------------------------------
@@ -27,26 +21,25 @@ func NewWorker(scriptURL string, wo ...WorkerOptions) Worker {
 type workerGlobalScopeImpl struct {
 	*eventTargetImpl
 	*windowOrWorkerGlobalScopeImpl
-	js.Value
+	Value
 }
 
-func wrapWorkerGlobalScope(v js.Value) WorkerGlobalScope {
+func wrapWorkerGlobalScope(v Value) WorkerGlobalScope {
 	if p := newWorkerGlobalScopeImpl(v); p != nil {
 		return p
 	}
 	return nil
 }
 
-func newWorkerGlobalScopeImpl(v js.Value) *workerGlobalScopeImpl {
-	if isNil(v) {
-		return nil
+func newWorkerGlobalScopeImpl(v Value) *workerGlobalScopeImpl {
+	if v.Valid() {
+		return &workerGlobalScopeImpl{
+			eventTargetImpl:               newEventTargetImpl(v),
+			windowOrWorkerGlobalScopeImpl: newWindowOrWorkerGlobalScopeImpl(v),
+			Value:                         v,
+		}
 	}
-
-	return &workerGlobalScopeImpl{
-		eventTargetImpl:               newEventTargetImpl(v),
-		windowOrWorkerGlobalScopeImpl: newWindowOrWorkerGlobalScopeImpl(v),
-		Value:                         v,
-	}
+	return nil
 }
 
 func (p *workerGlobalScopeImpl) Self() WorkerGlobalScope {
@@ -105,14 +98,13 @@ type dedicatedWorkerGlobalScopeImpl struct {
 	*workerGlobalScopeImpl
 }
 
-func wrapDedicatedWorkerGlobalScope(v js.Value) DedicatedWorkerGlobalScope {
-	if isNil(v) {
-		return nil
+func wrapDedicatedWorkerGlobalScope(v Value) DedicatedWorkerGlobalScope {
+	if v.Valid() {
+		return &dedicatedWorkerGlobalScopeImpl{
+			workerGlobalScopeImpl: newWorkerGlobalScopeImpl(v),
+		}
 	}
-
-	return &dedicatedWorkerGlobalScopeImpl{
-		workerGlobalScopeImpl: newWorkerGlobalScopeImpl(v),
-	}
+	return nil
 }
 
 func (p *dedicatedWorkerGlobalScopeImpl) Name() string {
@@ -137,14 +129,13 @@ type sharedWorkerGlobalScopeImpl struct {
 	*workerGlobalScopeImpl
 }
 
-func wrapSharedWorkerGlobalScope(v js.Value) SharedWorkerGlobalScope {
-	if isNil(v) {
-		return nil
+func wrapSharedWorkerGlobalScope(v Value) SharedWorkerGlobalScope {
+	if v.Valid() {
+		return &sharedWorkerGlobalScopeImpl{
+			workerGlobalScopeImpl: newWorkerGlobalScopeImpl(v),
+		}
 	}
-
-	return &sharedWorkerGlobalScopeImpl{
-		workerGlobalScopeImpl: newWorkerGlobalScopeImpl(v),
-	}
+	return nil
 }
 
 func (p *workerGlobalScopeImpl) Name() string {
@@ -165,14 +156,13 @@ type applicationCacheImpl struct {
 	*eventTargetImpl
 }
 
-func wrapApplicationCache(v js.Value) ApplicationCache {
-	if isNil(v) {
-		return nil
+func wrapApplicationCache(v Value) ApplicationCache {
+	if v.Valid() {
+		return &applicationCacheImpl{
+			eventTargetImpl: newEventTargetImpl(v),
+		}
 	}
-
-	return &applicationCacheImpl{
-		eventTargetImpl: newEventTargetImpl(v),
-	}
+	return nil
 }
 
 func (p *applicationCacheImpl) Update() {
@@ -240,20 +230,19 @@ func (p *abstractWorkerImpl) OnError(fn func(Event)) EventHandler {
 type workerImpl struct {
 	*eventTargetImpl
 	*abstractWorkerImpl
-	js.Value
+	Value
 }
 
-func wrapWorker(v js.Value) Worker {
-	if isNil(v) {
-		return nil
+func wrapWorker(v Value) Worker {
+	if v.Valid() {
+		wi := &workerImpl{
+			eventTargetImpl: newEventTargetImpl(v),
+			Value:           v,
+		}
+		wi.abstractWorkerImpl = newAbstractWorkerImpl(wi.eventTargetImpl)
+		return wi
 	}
-
-	wi := &workerImpl{
-		eventTargetImpl: newEventTargetImpl(v),
-		Value:           v,
-	}
-	wi.abstractWorkerImpl = newAbstractWorkerImpl(wi.eventTargetImpl)
-	return wi
+	return nil
 }
 
 func (p *workerImpl) Terminate() {
@@ -277,20 +266,19 @@ func (p *workerImpl) OnMessageError(fn func(Event)) EventHandler {
 type sharedWorkerImpl struct {
 	*eventTargetImpl
 	*abstractWorkerImpl
-	js.Value
+	Value
 }
 
-func wrapSharedWorker(v js.Value) SharedWorker {
-	if isNil(v) {
-		return nil
+func wrapSharedWorker(v Value) SharedWorker {
+	if v.Valid() {
+		swi := &sharedWorkerImpl{
+			eventTargetImpl: newEventTargetImpl(v),
+			Value:           v,
+		}
+		swi.abstractWorkerImpl = newAbstractWorkerImpl(swi.eventTargetImpl)
+		return swi
 	}
-
-	swi := &sharedWorkerImpl{
-		eventTargetImpl: newEventTargetImpl(v),
-		Value:           v,
-	}
-	swi.abstractWorkerImpl = newAbstractWorkerImpl(swi.eventTargetImpl)
-	return swi
+	return nil
 }
 
 func (p *sharedWorkerImpl) Port() MessagePort {
@@ -302,17 +290,16 @@ func (p *sharedWorkerImpl) Port() MessagePort {
 var _ NavigatorConcurrentHardware = &navigatorConcurrentHardwareImpl{}
 
 type navigatorConcurrentHardwareImpl struct {
-	js.Value
+	Value
 }
 
-func newNavigatorConcurrentHardwareImpl(v js.Value) *navigatorConcurrentHardwareImpl {
-	if isNil(v) {
-		return nil
+func newNavigatorConcurrentHardwareImpl(v Value) *navigatorConcurrentHardwareImpl {
+	if v.Valid() {
+		return &navigatorConcurrentHardwareImpl{
+			Value: v,
+		}
 	}
-
-	return &navigatorConcurrentHardwareImpl{
-		Value: v,
-	}
+	return nil
 }
 
 func (p *navigatorConcurrentHardwareImpl) HardwareConcurrency() int {
@@ -328,40 +315,38 @@ type workerNavigatorImpl struct {
 	*navigatorConcurrentHardwareImpl
 }
 
-func wrapWorkerNavigator(v js.Value) WorkerNavigator {
-	if isNil(v) {
-		return nil
+func wrapWorkerNavigator(v Value) WorkerNavigator {
+	if v.Valid() {
+		return &workerNavigatorImpl{
+			navigatorIDImpl:                 newNavigatorIDImpl(v),
+			navigatorLanguageImpl:           newNavigatorLanguageImpl(v),
+			navigatorOnLineImpl:             newNavigatorOnLineImpl(v),
+			navigatorConcurrentHardwareImpl: newNavigatorConcurrentHardwareImpl(v),
+		}
 	}
-
-	return &workerNavigatorImpl{
-		navigatorIDImpl:                 newNavigatorIDImpl(v),
-		navigatorLanguageImpl:           newNavigatorLanguageImpl(v),
-		navigatorOnLineImpl:             newNavigatorOnLineImpl(v),
-		navigatorConcurrentHardwareImpl: newNavigatorConcurrentHardwareImpl(v),
-	}
+	return nil
 }
 
 // -------------8<---------------------------------------
 
 type workerLocationImpl struct {
-	js.Value
+	Value
 }
 
-func wrapWorkerLocation(v js.Value) WorkerLocation {
+func wrapWorkerLocation(v Value) WorkerLocation {
 	if p := newWorkerLocationImpl(v); p != nil {
 		return p
 	}
 	return nil
 }
 
-func newWorkerLocationImpl(v js.Value) *workerLocationImpl {
-	if isNil(v) {
-		return nil
+func newWorkerLocationImpl(v Value) *workerLocationImpl {
+	if v.Valid() {
+		return &workerLocationImpl{
+			Value: v,
+		}
 	}
-
-	return &workerLocationImpl{
-		Value: v,
-	}
+	return nil
 }
 
 func (p *workerLocationImpl) Href() string {

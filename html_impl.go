@@ -2,23 +2,19 @@
 
 package wasm
 
-import (
-	"syscall/js"
-)
-
 // -------------8<---------------------------------------
 
 type htmlSlotElementImpl struct {
 	*htmlElementImpl
 }
 
-func wrapHTMLSlotElement(v js.Value) HTMLSlotElement {
-	if isNil(v) {
-		return nil
+func wrapHTMLSlotElement(v Value) HTMLSlotElement {
+	if v.Valid() {
+		return &htmlSlotElementImpl{
+			htmlElementImpl: newHTMLElementImpl(v),
+		}
 	}
-	return &htmlSlotElementImpl{
-		htmlElementImpl: newHTMLElementImpl(v),
-	}
+	return nil
 }
 
 func (p *htmlSlotElementImpl) Name() string {
@@ -46,16 +42,16 @@ func (p *htmlSlotElementImpl) AssignedElements(options ...AssignedNodesOptions) 
 // -------------8<---------------------------------------
 
 type htmlOrSVGElementImpl struct {
-	js.Value
+	Value
 }
 
-func wrapHTMLOrSVGElement(v js.Value) HTMLOrSVGElement {
-	if isNil(v) {
-		return nil
+func wrapHTMLOrSVGElement(v Value) HTMLOrSVGElement {
+	if v.Valid() {
+		return &htmlOrSVGElementImpl{
+			Value: v,
+		}
 	}
-	return &htmlOrSVGElementImpl{
-		Value: v,
-	}
+	return nil
 }
 
 func (p *htmlOrSVGElementImpl) DataSet() map[string]string {
@@ -93,16 +89,16 @@ func (p *htmlOrSVGElementImpl) Blur() {
 // -------------8<---------------------------------------
 
 type elementContentEditableImpl struct {
-	js.Value
+	Value
 }
 
-func wrapElementContentEditable(v js.Value) ElementContentEditable {
-	if isNil(v) {
-		return nil
+func wrapElementContentEditable(v Value) ElementContentEditable {
+	if v.Valid() {
+		return &elementContentEditableImpl{
+			Value: v,
+		}
 	}
-	return &elementContentEditableImpl{
-		Value: v,
-	}
+	return nil
 }
 
 func (p *elementContentEditableImpl) ContentEditable() string {
@@ -131,14 +127,13 @@ type abortSignalImpl struct {
 	*eventTargetImpl
 }
 
-func wrapAbortSignal(v js.Value) AbortSignal {
-	if isNil(v) {
-		return nil
+func wrapAbortSignal(v Value) AbortSignal {
+	if v.Valid() {
+		return &abortSignalImpl{
+			eventTargetImpl: newEventTargetImpl(v),
+		}
 	}
-
-	return &abortSignalImpl{
-		eventTargetImpl: newEventTargetImpl(v),
-	}
+	return nil
 }
 
 func (p *abortSignalImpl) Aborted() bool {
@@ -152,16 +147,16 @@ func (p *abortSignalImpl) OnAbort(fn func(Event)) EventHandler {
 // -------------8<---------------------------------------
 
 type abortControllerImpl struct {
-	js.Value
+	Value
 }
 
-func wrapAbortController(v js.Value) AbortController {
-	if isNil(v) {
-		return nil
+func wrapAbortController(v Value) AbortController {
+	if v.Valid() {
+		return &abortControllerImpl{
+			Value: v,
+		}
 	}
-	return &abortControllerImpl{
-		Value: v,
-	}
+	return nil
 }
 
 func (p *abortControllerImpl) Signal() AbortSignal {
@@ -175,7 +170,7 @@ func (p *abortControllerImpl) Abort() {
 // -------------8<---------------------------------------
 
 func NewAbortController() AbortController {
-	return wrapAbortController(js.Global().Get("AbortController"))
+	return wrapAbortController(jsGlobal.Get("AbortController"))
 }
 
 // -------------8<---------------------------------------

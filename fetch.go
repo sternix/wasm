@@ -2,10 +2,6 @@
 
 package wasm
 
-import (
-	"syscall/js"
-)
-
 // https://fetch.spec.whatwg.org/#idl-index
 
 type (
@@ -194,7 +190,7 @@ type RequestInit struct {
 	// Window         interface{}
 }
 
-func (p RequestInit) toJSObject() js.Value {
+func (p RequestInit) toJSObject() Value {
 	o := jsObject.New()
 	o.Set("method", p.Method)
 	o.Set("headers", JSValue(p.Headers))
@@ -220,7 +216,7 @@ type ResponseInit struct {
 	Headers    HeadersInit
 }
 
-func (p ResponseInit) toJSObject() js.Value {
+func (p ResponseInit) toJSObject() Value {
 	o := jsObject.New()
 	o.Set("status", p.Status)
 	o.Set("statusText", p.StatusText)

@@ -2,10 +2,6 @@
 
 package wasm
 
-import (
-	"syscall/js"
-)
-
 type (
 	// https://www.w3.org/TR/FileAPI/#dfn-file
 	File interface {
@@ -89,7 +85,7 @@ type BlobPropertyBag struct {
 	// Endings EndingType `json:"endings"` // default transparent
 }
 
-func (p BlobPropertyBag) toJSObject() js.Value {
+func (p BlobPropertyBag) toJSObject() Value {
 	o := jsObject.New()
 	o.Set("type", p.Type)
 	return o
@@ -104,7 +100,7 @@ type FilePropertyBag struct {
 	LastModified int
 }
 
-func (p FilePropertyBag) toJSObject() js.Value {
+func (p FilePropertyBag) toJSObject() Value {
 	o := p.BlobPropertyBag.toJSObject()
 	o.Set("lastModified", p.LastModified)
 	return o
@@ -121,7 +117,7 @@ type ProgressEventInit struct {
 	Total            int
 }
 
-func (p ProgressEventInit) toJSObject() js.Value {
+func (p ProgressEventInit) toJSObject() Value {
 	o := p.EventInit.toJSObject()
 	o.Set("lengthComputable", p.LengthComputable)
 	o.Set("loaded", p.Loaded)

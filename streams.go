@@ -2,10 +2,6 @@
 
 package wasm
 
-import (
-	"syscall/js"
-)
-
 // EXPERIMENTAL
 
 // https://streams.spec.whatwg.org/
@@ -69,7 +65,7 @@ type PipeToOptions struct {
 	PreventCancel bool
 }
 
-func (p PipeToOptions) toJSObject() js.Value {
+func (p PipeToOptions) toJSObject() Value {
 	o := jsObject.New()
 	o.Set("preventClose", p.PreventClose)
 	o.Set("preventAbort", p.PreventAbort)
@@ -84,7 +80,7 @@ type TransformStream struct {
 	Writable WritableStream
 }
 
-func (p TransformStream) toJSObject() js.Value {
+func (p TransformStream) toJSObject() Value {
 	o := jsObject.New()
 	o.Set("writable", JSValue(p.Readable))
 	o.Set("readable", JSValue(p.Writable))

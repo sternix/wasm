@@ -4,7 +4,6 @@ package wasm
 
 import (
 	"sync"
-	"syscall/js"
 )
 
 var (
@@ -30,7 +29,7 @@ func Exit() {
 func CurrentWindow() Window {
 	windowOnce.Do(func() {
 		if currentWindow == nil {
-			currentWindow = wrapWindow(js.Global())
+			currentWindow = wrapWindow(jsGlobal)
 		}
 	})
 	return currentWindow
@@ -46,9 +45,9 @@ func CurrentDocument() Document {
 }
 
 func SessionStorage() Storage {
-	return wrapStorage(js.Global().Get("sessionStorage"))
+	return wrapStorage(jsGlobal.Get("sessionStorage"))
 }
 
 func LocalStorage() Storage {
-	return wrapStorage(js.Global().Get("localStorage"))
+	return wrapStorage(jsGlobal.Get("localStorage"))
 }

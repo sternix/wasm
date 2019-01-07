@@ -3,7 +3,6 @@
 package wasm
 
 import (
-	"syscall/js"
 	"time"
 )
 
@@ -22,14 +21,13 @@ func NewHTMLFormElement() HTMLFormElement {
 	return nil
 }
 
-func wrapHTMLFormElement(v js.Value) HTMLFormElement {
-	if isNil(v) {
-		return nil
+func wrapHTMLFormElement(v Value) HTMLFormElement {
+	if v.Valid() {
+		return &htmlFormElementImpl{
+			htmlElementImpl: newHTMLElementImpl(v),
+		}
 	}
-
-	return &htmlFormElementImpl{
-		htmlElementImpl: newHTMLElementImpl(v),
-	}
+	return nil
 }
 
 func (p *htmlFormElementImpl) AcceptCharset() string {
@@ -130,13 +128,13 @@ type htmlFormControlsCollectionImpl struct {
 	*htmlCollectionImpl
 }
 
-func wrapHTMLFormControlsCollection(v js.Value) HTMLFormControlsCollection {
-	if isNil(v) {
-		return nil
+func wrapHTMLFormControlsCollection(v Value) HTMLFormControlsCollection {
+	if v.Valid() {
+		return &htmlFormControlsCollectionImpl{
+			htmlCollectionImpl: newHTMLCollectionImpl(v),
+		}
 	}
-	return &htmlFormControlsCollectionImpl{
-		htmlCollectionImpl: newHTMLCollectionImpl(v),
-	}
+	return nil
 }
 
 //NOTE overriden namedbyItem
@@ -147,17 +145,16 @@ func (p *htmlFormControlsCollectionImpl) ItemByName(item string) HTMLFormControl
 // -------------8<---------------------------------------
 
 type htmlFormControlImpl struct {
-	js.Value
+	Value
 }
 
-func wrapHTMLFormControl(v js.Value) HTMLFormControl {
-	if isNil(v) {
-		return nil
+func wrapHTMLFormControl(v Value) HTMLFormControl {
+	if v.Valid() {
+		return &htmlFormControlImpl{
+			Value: v,
+		}
 	}
-
-	return &htmlFormControlImpl{
-		Value: v,
-	}
+	return nil
 }
 
 // -------------8<---------------------------------------
@@ -166,14 +163,13 @@ type radioNodeListImpl struct {
 	*nodeListImpl
 }
 
-func wrapRadioNodeList(v js.Value) RadioNodeList {
-	if isNil(v) {
-		return nil
+func wrapRadioNodeList(v Value) RadioNodeList {
+	if v.Valid() {
+		return &radioNodeListImpl{
+			nodeListImpl: newNodeListImpl(v),
+		}
 	}
-
-	return &radioNodeListImpl{
-		nodeListImpl: newNodeListImpl(v),
-	}
+	return nil
 }
 
 func (p *radioNodeListImpl) Value() string {
@@ -199,14 +195,13 @@ func NewHTMLLabelElement() HTMLLabelElement {
 	return nil
 }
 
-func wrapHTMLLabelElement(v js.Value) HTMLLabelElement {
-	if isNil(v) {
-		return nil
+func wrapHTMLLabelElement(v Value) HTMLLabelElement {
+	if v.Valid() {
+		return &htmlLabelElementImpl{
+			htmlElementImpl: newHTMLElementImpl(v),
+		}
 	}
-
-	return &htmlLabelElementImpl{
-		htmlElementImpl: newHTMLElementImpl(v),
-	}
+	return nil
 }
 
 func (p *htmlLabelElementImpl) Form() HTMLFormElement {
@@ -270,14 +265,13 @@ func NewHTMLInputElement(typ ...string) HTMLInputElement {
 	return nil
 }
 
-func wrapHTMLInputElement(v js.Value) HTMLInputElement {
-	if isNil(v) {
-		return nil
+func wrapHTMLInputElement(v Value) HTMLInputElement {
+	if v.Valid() {
+		return &htmlInputElementImpl{
+			htmlElementImpl: newHTMLElementImpl(v),
+		}
 	}
-
-	return &htmlInputElementImpl{
-		htmlElementImpl: newHTMLElementImpl(v),
-	}
+	return nil
 }
 
 func (p *htmlInputElementImpl) Accept() string {
@@ -688,14 +682,13 @@ func NewHTMLButtonElement() HTMLButtonElement {
 	return nil
 }
 
-func wrapHTMLButtonElement(v js.Value) HTMLButtonElement {
-	if isNil(v) {
-		return nil
+func wrapHTMLButtonElement(v Value) HTMLButtonElement {
+	if v.Valid() {
+		return &htmlButtonElementImpl{
+			htmlElementImpl: newHTMLElementImpl(v),
+		}
 	}
-
-	return &htmlButtonElementImpl{
-		htmlElementImpl: newHTMLElementImpl(v),
-	}
+	return nil
 }
 
 func (p *htmlButtonElementImpl) Autofocus() bool {
@@ -825,14 +818,13 @@ func NewHTMLSelectElement() HTMLSelectElement {
 	return nil
 }
 
-func wrapHTMLSelectElement(v js.Value) HTMLSelectElement {
-	if isNil(v) {
-		return nil
+func wrapHTMLSelectElement(v Value) HTMLSelectElement {
+	if v.Valid() {
+		return &htmlSelectElementImpl{
+			htmlElementImpl: newHTMLElementImpl(v),
+		}
 	}
-
-	return &htmlSelectElementImpl{
-		htmlElementImpl: newHTMLElementImpl(v),
-	}
+	return nil
 }
 
 func (p *htmlSelectElementImpl) Autocomplete() string {
@@ -997,14 +989,13 @@ type htmlOptionsCollectionImpl struct {
 	*htmlCollectionImpl
 }
 
-func wrapHTMLOptionsCollection(v js.Value) HTMLOptionsCollection {
-	if isNil(v) {
-		return nil
+func wrapHTMLOptionsCollection(v Value) HTMLOptionsCollection {
+	if v.Valid() {
+		return &htmlOptionsCollectionImpl{
+			htmlCollectionImpl: newHTMLCollectionImpl(v),
+		}
 	}
-
-	return &htmlOptionsCollectionImpl{
-		htmlCollectionImpl: newHTMLCollectionImpl(v),
-	}
+	return nil
 }
 
 func (p *htmlOptionsCollectionImpl) Length() int {
@@ -1058,14 +1049,13 @@ func NewHTMLDataListElement() HTMLDataListElement {
 	return nil
 }
 
-func wrapHTMLDataListElement(v js.Value) HTMLDataListElement {
-	if isNil(v) {
-		return nil
+func wrapHTMLDataListElement(v Value) HTMLDataListElement {
+	if v.Valid() {
+		return &htmlDataListElementImpl{
+			htmlElementImpl: newHTMLElementImpl(v),
+		}
 	}
-
-	return &htmlDataListElementImpl{
-		htmlElementImpl: newHTMLElementImpl(v),
-	}
+	return nil
 }
 
 func (p *htmlDataListElementImpl) Options() []HTMLOptionElement {
@@ -1087,14 +1077,13 @@ func NewHTMLOptGroupElement() HTMLOptGroupElement {
 	return nil
 }
 
-func wrapHTMLOptGroupElement(v js.Value) HTMLOptGroupElement {
-	if isNil(v) {
-		return nil
+func wrapHTMLOptGroupElement(v Value) HTMLOptGroupElement {
+	if v.Valid() {
+		return &htmlOptGroupElementImpl{
+			htmlElementImpl: newHTMLElementImpl(v),
+		}
 	}
-
-	return &htmlOptGroupElementImpl{
-		htmlElementImpl: newHTMLElementImpl(v),
-	}
+	return nil
 }
 
 func (p *htmlOptGroupElementImpl) Disabled() bool {
@@ -1128,14 +1117,13 @@ func NewHTMLOptionElement() HTMLOptionElement {
 	return nil
 }
 
-func wrapHTMLOptionElement(v js.Value) HTMLOptionElement {
-	if isNil(v) {
-		return nil
+func wrapHTMLOptionElement(v Value) HTMLOptionElement {
+	if v.Valid() {
+		return &htmlOptionElementImpl{
+			htmlElementImpl: newHTMLElementImpl(v),
+		}
 	}
-
-	return &htmlOptionElementImpl{
-		htmlElementImpl: newHTMLElementImpl(v),
-	}
+	return nil
 }
 
 func (p *htmlOptionElementImpl) Disabled() bool {
@@ -1209,14 +1197,13 @@ func NewHTMLTextAreaElement() HTMLTextAreaElement {
 	return nil
 }
 
-func wrapHTMLTextAreaElement(v js.Value) HTMLTextAreaElement {
-	if isNil(v) {
-		return nil
+func wrapHTMLTextAreaElement(v Value) HTMLTextAreaElement {
+	if v.Valid() {
+		return &htmlTextAreaElementImpl{
+			htmlElementImpl: newHTMLElementImpl(v),
+		}
 	}
-
-	return &htmlTextAreaElementImpl{
-		htmlElementImpl: newHTMLElementImpl(v),
-	}
+	return nil
 }
 
 func (p *htmlTextAreaElementImpl) Autocomplete() string {
@@ -1452,14 +1439,13 @@ func NewHTMLOutputElement() HTMLOutputElement {
 	return nil
 }
 
-func wrapHTMLOutputElement(v js.Value) HTMLOutputElement {
-	if isNil(v) {
-		return nil
+func wrapHTMLOutputElement(v Value) HTMLOutputElement {
+	if v.Valid() {
+		return &htmlOutputElementImpl{
+			htmlElementImpl: newHTMLElementImpl(v),
+		}
 	}
-
-	return &htmlOutputElementImpl{
-		htmlElementImpl: newHTMLElementImpl(v),
-	}
+	return nil
 }
 
 func (p *htmlOutputElementImpl) HtmlFor() DOMTokenList {
@@ -1541,14 +1527,13 @@ func NewHTMLProgressElement() HTMLProgressElement {
 	return nil
 }
 
-func wrapHTMLProgressElement(v js.Value) HTMLProgressElement {
-	if isNil(v) {
-		return nil
+func wrapHTMLProgressElement(v Value) HTMLProgressElement {
+	if v.Valid() {
+		return &htmlProgressElementImpl{
+			htmlElementImpl: newHTMLElementImpl(v),
+		}
 	}
-
-	return &htmlProgressElementImpl{
-		htmlElementImpl: newHTMLElementImpl(v),
-	}
+	return nil
 }
 
 func (p *htmlProgressElementImpl) Value() float64 {
@@ -1590,14 +1575,13 @@ func NewHTMLMeterElement() HTMLMeterElement {
 	return nil
 }
 
-func wrapHTMLMeterElement(v js.Value) HTMLMeterElement {
-	if isNil(v) {
-		return nil
+func wrapHTMLMeterElement(v Value) HTMLMeterElement {
+	if v.Valid() {
+		return &htmlMeterElementImpl{
+			htmlElementImpl: newHTMLElementImpl(v),
+		}
 	}
-
-	return &htmlMeterElementImpl{
-		htmlElementImpl: newHTMLElementImpl(v),
-	}
+	return nil
 }
 
 func (p *htmlMeterElementImpl) Value() float64 {
@@ -1667,14 +1651,13 @@ func NewHTMLFieldSetElement() HTMLFieldSetElement {
 	return nil
 }
 
-func wrapHTMLFieldSetElement(v js.Value) HTMLFieldSetElement {
-	if isNil(v) {
-		return nil
+func wrapHTMLFieldSetElement(v Value) HTMLFieldSetElement {
+	if v.Valid() {
+		return &htmlFieldSetElementImpl{
+			htmlElementImpl: newHTMLElementImpl(v),
+		}
 	}
-
-	return &htmlFieldSetElementImpl{
-		htmlElementImpl: newHTMLElementImpl(v),
-	}
+	return nil
 }
 
 func (p *htmlFieldSetElementImpl) Disabled() bool {
@@ -1744,14 +1727,13 @@ func NewHTMLLegendElement() HTMLLegendElement {
 	return nil
 }
 
-func wrapHTMLLegendElement(v js.Value) HTMLLegendElement {
-	if isNil(v) {
-		return nil
+func wrapHTMLLegendElement(v Value) HTMLLegendElement {
+	if v.Valid() {
+		return &htmlLegendElementImpl{
+			htmlElementImpl: newHTMLElementImpl(v),
+		}
 	}
-
-	return &htmlLegendElementImpl{
-		htmlElementImpl: newHTMLElementImpl(v),
-	}
+	return nil
 }
 
 func (p *htmlLegendElementImpl) Form() HTMLFormElement {

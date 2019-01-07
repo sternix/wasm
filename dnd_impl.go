@@ -2,24 +2,19 @@
 
 package wasm
 
-import (
-	"syscall/js"
-)
-
 // -------------8<---------------------------------------
 
 type dataTransferImpl struct {
-	js.Value
+	Value
 }
 
-func wrapDataTransfer(v js.Value) DataTransfer {
-	if isNil(v) {
-		return nil
+func wrapDataTransfer(v Value) DataTransfer {
+	if v.Valid() {
+		return &dataTransferImpl{
+			Value: v,
+		}
 	}
-
-	return &dataTransferImpl{
-		Value: v,
-	}
+	return nil
 }
 
 func (p *dataTransferImpl) DropEffect() string {
@@ -74,17 +69,16 @@ func (p *dataTransferImpl) Files() []File {
 // -------------8<---------------------------------------
 
 type dataTransferItemListImpl struct {
-	js.Value
+	Value
 }
 
-func wrapDataTransferItemList(v js.Value) DataTransferItemList {
-	if isNil(v) {
-		return nil
+func wrapDataTransferItemList(v Value) DataTransferItemList {
+	if v.Valid() {
+		return &dataTransferItemListImpl{
+			Value: v,
+		}
 	}
-
-	return &dataTransferItemListImpl{
-		Value: v,
-	}
+	return nil
 }
 
 func (p *dataTransferItemListImpl) Length() int {
@@ -114,17 +108,16 @@ func (p *dataTransferItemListImpl) Clear() {
 // -------------8<---------------------------------------
 
 type dataTransferItemImpl struct {
-	js.Value
+	Value
 }
 
-func wrapDataTransferItem(v js.Value) DataTransferItem {
-	if isNil(v) {
-		return nil
+func wrapDataTransferItem(v Value) DataTransferItem {
+	if v.Valid() {
+		return &dataTransferItemImpl{
+			Value: v,
+		}
 	}
-
-	return &dataTransferItemImpl{
-		Value: v,
-	}
+	return nil
 }
 
 func (p *dataTransferItemImpl) Kind() string {
@@ -149,14 +142,13 @@ type dragEventImpl struct {
 	*mouseEventImpl
 }
 
-func wrapDragEvent(v js.Value) DragEvent {
-	if isNil(v) {
-		return nil
+func wrapDragEvent(v Value) DragEvent {
+	if v.Valid() {
+		return &dragEventImpl{
+			mouseEventImpl: newMouseEventImpl(v),
+		}
 	}
-
-	return &dragEventImpl{
-		mouseEventImpl: newMouseEventImpl(v),
-	}
+	return nil
 }
 
 func (p *dragEventImpl) DataTransfer() DataTransfer {
@@ -166,14 +158,13 @@ func (p *dragEventImpl) DataTransfer() DataTransfer {
 // -------------8<---------------------------------------
 
 func NewDragEvent(typ string, dei ...DragEventInit) DragEvent {
-	jsDragEvent := js.Global().Get("DragEvent")
-	if isNil(jsDragEvent) {
-		return nil
+	if jsDragEvent := jsGlobal.Get("DragEvent"); jsDragEvent.Valid() {
+		switch len(dei) {
+		case 0:
+			return wrapDragEvent(jsDragEvent.New(typ))
+		default:
+			return wrapDragEvent(jsDragEvent.New(typ, dei[0].toJSObject()))
+		}
 	}
-
-	if len(dei) > 0 {
-		return wrapDragEvent(jsDragEvent.New(typ, dei[0].toJSObject()))
-	}
-
-	return wrapDragEvent(jsDragEvent.New(typ))
+	return nil
 }

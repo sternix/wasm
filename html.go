@@ -2,10 +2,6 @@
 
 package wasm
 
-import (
-	"syscall/js"
-)
-
 type (
 	// https://html.spec.whatwg.org/multipage/scripting.html#htmlslotelement
 	HTMLSlotElement interface {
@@ -59,13 +55,13 @@ type AssignedNodesOptions struct {
 	Flatten bool // default false
 }
 
-func (p AssignedNodesOptions) toJSObject() js.Value {
+func (p AssignedNodesOptions) toJSObject() Value {
 	if p.Flatten {
 		o := jsObject.New()
 		o.Set("flatten", p.Flatten)
 		return o
 	}
-	return js.Null()
+	return jsNull
 }
 
 // -------------8<---------------------------------------
@@ -75,7 +71,7 @@ type FocusOptions struct {
 	PreventScroll bool
 }
 
-func (p FocusOptions) toJSObject() js.Value {
+func (p FocusOptions) toJSObject() Value {
 	o := jsObject.New()
 	o.Set("preventScroll", p.PreventScroll)
 	return o

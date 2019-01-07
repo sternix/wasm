@@ -3,7 +3,6 @@
 package wasm
 
 import (
-	"syscall/js"
 	"time"
 )
 
@@ -762,7 +761,7 @@ type MediaTrackCapabilities struct {
 	GroupId          string
 }
 
-func (p MediaTrackCapabilities) toJSObject() js.Value {
+func (p MediaTrackCapabilities) toJSObject() Value {
 	o := jsObject.New()
 	o.Set("width", p.Width.toJSObject())
 	o.Set("height", p.Heigth.toJSObject())
@@ -803,7 +802,7 @@ type MediaTrackConstraintSet struct {
 	GroupId          ConstrainDOMString
 }
 
-func (p MediaTrackConstraintSet) toJSObject() js.Value {
+func (p MediaTrackConstraintSet) toJSObject() Value {
 	o := jsObject.New()
 	o.Set("width", p.Width.toJSObject())
 	o.Set("height", p.Height.toJSObject())
@@ -844,7 +843,7 @@ type MediaTrackSettings struct {
 	GroupId          string
 }
 
-func (p MediaTrackSettings) toJSObject() js.Value {
+func (p MediaTrackSettings) toJSObject() Value {
 	o := jsObject.New()
 	o.Set("width", p.Width)
 	o.Set("height", p.Height)
@@ -872,7 +871,7 @@ type LongRange struct {
 	Min int
 }
 
-func (p LongRange) toJSObject() js.Value {
+func (p LongRange) toJSObject() Value {
 	o := jsObject.New()
 	o.Set("max", p.Max)
 	o.Set("min", p.Min)
@@ -887,7 +886,7 @@ type DoubleRange struct {
 	Min float64
 }
 
-func (p DoubleRange) toJSObject() js.Value {
+func (p DoubleRange) toJSObject() Value {
 	o := jsObject.New()
 	o.Set("max", p.Max)
 	o.Set("min", p.Min)
@@ -904,7 +903,7 @@ type ConstrainLongRange struct {
 	Ideal int
 }
 
-func (p ConstrainLongRange) toJSObject() js.Value {
+func (p ConstrainLongRange) toJSObject() Value {
 	o := p.LongRange.toJSObject()
 	o.Set("exact", p.Exact)
 	o.Set("ideal", p.Ideal)
@@ -926,7 +925,7 @@ type ConstrainDoubleRange struct {
 	Ideal float64
 }
 
-func (p ConstrainDoubleRange) toJSObject() js.Value {
+func (p ConstrainDoubleRange) toJSObject() Value {
 	o := p.DoubleRange.toJSObject()
 	o.Set("exact", p.Exact)
 	o.Set("ideal", p.Ideal)
@@ -949,7 +948,7 @@ type ConstrainDOMStringParameters struct {
 	Ideal string
 }
 
-func (p ConstrainDOMStringParameters) toJSObject() js.Value {
+func (p ConstrainDOMStringParameters) toJSObject() Value {
 	o := jsObject.New()
 	o.Set("exact", p.Exact)
 	o.Set("ideal", p.Ideal)
@@ -972,7 +971,7 @@ type ConstrainBooleanParameters struct {
 	Ideal bool
 }
 
-func (p ConstrainBooleanParameters) toJSObject() js.Value {
+func (p ConstrainBooleanParameters) toJSObject() Value {
 	o := jsObject.New()
 	o.Set("exact", p.Exact)
 	o.Set("ideal", p.Ideal)

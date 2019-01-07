@@ -2,134 +2,115 @@
 
 package wasm
 
-import (
-	"syscall/js"
-)
-
 // -------------8<---------------------------------------
 
 func NewDOMPoint(dpi ...DOMPointInit) DOMPoint {
-	jsDOMPoint := js.Global().Get("DOMPoint")
-	if isNil(jsDOMPoint) {
-		return nil
+	if jsDOMPoint := jsGlobal.Get("DOMPoint"); jsDOMPoint.Valid() {
+		switch len(dpi) {
+		case 0:
+			return wrapDOMPoint(jsDOMPoint.New())
+		default:
+			return wrapDOMPoint(jsDOMPoint.New(dpi[0].toJSObject()))
+		}
 	}
-
-	switch len(dpi) {
-	case 0:
-		return wrapDOMPoint(jsDOMPoint.New())
-	default:
-		return wrapDOMPoint(jsDOMPoint.New(dpi[0].toJSObject()))
-	}
+	return nil
 }
 
 func NewDOMPointReadOnly(x, y, z, w float64) DOMPointReadOnly {
-	jsDOMPointReadOnly := js.Global().Get("DOMPointReadOnly")
-	if isNil(jsDOMPointReadOnly) {
-		return nil
+	if jsDOMPointReadOnly := jsGlobal.Get("DOMPointReadOnly"); jsDOMPointReadOnly.Valid() {
+		return wrapDOMPointReadOnly(jsDOMPointReadOnly.New(x, y, z, w))
 	}
-
-	return wrapDOMPointReadOnly(jsDOMPointReadOnly.New(x, y, z, w))
+	return nil
 }
 
 func NewDOMRectReadOnly(x, y, width, height float64) DOMRectReadOnly {
-	jsDOMRectReadOnly := js.Global().Get("DOMRectReadOnly")
-	if isNil(jsDOMRectReadOnly) {
-		return nil
+	if jsDOMRectReadOnly := jsGlobal.Get("DOMRectReadOnly"); jsDOMRectReadOnly.Valid() {
+		return wrapDOMRectReadOnly(jsDOMRectReadOnly.New(x, y, width, height))
 	}
-
-	return wrapDOMRectReadOnly(jsDOMRectReadOnly.New(x, y, width, height))
+	return nil
 }
 
 func NewDOMRect(x, y, width, height float64) DOMRect {
-	jsDOMRect := js.Global().Get("DOMRect")
-	if isNil(jsDOMRect) {
-		return nil
+	if jsDOMRect := jsGlobal.Get("DOMRect"); jsDOMRect.Valid() {
+		return wrapDOMRect(jsDOMRect.New(x, y, width, height))
 	}
-
-	return wrapDOMRect(jsDOMRect.New(x, y, width, height))
+	return nil
 }
 
 func NewDOMQuad(dri ...DOMRectInit) DOMQuad {
-	jsDOMQuad := js.Global().Get("DOMQuad")
-	if isNil(jsDOMQuad) {
-		return nil
+	if jsDOMQuad := jsGlobal.Get("DOMQuad"); jsDOMQuad.Valid() {
+		switch len(dri) {
+		case 0:
+			return wrapDOMQuad(jsDOMQuad.New())
+		default:
+			return wrapDOMQuad(jsDOMQuad.New(dri[0].toJSObject()))
+		}
 	}
-
-	switch len(dri) {
-	case 0:
-		return wrapDOMQuad(jsDOMQuad.New())
-	default:
-		return wrapDOMQuad(jsDOMQuad.New(dri[0].toJSObject()))
-	}
+	return nil
 }
 
 func DOMQuadFromRect(other ...DOMRectInit) DOMQuad {
 	switch len(other) {
 	case 0:
-		return wrapDOMQuad(js.Global().Invoke("DOMQuad.fromRect"))
+		return wrapDOMQuad(jsGlobal.Invoke("DOMQuad.fromRect"))
 	default:
-		return wrapDOMQuad(js.Global().Invoke("DOMQuad.fromRect", other[0].toJSObject()))
+		return wrapDOMQuad(jsGlobal.Invoke("DOMQuad.fromRect", other[0].toJSObject()))
 	}
 }
 
 func DOMQuadFromQuad(other ...DOMQuadInit) DOMQuad {
 	switch len(other) {
 	case 0:
-		return wrapDOMQuad(js.Global().Invoke("DOMQuad.fromQuad"))
+		return wrapDOMQuad(jsGlobal.Invoke("DOMQuad.fromQuad"))
 	default:
-		return wrapDOMQuad(js.Global().Invoke("DOMQuad.fromQuad", other[0].toJSObject()))
+		return wrapDOMQuad(jsGlobal.Invoke("DOMQuad.fromQuad", other[0].toJSObject()))
 	}
 }
 
+// TODO: check this
 func NewDOMMatrixReadOnly(numberSequence []float64) DOMMatrixReadOnly {
-	jsDOMMatrixReadOnly := js.Global().Get("DOMMatrixReadOnly")
-	if isNil(jsDOMMatrixReadOnly) {
-		return nil
+	if jsDOMMatrixReadOnly := jsGlobal.Get("DOMMatrixReadOnly"); jsDOMMatrixReadOnly.Valid() {
+		var param []interface{}
+		for _, n := range numberSequence {
+			param = append(param, n)
+		}
+		return wrapDOMMatrixReadOnly(jsDOMMatrixReadOnly.New(param))
 	}
-
-	var param []interface{}
-	for _, n := range numberSequence {
-		param = append(param, n)
-	}
-
-	return wrapDOMMatrixReadOnly(jsDOMMatrixReadOnly.New(param))
+	return nil
 }
 
+// TODO: check this
 func NewDOMMatrix(numberSequence []float64) DOMMatrix {
-	jsDOMMatrix := js.Global().Get("DOMMatrix")
-	if isNil(jsDOMMatrix) {
-		return nil
+	if jsDOMMatrix := jsGlobal.Get("DOMMatrix"); jsDOMMatrix.Valid() {
+		var param []interface{}
+		for _, n := range numberSequence {
+			param = append(param, n)
+		}
+		return wrapDOMMatrix(jsDOMMatrix.New(param))
 	}
-
-	var param []interface{}
-	for _, n := range numberSequence {
-		param = append(param, n)
-	}
-
-	return wrapDOMMatrix(jsDOMMatrix.New(param))
+	return nil
 }
 
 // -------------8<---------------------------------------
 
 type domPointReadOnlyImpl struct {
-	js.Value
+	Value
 }
 
-func wrapDOMPointReadOnly(v js.Value) DOMPointReadOnly {
+func wrapDOMPointReadOnly(v Value) DOMPointReadOnly {
 	if p := newDOMPointReadOnlyImpl(v); p != nil {
 		return p
 	}
 	return nil
 }
 
-func newDOMPointReadOnlyImpl(v js.Value) *domPointReadOnlyImpl {
-	if isNil(v) {
-		return nil
+func newDOMPointReadOnlyImpl(v Value) *domPointReadOnlyImpl {
+	if v.Valid() {
+		return &domPointReadOnlyImpl{
+			Value: v,
+		}
 	}
-
-	return &domPointReadOnlyImpl{
-		Value: v,
-	}
+	return nil
 }
 
 func (p *domPointReadOnlyImpl) X() float64 {
@@ -158,14 +139,13 @@ type domPointImpl struct {
 	*domPointReadOnlyImpl
 }
 
-func wrapDOMPoint(v js.Value) DOMPoint {
-	if isNil(v) {
-		return nil
+func wrapDOMPoint(v Value) DOMPoint {
+	if v.Valid() {
+		return &domPointImpl{
+			domPointReadOnlyImpl: newDOMPointReadOnlyImpl(v),
+		}
 	}
-
-	return &domPointImpl{
-		domPointReadOnlyImpl: newDOMPointReadOnlyImpl(v),
-	}
+	return nil
 }
 
 // -------------8<---------------------------------------
@@ -174,37 +154,35 @@ type domRectImpl struct {
 	*domRectReadOnlyImpl
 }
 
-func wrapDOMRect(v js.Value) DOMRect {
-	if isNil(v) {
-		return nil
+func wrapDOMRect(v Value) DOMRect {
+	if v.Valid() {
+		return &domRectImpl{
+			domRectReadOnlyImpl: newDOMRectReadOnlyImpl(v),
+		}
 	}
-
-	return &domRectImpl{
-		domRectReadOnlyImpl: newDOMRectReadOnlyImpl(v),
-	}
+	return nil
 }
 
 // -------------8<---------------------------------------
 
 type domRectReadOnlyImpl struct {
-	js.Value
+	Value
 }
 
-func wrapDOMRectReadOnly(v js.Value) DOMRectReadOnly {
+func wrapDOMRectReadOnly(v Value) DOMRectReadOnly {
 	if p := newDOMRectReadOnlyImpl(v); p != nil {
 		return p
 	}
 	return nil
 }
 
-func newDOMRectReadOnlyImpl(v js.Value) *domRectReadOnlyImpl {
-	if isNil(v) {
-		return nil
+func newDOMRectReadOnlyImpl(v Value) *domRectReadOnlyImpl {
+	if v.Valid() {
+		return &domRectReadOnlyImpl{
+			Value: v,
+		}
 	}
-
-	return &domRectReadOnlyImpl{
-		Value: v,
-	}
+	return nil
 }
 
 func (p *domRectReadOnlyImpl) X() float64 {
@@ -242,17 +220,16 @@ func (p *domRectReadOnlyImpl) Left() float64 {
 // -------------8<---------------------------------------
 
 type domQuadImpl struct {
-	js.Value
+	Value
 }
 
-func wrapDOMQuad(v js.Value) DOMQuad {
-	if isNil(v) {
-		return nil
+func wrapDOMQuad(v Value) DOMQuad {
+	if v.Valid() {
+		return &domQuadImpl{
+			Value: v,
+		}
 	}
-
-	return &domQuadImpl{
-		Value: v,
-	}
+	return nil
 }
 
 func (p *domQuadImpl) P1() DOMPoint {
@@ -278,24 +255,23 @@ func (p *domQuadImpl) Bounds() DOMRectReadOnly {
 // -------------8<---------------------------------------
 
 type domMatrixReadOnlyImpl struct {
-	js.Value
+	Value
 }
 
-func wrapDOMMatrixReadOnly(v js.Value) DOMMatrixReadOnly {
+func wrapDOMMatrixReadOnly(v Value) DOMMatrixReadOnly {
 	if p := newDOMMatrixReadOnlyImpl(v); p != nil {
 		return p
 	}
 	return nil
 }
 
-func newDOMMatrixReadOnlyImpl(v js.Value) *domMatrixReadOnlyImpl {
-	if isNil(v) {
-		return nil
+func newDOMMatrixReadOnlyImpl(v Value) *domMatrixReadOnlyImpl {
+	if v.Valid() {
+		return &domMatrixReadOnlyImpl{
+			Value: v,
+		}
 	}
-
-	return &domMatrixReadOnlyImpl{
-		Value: v,
-	}
+	return nil
 }
 
 func (p *domMatrixReadOnlyImpl) A() float64 {
@@ -514,14 +490,13 @@ type domMatrixImpl struct {
 	*domMatrixReadOnlyImpl
 }
 
-func wrapDOMMatrix(v js.Value) DOMMatrix {
-	if isNil(v) {
-		return nil
+func wrapDOMMatrix(v Value) DOMMatrix {
+	if v.Valid() {
+		return &domMatrixImpl{
+			domMatrixReadOnlyImpl: newDOMMatrixReadOnlyImpl(v),
+		}
 	}
-
-	return &domMatrixImpl{
-		domMatrixReadOnlyImpl: newDOMMatrixReadOnlyImpl(v),
-	}
+	return nil
 }
 
 func (p *domMatrixImpl) MultiplySelf(other DOMMatrix) DOMMatrix {

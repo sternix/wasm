@@ -2,13 +2,9 @@
 
 package wasm
 
-import (
-	"syscall/js"
-)
-
 /*
 TODO: most arguments like ...interface{}
-are panic'able restrict parameter to js.ValueOf
+are panic'able restrict parameter to ValueOf
 */
 
 // https://console.spec.whatwg.org/
@@ -41,17 +37,16 @@ type (
 // -------------8<---------------------------------------
 
 type consoleImpl struct {
-	js.Value
+	Value
 }
 
-func wrapConsole(v js.Value) Console {
-	if isNil(v) {
-		return nil
+func wrapConsole(v Value) Console {
+	if v.Valid() {
+		return &consoleImpl{
+			Value: v,
+		}
 	}
-
-	return &consoleImpl{
-		Value: v,
-	}
+	return nil
 }
 
 func (p *consoleImpl) Assert(args ...interface{}) {

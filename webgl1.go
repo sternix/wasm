@@ -2,10 +2,6 @@
 
 package wasm
 
-import (
-	"syscall/js"
-)
-
 // https://www.khronos.org/registry/webgl/specs/latest/1.0/
 
 type (
@@ -229,7 +225,7 @@ type WebGLContextAttributes struct {
 	FailIfMajorPerformanceCaveat bool
 }
 
-func (p WebGLContextAttributes) toJSObject() js.Value {
+func (p WebGLContextAttributes) toJSObject() Value {
 	o := jsObject.New()
 	o.Set("alpha", p.Alpha)
 	o.Set("depth", p.Depth)

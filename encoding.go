@@ -2,10 +2,6 @@
 
 package wasm
 
-import (
-	"syscall/js"
-)
-
 // https://encoding.spec.whatwg.org/#idl-index
 
 type (
@@ -53,7 +49,7 @@ type TextDecoderOptions struct {
 	IgnoreBOM bool
 }
 
-func (p TextDecoderOptions) toJSObject() js.Value {
+func (p TextDecoderOptions) toJSObject() Value {
 	o := jsObject.New()
 	o.Set("fatal", p.Fatal)
 	o.Set("ignoreBOM", p.IgnoreBOM)
@@ -66,7 +62,7 @@ type TextDecodeOptions struct {
 	Stream bool
 }
 
-func (p TextDecodeOptions) toJSObject() js.Value {
+func (p TextDecodeOptions) toJSObject() Value {
 	o := jsObject.New()
 	o.Set("stream", p.Stream)
 	return o

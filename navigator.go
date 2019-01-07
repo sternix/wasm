@@ -2,10 +2,6 @@
 
 package wasm
 
-import (
-	"syscall/js"
-)
-
 type (
 	// https://www.w3.org/TR/html52/webappapis.html#navigator
 	Navigator interface {
@@ -169,7 +165,7 @@ type ImageBitmapOptions struct {
 	ResizeQuality        ResizeQuality
 }
 
-func (p ImageBitmapOptions) toJSObject() js.Value {
+func (p ImageBitmapOptions) toJSObject() Value {
 	o := jsObject.New()
 
 	if p.ImageOrientation != "none" {

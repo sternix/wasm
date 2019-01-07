@@ -2,10 +2,6 @@
 
 package wasm
 
-import (
-	"syscall/js"
-)
-
 // -------------8<---------------------------------------
 
 type htmlHtmlElementImpl struct {
@@ -21,14 +17,13 @@ func NewHTMLHtmlElement() HTMLHtmlElement {
 	return nil
 }
 
-func wrapHTMLHtmlElement(v js.Value) HTMLHtmlElement {
-	if isNil(v) {
-		return nil
+func wrapHTMLHtmlElement(v Value) HTMLHtmlElement {
+	if v.Valid() {
+		return &htmlHtmlElementImpl{
+			htmlElementImpl: newHTMLElementImpl(v),
+		}
 	}
-
-	return &htmlHtmlElementImpl{
-		htmlElementImpl: newHTMLElementImpl(v),
-	}
+	return nil
 }
 
 // -------------8<---------------------------------------
@@ -46,14 +41,13 @@ func NewHTMLHeadElement() HTMLHeadElement {
 	return nil
 }
 
-func wrapHTMLHeadElement(v js.Value) HTMLHeadElement {
-	if isNil(v) {
-		return nil
+func wrapHTMLHeadElement(v Value) HTMLHeadElement {
+	if v.Valid() {
+		return &htmlHeadElementImpl{
+			htmlElementImpl: newHTMLElementImpl(v),
+		}
 	}
-
-	return &htmlHeadElementImpl{
-		htmlElementImpl: newHTMLElementImpl(v),
-	}
+	return nil
 }
 
 // -------------8<---------------------------------------
@@ -71,14 +65,13 @@ func NewHTMLTitleElement() HTMLTitleElement {
 	return nil
 }
 
-func wrapHTMLTitleElement(v js.Value) HTMLTitleElement {
-	if isNil(v) {
-		return nil
+func wrapHTMLTitleElement(v Value) HTMLTitleElement {
+	if v.Valid() {
+		return &htmlTitleElementImpl{
+			htmlElementImpl: newHTMLElementImpl(v),
+		}
 	}
-
-	return &htmlTitleElementImpl{
-		htmlElementImpl: newHTMLElementImpl(v),
-	}
+	return nil
 }
 
 func (p *htmlTitleElementImpl) Text() string {
@@ -104,14 +97,13 @@ func NewHTMLBaseElement() HTMLBaseElement {
 	return nil
 }
 
-func wrapHTMLBaseElement(v js.Value) HTMLBaseElement {
-	if isNil(v) {
-		return nil
+func wrapHTMLBaseElement(v Value) HTMLBaseElement {
+	if v.Valid() {
+		return &htmlBaseElementImpl{
+			htmlElementImpl: newHTMLElementImpl(v),
+		}
 	}
-
-	return &htmlBaseElementImpl{
-		htmlElementImpl: newHTMLElementImpl(v),
-	}
+	return nil
 }
 
 func (p *htmlBaseElementImpl) Href() string {
@@ -135,7 +127,7 @@ func (p *htmlBaseElementImpl) SetTarget(target string) {
 type htmlLinkElementImpl struct {
 	*linkStyleImpl
 	*htmlElementImpl
-	js.Value
+	Value
 }
 
 func NewHTMLLinkElement() HTMLLinkElement {
@@ -147,16 +139,15 @@ func NewHTMLLinkElement() HTMLLinkElement {
 	return nil
 }
 
-func wrapHTMLLinkElement(v js.Value) HTMLLinkElement {
-	if isNil(v) {
-		return nil
+func wrapHTMLLinkElement(v Value) HTMLLinkElement {
+	if v.Valid() {
+		return &htmlLinkElementImpl{
+			linkStyleImpl:   newLinkStyleImpl(v),
+			htmlElementImpl: newHTMLElementImpl(v),
+			Value:           v,
+		}
 	}
-
-	return &htmlLinkElementImpl{
-		linkStyleImpl:   newLinkStyleImpl(v),
-		htmlElementImpl: newHTMLElementImpl(v),
-		Value:           v,
-	}
+	return nil
 }
 
 func (p *htmlLinkElementImpl) Href() string {
@@ -254,14 +245,13 @@ func NewHTMLMetaElement() HTMLMetaElement {
 	return nil
 }
 
-func wrapHTMLMetaElement(v js.Value) HTMLMetaElement {
-	if isNil(v) {
-		return nil
+func wrapHTMLMetaElement(v Value) HTMLMetaElement {
+	if v.Valid() {
+		return &htmlMetaElementImpl{
+			htmlElementImpl: newHTMLElementImpl(v),
+		}
 	}
-
-	return &htmlMetaElementImpl{
-		htmlElementImpl: newHTMLElementImpl(v),
-	}
+	return nil
 }
 
 func (p *htmlMetaElementImpl) Name() string {
@@ -293,7 +283,7 @@ func (p *htmlMetaElementImpl) SetContent(content string) {
 type htmlStyleElementImpl struct {
 	*htmlElementImpl
 	*linkStyleImpl
-	js.Value
+	Value
 }
 
 func NewHTMLStyleElement() HTMLStyleElement {
@@ -305,16 +295,15 @@ func NewHTMLStyleElement() HTMLStyleElement {
 	return nil
 }
 
-func wrapHTMLStyleElement(v js.Value) HTMLStyleElement {
-	if isNil(v) {
-		return nil
+func wrapHTMLStyleElement(v Value) HTMLStyleElement {
+	if v.Valid() {
+		return &htmlStyleElementImpl{
+			htmlElementImpl: newHTMLElementImpl(v),
+			linkStyleImpl:   newLinkStyleImpl(v),
+			Value:           v,
+		}
 	}
-
-	return &htmlStyleElementImpl{
-		htmlElementImpl: newHTMLElementImpl(v),
-		linkStyleImpl:   newLinkStyleImpl(v),
-		Value:           v,
-	}
+	return nil
 }
 
 func (p *htmlStyleElementImpl) Media() string {

@@ -2,14 +2,10 @@
 
 package wasm
 
-import (
-	"syscall/js"
-)
-
 // -------------8<---------------------------------------
 
 func CreateObjectURL(source interface{}) (string, error) {
-	jsURL := js.Global().Get("URL")
+	jsURL := jsGlobal.Get("URL")
 
 	switch x := source.(type) {
 	case File, Blob, MediaSource:
@@ -20,53 +16,48 @@ func CreateObjectURL(source interface{}) (string, error) {
 }
 
 func RevokeObjectURL(objectURL string) {
-	js.Global().Get("URL").Call("revokeObjectURL", objectURL)
+	jsGlobal.Get("URL").Call("revokeObjectURL", objectURL)
 }
 
 // -------------8<---------------------------------------
 
 func NewURL(url string, base ...string) URL {
-	jsURL := js.Global().Get("URL")
-	if isNil(jsURL) {
-		return nil
+	if jsURL := jsGlobal.Get("URL"); jsURL.Valid() {
+		switch len(base) {
+		case 0:
+			return wrapURL(jsURL.New(url))
+		default:
+			return wrapURL(jsURL.New(url, base[0]))
+		}
 	}
-
-	switch len(base) {
-	case 0:
-		return wrapURL(jsURL.New(url))
-	default:
-		return wrapURL(jsURL.New(url, base[0]))
-	}
+	return nil
 }
 
 func NewURLSearchParams(args ...string) URLSearchParams {
-	jsURLSearchParams := js.Global().Get("URLSearchParams")
-	if isNil(jsURLSearchParams) {
-		return nil
+	if jsURLSearchParams := jsGlobal.Get("URLSearchParams"); jsURLSearchParams.Valid() {
+		switch len(args) {
+		case 0:
+			return wrapURLSearchParams(jsURLSearchParams.New())
+		default:
+			return wrapURLSearchParams(jsURLSearchParams.New(args[0]))
+		}
 	}
-
-	switch len(args) {
-	case 0:
-		return wrapURLSearchParams(jsURLSearchParams.New())
-	default:
-		return wrapURLSearchParams(jsURLSearchParams.New(args[0]))
-	}
+	return nil
 }
 
 // -------------8<---------------------------------------
 
 type urlImpl struct {
-	js.Value
+	Value
 }
 
-func wrapURL(v js.Value) URL {
-	if isNil(v) {
-		return nil
+func wrapURL(v Value) URL {
+	if v.Valid() {
+		return &urlImpl{
+			Value: v,
+		}
 	}
-
-	return &urlImpl{
-		Value: v,
-	}
+	return nil
 }
 
 func (p *urlImpl) Href() string {
@@ -164,17 +155,16 @@ func (p *urlImpl) ToJSON() string {
 // -------------8<---------------------------------------
 
 type urlSearchParamsImpl struct {
-	js.Value
+	Value
 }
 
-func wrapURLSearchParams(v js.Value) URLSearchParams {
-	if isNil(v) {
-		return nil
+func wrapURLSearchParams(v Value) URLSearchParams {
+	if v.Valid() {
+		return &urlSearchParamsImpl{
+			Value: v,
+		}
 	}
-
-	return &urlSearchParamsImpl{
-		Value: v,
-	}
+	return nil
 }
 
 func (p *urlSearchParamsImpl) Append(name string, value string) {

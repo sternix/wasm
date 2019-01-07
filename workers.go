@@ -2,10 +2,6 @@
 
 package wasm
 
-import (
-	"syscall/js"
-)
-
 type (
 	// https://w3c.github.io/workers/#workerglobalscope0
 	WorkerGlobalScope interface {
@@ -129,7 +125,7 @@ type WorkerOptions struct {
 	Name        string
 }
 
-func (p WorkerOptions) toJSObject() js.Value {
+func (p WorkerOptions) toJSObject() Value {
 	o := jsObject.New()
 	o.Set("type", string(p.Type))
 	o.Set("credentials", string(p.Credentials))

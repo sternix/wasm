@@ -2,10 +2,6 @@
 
 package wasm
 
-import (
-	"syscall/js"
-)
-
 type (
 	// https://html.spec.whatwg.org/multipage/web-sockets.html#websocket
 	WebSocket interface {
@@ -61,7 +57,7 @@ type CloseEventInit struct {
 	Reason   string
 }
 
-func (p CloseEventInit) toJSObject() js.Value {
+func (p CloseEventInit) toJSObject() Value {
 	o := jsObject.New()
 	o.Set("wasClean", p.WasClean)
 	o.Set("code", p.Code)

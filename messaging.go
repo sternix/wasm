@@ -2,10 +2,6 @@
 
 package wasm
 
-import (
-	"syscall/js"
-)
-
 type (
 
 	// https://html.spec.whatwg.org/multipage/web-messaging.html#messagechannel
@@ -67,7 +63,7 @@ type MessageEventInit struct {
 	Ports       []MessagePort
 }
 
-func (p MessageEventInit) toJSObject() js.Value {
+func (p MessageEventInit) toJSObject() Value {
 	o := p.EventInit.toJSObject()
 	o.Set("data", p.Data)
 	o.Set("origin", p.Origin)

@@ -2,49 +2,43 @@
 
 package wasm
 
-import (
-	"syscall/js"
-)
-
 // -------------8<---------------------------------------
 
 func NewPopStateEvent(typ string, p ...PopStateEventInit) PopStateEvent {
-	jsPopStateEvent := js.Global().Get("PopStateEvent")
-	if isNil(jsPopStateEvent) {
-		return nil
-	}
+	jsPopStateEvent := jsGlobal.Get("PopStateEvent")
+	if jsPopStateEvent.Valid() {
+		if len(p) > 0 {
+			return wrapPopStateEvent(jsPopStateEvent.New(typ, p[0].toJSObject()))
+		}
 
-	if len(p) > 0 {
-		return wrapPopStateEvent(jsPopStateEvent.New(typ, p[0].toJSObject()))
+		return wrapPopStateEvent(jsPopStateEvent.New(typ))
 	}
+	return nil
 
-	return wrapPopStateEvent(jsPopStateEvent.New(typ))
 }
 
 func NewHashChangeEvent(typ string, p ...HashChangeEventInit) HashChangeEvent {
-	jsHashChangeEvent := js.Global().Get("HashChangeEvent")
-	if isNil(jsHashChangeEvent) {
-		return nil
+	if jsHashChangeEvent := jsGlobal.Get("HashChangeEvent"); jsHashChangeEvent.Valid() {
+		switch len(p) {
+		case 0:
+			return wrapHashChangeEvent(jsHashChangeEvent.New(typ))
+		default:
+			return wrapHashChangeEvent(jsHashChangeEvent.New(typ, p[0].toJSObject()))
+		}
 	}
-
-	if len(p) > 0 {
-		return wrapHashChangeEvent(jsHashChangeEvent.New(typ, p[0].toJSObject()))
-	}
-
-	return wrapHashChangeEvent(jsHashChangeEvent.New(typ))
+	return nil
 }
 
 func NewPageTransitionEvent(typ string, p ...PageTransitionEventInit) PageTransitionEvent {
-	jsPageTransitionEvent := js.Global().Get("PageTransitionEvent")
-	if isNil(jsPageTransitionEvent) {
-		return nil
+	if jsPageTransitionEvent := jsGlobal.Get("PageTransitionEvent"); jsPageTransitionEvent.Valid() {
+		switch len(p) {
+		case 0:
+			return wrapPageTransitionEvent(jsPageTransitionEvent.New(typ))
+		default:
+			return wrapPageTransitionEvent(jsPageTransitionEvent.New(typ, p[0].toJSObject()))
+		}
 	}
-
-	if len(p) > 0 {
-		return wrapPageTransitionEvent(jsPageTransitionEvent.New(typ, p[0].toJSObject()))
-	}
-
-	return wrapPageTransitionEvent(jsPageTransitionEvent.New(typ))
+	return nil
 }
 
 // -------------8<---------------------------------------
@@ -54,29 +48,28 @@ type windowImpl struct {
 	*windowOrWorkerGlobalScopeImpl
 	*globalEventHandlersImpl
 	*windowEventHandlersImpl
-	js.Value
+	Value
 }
 
-func wrapWindow(v js.Value) Window {
+func wrapWindow(v Value) Window {
 	if p := newWindowImpl(v); p != nil {
 		return p
 	}
 	return nil
 }
 
-func newWindowImpl(v js.Value) *windowImpl {
-	if isNil(v) {
-		return nil
+func newWindowImpl(v Value) *windowImpl {
+	if v.Valid() {
+		wi := &windowImpl{
+			eventTargetImpl:               newEventTargetImpl(v),
+			windowOrWorkerGlobalScopeImpl: newWindowOrWorkerGlobalScopeImpl(v),
+			Value:                         v,
+		}
+		wi.globalEventHandlersImpl = newGlobalEventHandlersImpl(wi.eventTargetImpl)
+		wi.windowEventHandlersImpl = newWindowEventHandlersImpl(wi.eventTargetImpl)
+		return wi
 	}
-
-	wi := &windowImpl{
-		eventTargetImpl:               newEventTargetImpl(v),
-		windowOrWorkerGlobalScopeImpl: newWindowOrWorkerGlobalScopeImpl(v),
-		Value:                         v,
-	}
-	wi.globalEventHandlersImpl = newGlobalEventHandlersImpl(wi.eventTargetImpl)
-	wi.windowEventHandlersImpl = newWindowEventHandlersImpl(wi.eventTargetImpl)
-	return wi
+	return nil
 }
 
 func (p *windowImpl) Console() Console {
@@ -413,17 +406,16 @@ func (p *windowImpl) PseudoElements(elt Element, typ string) []CSSPseudoElement 
 // -------------8<---------------------------------------
 
 type barPropImpl struct {
-	js.Value
+	Value
 }
 
-func wrapBarProp(v js.Value) BarProp {
-	if isNil(v) {
-		return nil
+func wrapBarProp(v Value) BarProp {
+	if v.Valid() {
+		return &barPropImpl{
+			Value: v,
+		}
 	}
-
-	return &barPropImpl{
-		Value: v,
-	}
+	return nil
 }
 
 func (p *barPropImpl) Visible() bool {
@@ -436,13 +428,13 @@ type locationImpl struct {
 	*workerLocationImpl
 }
 
-func wrapLocation(v js.Value) Location {
-	if isNil(v) {
-		return nil
+func wrapLocation(v Value) Location {
+	if v.Valid() {
+		return &locationImpl{
+			workerLocationImpl: newWorkerLocationImpl(v),
+		}
 	}
-	return &locationImpl{
-		workerLocationImpl: newWorkerLocationImpl(v),
-	}
+	return nil
 }
 
 func (p *locationImpl) SetHref(href string) {
@@ -496,17 +488,16 @@ func (p *locationImpl) AncestorOrigins() []string {
 // -------------8<---------------------------------------
 
 type historyImpl struct {
-	js.Value
+	Value
 }
 
-func wrapHistory(v js.Value) History {
-	if isNil(v) {
-		return nil
+func wrapHistory(v Value) History {
+	if v.Valid() {
+		return &historyImpl{
+			Value: v,
+		}
 	}
-
-	return &historyImpl{
-		Value: v,
-	}
+	return nil
 }
 
 func (p *historyImpl) Length() int {
@@ -566,8 +557,8 @@ type popStateEventImpl struct {
 	*eventImpl
 }
 
-func wrapPopStateEvent(v js.Value) PopStateEvent {
-	if isNil(v) {
+func wrapPopStateEvent(v Value) PopStateEvent {
+	if !v.Valid() {
 		return nil
 	}
 
@@ -590,14 +581,13 @@ type hashChangeEventImpl struct {
 	*eventImpl
 }
 
-func wrapHashChangeEvent(v js.Value) HashChangeEvent {
-	if isNil(v) {
-		return nil
+func wrapHashChangeEvent(v Value) HashChangeEvent {
+	if v.Valid() {
+		return &hashChangeEventImpl{
+			eventImpl: newEventImpl(v),
+		}
 	}
-
-	return &hashChangeEventImpl{
-		eventImpl: newEventImpl(v),
-	}
+	return nil
 }
 
 func (p *hashChangeEventImpl) OldURL() string {
@@ -614,14 +604,13 @@ type pageTransitionEventImpl struct {
 	*eventImpl
 }
 
-func wrapPageTransitionEvent(v js.Value) PageTransitionEvent {
-	if isNil(v) {
-		return nil
+func wrapPageTransitionEvent(v Value) PageTransitionEvent {
+	if v.Valid() {
+		return &pageTransitionEventImpl{
+			eventImpl: newEventImpl(v),
+		}
 	}
-
-	return &pageTransitionEventImpl{
-		eventImpl: newEventImpl(v),
-	}
+	return nil
 }
 
 func (p *pageTransitionEventImpl) Persisted() bool {
@@ -634,37 +623,35 @@ type windowProxyImpl struct {
 	*windowImpl
 }
 
-func wrapWindowProxy(v js.Value) WindowProxy {
-	if isNil(v) {
-		return nil
+func wrapWindowProxy(v Value) WindowProxy {
+	if v.Valid() {
+		return &windowProxyImpl{
+			windowImpl: newWindowImpl(v),
+		}
 	}
-
-	return &windowProxyImpl{
-		windowImpl: newWindowImpl(v),
-	}
+	return nil
 }
 
 // -------------8<---------------------------------------
 
 type navigatorOnLineImpl struct {
-	js.Value
+	Value
 }
 
-func wrapNavigatorOnLine(v js.Value) NavigatorOnLine {
+func wrapNavigatorOnLine(v Value) NavigatorOnLine {
 	if p := newNavigatorOnLineImpl(v); p != nil {
 		return p
 	}
 	return nil
 }
 
-func newNavigatorOnLineImpl(v js.Value) *navigatorOnLineImpl {
-	if isNil(v) {
-		return nil
+func newNavigatorOnLineImpl(v Value) *navigatorOnLineImpl {
+	if v.Valid() {
+		return &navigatorOnLineImpl{
+			Value: v,
+		}
 	}
-
-	return &navigatorOnLineImpl{
-		Value: v,
-	}
+	return nil
 }
 
 func (p *navigatorOnLineImpl) OnLine() bool {
@@ -677,14 +664,13 @@ type beforeUnloadEventImpl struct {
 	*eventImpl
 }
 
-func wrapBeforeUnloadEvent(v js.Value) BeforeUnloadEvent {
-	if isNil(v) {
-		return nil
+func wrapBeforeUnloadEvent(v Value) BeforeUnloadEvent {
+	if v.Valid() {
+		return &beforeUnloadEventImpl{
+			eventImpl: newEventImpl(v),
+		}
 	}
-
-	return &beforeUnloadEventImpl{
-		eventImpl: newEventImpl(v),
-	}
+	return nil
 }
 
 func (p *beforeUnloadEventImpl) ReturnValue() string {

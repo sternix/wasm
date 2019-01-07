@@ -2,24 +2,19 @@
 
 package wasm
 
-import (
-	"syscall/js"
-)
-
 // -------------8<---------------------------------------
 
 type touchImpl struct {
-	js.Value
+	Value
 }
 
-func wrapTouch(v js.Value) Touch {
-	if isNil(v) {
-		return nil
+func wrapTouch(v Value) Touch {
+	if v.Valid() {
+		return &touchImpl{
+			Value: v,
+		}
 	}
-
-	return &touchImpl{
-		Value: v,
-	}
+	return nil
 }
 
 func (p *touchImpl) Identifier() int {
@@ -88,14 +83,13 @@ type touchEventImpl struct {
 	*uiEventImpl
 }
 
-func wrapTouchEvent(v js.Value) TouchEvent {
-	if isNil(v) {
-		return nil
+func wrapTouchEvent(v Value) TouchEvent {
+	if v.Valid() {
+		return &touchEventImpl{
+			uiEventImpl: newUIEventImpl(v),
+		}
 	}
-
-	return &touchEventImpl{
-		uiEventImpl: newUIEventImpl(v),
-	}
+	return nil
 }
 
 func (p *touchEventImpl) Touches() []Touch {
@@ -129,26 +123,22 @@ func (p *touchEventImpl) ShiftKey() bool {
 // -------------8<---------------------------------------
 
 func NewTouch(ti TouchInit) Touch {
-	jsTouch := js.Global().Get("Touch")
-	if isNil(jsTouch) {
-		return nil
+	if jsTouch := jsGlobal.Get("Touch"); jsTouch.Valid() {
+		return wrapTouch(jsTouch.New(ti.toJSObject()))
 	}
-
-	return wrapTouch(jsTouch.New(ti.toJSObject()))
+	return nil
 }
 
 func NewTouchEvent(typ string, tei ...TouchEventInit) TouchEvent {
-	jsTouchEvent := js.Global().Get("TouchEvent")
-	if isNil(jsTouchEvent) {
-		return nil
+	if jsTouchEvent := jsGlobal.Get("TouchEvent"); jsTouchEvent.Valid() {
+		switch len(tei) {
+		case 0:
+			return wrapTouchEvent(jsTouchEvent.New(typ))
+		default:
+			return wrapTouchEvent(jsTouchEvent.New(typ, tei[0].toJSObject()))
+		}
 	}
-
-	switch len(tei) {
-	case 0:
-		return wrapTouchEvent(jsTouchEvent.New(typ))
-	default:
-		return wrapTouchEvent(jsTouchEvent.New(typ, tei[0].toJSObject()))
-	}
+	return nil
 }
 
 // -------------8<---------------------------------------

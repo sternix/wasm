@@ -3,7 +3,6 @@
 package wasm
 
 import (
-	"syscall/js"
 	"time"
 )
 
@@ -58,7 +57,7 @@ type PositionOptions struct {
 	MaximumAge         int
 }
 
-func (p PositionOptions) toJSObject() js.Value {
+func (p PositionOptions) toJSObject() Value {
 	o := jsObject.New()
 	o.Set("enableHighAccuracy", p.EnableHighAccuracy)
 	o.Set("timeout", p.Timeout)

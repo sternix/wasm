@@ -2,10 +2,6 @@
 
 package wasm
 
-import (
-	"syscall/js"
-)
-
 type (
 	// https://www.w3.org/TR/IndexedDB/#idbrequest
 	IDBRequest interface {
@@ -191,7 +187,7 @@ type IDBVersionChangeEventInit struct {
 	NewVersion int // default null
 }
 
-func (p IDBVersionChangeEventInit) toJSObject() js.Value {
+func (p IDBVersionChangeEventInit) toJSObject() Value {
 	o := jsObject.New()
 	o.Set("oldVersion", p.OldVersion)
 	o.Set("newVersion", p.NewVersion)
@@ -206,7 +202,7 @@ type IDBObjectStoreParameters struct {
 	AutoIncrement bool
 }
 
-func (p IDBObjectStoreParameters) toJSObject() js.Value {
+func (p IDBObjectStoreParameters) toJSObject() Value {
 	o := jsObject.New()
 	o.Set("keyPath", sliceToJsArray(p.KeyPath))
 	o.Set("autoIncrement", p.AutoIncrement)
@@ -221,7 +217,7 @@ type IDBIndexParameters struct {
 	MultiEntry bool
 }
 
-func (p IDBIndexParameters) toJSObject() js.Value {
+func (p IDBIndexParameters) toJSObject() Value {
 	o := jsObject.New()
 	o.Set("unique", p.Unique)
 	o.Set("multiEntry", p.MultiEntry)

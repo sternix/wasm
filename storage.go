@@ -2,10 +2,6 @@
 
 package wasm
 
-import (
-	"syscall/js"
-)
-
 type (
 
 	// https://www.w3.org/TR/webstorage/#storage-0
@@ -53,7 +49,7 @@ type StorageEventInit struct {
 	StorageArea Storage
 }
 
-func (p StorageEventInit) toJSObject() js.Value {
+func (p StorageEventInit) toJSObject() Value {
 	o := p.EventInit.toJSObject()
 	o.Set("key", p.Key)
 	o.Set("oldValue", p.OldValue)

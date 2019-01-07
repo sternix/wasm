@@ -11,121 +11,105 @@ import (
 // -------------8<---------------------------------------
 
 func NewEvent(typ string, ei ...EventInit) Event {
-	jsEvent := js.Global().Get("Event")
-	if isNil(jsEvent) {
-		return nil
+	if jsEvent := jsGlobal.Get("Event"); jsEvent.Valid() {
+		switch len(ei) {
+		case 0:
+			return wrapEvent(jsEvent.New(typ))
+		default:
+			return wrapEvent(jsEvent.New(typ, ei[0].toJSObject()))
+		}
 	}
-
-	switch len(ei) {
-	case 0:
-		return wrapEvent(jsEvent.New(typ))
-	default:
-		return wrapEvent(jsEvent.New(typ, ei[0].toJSObject()))
-	}
+	return nil
 }
 
 func NewCustomEvent(typ string, cei ...CustomEventInit) CustomEvent {
-	jsCustomEvent := js.Global().Get("CustomEvent")
-	if isNil(jsCustomEvent) {
-		return nil
+	if jsCustomEvent := jsGlobal.Get("CustomEvent"); jsCustomEvent.Valid() {
+		switch len(cei) {
+		case 0:
+			return wrapCustomEvent(jsCustomEvent.New(typ))
+		default:
+			return wrapCustomEvent(jsCustomEvent.New(typ, cei[0].toJSObject()))
+		}
 	}
-
-	switch len(cei) {
-	case 0:
-		return wrapCustomEvent(jsCustomEvent.New(typ))
-	default:
-		return wrapCustomEvent(jsCustomEvent.New(typ, cei[0].toJSObject()))
-	}
+	return nil
 }
 
 func NewFocusEvent(typ string, ini ...FocusEventInit) FocusEvent {
-	jsFocusEvent := js.Global().Get("FocusEvent")
-	if isNil(jsFocusEvent) {
-		return nil
+	if jsFocusEvent := jsGlobal.Get("FocusEvent"); jsFocusEvent.Valid() {
+		switch len(ini) {
+		case 0:
+			return wrapFocusEvent(jsFocusEvent.New(typ))
+		default:
+			return wrapFocusEvent(jsFocusEvent.New(typ, ini[0].toJSObject()))
+		}
 	}
-
-	switch len(ini) {
-	case 0:
-		return wrapFocusEvent(jsFocusEvent.New(typ))
-	default:
-		return wrapFocusEvent(jsFocusEvent.New(typ, ini[0].toJSObject()))
-	}
+	return nil
 }
 
 func NewMouseEvent(typ string, ini ...MouseEventInit) MouseEvent {
-	jsMouseEvent := js.Global().Get("MouseEvent")
-	if isNil(jsMouseEvent) {
-		return nil
+	if jsMouseEvent := jsGlobal.Get("MouseEvent"); jsMouseEvent.Valid() {
+		switch len(ini) {
+		case 0:
+			return wrapMouseEvent(jsMouseEvent.New(typ))
+		default:
+			return wrapMouseEvent(jsMouseEvent.New(typ, ini[0].toJSObject()))
+		}
 	}
-
-	switch len(ini) {
-	case 0:
-		return wrapMouseEvent(jsMouseEvent.New(typ))
-	default:
-		return wrapMouseEvent(jsMouseEvent.New(typ, ini[0].toJSObject()))
-	}
+	return nil
 }
 
 func NewWheelEvent(typ string, ini ...WheelEventInit) WheelEvent {
-	jsWheelEvent := js.Global().Get("WheelEvent")
-	if isNil(jsWheelEvent) {
-		return nil
+	if jsWheelEvent := jsGlobal.Get("WheelEvent"); jsWheelEvent.Valid() {
+		switch len(ini) {
+		case 0:
+			return wrapWheelEvent(jsWheelEvent.New(typ))
+		default:
+			return wrapWheelEvent(jsWheelEvent.New(typ, ini[0].toJSObject()))
+		}
 	}
-
-	switch len(ini) {
-	case 0:
-		return wrapWheelEvent(jsWheelEvent.New(typ))
-	default:
-		return wrapWheelEvent(jsWheelEvent.New(typ, ini[0].toJSObject()))
-	}
+	return nil
 }
 
 func NewInputEvent(typ string, ini ...InputEventInit) InputEvent {
-	jsInputEvent := js.Global().Get("InputEvent")
-	if isNil(jsInputEvent) {
-		return nil
+	if jsInputEvent := jsGlobal.Get("InputEvent"); jsInputEvent.Valid() {
+		switch len(ini) {
+		case 0:
+			return wrapInputEvent(jsInputEvent.New(typ))
+		default:
+			return wrapInputEvent(jsInputEvent.New(typ, ini[0].toJSObject()))
+		}
 	}
-
-	switch len(ini) {
-	case 0:
-		return wrapInputEvent(jsInputEvent.New(typ))
-	default:
-		return wrapInputEvent(jsInputEvent.New(typ, ini[0].toJSObject()))
-	}
+	return nil
 }
 
 func NewKeyboardEvent(typ string, ini ...KeyboardEventInit) KeyboardEvent {
-	jsKeyboardEvent := js.Global().Get("KeyboardEvent")
-	if isNil(jsKeyboardEvent) {
-		return nil
+	if jsKeyboardEvent := jsGlobal.Get("KeyboardEvent"); jsKeyboardEvent.Valid() {
+		switch len(ini) {
+		case 0:
+			return wrapKeyboardEvent(jsKeyboardEvent.New(typ))
+		default:
+			return wrapKeyboardEvent(jsKeyboardEvent.New(typ, ini[0].toJSObject()))
+		}
 	}
-
-	switch len(ini) {
-	case 0:
-		return wrapKeyboardEvent(jsKeyboardEvent.New(typ))
-	default:
-		return wrapKeyboardEvent(jsKeyboardEvent.New(typ, ini[0].toJSObject()))
-	}
+	return nil
 }
 
 func NewErrorEvent(typ string, eei ...ErrorEventInit) ErrorEvent {
-	jsErrorEvent := js.Global().Get("ErrorEvent")
-	if isNil(jsErrorEvent) {
-		return nil
+	if jsErrorEvent := jsGlobal.Get("ErrorEvent"); jsErrorEvent.Valid() {
+		switch len(eei) {
+		case 0:
+			return wrapErrorEvent(jsErrorEvent.New(typ))
+		default:
+			return wrapErrorEvent(jsErrorEvent.New(typ, eei[0].toJSObject()))
+		}
 	}
-
-	switch len(eei) {
-	case 0:
-		return wrapErrorEvent(jsErrorEvent.New(typ))
-	default:
-		return wrapErrorEvent(jsErrorEvent.New(typ, eei[0].toJSObject()))
-	}
+	return nil
 }
 
 // -------------8<---------------------------------------
 
 type eventHandlerImpl struct {
-	js.Value
+	Value
 	jsCb js.Func
 	fn   func(Event)
 	typ  string
@@ -137,7 +121,7 @@ func (p *eventHandlerImpl) Type() string {
 
 func (p *eventHandlerImpl) jsFunc(this js.Value, args []js.Value) interface{} {
 	if len(args) > 0 {
-		p.Handle(wrapAsEvent(args[0]))
+		p.Handle(wrapAsEvent(Value{args[0]}))
 	}
 	return nil
 }
@@ -158,24 +142,23 @@ func (p *eventHandlerImpl) Remove() {
 // -------------8<---------------------------------------
 
 type eventTargetImpl struct {
-	js.Value
+	Value
 }
 
-func wrapEventTarget(v js.Value) EventTarget {
+func wrapEventTarget(v Value) EventTarget {
 	if p := newEventTargetImpl(v); p != nil {
 		return p
 	}
 	return nil
 }
 
-func newEventTargetImpl(v js.Value) *eventTargetImpl {
-	if isNil(v) {
-		return nil
+func newEventTargetImpl(v Value) *eventTargetImpl {
+	if v.Valid() {
+		return &eventTargetImpl{
+			Value: v,
+		}
 	}
-
-	return &eventTargetImpl{
-		Value: v,
-	}
+	return nil
 }
 
 func (p *eventTargetImpl) On(event string, fn func(ev Event)) EventHandler {
@@ -198,24 +181,23 @@ func (p *eventTargetImpl) DispatchEvent(e Event) bool {
 // -------------8<---------------------------------------
 
 type eventImpl struct {
-	js.Value
+	Value
 }
 
-func wrapEvent(v js.Value) Event {
+func wrapEvent(v Value) Event {
 	if p := newEventImpl(v); p != nil {
 		return p
 	}
 	return nil
 }
 
-func newEventImpl(v js.Value) *eventImpl {
-	if isNil(v) {
-		return nil
+func newEventImpl(v Value) *eventImpl {
+	if v.Valid() {
+		return &eventImpl{
+			Value: v,
+		}
 	}
-
-	return &eventImpl{
-		Value: v,
-	}
+	return nil
 }
 
 func (p *eventImpl) Type() string {
@@ -231,16 +213,14 @@ func (p *eventImpl) CurrentTarget() EventTarget {
 }
 
 func (p *eventImpl) ComposedPath() []EventTarget {
-	s := arrayToSlice(p.Call("composedPath"))
-	if s == nil {
-		return nil
+	if s := p.Call("composedPath").ToSlice(); s != nil {
+		ret := make([]EventTarget, len(s))
+		for i, v := range s {
+			ret[i] = wrapAsEventTarget(v)
+		}
+		return ret
 	}
-
-	ret := make([]EventTarget, len(s))
-	for i, v := range s {
-		ret[i] = wrapEventTarget(v)
-	}
-	return ret
+	return nil
 }
 
 func (p *eventImpl) EventPhase() EventPhase {
@@ -290,14 +270,13 @@ type customEventImpl struct {
 	*eventImpl
 }
 
-func wrapCustomEvent(v js.Value) CustomEvent {
-	if isNil(v) {
-		return nil
+func wrapCustomEvent(v Value) CustomEvent {
+	if v.Valid() {
+		return &customEventImpl{
+			eventImpl: newEventImpl(v),
+		}
 	}
-
-	return &customEventImpl{
-		eventImpl: newEventImpl(v),
-	}
+	return nil
 }
 
 func (p *customEventImpl) Detail() interface{} {
@@ -885,17 +864,16 @@ func (p *documentAndElementEventHandlersImpl) OnPaste(fn func(Event)) EventHandl
 var _ WindowOrWorkerGlobalScope = &windowOrWorkerGlobalScopeImpl{}
 
 type windowOrWorkerGlobalScopeImpl struct {
-	js.Value
+	Value
 }
 
-func newWindowOrWorkerGlobalScopeImpl(v js.Value) *windowOrWorkerGlobalScopeImpl {
-	if isNil(v) {
-		return nil
+func newWindowOrWorkerGlobalScopeImpl(v Value) *windowOrWorkerGlobalScopeImpl {
+	if v.Valid() {
+		return &windowOrWorkerGlobalScopeImpl{
+			Value: v,
+		}
 	}
-
-	return &windowOrWorkerGlobalScopeImpl{
-		Value: v,
-	}
+	return nil
 }
 
 func (p *windowOrWorkerGlobalScopeImpl) Origin() string {
@@ -933,7 +911,7 @@ func (p *windowOrWorkerGlobalScopeImpl) QueueMicrotask(vfn VoidFunction) {
 func (p *windowOrWorkerGlobalScopeImpl) CreateImageBitmap(image ImageBitmapSource, options ...ImageBitmapOptions) func() (ImageBitmap, error) {
 	return func() (ImageBitmap, error) {
 		var (
-			result js.Value
+			result Value
 			ok     bool
 		)
 
@@ -955,7 +933,7 @@ func (p *windowOrWorkerGlobalScopeImpl) CreateImageBitmap(image ImageBitmapSourc
 func (p *windowOrWorkerGlobalScopeImpl) CreateImageBitmapWithSize(image ImageBitmapSource, sx int, sy int, sw int, sh int, options ...ImageBitmapOptions) func() (ImageBitmap, error) {
 	return func() (ImageBitmap, error) {
 		var (
-			result js.Value
+			result Value
 			ok     bool
 		)
 
@@ -980,10 +958,10 @@ func (p *windowOrWorkerGlobalScopeImpl) IndexedDB() IDBFactory {
 
 func (p *windowOrWorkerGlobalScopeImpl) Fetch(input RequestInfo, ri ...RequestInit) func() (Response, error) {
 	return func() (Response, error) {
-		var in js.Value
+		var in Value
 		switch x := input.(type) {
 		case string:
-			in = js.ValueOf(x)
+			in = ValueOf(x)
 		case Request:
 			in = JSValue(x)
 		default:
@@ -991,7 +969,7 @@ func (p *windowOrWorkerGlobalScopeImpl) Fetch(input RequestInfo, ri ...RequestIn
 		}
 
 		var (
-			result js.Value
+			result Value
 			ok     bool
 		)
 
@@ -1121,21 +1099,20 @@ type uiEventImpl struct {
 	*eventImpl
 }
 
-func wrapUIEvent(v js.Value) UIEvent {
+func wrapUIEvent(v Value) UIEvent {
 	if p := newUIEventImpl(v); p != nil {
 		return p
 	}
 	return nil
 }
 
-func newUIEventImpl(v js.Value) *uiEventImpl {
-	if isNil(v) {
-		return nil
+func newUIEventImpl(v Value) *uiEventImpl {
+	if v.Valid() {
+		return &uiEventImpl{
+			eventImpl: newEventImpl(v),
+		}
 	}
-
-	return &uiEventImpl{
-		eventImpl: newEventImpl(v),
-	}
+	return nil
 }
 
 func (p *uiEventImpl) View() Window {
@@ -1152,21 +1129,20 @@ type mouseEventImpl struct {
 	*uiEventImpl
 }
 
-func wrapMouseEvent(v js.Value) MouseEvent {
+func wrapMouseEvent(v Value) MouseEvent {
 	if p := newMouseEventImpl(v); p != nil {
 		return p
 	}
 	return nil
 }
 
-func newMouseEventImpl(v js.Value) *mouseEventImpl {
-	if isNil(v) {
-		return nil
+func newMouseEventImpl(v Value) *mouseEventImpl {
+	if v.Valid() {
+		return &mouseEventImpl{
+			uiEventImpl: newUIEventImpl(v),
+		}
 	}
-
-	return &mouseEventImpl{
-		uiEventImpl: newUIEventImpl(v),
-	}
+	return nil
 }
 
 func (p *mouseEventImpl) ScreenX() float64 {
@@ -1210,7 +1186,7 @@ func (p *mouseEventImpl) Buttons() int {
 }
 
 func (p *mouseEventImpl) RelatedTarget() EventTarget {
-	return wrapEventTarget(p.Get("relatedTarget"))
+	return wrapAsEventTarget(p.Get("relatedTarget"))
 }
 
 func (p *mouseEventImpl) ModifierState(keyArg string) bool {
@@ -1247,14 +1223,13 @@ type focusEventImpl struct {
 	*uiEventImpl
 }
 
-func wrapFocusEvent(v js.Value) FocusEvent {
-	if isNil(v) {
-		return nil
+func wrapFocusEvent(v Value) FocusEvent {
+	if v.Valid() {
+		return &focusEventImpl{
+			uiEventImpl: newUIEventImpl(v),
+		}
 	}
-
-	return &focusEventImpl{
-		uiEventImpl: newUIEventImpl(v),
-	}
+	return nil
 }
 
 func (p *focusEventImpl) RelatedTarget() EventTarget {
@@ -1267,14 +1242,13 @@ type wheelEventImpl struct {
 	*mouseEventImpl
 }
 
-func wrapWheelEvent(v js.Value) WheelEvent {
-	if isNil(v) {
-		return nil
+func wrapWheelEvent(v Value) WheelEvent {
+	if v.Valid() {
+		return &wheelEventImpl{
+			mouseEventImpl: newMouseEventImpl(v),
+		}
 	}
-
-	return &wheelEventImpl{
-		mouseEventImpl: newMouseEventImpl(v),
-	}
+	return nil
 }
 
 func (p *wheelEventImpl) DeltaX() float64 {
@@ -1299,14 +1273,13 @@ type inputEventImpl struct {
 	*uiEventImpl
 }
 
-func wrapInputEvent(v js.Value) InputEvent {
-	if isNil(v) {
-		return nil
+func wrapInputEvent(v Value) InputEvent {
+	if v.Valid() {
+		return &inputEventImpl{
+			uiEventImpl: newUIEventImpl(v),
+		}
 	}
-
-	return &inputEventImpl{
-		uiEventImpl: newUIEventImpl(v),
-	}
+	return nil
 }
 
 func (p *inputEventImpl) Data() string {
@@ -1323,14 +1296,13 @@ type keyboardEventImpl struct {
 	*uiEventImpl
 }
 
-func wrapKeyboardEvent(v js.Value) KeyboardEvent {
-	if isNil(v) {
-		return nil
+func wrapKeyboardEvent(v Value) KeyboardEvent {
+	if v.Valid() {
+		return &keyboardEventImpl{
+			uiEventImpl: newUIEventImpl(v),
+		}
 	}
-
-	return &keyboardEventImpl{
-		uiEventImpl: newUIEventImpl(v),
-	}
+	return nil
 }
 
 func (p *keyboardEventImpl) Key() string {
@@ -1379,14 +1351,13 @@ type compositionEventImpl struct {
 	*uiEventImpl
 }
 
-func wrapCompositionEvent(v js.Value) CompositionEvent {
-	if isNil(v) {
-		return nil
+func wrapCompositionEvent(v Value) CompositionEvent {
+	if v.Valid() {
+		return &compositionEventImpl{
+			uiEventImpl: newUIEventImpl(v),
+		}
 	}
-
-	return &compositionEventImpl{
-		uiEventImpl: newUIEventImpl(v),
-	}
+	return nil
 }
 
 func (p *compositionEventImpl) Data() string {
@@ -1399,14 +1370,13 @@ type errorEventImpl struct {
 	*eventImpl
 }
 
-func wrapErrorEvent(v js.Value) ErrorEvent {
-	if isNil(v) {
-		return nil
+func wrapErrorEvent(v Value) ErrorEvent {
+	if v.Valid() {
+		return &errorEventImpl{
+			eventImpl: newEventImpl(v),
+		}
 	}
-
-	return &errorEventImpl{
-		eventImpl: newEventImpl(v),
-	}
+	return nil
 }
 
 func (p *errorEventImpl) Message() string {
@@ -1436,26 +1406,24 @@ type transitionEventImpl struct {
 }
 
 func NewTransitionEvent(typ string, tei ...TransitionEventInit) TransitionEvent {
-	jsTe := js.Global().Get("TransitionEvent")
-	if isNil(jsTe) {
-		return nil
+	if jsTe := jsGlobal.Get("TransitionEvent"); jsTe.Valid() {
+		switch len(tei) {
+		case 0:
+			return wrapTransitionEvent(jsTe.New(typ))
+		default:
+			return wrapTransitionEvent(jsTe.New(typ, tei[0].toJSObject()))
+		}
 	}
-
-	switch len(tei) {
-	case 0:
-		return wrapTransitionEvent(jsTe.New(typ))
-	default:
-		return wrapTransitionEvent(jsTe.New(typ, tei[0].toJSObject()))
-	}
+	return nil
 }
 
-func wrapTransitionEvent(v js.Value) TransitionEvent {
-	if isNil(v) {
-		return nil
+func wrapTransitionEvent(v Value) TransitionEvent {
+	if v.Valid() {
+		return &transitionEventImpl{
+			eventImpl: newEventImpl(v),
+		}
 	}
-	return &transitionEventImpl{
-		eventImpl: newEventImpl(v),
-	}
+	return nil
 }
 
 func (p *transitionEventImpl) PropertyName() string {
@@ -1477,26 +1445,24 @@ type pointerEventImpl struct {
 }
 
 func NewPointerEvent(typ string, pei ...PointerEventInit) PointerEvent {
-	jsPe := js.Global().Get("PointerEvent")
-	if isNil(jsPe) {
-		return nil
+	if jsPe := jsGlobal.Get("PointerEvent"); jsPe.Valid() {
+		switch len(pei) {
+		case 0:
+			return wrapPointerEvent(jsPe.New(typ))
+		default:
+			return wrapPointerEvent(jsPe.New(typ, pei[0].toJSObject()))
+		}
 	}
-
-	switch len(pei) {
-	case 0:
-		return wrapPointerEvent(jsPe.New(typ))
-	default:
-		return wrapPointerEvent(jsPe.New(typ, pei[0].toJSObject()))
-	}
+	return nil
 }
 
-func wrapPointerEvent(v js.Value) PointerEvent {
-	if isNil(v) {
-		return nil
+func wrapPointerEvent(v Value) PointerEvent {
+	if v.Valid() {
+		return &pointerEventImpl{
+			mouseEventImpl: newMouseEventImpl(v),
+		}
 	}
-	return &pointerEventImpl{
-		mouseEventImpl: newMouseEventImpl(v),
-	}
+	return nil
 }
 
 func (p *pointerEventImpl) PointerId() int {

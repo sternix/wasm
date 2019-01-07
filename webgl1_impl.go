@@ -9,24 +9,23 @@ import (
 // -------------8<---------------------------------------
 
 type webGLObjectImpl struct {
-	js.Value
+	Value
 }
 
-func wrapWebGLObject(v js.Value) WebGLObject {
+func wrapWebGLObject(v Value) WebGLObject {
 	if p := newWebGLObjectImpl(v); p != nil {
 		return p
 	}
 	return nil
 }
 
-func newWebGLObjectImpl(v js.Value) *webGLObjectImpl {
-	if isNil(v) {
-		return nil
+func newWebGLObjectImpl(v Value) *webGLObjectImpl {
+	if v.Valid() {
+		return &webGLObjectImpl{
+			Value: v,
+		}
 	}
-
-	return &webGLObjectImpl{
-		Value: v,
-	}
+	return nil
 }
 
 // -------------8<---------------------------------------
@@ -35,14 +34,13 @@ type webGLBufferImpl struct {
 	*webGLObjectImpl
 }
 
-func wrapWebGLBuffer(v js.Value) WebGLBuffer {
-	if isNil(v) {
-		return nil
+func wrapWebGLBuffer(v Value) WebGLBuffer {
+	if v.Valid() {
+		return &webGLBufferImpl{
+			webGLObjectImpl: newWebGLObjectImpl(v),
+		}
 	}
-
-	return &webGLBufferImpl{
-		webGLObjectImpl: newWebGLObjectImpl(v),
-	}
+	return nil
 }
 
 // -------------8<---------------------------------------
@@ -51,14 +49,13 @@ type webGLFramebufferImpl struct {
 	*webGLObjectImpl
 }
 
-func wrapWebGLFramebuffer(v js.Value) WebGLFramebuffer {
-	if isNil(v) {
-		return nil
+func wrapWebGLFramebuffer(v Value) WebGLFramebuffer {
+	if v.Valid() {
+		return &webGLFramebufferImpl{
+			webGLObjectImpl: newWebGLObjectImpl(v),
+		}
 	}
-
-	return &webGLFramebufferImpl{
-		webGLObjectImpl: newWebGLObjectImpl(v),
-	}
+	return nil
 }
 
 // -------------8<---------------------------------------
@@ -67,14 +64,13 @@ type webGLProgramImpl struct {
 	*webGLObjectImpl
 }
 
-func wrapWebGLProgram(v js.Value) WebGLProgram {
-	if isNil(v) {
-		return nil
+func wrapWebGLProgram(v Value) WebGLProgram {
+	if v.Valid() {
+		return &webGLProgramImpl{
+			webGLObjectImpl: newWebGLObjectImpl(v),
+		}
 	}
-
-	return &webGLProgramImpl{
-		webGLObjectImpl: newWebGLObjectImpl(v),
-	}
+	return nil
 }
 
 // -------------8<---------------------------------------
@@ -83,14 +79,13 @@ type webGLRenderbufferImpl struct {
 	*webGLObjectImpl
 }
 
-func wrapWebGLRenderbuffer(v js.Value) WebGLRenderbuffer {
-	if isNil(v) {
-		return nil
+func wrapWebGLRenderbuffer(v Value) WebGLRenderbuffer {
+	if v.Valid() {
+		return &webGLRenderbufferImpl{
+			webGLObjectImpl: newWebGLObjectImpl(v),
+		}
 	}
-
-	return &webGLRenderbufferImpl{
-		webGLObjectImpl: newWebGLObjectImpl(v),
-	}
+	return nil
 }
 
 // -------------8<---------------------------------------
@@ -99,14 +94,13 @@ type webGLShaderImpl struct {
 	*webGLObjectImpl
 }
 
-func wrapWebGLShader(v js.Value) WebGLShader {
-	if isNil(v) {
-		return nil
+func wrapWebGLShader(v Value) WebGLShader {
+	if v.Valid() {
+		return &webGLShaderImpl{
+			webGLObjectImpl: newWebGLObjectImpl(v),
+		}
 	}
-
-	return &webGLShaderImpl{
-		webGLObjectImpl: newWebGLObjectImpl(v),
-	}
+	return nil
 }
 
 // -------------8<---------------------------------------
@@ -115,46 +109,43 @@ type webGLTextureImpl struct {
 	*webGLObjectImpl
 }
 
-func wrapWebGLTexture(v js.Value) WebGLTexture {
-	if isNil(v) {
-		return nil
+func wrapWebGLTexture(v Value) WebGLTexture {
+	if v.Valid() {
+		return &webGLTextureImpl{
+			webGLObjectImpl: newWebGLObjectImpl(v),
+		}
 	}
-
-	return &webGLTextureImpl{
-		webGLObjectImpl: newWebGLObjectImpl(v),
-	}
+	return nil
 }
 
 // -------------8<---------------------------------------
 
 type webGLUniformLocationImpl struct {
-	js.Value
+	Value
 }
 
-func wrapWebGLUniformLocation(v js.Value) WebGLUniformLocation {
-	if isNil(v) {
-		return nil
+func wrapWebGLUniformLocation(v Value) WebGLUniformLocation {
+	if v.Valid() {
+		return &webGLUniformLocationImpl{
+			Value: v,
+		}
 	}
-
-	return &webGLUniformLocationImpl{
-		Value: v,
-	}
+	return nil
 }
 
 // -------------8<---------------------------------------
 
 type webGLActiveInfoImpl struct {
-	js.Value
+	Value
 }
 
-func wrapWebGLActiveInfo(v js.Value) WebGLActiveInfo {
-	if isNil(v) {
-		return nil
+func wrapWebGLActiveInfo(v Value) WebGLActiveInfo {
+	if v.Valid() {
+		return &webGLActiveInfoImpl{
+			Value: v,
+		}
 	}
-
-	return &webGLActiveInfoImpl{
-		Value: v,
-	}
+	return nil
 }
 
 func (p *webGLActiveInfoImpl) Size() int {
@@ -172,17 +163,16 @@ func (p *webGLActiveInfoImpl) Name() string {
 // -------------8<---------------------------------------
 
 type webGLShaderPrecisionFormatImpl struct {
-	js.Value
+	Value
 }
 
-func wrapWebGLShaderPrecisionFormat(v js.Value) WebGLShaderPrecisionFormat {
-	if isNil(v) {
-		return nil
+func wrapWebGLShaderPrecisionFormat(v Value) WebGLShaderPrecisionFormat {
+	if v.Valid() {
+		return &webGLShaderPrecisionFormatImpl{
+			Value: v,
+		}
 	}
-
-	return &webGLShaderPrecisionFormatImpl{
-		Value: v,
-	}
+	return nil
 }
 
 func (p *webGLShaderPrecisionFormatImpl) RangeMin() int {
@@ -199,37 +189,35 @@ func (p *webGLShaderPrecisionFormatImpl) Precision() int {
 
 // -------------8<---------------------------------------
 
-func wrapWebGLContextAttributes(v js.Value) WebGLContextAttributes {
-	if isNil(v) {
-		return WebGLContextAttributes{}
+func wrapWebGLContextAttributes(v Value) WebGLContextAttributes {
+	if v.Valid() {
+		return WebGLContextAttributes{
+			Alpha:                        v.Get("alpha").Bool(),
+			Depth:                        v.Get("depth").Bool(),
+			Stencil:                      v.Get("stencil").Bool(),
+			Antialias:                    v.Get("antialias").Bool(),
+			PremultipliedAlpha:           v.Get("premultipliedAlpha").Bool(),
+			PreserveDrawingBuffer:        v.Get("preserveDrawingBuffer").Bool(),
+			PowerPreference:              WebGLPowerPreference(v.Get("powerPreference").String()),
+			FailIfMajorPerformanceCaveat: v.Get("failIfMajorPerformanceCaveat").Bool(),
+		}
 	}
-
-	return WebGLContextAttributes{
-		Alpha:                        v.Get("alpha").Bool(),
-		Depth:                        v.Get("depth").Bool(),
-		Stencil:                      v.Get("stencil").Bool(),
-		Antialias:                    v.Get("antialias").Bool(),
-		PremultipliedAlpha:           v.Get("premultipliedAlpha").Bool(),
-		PreserveDrawingBuffer:        v.Get("preserveDrawingBuffer").Bool(),
-		PowerPreference:              WebGLPowerPreference(v.Get("powerPreference").String()),
-		FailIfMajorPerformanceCaveat: v.Get("failIfMajorPerformanceCaveat").Bool(),
-	}
+	return WebGLContextAttributes{}
 }
 
 // -------------8<---------------------------------------
 
 type texImageSourceImpl struct {
-	js.Value
+	Value
 }
 
-func wrapTexImageSource(v js.Value) TexImageSource {
-	if isNil(v) {
-		return nil
+func wrapTexImageSource(v Value) TexImageSource {
+	if v.Valid() {
+		return &texImageSourceImpl{
+			Value: v,
+		}
 	}
-
-	return &texImageSourceImpl{
-		Value: v,
-	}
+	return nil
 }
 
 // -------------8<---------------------------------------
@@ -237,17 +225,16 @@ func wrapTexImageSource(v js.Value) TexImageSource {
 var _ WebGLRenderingContextBase = &webGLRenderingContextBaseImpl{}
 
 type webGLRenderingContextBaseImpl struct {
-	js.Value
+	Value
 }
 
-func newWebGLRenderingContextBaseImpl(v js.Value) *webGLRenderingContextBaseImpl {
-	if isNil(v) {
-		return nil
+func newWebGLRenderingContextBaseImpl(v Value) *webGLRenderingContextBaseImpl {
+	if v.Valid() {
+		return &webGLRenderingContextBaseImpl{
+			Value: v,
+		}
 	}
-
-	return &webGLRenderingContextBaseImpl{
-		Value: v,
-	}
+	return nil
 }
 
 func (p *webGLRenderingContextBaseImpl) Canvas() HTMLCanvasElement {
@@ -291,11 +278,11 @@ func (p *webGLRenderingContextBaseImpl) BindAttribLocation(program WebGLProgram,
 }
 
 func (p *webGLRenderingContextBaseImpl) BindBuffer(target GLenum, buffer WebGLBuffer) {
-	var b js.Value
+	var b Value
 	if buffer != nil {
 		b = JSValue(buffer)
 	} else {
-		b = js.Null()
+		b = jsNull
 	}
 
 	p.Call("bindBuffer", uint(target), b)
@@ -518,17 +505,14 @@ func (p *webGLRenderingContextBaseImpl) GetActiveUniform(program WebGLProgram, i
 }
 
 func (p *webGLRenderingContextBaseImpl) GetAttachedShaders(program WebGLProgram) []WebGLShader {
-	s := arrayToSlice(p.Call("getAttachedShaders", JSValue(program)))
-	if s == nil {
-		return nil
+	if s := p.Call("getAttachedShaders", JSValue(program)).ToSlice(); s != nil {
+		ret := make([]WebGLShader, len(s))
+		for i, v := range s {
+			ret[i] = wrapWebGLShader(v)
+		}
+		return ret
 	}
-
-	ret := make([]WebGLShader, len(s))
-	for i, v := range s {
-		ret[i] = wrapWebGLShader(v)
-	}
-
-	return ret
+	return nil
 }
 
 func (p *webGLRenderingContextBaseImpl) GetAttribLocation(program WebGLProgram, name string) int {
@@ -879,14 +863,13 @@ type webGLRenderingContextImpl struct {
 	*webGLRenderingContextBaseImpl
 }
 
-func wrapWebGLRenderingContext(v js.Value) WebGLRenderingContext {
-	if isNil(v) {
-		return nil
+func wrapWebGLRenderingContext(v Value) WebGLRenderingContext {
+	if v.Valid() {
+		return &webGLRenderingContextImpl{
+			webGLRenderingContextBaseImpl: newWebGLRenderingContextBaseImpl(v),
+		}
 	}
-
-	return &webGLRenderingContextImpl{
-		webGLRenderingContextBaseImpl: newWebGLRenderingContextBaseImpl(v),
-	}
+	return nil
 }
 
 // -------------8<---------------------------------------

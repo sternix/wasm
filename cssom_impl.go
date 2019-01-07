@@ -2,31 +2,26 @@
 
 package wasm
 
-import (
-	"syscall/js"
-)
-
 // -------------8<---------------------------------------
 
 type linkStyleImpl struct {
-	js.Value
+	Value
 }
 
-func wrapLinkStyle(v js.Value) LinkStyle {
+func wrapLinkStyle(v Value) LinkStyle {
 	if p := newLinkStyleImpl(v); p != nil {
 		return p
 	}
 	return nil
 }
 
-func newLinkStyleImpl(v js.Value) *linkStyleImpl {
-	if isNil(v) {
-		return nil
+func newLinkStyleImpl(v Value) *linkStyleImpl {
+	if v.Valid() {
+		return &linkStyleImpl{
+			Value: v,
+		}
 	}
-
-	return &linkStyleImpl{
-		Value: v,
-	}
+	return nil
 }
 
 func (p *linkStyleImpl) Sheet() StyleSheet {
@@ -36,24 +31,23 @@ func (p *linkStyleImpl) Sheet() StyleSheet {
 // -------------8<---------------------------------------
 
 type styleSheetImpl struct {
-	js.Value
+	Value
 }
 
-func wrapStyleSheet(v js.Value) StyleSheet {
+func wrapStyleSheet(v Value) StyleSheet {
 	if p := newStyleSheetImpl(v); p != nil {
 		return p
 	}
 	return nil
 }
 
-func newStyleSheetImpl(v js.Value) *styleSheetImpl {
-	if isNil(v) {
-		return nil
+func newStyleSheetImpl(v Value) *styleSheetImpl {
+	if v.Valid() {
+		return &styleSheetImpl{
+			Value: v,
+		}
 	}
-
-	return &styleSheetImpl{
-		Value: v,
-	}
+	return nil
 }
 
 func (p *styleSheetImpl) Type() string {
@@ -91,17 +85,16 @@ func (p *styleSheetImpl) SetDisabled(d bool) {
 // -------------8<---------------------------------------
 
 type mediaListImpl struct {
-	js.Value
+	Value
 }
 
-func wrapMediaList(v js.Value) MediaList {
-	if isNil(v) {
-		return nil
+func wrapMediaList(v Value) MediaList {
+	if v.Valid() {
+		return &mediaListImpl{
+			Value: v,
+		}
 	}
-
-	return &mediaListImpl{
-		Value: v,
-	}
+	return nil
 }
 
 func (p *mediaListImpl) MediaText() string {
@@ -134,14 +127,13 @@ type cssStyleSheetImpl struct {
 	*styleSheetImpl
 }
 
-func wrapCSSStyleSheet(v js.Value) CSSStyleSheet {
-	if isNil(v) {
-		return nil
+func wrapCSSStyleSheet(v Value) CSSStyleSheet {
+	if v.Valid() {
+		return &cssStyleSheetImpl{
+			styleSheetImpl: newStyleSheetImpl(v),
+		}
 	}
-
-	return &cssStyleSheetImpl{
-		styleSheetImpl: newStyleSheetImpl(v),
-	}
+	return nil
 }
 
 func (p *cssStyleSheetImpl) OwnerRule() CSSRule {
@@ -175,24 +167,23 @@ func (p *cssStyleSheetImpl) DeleteRule(index int) {
 // -------------8<---------------------------------------
 
 type cssRuleImpl struct {
-	js.Value
+	Value
 }
 
-func wrapCSSRule(v js.Value) CSSRule {
+func wrapCSSRule(v Value) CSSRule {
 	if p := newCSSRuleImpl(v); p != nil {
 		return p
 	}
 	return nil
 }
 
-func newCSSRuleImpl(v js.Value) *cssRuleImpl {
-	if isNil(v) {
-		return nil
+func newCSSRuleImpl(v Value) *cssRuleImpl {
+	if v.Valid() {
+		return &cssRuleImpl{
+			Value: v,
+		}
 	}
-
-	return &cssRuleImpl{
-		Value: v,
-	}
+	return nil
 }
 
 func (p *cssRuleImpl) Type() CSSRuleType {
@@ -218,17 +209,16 @@ func (p *cssRuleImpl) ParentStyleSheet() CSSStyleSheet {
 // -------------8<---------------------------------------
 
 type styleSheetListImpl struct {
-	js.Value
+	Value
 }
 
-func wrapStyleSheetList(v js.Value) StyleSheetList {
-	if isNil(v) {
-		return nil
+func wrapStyleSheetList(v Value) StyleSheetList {
+	if v.Valid() {
+		return &styleSheetListImpl{
+			Value: v,
+		}
 	}
-
-	return &styleSheetListImpl{
-		Value: v,
-	}
+	return nil
 }
 
 func (p *styleSheetListImpl) Item(index int) CSSStyleSheet {
@@ -242,16 +232,16 @@ func (p *styleSheetListImpl) Length() int {
 // -------------8<---------------------------------------
 
 type cssRuleList struct {
-	js.Value
+	Value
 }
 
-func wrapCSSRuleList(v js.Value) CSSRuleList {
-	if isNil(v) {
-		return nil
+func wrapCSSRuleList(v Value) CSSRuleList {
+	if v.Valid() {
+		return &cssRuleList{
+			Value: v,
+		}
 	}
-	return &cssRuleList{
-		Value: v,
-	}
+	return nil
 }
 
 func (p *cssRuleList) Item(index int) CSSRule {
@@ -268,13 +258,13 @@ type cssStyleRuleImpl struct {
 	*cssRuleImpl
 }
 
-func wrapCSSStyleRule(v js.Value) CSSStyleRule {
-	if isNil(v) {
-		return nil
+func wrapCSSStyleRule(v Value) CSSStyleRule {
+	if v.Valid() {
+		return &cssStyleRuleImpl{
+			cssRuleImpl: newCSSRuleImpl(v),
+		}
 	}
-	return &cssStyleRuleImpl{
-		cssRuleImpl: newCSSRuleImpl(v),
-	}
+	return nil
 }
 
 func (p *cssStyleRuleImpl) SelectorText() string {
@@ -295,14 +285,13 @@ type cssImportRuleImpl struct {
 	*cssRuleImpl
 }
 
-func wrapCSSImportRule(v js.Value) CSSImportRule {
-	if isNil(v) {
-		return nil
+func wrapCSSImportRule(v Value) CSSImportRule {
+	if v.Valid() {
+		return &cssImportRuleImpl{
+			cssRuleImpl: newCSSRuleImpl(v),
+		}
 	}
-
-	return &cssImportRuleImpl{
-		cssRuleImpl: newCSSRuleImpl(v),
-	}
+	return nil
 }
 
 func (p *cssImportRuleImpl) Href() string {
@@ -323,20 +312,20 @@ type cssGroupingRuleImpl struct {
 	*cssRuleImpl
 }
 
-func wrapCSSGroupingRule(v js.Value) CSSGroupingRule {
+func wrapCSSGroupingRule(v Value) CSSGroupingRule {
 	if p := newCSSGroupingRuleImpl(v); p != nil {
 		return p
 	}
 	return nil
 }
 
-func newCSSGroupingRuleImpl(v js.Value) *cssGroupingRuleImpl {
-	if isNil(v) {
-		return nil
+func newCSSGroupingRuleImpl(v Value) *cssGroupingRuleImpl {
+	if v.Valid() {
+		return &cssGroupingRuleImpl{
+			cssRuleImpl: newCSSRuleImpl(v),
+		}
 	}
-	return &cssGroupingRuleImpl{
-		cssRuleImpl: newCSSRuleImpl(v),
-	}
+	return nil
 }
 
 func (p *cssGroupingRuleImpl) CSSRules() []CSSRule {
@@ -369,13 +358,13 @@ type cssPageRuleImpl struct {
 	*cssGroupingRuleImpl
 }
 
-func wrapCSSPageRule(v js.Value) CSSPageRule {
-	if isNil(v) {
-		return nil
+func wrapCSSPageRule(v Value) CSSPageRule {
+	if v.Valid() {
+		return &cssPageRuleImpl{
+			cssGroupingRuleImpl: newCSSGroupingRuleImpl(v),
+		}
 	}
-	return &cssPageRuleImpl{
-		cssGroupingRuleImpl: newCSSGroupingRuleImpl(v),
-	}
+	return nil
 }
 
 func (p *cssPageRuleImpl) SelectorText() string {
@@ -396,13 +385,13 @@ type cssMarginRuleImpl struct {
 	*cssRuleImpl
 }
 
-func wrapCSSMarginRule(v js.Value) CSSMarginRule {
-	if isNil(v) {
-		return nil
+func wrapCSSMarginRule(v Value) CSSMarginRule {
+	if v.Valid() {
+		return &cssMarginRuleImpl{
+			cssRuleImpl: newCSSRuleImpl(v),
+		}
 	}
-	return &cssMarginRuleImpl{
-		cssRuleImpl: newCSSRuleImpl(v),
-	}
+	return nil
 }
 
 func (p *cssMarginRuleImpl) Name() string {
@@ -419,13 +408,13 @@ type cssNamespaceRuleImpl struct {
 	*cssRuleImpl
 }
 
-func wrapCSSNamespaceRule(v js.Value) CSSNamespaceRule {
-	if isNil(v) {
-		return nil
+func wrapCSSNamespaceRule(v Value) CSSNamespaceRule {
+	if v.Valid() {
+		return &cssNamespaceRuleImpl{
+			cssRuleImpl: newCSSRuleImpl(v),
+		}
 	}
-	return &cssNamespaceRuleImpl{
-		cssRuleImpl: newCSSRuleImpl(v),
-	}
+	return nil
 }
 
 func (p *cssNamespaceRuleImpl) NamespaceURI() string {
@@ -439,16 +428,16 @@ func (p *cssNamespaceRuleImpl) Prefix() string {
 // -------------8<---------------------------------------
 
 type cssStyleDeclarationImpl struct {
-	js.Value
+	Value
 }
 
-func wrapCSSStyleDeclaration(v js.Value) CSSStyleDeclaration {
-	if isNil(v) {
-		return nil
+func wrapCSSStyleDeclaration(v Value) CSSStyleDeclaration {
+	if v.Valid() {
+		return &cssStyleDeclarationImpl{
+			Value: v,
+		}
 	}
-	return &cssStyleDeclarationImpl{
-		Value: v,
-	}
+	return nil
 }
 
 func (p *cssStyleDeclarationImpl) CSSText() string {

@@ -2,10 +2,6 @@
 
 package wasm
 
-import (
-	"syscall/js"
-)
-
 // https://www.w3.org/TR/cssom-view-1/#idl-index
 
 type (
@@ -137,7 +133,7 @@ type (
 
 // https://drafts.csswg.org/cssom/#namespacedef-css
 func CSSEscape(ident string) string {
-	return js.Global().Invoke("CSS.escape", ident).String()
+	return jsGlobal.Invoke("CSS.escape", ident).String()
 }
 
 // -------------8<---------------------------------------

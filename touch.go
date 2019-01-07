@@ -2,10 +2,6 @@
 
 package wasm
 
-import (
-	"syscall/js"
-)
-
 // https://w3c.github.io/touch-events/
 
 type (
@@ -71,7 +67,7 @@ type TouchInit struct {
 	TouchType     TouchType
 }
 
-func (p TouchInit) toJSObject() js.Value {
+func (p TouchInit) toJSObject() Value {
 	o := jsObject.New()
 	o.Set("identifier", p.Identifier)
 	o.Set("target", JSValue(p.Target))
@@ -101,7 +97,7 @@ type TouchEventInit struct {
 	ChangedTouches []Touch
 }
 
-func (p TouchEventInit) toJSObject() js.Value {
+func (p TouchEventInit) toJSObject() Value {
 	o := p.EventModifierInit.toJSObject()
 	o.Set("touches", sliceToJsArray(p.Touches))
 	o.Set("targetTouches", sliceToJsArray(p.TargetTouches))

@@ -2,10 +2,6 @@
 
 package wasm
 
-import (
-	"syscall/js"
-)
-
 type (
 	// https://www.w3.org/TR/html52/semantics-scripting.html#htmlscriptelement
 	HTMLScriptElement interface {
@@ -58,7 +54,7 @@ type CanvasRenderingContext2DSettings struct {
 	Alpha bool // default true
 }
 
-func (p CanvasRenderingContext2DSettings) toJSObject() js.Value {
+func (p CanvasRenderingContext2DSettings) toJSObject() Value {
 	o := jsObject.New()
 	o.Set("alpha", p.Alpha)
 	return o

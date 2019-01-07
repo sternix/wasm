@@ -2,24 +2,19 @@
 
 package wasm
 
-import (
-	"syscall/js"
-)
-
 // -------------8<---------------------------------------
 
 type htmlDetailsElementImpl struct {
 	*htmlElementImpl
 }
 
-func wrapHTMLDetailsElement(v js.Value) HTMLDetailsElement {
-	if isNil(v) {
-		return nil
+func wrapHTMLDetailsElement(v Value) HTMLDetailsElement {
+	if v.Valid() {
+		return &htmlDetailsElementImpl{
+			htmlElementImpl: newHTMLElementImpl(v),
+		}
 	}
-
-	return &htmlDetailsElementImpl{
-		htmlElementImpl: newHTMLElementImpl(v),
-	}
+	return nil
 }
 
 func (p *htmlDetailsElementImpl) Open() bool {
@@ -36,13 +31,13 @@ type htmlDialogElementImpl struct {
 	*htmlElementImpl
 }
 
-func wrapHTMLDialogElement(v js.Value) HTMLDialogElement {
-	if isNil(v) {
-		return nil
+func wrapHTMLDialogElement(v Value) HTMLDialogElement {
+	if v.Valid() {
+		return &htmlDialogElementImpl{
+			htmlElementImpl: newHTMLElementImpl(v),
+		}
 	}
-	return &htmlDialogElementImpl{
-		htmlElementImpl: newHTMLElementImpl(v),
-	}
+	return nil
 }
 
 func (p *htmlDialogElementImpl) Open() bool {

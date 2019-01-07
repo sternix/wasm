@@ -2,10 +2,6 @@
 
 package wasm
 
-import (
-	"syscall/js"
-)
-
 // -------------8<---------------------------------------
 
 type navigatorImpl struct {
@@ -15,23 +11,22 @@ type navigatorImpl struct {
 	*navigatorContentUtilsImpl
 	*navigatorCookiesImpl
 	*navigatorConcurrentHardwareImpl
-	js.Value
+	Value
 }
 
-func wrapNavigator(v js.Value) Navigator {
-	if isNil(v) {
-		return nil
+func wrapNavigator(v Value) Navigator {
+	if v.Valid() {
+		return &navigatorImpl{
+			navigatorIDImpl:                 newNavigatorIDImpl(v),
+			navigatorLanguageImpl:           newNavigatorLanguageImpl(v),
+			navigatorOnLineImpl:             newNavigatorOnLineImpl(v),
+			navigatorContentUtilsImpl:       newNavigatorContentUtilsImpl(v),
+			navigatorCookiesImpl:            newNavigatorCookiesImpl(v),
+			navigatorConcurrentHardwareImpl: newNavigatorConcurrentHardwareImpl(v),
+			Value:                           v,
+		}
 	}
-
-	return &navigatorImpl{
-		navigatorIDImpl:                 newNavigatorIDImpl(v),
-		navigatorLanguageImpl:           newNavigatorLanguageImpl(v),
-		navigatorOnLineImpl:             newNavigatorOnLineImpl(v),
-		navigatorContentUtilsImpl:       newNavigatorContentUtilsImpl(v),
-		navigatorCookiesImpl:            newNavigatorCookiesImpl(v),
-		navigatorConcurrentHardwareImpl: newNavigatorConcurrentHardwareImpl(v),
-		Value:                           v,
-	}
+	return nil
 }
 
 func (p *navigatorImpl) Geolocation() Geolocation {
@@ -51,17 +46,16 @@ func (p *navigatorImpl) MaxTouchPoints() int {
 var _ NavigatorID = &navigatorIDImpl{}
 
 type navigatorIDImpl struct {
-	js.Value
+	Value
 }
 
-func newNavigatorIDImpl(v js.Value) *navigatorIDImpl {
-	if isNil(v) {
-		return nil
+func newNavigatorIDImpl(v Value) *navigatorIDImpl {
+	if v.Valid() {
+		return &navigatorIDImpl{
+			Value: v,
+		}
 	}
-
-	return &navigatorIDImpl{
-		Value: v,
-	}
+	return nil
 }
 
 func (p *navigatorIDImpl) AppCodeName() string {
@@ -93,17 +87,16 @@ func (p *navigatorIDImpl) UserAgent() string {
 var _ NavigatorLanguage = &navigatorLanguageImpl{}
 
 type navigatorLanguageImpl struct {
-	js.Value
+	Value
 }
 
-func newNavigatorLanguageImpl(v js.Value) *navigatorLanguageImpl {
-	if isNil(v) {
-		return nil
+func newNavigatorLanguageImpl(v Value) *navigatorLanguageImpl {
+	if v.Valid() {
+		return &navigatorLanguageImpl{
+			Value: v,
+		}
 	}
-
-	return &navigatorLanguageImpl{
-		Value: v,
-	}
+	return nil
 }
 
 func (p *navigatorLanguageImpl) Language() string {
@@ -111,7 +104,7 @@ func (p *navigatorLanguageImpl) Language() string {
 }
 
 func (p *navigatorLanguageImpl) Languages() []string {
-	if s := arrayToSlice(p.Get("languages")); s != nil {
+	if s := p.Get("languages").ToSlice(); s != nil {
 		ret := make([]string, len(s))
 		for i, v := range s {
 			ret[i] = v.String()
@@ -127,17 +120,16 @@ func (p *navigatorLanguageImpl) Languages() []string {
 var _ NavigatorContentUtils = &navigatorContentUtilsImpl{}
 
 type navigatorContentUtilsImpl struct {
-	js.Value
+	Value
 }
 
-func newNavigatorContentUtilsImpl(v js.Value) *navigatorContentUtilsImpl {
-	if isNil(v) {
-		return nil
+func newNavigatorContentUtilsImpl(v Value) *navigatorContentUtilsImpl {
+	if v.Valid() {
+		return &navigatorContentUtilsImpl{
+			Value: v,
+		}
 	}
-
-	return &navigatorContentUtilsImpl{
-		Value: v,
-	}
+	return nil
 }
 
 func (p *navigatorContentUtilsImpl) RegisterProtocolHandler(scheme string, url string, title string) {
@@ -169,17 +161,16 @@ func (p *navigatorContentUtilsImpl) UnregisterContentHandler(mimeType string, ur
 var _ NavigatorCookies = &navigatorCookiesImpl{}
 
 type navigatorCookiesImpl struct {
-	js.Value
+	Value
 }
 
-func newNavigatorCookiesImpl(v js.Value) *navigatorCookiesImpl {
-	if isNil(v) {
-		return nil
+func newNavigatorCookiesImpl(v Value) *navigatorCookiesImpl {
+	if v.Valid() {
+		return &navigatorCookiesImpl{
+			Value: v,
+		}
 	}
-
-	return &navigatorCookiesImpl{
-		Value: v,
-	}
+	return nil
 }
 
 func (p *navigatorCookiesImpl) CookieEnabled() bool {
@@ -189,17 +180,16 @@ func (p *navigatorCookiesImpl) CookieEnabled() bool {
 // -------------8<---------------------------------------
 
 type imageBitmapImpl struct {
-	js.Value
+	Value
 }
 
-func wrapImageBitmap(v js.Value) ImageBitmap {
-	if isNil(v) {
-		return nil
+func wrapImageBitmap(v Value) ImageBitmap {
+	if v.Valid() {
+		return &imageBitmapImpl{
+			Value: v,
+		}
 	}
-
-	return &imageBitmapImpl{
-		Value: v,
-	}
+	return nil
 }
 
 func (p *imageBitmapImpl) Width() int {

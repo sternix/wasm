@@ -2,10 +2,6 @@
 
 package wasm
 
-import (
-	"syscall/js"
-)
-
 // https://www.w3.org/TR/geometry-1/#idl-index
 
 type (
@@ -125,7 +121,7 @@ type DOMPointInit struct {
 	W float64 //default 1
 }
 
-func (p DOMPointInit) toJSObject() js.Value {
+func (p DOMPointInit) toJSObject() Value {
 	o := jsObject.New()
 	o.Set("x", p.X)
 	o.Set("y", p.Y)
@@ -144,7 +140,7 @@ type DOMRectInit struct {
 	Height float64
 }
 
-func (p DOMRectInit) toJSObject() js.Value {
+func (p DOMRectInit) toJSObject() Value {
 	o := jsObject.New()
 	o.Set("x", p.X)
 	o.Set("y", p.Y)
@@ -164,7 +160,7 @@ type DOMQuadInit struct {
 	P4 DOMPointInit
 }
 
-func (p DOMQuadInit) toJSObject() js.Value {
+func (p DOMQuadInit) toJSObject() Value {
 	o := jsObject.New()
 	o.Set("p1", p.P1.toJSObject())
 	o.Set("p2", p.P2.toJSObject())

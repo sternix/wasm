@@ -2,31 +2,26 @@
 
 package wasm
 
-import (
-	"syscall/js"
-)
-
 // -------------8<---------------------------------------
 
 type textDecoderCommonImpl struct {
-	js.Value
+	Value
 }
 
-func wrapTextDecoderCommon(v js.Value) TextDecoderCommon {
+func wrapTextDecoderCommon(v Value) TextDecoderCommon {
 	if p := newTextDecoderCommonImpl(v); p != nil {
 		return p
 	}
 	return nil
 }
 
-func newTextDecoderCommonImpl(v js.Value) *textDecoderCommonImpl {
-	if isNil(v) {
-		return nil
+func newTextDecoderCommonImpl(v Value) *textDecoderCommonImpl {
+	if v.Valid() {
+		return &textDecoderCommonImpl{
+			Value: v,
+		}
 	}
-
-	return &textDecoderCommonImpl{
-		Value: v,
-	}
+	return nil
 }
 
 func (p *textDecoderCommonImpl) Encoding() string {
@@ -47,14 +42,13 @@ type textDecoderImpl struct {
 	*textDecoderCommonImpl
 }
 
-func wrapTextDecoder(v js.Value) TextDecoder {
-	if isNil(v) {
-		return nil
+func wrapTextDecoder(v Value) TextDecoder {
+	if v.Valid() {
+		return &textDecoderImpl{
+			textDecoderCommonImpl: newTextDecoderCommonImpl(v),
+		}
 	}
-
-	return &textDecoderImpl{
-		textDecoderCommonImpl: newTextDecoderCommonImpl(v),
-	}
+	return nil
 }
 
 func (p *textDecoderImpl) Decode(args ...interface{}) string {
@@ -77,24 +71,23 @@ func (p *textDecoderImpl) Decode(args ...interface{}) string {
 // -------------8<---------------------------------------
 
 type textEncoderCommonImpl struct {
-	js.Value
+	Value
 }
 
-func wrapTextEncoderCommon(v js.Value) TextEncoderCommon {
+func wrapTextEncoderCommon(v Value) TextEncoderCommon {
 	if p := newTextEncoderCommonImpl(v); p != nil {
 		return p
 	}
 	return nil
 }
 
-func newTextEncoderCommonImpl(v js.Value) *textEncoderCommonImpl {
-	if isNil(v) {
-		return nil
+func newTextEncoderCommonImpl(v Value) *textEncoderCommonImpl {
+	if v.Valid() {
+		return &textEncoderCommonImpl{
+			Value: v,
+		}
 	}
-
-	return &textEncoderCommonImpl{
-		Value: v,
-	}
+	return nil
 }
 
 func (p *textEncoderCommonImpl) Encoding() string {
@@ -107,14 +100,13 @@ type textEncoderImpl struct {
 	*textEncoderCommonImpl
 }
 
-func wrapTextEncoder(v js.Value) TextEncoder {
-	if isNil(v) {
-		return nil
+func wrapTextEncoder(v Value) TextEncoder {
+	if v.Valid() {
+		return &textEncoderImpl{
+			textEncoderCommonImpl: newTextEncoderCommonImpl(v),
+		}
 	}
-
-	return &textEncoderImpl{
-		textEncoderCommonImpl: newTextEncoderCommonImpl(v),
-	}
+	return nil
 }
 
 func (p *textEncoderImpl) Encode(input ...string) []byte {
@@ -128,24 +120,23 @@ func (p *textEncoderImpl) Encode(input ...string) []byte {
 // -------------8<---------------------------------------
 
 type genericTransformStreamImpl struct {
-	js.Value
+	Value
 }
 
-func wrapGenericTransformStream(v js.Value) GenericTransformStream {
+func wrapGenericTransformStream(v Value) GenericTransformStream {
 	if p := newGenericTransformStreamImpl(v); p != nil {
 		return p
 	}
 	return nil
 }
 
-func newGenericTransformStreamImpl(v js.Value) *genericTransformStreamImpl {
-	if isNil(v) {
-		return nil
+func newGenericTransformStreamImpl(v Value) *genericTransformStreamImpl {
+	if v.Valid() {
+		return &genericTransformStreamImpl{
+			Value: v,
+		}
 	}
-
-	return &genericTransformStreamImpl{
-		Value: v,
-	}
+	return nil
 }
 
 func (p *genericTransformStreamImpl) Readable() ReadableStream {
@@ -163,15 +154,14 @@ type textDecoderStreamImpl struct {
 	*genericTransformStreamImpl
 }
 
-func wrapTextDecoderStream(v js.Value) TextDecoderStream {
-	if isNil(v) {
-		return nil
+func wrapTextDecoderStream(v Value) TextDecoderStream {
+	if v.Valid() {
+		return &textDecoderStreamImpl{
+			textDecoderCommonImpl:      newTextDecoderCommonImpl(v),
+			genericTransformStreamImpl: newGenericTransformStreamImpl(v),
+		}
 	}
-
-	return &textDecoderStreamImpl{
-		textDecoderCommonImpl:      newTextDecoderCommonImpl(v),
-		genericTransformStreamImpl: newGenericTransformStreamImpl(v),
-	}
+	return nil
 }
 
 // -------------8<---------------------------------------
@@ -181,21 +171,20 @@ type textEncoderStreamImpl struct {
 	*genericTransformStreamImpl
 }
 
-func wrapTextEncoderStream(v js.Value) TextEncoderStream {
-	if isNil(v) {
-		return nil
+func wrapTextEncoderStream(v Value) TextEncoderStream {
+	if v.Valid() {
+		return &textEncoderStreamImpl{
+			textEncoderCommonImpl:      newTextEncoderCommonImpl(v),
+			genericTransformStreamImpl: newGenericTransformStreamImpl(v),
+		}
 	}
-
-	return &textEncoderStreamImpl{
-		textEncoderCommonImpl:      newTextEncoderCommonImpl(v),
-		genericTransformStreamImpl: newGenericTransformStreamImpl(v),
-	}
+	return nil
 }
 
 // -------------8<---------------------------------------
 
 func NewTextDecoderStream(args ...interface{}) TextDecoderStream {
-	jsDecStream := js.Global().Get("TextDecoderStream")
+	jsDecStream := jsGlobal.Get("TextDecoderStream")
 	switch len(args) {
 	case 1:
 		if label, ok := args[0].(string); ok {
@@ -213,7 +202,7 @@ func NewTextDecoderStream(args ...interface{}) TextDecoderStream {
 }
 
 func NewTextDecoder(args ...interface{}) TextDecoder {
-	jsTextDecoder := js.Global().Get("TextDecoder")
+	jsTextDecoder := jsGlobal.Get("TextDecoder")
 	switch len(args) {
 	case 1:
 		if label, ok := args[0].(string); ok {
@@ -231,9 +220,9 @@ func NewTextDecoder(args ...interface{}) TextDecoder {
 }
 
 func NewTextEncoderStream() TextEncoderStream {
-	return wrapTextEncoderStream(js.Global().Get("TextEncoderStream").New())
+	return wrapTextEncoderStream(jsGlobal.Get("TextEncoderStream").New())
 }
 
 func NewTextEncoder() TextEncoder {
-	return wrapTextEncoder(js.Global().Get("TextEncoder").New())
+	return wrapTextEncoder(jsGlobal.Get("TextEncoder").New())
 }

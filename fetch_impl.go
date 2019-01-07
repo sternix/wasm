@@ -2,24 +2,19 @@
 
 package wasm
 
-import (
-	"syscall/js"
-)
-
 // -------------8<---------------------------------------
 
 type headersImpl struct {
-	js.Value
+	Value
 }
 
-func wrapHeaders(v js.Value) Headers {
-	if isNil(v) {
-		return nil
+func wrapHeaders(v Value) Headers {
+	if v.Valid() {
+		return &headersImpl{
+			Value: v,
+		}
 	}
-
-	return &headersImpl{
-		Value: v,
-	}
+	return nil
 }
 
 func (p *headersImpl) Append(name string, value string) {
@@ -64,24 +59,23 @@ func (p *headersImpl) Entries() map[string]string {
 // -------------8<---------------------------------------
 
 type bodyImpl struct {
-	js.Value
+	Value
 }
 
-func wrapBody(v js.Value) Body {
+func wrapBody(v Value) Body {
 	if p := newBodyImpl(v); p != nil {
 		return p
 	}
 	return nil
 }
 
-func newBodyImpl(v js.Value) *bodyImpl {
-	if isNil(v) {
-		return nil
+func newBodyImpl(v Value) *bodyImpl {
+	if v.Valid() {
+		return &bodyImpl{
+			Value: v,
+		}
 	}
-
-	return &bodyImpl{
-		Value: v,
-	}
+	return nil
 }
 
 func (p *bodyImpl) Body() ReadableStream {
@@ -149,14 +143,13 @@ type requestImpl struct {
 	*bodyImpl
 }
 
-func wrapRequest(v js.Value) Request {
-	if isNil(v) {
-		return nil
+func wrapRequest(v Value) Request {
+	if v.Valid() {
+		return &requestImpl{
+			bodyImpl: newBodyImpl(v),
+		}
 	}
-
-	return &requestImpl{
-		bodyImpl: newBodyImpl(v),
-	}
+	return nil
 }
 
 func (p *requestImpl) Method() string {
@@ -229,14 +222,13 @@ type responseImpl struct {
 	*bodyImpl
 }
 
-func wrapResponse(v js.Value) Response {
-	if isNil(v) {
-		return nil
+func wrapResponse(v Value) Response {
+	if v.Valid() {
+		return &responseImpl{
+			bodyImpl: newBodyImpl(v),
+		}
 	}
-
-	return &responseImpl{
-		bodyImpl: newBodyImpl(v),
-	}
+	return nil
 }
 
 func (p *responseImpl) Error() Response {
@@ -296,31 +288,28 @@ func (p *responseImpl) Clone() Response {
 // -------------8<---------------------------------------
 
 type formDataImpl struct {
-	js.Value
+	Value
 }
 
 func NewFormData(form ...HTMLFormElement) FormData {
-	jsFormData := js.Global().Get("FormData")
-	if isNil(jsFormData) {
-		return nil
+	if jsFormData := jsGlobal.Get("FormData"); jsFormData.Valid() {
+		switch len(form) {
+		case 0:
+			return wrapFormData(jsFormData.New())
+		default:
+			return wrapFormData(jsFormData.New(JSValue(form[0])))
+		}
 	}
-
-	switch len(form) {
-	case 0:
-		return wrapFormData(jsFormData.New())
-	default:
-		return wrapFormData(jsFormData.New(JSValue(form[0])))
-	}
+	return nil
 }
 
-func wrapFormData(v js.Value) FormData {
-	if isNil(v) {
-		return nil
+func wrapFormData(v Value) FormData {
+	if v.Valid() {
+		return &formDataImpl{
+			Value: v,
+		}
 	}
-
-	return &formDataImpl{
-		Value: v,
-	}
+	return nil
 }
 
 func (p *formDataImpl) Append(name string, value interface{}, filename ...string) {
@@ -346,18 +335,16 @@ func (p *formDataImpl) Get(name string) FormDataEntryValue {
 }
 
 func (p *formDataImpl) GetAll(name string) []FormDataEntryValue {
-	slc := arrayToSlice(p.Call("getAll", name))
-	if slc == nil {
-		return nil
-	}
-
-	var ret []FormDataEntryValue
-	for _, v := range slc {
-		if fd := wrapFormDataEntryValue(v); fd != nil {
-			ret = append(ret, fd)
+	if slc := p.Call("getAll", name).ToSlice(); slc != nil {
+		var ret []FormDataEntryValue
+		for _, v := range slc {
+			if fd := wrapFormDataEntryValue(v); fd != nil {
+				ret = append(ret, fd)
+			}
 		}
+		return ret
 	}
-	return ret
+	return nil
 }
 
 func (p *formDataImpl) Has(name string) bool {
@@ -379,26 +366,24 @@ func (p *formDataImpl) Set(name string, value interface{}, filename ...string) {
 }
 
 func (p *formDataImpl) Values() []FormDataEntryValue {
-	slc := arrayToSlice(p.Call("values"))
-	if slc == nil {
-		return nil
-	}
-
-	var ret []FormDataEntryValue
-	for _, v := range slc {
-		if fd := wrapFormDataEntryValue(v); fd != nil {
-			ret = append(ret, fd)
+	if slc := p.Call("values").ToSlice(); slc != nil {
+		var ret []FormDataEntryValue
+		for _, v := range slc {
+			if fd := wrapFormDataEntryValue(v); fd != nil {
+				ret = append(ret, fd)
+			}
 		}
+		return ret
 	}
-	return ret
+	return nil
 }
 
 // -------------8<---------------------------------------
 
-var jsFile = js.Global().Get("File")
+var jsFile = jsGlobal.Get("File")
 
-func wrapFormDataEntryValue(v js.Value) FormDataEntryValue {
-	if v.Type() == js.TypeString {
+func wrapFormDataEntryValue(v Value) FormDataEntryValue {
+	if v.Type() == TypeString {
 		return v.String()
 	} else if v.InstanceOf(jsFile) {
 		return wrapFile(v)
@@ -410,39 +395,45 @@ func wrapFormDataEntryValue(v js.Value) FormDataEntryValue {
 // -------------8<---------------------------------------
 
 func NewRequest(info RequestInfo, ri ...RequestInit) Request {
-	request := js.Global().Get("Request")
-	if len(ri) > 0 {
-		return wrapRequest(request.New(info, ri[0].toJSObject()))
+	if request := jsGlobal.Get("Request"); request.Valid() {
+		switch len(ri) {
+		case 0:
+			return wrapRequest(request.New(info))
+		default:
+			return wrapRequest(request.New(info, ri[0].toJSObject()))
+		}
 	}
-
-	return wrapRequest(request.New(info))
+	return nil
 }
 
 func NewHeaders(hi ...HeadersInit) Headers {
-	headers := js.Global().Get("Headers")
-
-	if len(hi) > 0 {
-		return wrapHeaders(headers.New(hi[0]))
+	if headers := jsGlobal.Get("Headers"); headers.Valid() {
+		switch len(hi) {
+		case 0:
+			return wrapHeaders(headers.New())
+		default:
+			return wrapHeaders(headers.New(hi[0]))
+		}
 	}
-
-	return wrapHeaders(headers.New())
+	return nil
 }
 
 func NewResponse(args ...interface{}) Response {
-	response := js.Global().Get("Response")
-
-	switch len(args) {
-	case 1:
-		if body, ok := args[0].(BodyInit); ok {
-			return wrapResponse(response.New(body))
-		}
-	case 2:
-		if body, ok := args[0].(BodyInit); ok {
-			if ri, ok := args[1].(ResponseInit); ok {
-				return wrapResponse(response.New(body, ri.toJSObject()))
+	if response := jsGlobal.Get("Response"); response.Valid() {
+		switch len(args) {
+		case 0:
+			return wrapResponse(response.New())
+		case 1:
+			if body, ok := args[0].(BodyInit); ok {
+				return wrapResponse(response.New(body))
+			}
+		case 2:
+			if body, ok := args[0].(BodyInit); ok {
+				if ri, ok := args[1].(ResponseInit); ok {
+					return wrapResponse(response.New(body, ri.toJSObject()))
+				}
 			}
 		}
 	}
-
-	return wrapResponse(response.New())
+	return nil
 }

@@ -2,10 +2,6 @@
 
 package wasm
 
-import (
-	"syscall/js"
-)
-
 // -------------8<---------------------------------------
 
 type htmlTableElementImpl struct {
@@ -21,14 +17,13 @@ func NewHTMLTableElement() HTMLTableElement {
 	return nil
 }
 
-func wrapHTMLTableElement(v js.Value) HTMLTableElement {
-	if isNil(v) {
-		return nil
+func wrapHTMLTableElement(v Value) HTMLTableElement {
+	if v.Valid() {
+		return &htmlTableElementImpl{
+			htmlElementImpl: newHTMLElementImpl(v),
+		}
 	}
-
-	return &htmlTableElementImpl{
-		htmlElementImpl: newHTMLElementImpl(v),
-	}
+	return nil
 }
 
 func (p *htmlTableElementImpl) Caption() HTMLTableCaptionElement {
@@ -130,14 +125,13 @@ type htmlTableCaptionElementImpl struct {
 	*htmlElementImpl
 }
 
-func wrapHTMLTableCaptionElement(v js.Value) HTMLTableCaptionElement {
-	if isNil(v) {
-		return nil
+func wrapHTMLTableCaptionElement(v Value) HTMLTableCaptionElement {
+	if v.Valid() {
+		return &htmlTableCaptionElementImpl{
+			htmlElementImpl: newHTMLElementImpl(v),
+		}
 	}
-
-	return &htmlTableCaptionElementImpl{
-		htmlElementImpl: newHTMLElementImpl(v),
-	}
+	return nil
 }
 
 // -------------8<---------------------------------------
@@ -146,14 +140,13 @@ type htmlTableSectionElementImpl struct {
 	*htmlElementImpl
 }
 
-func wrapHTMLTableSectionElement(v js.Value) HTMLTableSectionElement {
-	if isNil(v) {
-		return nil
+func wrapHTMLTableSectionElement(v Value) HTMLTableSectionElement {
+	if v.Valid() {
+		return &htmlTableSectionElementImpl{
+			htmlElementImpl: newHTMLElementImpl(v),
+		}
 	}
-
-	return &htmlTableSectionElementImpl{
-		htmlElementImpl: newHTMLElementImpl(v),
-	}
+	return nil
 }
 
 func (p *htmlTableSectionElementImpl) Rows() []HTMLTableRowElement {
@@ -188,14 +181,13 @@ type htmlTableRowElementImpl struct {
 	*htmlElementImpl
 }
 
-func wrapHTMLTableRowElement(v js.Value) HTMLTableRowElement {
-	if isNil(v) {
-		return nil
+func wrapHTMLTableRowElement(v Value) HTMLTableRowElement {
+	if v.Valid() {
+		return &htmlTableRowElementImpl{
+			htmlElementImpl: newHTMLElementImpl(v),
+		}
 	}
-
-	return &htmlTableRowElementImpl{
-		htmlElementImpl: newHTMLElementImpl(v),
-	}
+	return nil
 }
 
 func (p *htmlTableRowElementImpl) RowIndex() int {
@@ -257,14 +249,13 @@ func NewHTMLTableColGroupElement() HTMLTableColElement {
 	return nil
 }
 
-func wrapHTMLTableColElement(v js.Value) HTMLTableColElement {
-	if isNil(v) {
-		return nil
+func wrapHTMLTableColElement(v Value) HTMLTableColElement {
+	if v.Valid() {
+		return &htmlTableColElementImpl{
+			htmlElementImpl: newHTMLElementImpl(v),
+		}
 	}
-
-	return &htmlTableColElementImpl{
-		htmlElementImpl: newHTMLElementImpl(v),
-	}
+	return nil
 }
 
 func (p *htmlTableColElementImpl) Span() int {
@@ -281,21 +272,20 @@ type htmlTableCellElementImpl struct {
 	*htmlElementImpl
 }
 
-func wrapHTMLTableCellElement(v js.Value) HTMLTableCellElement {
+func wrapHTMLTableCellElement(v Value) HTMLTableCellElement {
 	if p := newHTMLTableCellElementImpl(v); p != nil {
 		return p
 	}
 	return nil
 }
 
-func newHTMLTableCellElementImpl(v js.Value) *htmlTableCellElementImpl {
-	if isNil(v) {
-		return nil
+func newHTMLTableCellElementImpl(v Value) *htmlTableCellElementImpl {
+	if v.Valid() {
+		return &htmlTableCellElementImpl{
+			htmlElementImpl: newHTMLElementImpl(v),
+		}
 	}
-
-	return &htmlTableCellElementImpl{
-		htmlElementImpl: newHTMLElementImpl(v),
-	}
+	return nil
 }
 
 func (p *htmlTableCellElementImpl) ColSpan() int {
@@ -328,14 +318,13 @@ type htmlTableDataCellElementImpl struct {
 	*htmlTableCellElementImpl
 }
 
-func wrapHTMLTableDataCellElement(v js.Value) HTMLTableDataCellElement {
-	if isNil(v) {
-		return nil
+func wrapHTMLTableDataCellElement(v Value) HTMLTableDataCellElement {
+	if v.Valid() {
+		return &htmlTableDataCellElementImpl{
+			htmlTableCellElementImpl: newHTMLTableCellElementImpl(v),
+		}
 	}
-
-	return &htmlTableDataCellElementImpl{
-		htmlTableCellElementImpl: newHTMLTableCellElementImpl(v),
-	}
+	return nil
 }
 
 // -------------8<---------------------------------------
@@ -353,14 +342,13 @@ func NewHTMLTableHeaderCellElement() HTMLTableHeaderCellElement {
 	return nil
 }
 
-func wrapHTMLTableHeaderCellElement(v js.Value) HTMLTableHeaderCellElement {
-	if isNil(v) {
-		return nil
+func wrapHTMLTableHeaderCellElement(v Value) HTMLTableHeaderCellElement {
+	if v.Valid() {
+		return &htmlTableHeaderCellElementImpl{
+			htmlTableCellElementImpl: newHTMLTableCellElementImpl(v),
+		}
 	}
-
-	return &htmlTableHeaderCellElementImpl{
-		htmlTableCellElementImpl: newHTMLTableCellElementImpl(v),
-	}
+	return nil
 }
 
 func (p *htmlTableHeaderCellElementImpl) Scope() string {

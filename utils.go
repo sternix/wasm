@@ -14,117 +14,22 @@ import (
 var (
 	errUnsupporttedType = errors.New("Unsupported Type")
 	errInvalidType      = errors.New("Invalid Type")
-	jsArray             = js.Global().Get("Array")
-	jsObject            = js.Global().Get("Object")
-	jsTypeFunc          = jsObject.Get("prototype").Get("toString")
-	//jsTypeFunc = js.Global().Get("Object").Get("prototype").Get("toString")
-	jsDate        = js.Global().Get("Date")
-	jsWindowProxy = js.Global()
-	jsMessagePort = js.Global().Get("MessagePort")
-	jsUint8Array  = js.Global().Get("Uint8Array")
-	//jsUint8ClampedArray = js.Global().Get("Uint8ClampedArray")
-	//jsBufferSource      = js.Global().Get("BufferSource") --> typedef
-	jsJSON = js.Global().Get("JSON")
+	jsArray             = jsGlobal.Get("Array")
+	//jsObject            = jsGlobal.Get("Object")
+	//jsTypeFunc          = jsObject.Get("prototype").Get("toString")
+	//jsTypeFunc = jsGlobal.Get("Object").Get("prototype").Get("toString")
+	jsDate        = jsGlobal.Get("Date")
+	jsWindowProxy = jsGlobal
+	jsMessagePort = jsGlobal.Get("MessagePort")
+	jsUint8Array  = jsGlobal.Get("Uint8Array")
+	//jsUint8ClampedArray = jsGlobal.Get("Uint8ClampedArray")
+	//jsBufferSource      = jsGlobal.Get("BufferSource") --> typedef
+	jsJSON = jsGlobal.Get("JSON")
 )
 
 // -------------8<---------------------------------------
-
-// taken from https://go-review.googlesource.com/c/go/+/150917/
-// modified as standalone func
-func await(v js.Value) (result js.Value, ok bool) {
-	if v.Type() != js.TypeObject || v.Get("then").Type() != js.TypeFunction {
-		return v, true
-
-	}
-
-	done := make(chan struct{})
-
-	onResolve := js.FuncOf(func(this js.Value, args []js.Value) interface{} {
-		result = args[0]
-		ok = true
-		close(done)
-		return nil
-	})
-	defer onResolve.Release()
-
-	onReject := js.FuncOf(func(this js.Value, args []js.Value) interface{} {
-		result = args[0]
-		ok = false
-		close(done)
-		return nil
-	})
-	defer onReject.Release()
-
-	v.Call("then", onResolve, onReject)
-	<-done
-	return
-}
-
-// -------------8<---------------------------------------
-
-func Equal(x interface{}, y interface{}) bool {
-	return JSValue(x) == JSValue(y)
-}
-
-// -------------8<---------------------------------------
-
-// returns interface types underlying js.Value
-// it excepts js.Value is embedded in struct
-func JSValue(o interface{}) js.Value {
-	if o != nil {
-		// is typed array
-		if ta, ok := o.(js.Wrapper); ok {
-			return ta.JSValue()
-		}
-
-		// embedded js.Value
-		if v, ok := reflect.ValueOf(o).Elem().FieldByName("Value").Interface().(js.Value); ok {
-			return v
-		}
-	}
-	return js.Null()
-}
-
-// -------------8<---------------------------------------
-
-// returns object's type as string
-func JSType(v js.Value) string {
-	if v.Type() == js.TypeObject {
-		str := jsTypeFunc.Call("call", v).String()
-		return str[8 : len(str)-1]
-	}
-
-	return v.Type().String()
-}
-
-// -------------8<---------------------------------------
-
-func isNil(v js.Value) bool {
-	if v == js.Null() || v == js.Undefined() {
-		return true
-	}
-	return false
-}
-
-// -------------8<---------------------------------------
-
-func arrayToSlice(a js.Value) []js.Value {
-	if isNil(a) {
-		return nil
-	}
-
-	ret := make([]js.Value, a.Length())
-	for i := range ret {
-		ret[i] = a.Index(i)
-	}
-
-	return ret
-}
-
-// -------------8<---------------------------------------
-
 // TODO
-func sliceToJsArray(slc interface{}) js.Value {
+func sliceToJsArray(slc interface{}) Value {
 	switch x := slc.(type) {
 	case []string:
 		arr := jsArray.New(len(x))
@@ -156,7 +61,7 @@ func sliceToJsArray(slc interface{}) js.Value {
 			arr.SetIndex(i, s)
 		}
 		return arr
-	case []js.Value:
+	case []Value:
 		arr := jsArray.New(len(x))
 		for i, s := range x {
 			arr.SetIndex(i, s)
@@ -190,36 +95,31 @@ func sliceToJsArray(slc interface{}) js.Value {
 
 // -------------8<---------------------------------------
 
-func nodeListToSlice(nl js.Value) []Node {
-	if isNil(nl) {
-		return nil
+func nodeListToSlice(v Value) []Node {
+	if v.Valid() && v.Length() > 0 {
+		ret := make([]Node, v.Length())
+		for i := range ret {
+			ret[i] = wrapAsNode(v.Index(i))
+		}
+		return ret
 	}
-
-	ret := make([]Node, nl.Length())
-
-	for i := range ret {
-		ret[i] = wrapAsNode(nl.Index(i))
-	}
-
-	return ret
+	return nil
 }
 
 // -------------8<---------------------------------------
 
-func elementArrayToSlice(v js.Value) []Element {
+func elementArrayToSlice(v Value) []Element {
 	ret := make([]Element, v.Length())
-
 	for i := range ret {
 		ret[i] = wrapAsElement(v.Index(i))
 	}
-
 	return ret
 }
 
 // -------------8<---------------------------------------
 
-func domQuadArrayToSlice(v js.Value) []DOMQuad {
-	if !isNil(v) && v.Length() > 0 {
+func domQuadArrayToSlice(v Value) []DOMQuad {
+	if v.Valid() && v.Length() > 0 {
 		ret := make([]DOMQuad, v.Length())
 		for i := range ret {
 			ret[i] = wrapDOMQuad(v.Index(i))
@@ -232,63 +132,59 @@ func domQuadArrayToSlice(v js.Value) []DOMQuad {
 
 // -------------8<---------------------------------------
 
-func stringSequenceToSlice(s js.Value) []string {
-	if isNil(s) {
-		return nil
+func stringSequenceToSlice(s Value) []string {
+	if s.Valid() && s.Length() > 0 {
+		ret := make([]string, s.Length())
+		for i := range ret {
+			ret[i] = s.Index(i).String()
+		}
+		return ret
 	}
-
-	ret := make([]string, s.Length())
-	for i := range ret {
-		ret[i] = s.Index(i).String()
-	}
-	return ret
+	return nil
 }
 
 // -------------8<---------------------------------------
 
-func boolSequenceToSlice(s js.Value) []bool {
-	if isNil(s) {
-		return nil
+func boolSequenceToSlice(s Value) []bool {
+	if s.Valid() && s.Length() > 0 {
+		ret := make([]bool, s.Length())
+		for i := range ret {
+			ret[i] = s.Index(i).Bool()
+		}
+		return ret
 	}
-
-	ret := make([]bool, s.Length())
-	for i := range ret {
-		ret[i] = s.Index(i).Bool()
-	}
-	return ret
+	return nil
 }
 
 // -------------8<---------------------------------------
 
-func floatSequenceToSlice(s js.Value) []float64 {
-	if isNil(s) {
-		return nil
+func floatSequenceToSlice(s Value) []float64 {
+	if s.Valid() && s.Length() > 0 {
+		ret := make([]float64, s.Length())
+		for i := range ret {
+			ret[i] = s.Index(i).Float()
+		}
+		return ret
 	}
-
-	ret := make([]float64, s.Length())
-	for i := range ret {
-		ret[i] = s.Index(i).Float()
-	}
-	return ret
+	return nil
 }
 
 // -------------8<---------------------------------------
 
-func mutationRecordSequenceToSlice(v js.Value) []MutationRecord {
-	if isNil(v) {
-		return nil
+func mutationRecordSequenceToSlice(v Value) []MutationRecord {
+	if v.Valid() && v.Length() > 0 {
+		ret := make([]MutationRecord, v.Length())
+		for i := range ret {
+			ret[i] = wrapMutationRecord(v.Index(i))
+		}
+		return ret
 	}
-
-	ret := make([]MutationRecord, v.Length())
-	for i := range ret {
-		ret[i] = wrapMutationRecord(v.Index(i))
-	}
-	return ret
+	return nil
 }
 
 // -------------8<---------------------------------------
 
-func fileListToSlice(v js.Value) []File {
+func fileListToSlice(v Value) []File {
 	ret := make([]File, v.Length())
 	for i := range ret {
 		ret[i] = wrapFile(v.Index(i))
@@ -298,25 +194,21 @@ func fileListToSlice(v js.Value) []File {
 
 // -------------8<---------------------------------------
 
-func keys(v js.Value) []string {
-	if isNil(v) {
-		return nil
+func keys(v Value) []string {
+	if v.Valid() {
+		a := jsObject.Call("keys", v)
+		ret := make([]string, a.Length())
+		for i := range ret {
+			ret[i] = a.Index(i).String()
+		}
+		return ret
 	}
-
-	a := jsObject.Call("keys", v)
-
-	ret := make([]string, a.Length())
-
-	for i := range ret {
-		ret[i] = a.Index(i).String()
-	}
-
-	return ret
+	return nil
 }
 
 // -------------8<---------------------------------------
 
-func domStringMapToMap(v js.Value) map[string]string {
+func domStringMapToMap(v Value) map[string]string {
 	m := make(map[string]string)
 
 	for _, key := range keys(v) {
@@ -329,7 +221,7 @@ func domStringMapToMap(v js.Value) map[string]string {
 // -------------8<---------------------------------------
 
 // expects v is js Date object
-func jsDateToTime(v js.Value) time.Time {
+func jsDateToTime(v Value) time.Time {
 	ms := int64(v.Call("getTime").Float()) * int64(time.Millisecond)
 	return time.Unix(0, ms)
 }
@@ -343,67 +235,61 @@ func domTimeStampToTime(ts int) time.Time {
 
 // -------------8<---------------------------------------
 
-func domStringListToSlice(dsl js.Value) []string {
-	if isNil(dsl) {
-		return nil
-	}
+func domStringListToSlice(dsl Value) []string {
+	if dsl.Valid() && dsl.Length() > 0 {
+		ret := make([]string, dsl.Length())
+		for i := range ret {
+			ret[i] = dsl.Call("item").String()
+		}
 
-	ret := make([]string, dsl.Length())
-	for i := range ret {
-		ret[i] = dsl.Call("item").String()
+		return ret
 	}
-
-	return ret
+	return nil
 }
 
 // -------------8<---------------------------------------
 
-func touchListToSlice(v js.Value) []Touch {
-	if isNil(v) {
-		return nil
+func touchListToSlice(v Value) []Touch {
+	if v.Valid() && v.Length() > 0 {
+		ret := make([]Touch, v.Length())
+		for i := range ret {
+			ret[i] = wrapTouch(v.Index(i))
+		}
+		return ret
 	}
-
-	ret := make([]Touch, v.Length())
-	for i := range ret {
-		ret[i] = wrapTouch(v.Index(i))
-	}
-
-	return ret
+	return nil
 }
 
 // -------------8<---------------------------------------
 
-func toFloat32Slice(v js.Value) []float32 {
-	if isNil(v) {
-		return nil
+func toFloat32Slice(v Value) []float32 {
+	if v.Valid() && v.Length() > 0 {
+		ret := make([]float32, v.Length())
+		for i := range ret {
+			ret[i] = float32(v.Index(i).Float())
+		}
+		return ret
 	}
-
-	ret := make([]float32, v.Length())
-	for i := range ret {
-		ret[i] = float32(v.Index(i).Float())
-	}
-
-	return ret
+	return nil
 }
 
 // -------------8<---------------------------------------
 
-func toFloat64Slice(v js.Value) []float64 {
-	if isNil(v) {
-		return nil
-	}
+func toFloat64Slice(v Value) []float64 {
+	if v.Valid() && v.Length() > 0 {
+		ret := make([]float64, v.Length())
+		for i := range ret {
+			ret[i] = v.Index(i).Float()
+		}
 
-	ret := make([]float64, v.Length())
-	for i := range ret {
-		ret[i] = v.Index(i).Float()
+		return ret
 	}
-
-	return ret
+	return nil
 }
 
 // -------------8<---------------------------------------
 
-func htmlCollectionToElementSlice(v js.Value) []Element {
+func htmlCollectionToElementSlice(v Value) []Element {
 	if c := wrapHTMLCollection(v); c != nil && c.Length() > 0 {
 		ret := make([]Element, c.Length())
 		for i := 0; i < c.Length(); i++ {
@@ -416,7 +302,7 @@ func htmlCollectionToElementSlice(v js.Value) []Element {
 
 // -------------8<---------------------------------------
 
-func htmlCollectionToHTMLElementSlice(v js.Value) []HTMLElement {
+func htmlCollectionToHTMLElementSlice(v Value) []HTMLElement {
 	if c := wrapHTMLCollection(v); c != nil && c.Length() > 0 {
 		var ret []HTMLElement
 		for i := 0; i < c.Length(); i++ {
@@ -431,7 +317,7 @@ func htmlCollectionToHTMLElementSlice(v js.Value) []HTMLElement {
 
 // -------------8<---------------------------------------
 
-func htmlCollectionToHTMLOptionElementSlice(v js.Value) []HTMLOptionElement {
+func htmlCollectionToHTMLOptionElementSlice(v Value) []HTMLOptionElement {
 	if c := wrapHTMLCollection(v); c != nil && c.Length() > 0 {
 		var ret []HTMLOptionElement
 		for i := 0; i < c.Length(); i++ {
@@ -446,7 +332,7 @@ func htmlCollectionToHTMLOptionElementSlice(v js.Value) []HTMLOptionElement {
 
 // -------------8<---------------------------------------
 
-func uint8ArrayToByteSlice(v js.Value) []byte {
+func uint8ArrayToByteSlice(v Value) []byte {
 	jsa := jsUint8Array.New(v)
 	ret := make([]byte, jsa.Get("byteLength").Int())
 	ta := js.TypedArrayOf(ret)

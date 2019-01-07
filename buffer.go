@@ -2,10 +2,6 @@
 
 package wasm
 
-import (
-	"syscall/js"
-)
-
 type (
 	// https://heycam.github.io/webidl/#BufferSource
 	BufferSource interface {
@@ -55,60 +51,54 @@ type (
 // -------------8<---------------------------------------
 
 func NewArrayBuffer(length int) ArrayBuffer {
-	jsArrayBuffer := js.Global().Get("ArrayBuffer")
-	if isNil(jsArrayBuffer) {
-		return nil
+	if jsArrayBuffer := jsGlobal.Get("ArrayBuffer"); jsArrayBuffer.Valid() {
+		return wrapArrayBuffer(jsArrayBuffer.New(length))
 	}
-
-	return wrapArrayBuffer(jsArrayBuffer.New(length))
+	return nil
 }
 
 func NewDataView(buf ArrayBuffer, args ...int) DataView {
-	jsDataView := js.Global().Get("DataView")
-	if isNil(jsDataView) {
-		return nil
+	if jsDataView := jsGlobal.Get("DataView"); jsDataView.Valid() {
+		switch len(args) {
+		case 0:
+			return wrapDataView(jsDataView.New(JSValue(buf)))
+		case 1:
+			return wrapDataView(jsDataView.New(JSValue(buf), args[0]))
+		default:
+			return wrapDataView(jsDataView.New(JSValue(buf), args[0], args[1]))
+		}
 	}
-
-	switch len(args) {
-	case 0:
-		return wrapDataView(jsDataView.New(JSValue(buf)))
-	case 1:
-		return wrapDataView(jsDataView.New(JSValue(buf), args[0]))
-	default:
-		return wrapDataView(jsDataView.New(JSValue(buf), args[0], args[1]))
-	}
+	return nil
 }
 
 // -------------8<---------------------------------------
 
 type arrayBufferViewImpl struct {
-	js.Value
+	Value
 }
 
-func wrapArrayBufferView(v js.Value) ArrayBufferView {
-	if isNil(v) {
-		return nil
+func wrapArrayBufferView(v Value) ArrayBufferView {
+	if v.Valid() {
+		return &arrayBufferViewImpl{
+			Value: v,
+		}
 	}
-
-	return &arrayBufferViewImpl{
-		Value: v,
-	}
+	return nil
 }
 
 // -------------8<---------------------------------------
 
 type arrayBufferImpl struct {
-	js.Value
+	Value
 }
 
-func wrapArrayBuffer(v js.Value) ArrayBuffer {
-	if isNil(v) {
-		return nil
+func wrapArrayBuffer(v Value) ArrayBuffer {
+	if v.Valid() {
+		return &arrayBufferImpl{
+			Value: v,
+		}
 	}
-
-	return &arrayBufferImpl{
-		Value: v,
-	}
+	return nil
 }
 
 func (p *arrayBufferImpl) ByteLength() int {
@@ -116,7 +106,7 @@ func (p *arrayBufferImpl) ByteLength() int {
 }
 
 func (p *arrayBufferImpl) IsView(arg interface{}) bool {
-	if v := JSValue(arg); v != js.Null() {
+	if v := JSValue(arg); v != jsNull {
 		return p.Call("isView", v).Bool()
 	}
 
@@ -139,17 +129,16 @@ func (p *arrayBufferImpl) ToByteSlice() []byte {
 // -------------8<---------------------------------------
 
 type dataViewImpl struct {
-	js.Value
+	Value
 }
 
-func wrapDataView(v js.Value) DataView {
-	if isNil(v) {
-		return nil
+func wrapDataView(v Value) DataView {
+	if v.Valid() {
+		return &dataViewImpl{
+			Value: v,
+		}
 	}
-
-	return &dataViewImpl{
-		Value: v,
-	}
+	return nil
 }
 
 func (p *dataViewImpl) Buffer() ArrayBuffer {
@@ -231,17 +220,16 @@ func (p *dataViewImpl) SetFloat64(v float64) {
 // -------------8<---------------------------------------
 
 type bufferSourceImpl struct {
-	js.Value
+	Value
 }
 
-func wrapBufferSource(v js.Value) BufferSource {
-	if isNil(v) {
-		return nil
+func wrapBufferSource(v Value) BufferSource {
+	if v.Valid() {
+		return &bufferSourceImpl{
+			Value: v,
+		}
 	}
-
-	return &bufferSourceImpl{
-		Value: v,
-	}
+	return nil
 }
 
 // -------------8<---------------------------------------

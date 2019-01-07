@@ -67,9 +67,7 @@ func newCallbackImpl() *callbackImpl {
 }
 
 func (p *callbackImpl) Release() {
-	if !isNil(p.Func.Value) {
-		p.Func.Release()
-	}
+	p.Func.Release()
 }
 
 func (p *callbackImpl) jsCallback() js.Func {
@@ -141,7 +139,7 @@ type blobCallbackImpl struct {
 
 func (p *blobCallbackImpl) jsFunc(this js.Value, args []js.Value) interface{} {
 	if len(args) == 1 {
-		p.fn(wrapBlob(args[0]))
+		p.fn(wrapBlob(Value{args[0]})) // TODO func type
 	} else {
 		p.fn(nil)
 	}
@@ -167,7 +165,7 @@ type mutationCallbackImpl struct {
 
 func (p *mutationCallbackImpl) jsFunc(this js.Value, args []js.Value) interface{} {
 	if len(args) == 2 {
-		p.fn(mutationRecordSequenceToSlice(args[0]), wrapMutationObserver(args[1]))
+		p.fn(mutationRecordSequenceToSlice(Value{args[0]}), wrapMutationObserver(Value{args[1]}))
 	}
 	return nil
 }
@@ -191,7 +189,7 @@ type positionCallbackImpl struct {
 
 func (p *positionCallbackImpl) jsFunc(this js.Value, args []js.Value) interface{} {
 	if len(args) == 1 {
-		p.fn(wrapPosition(args[0]))
+		p.fn(wrapPosition(Value{args[0]}))
 	}
 	return nil
 }
@@ -215,7 +213,7 @@ type positionErrorCallbackImpl struct {
 
 func (p *positionErrorCallbackImpl) jsFunc(this js.Value, args []js.Value) interface{} {
 	if len(args) == 1 {
-		p.fn(wrapPositionError(args[0]))
+		p.fn(wrapPositionError(Value{args[0]}))
 	}
 	return nil
 }

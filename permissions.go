@@ -8,15 +8,11 @@ package wasm
 TODO
 */
 
-import (
-	"syscall/js"
-)
-
 type PermissionDescriptor struct {
 	Name PermissionName
 }
 
-func (p PermissionDescriptor) toJSObject() js.Value {
+func (p PermissionDescriptor) toJSObject() Value {
 	o := jsObject.New()
 	o.Set("name", string(p.Name))
 	return o

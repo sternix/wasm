@@ -4,7 +4,6 @@ package wasm
 
 import (
 	"fmt"
-	"syscall/js"
 )
 
 type (
@@ -20,33 +19,30 @@ type (
 // -------------8<---------------------------------------
 
 type domExceptionImpl struct {
-	js.Value
+	Value
 }
 
 func NewDOMException(args ...string) DOMException {
-	jsEx := js.Global().Get("DOMException")
-	if isNil(jsEx) {
-		return nil
+	if jsEx := jsGlobal.Get("DOMException"); jsEx.Valid() {
+		switch len(args) {
+		case 0:
+			return wrapDOMException(jsEx.New())
+		case 1:
+			return wrapDOMException(jsEx.New(args[0])) // message
+		default:
+			return wrapDOMException(jsEx.New(args[0], args[1])) // message, name
+		}
 	}
-
-	switch len(args) {
-	case 0:
-		return wrapDOMException(jsEx.New())
-	case 1:
-		return wrapDOMException(jsEx.New(args[0])) // message
-	default:
-		return wrapDOMException(jsEx.New(args[0], args[1])) // message, name
-	}
+	return nil
 }
 
-func wrapDOMException(v js.Value) DOMException {
-	if isNil(v) {
-		return nil
+func wrapDOMException(v Value) DOMException {
+	if v.Valid() {
+		return &domExceptionImpl{
+			Value: v,
+		}
 	}
-
-	return &domExceptionImpl{
-		Value: v,
-	}
+	return nil
 }
 
 func (p *domExceptionImpl) Name() string {
@@ -70,15 +66,15 @@ func (p *domExceptionImpl) Error() string {
 // it wraps known types
 // TODO remove mixins and non js types
 // TODO Array types
-func Wrap(v js.Value) interface{} {
+func Wrap(v Value) interface{} {
 	switch v.Type() {
-	case js.TypeUndefined, js.TypeNull, js.TypeSymbol, js.TypeFunction:
+	case TypeUndefined, TypeNull, TypeSymbol, TypeFunction:
 		return nil
-	case js.TypeBoolean:
+	case TypeBoolean:
 		return v.Bool()
-	case js.TypeNumber:
+	case TypeNumber:
 		return v.Float()
-	case js.TypeString:
+	case TypeString:
 		return v.String()
 	default: // js.TypeObject
 		return wrapObject(v)
@@ -87,10 +83,8 @@ func Wrap(v js.Value) interface{} {
 
 // -------------8<---------------------------------------
 
-func wrapObject(v js.Value) interface{} {
-	t := JSType(v)
-
-	switch t {
+func wrapObject(v Value) interface{} {
+	switch v.JSType() {
 	case "AbortController":
 		return wrapAbortController(v)
 	case "AbortSignal":
@@ -636,75 +630,61 @@ func wrapObject(v js.Value) interface{} {
 	case "XMLDocument":
 		return wrapXMLDocument(v)
 	default:
-		fmt.Printf("Not supported type: %s\n", t)
+		fmt.Printf("Not supported type: %s\n", v.JSType())
 		return nil
 	}
 }
 
-func wrapAsElement(v js.Value) Element {
-	if isNil(v) {
-		return nil
-	}
-
-	if o := wrapObject(v); o != nil {
-		if e, ok := o.(Element); ok {
-			return e
+func wrapAsElement(v Value) Element {
+	if v.Valid() {
+		if o := wrapObject(v); o != nil {
+			if e, ok := o.(Element); ok {
+				return e
+			}
 		}
 	}
-
 	return nil
 }
 
-func wrapAsHTMLElement(v js.Value) HTMLElement {
-	if isNil(v) {
-		return nil
-	}
-
-	if o := wrapObject(v); o != nil {
-		if e, ok := o.(HTMLElement); ok {
-			return e
+func wrapAsHTMLElement(v Value) HTMLElement {
+	if v.Valid() {
+		if o := wrapObject(v); o != nil {
+			if e, ok := o.(HTMLElement); ok {
+				return e
+			}
 		}
 	}
-
 	return nil
 }
 
-func wrapAsEvent(v js.Value) Event {
-	if isNil(v) {
-		return nil
-	}
-
-	if o := wrapObject(v); o != nil {
-		if e, ok := o.(Event); ok {
-			return e
+func wrapAsEvent(v Value) Event {
+	if v.Valid() {
+		if o := wrapObject(v); o != nil {
+			if e, ok := o.(Event); ok {
+				return e
+			}
 		}
 	}
-
 	return nil
 }
 
-func wrapAsEventTarget(v js.Value) EventTarget {
-	if isNil(v) {
-		return nil
-	}
-
-	if o := wrapObject(v); o != nil {
-		if e, ok := o.(EventTarget); ok {
-			return e
+func wrapAsEventTarget(v Value) EventTarget {
+	if v.Valid() {
+		if o := wrapObject(v); o != nil {
+			if e, ok := o.(EventTarget); ok {
+				return e
+			}
 		}
 	}
-
 	return nil
 }
 
-func wrapAsNode(v js.Value) Node {
-	if isNil(v) {
-		return nil
-	}
-
-	if o := wrapObject(v); o != nil {
-		if n, ok := o.(Node); ok {
-			return n
+func wrapAsNode(v Value) Node {
+	if v.Valid() {
+		if o := wrapObject(v); o != nil {
+			if n, ok := o.(Node); ok {
+				return n
+			}
 		}
 	}
 	return nil

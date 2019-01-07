@@ -2,31 +2,26 @@
 
 package wasm
 
-import (
-	"syscall/js"
-)
-
 // -------------8<---------------------------------------
 
 type idbRequestImpl struct {
 	*eventTargetImpl
 }
 
-func wrapIDBRequest(v js.Value) IDBRequest {
+func wrapIDBRequest(v Value) IDBRequest {
 	if p := newIDBRequestImpl(v); p != nil {
 		return p
 	}
 	return nil
 }
 
-func newIDBRequestImpl(v js.Value) *idbRequestImpl {
-	if isNil(v) {
-		return nil
+func newIDBRequestImpl(v Value) *idbRequestImpl {
+	if v.Valid() {
+		return &idbRequestImpl{
+			eventTargetImpl: newEventTargetImpl(v),
+		}
 	}
-
-	return &idbRequestImpl{
-		eventTargetImpl: newEventTargetImpl(v),
-	}
+	return nil
 }
 
 func (p *idbRequestImpl) Result() interface{} {
@@ -62,17 +57,16 @@ func (p *idbRequestImpl) OnError(fn func(Event)) EventHandler {
 // TODO
 
 type idbRequestSourceImpl struct {
-	js.Value
+	Value
 }
 
-func wrapIDBRequestSource(v js.Value) IDBRequestSource {
-	if isNil(v) {
-		return nil
+func wrapIDBRequestSource(v Value) IDBRequestSource {
+	if v.Valid() {
+		return &idbRequestSourceImpl{
+			Value: v,
+		}
 	}
-
-	return &idbRequestSourceImpl{
-		Value: v,
-	}
+	return nil
 }
 
 // -------------8<---------------------------------------
@@ -81,14 +75,13 @@ type idbOpenDBRequestImpl struct {
 	*idbRequestImpl
 }
 
-func wrapIDBOpenDBRequest(v js.Value) IDBOpenDBRequest {
-	if isNil(v) {
-		return nil
+func wrapIDBOpenDBRequest(v Value) IDBOpenDBRequest {
+	if v.Valid() {
+		return &idbOpenDBRequestImpl{
+			idbRequestImpl: newIDBRequestImpl(v),
+		}
 	}
-
-	return &idbOpenDBRequestImpl{
-		idbRequestImpl: newIDBRequestImpl(v),
-	}
+	return nil
 }
 
 func (p *idbOpenDBRequestImpl) OnBlocked(fn func(Event)) EventHandler {
@@ -109,14 +102,13 @@ type idbVersionChangeEventImpl struct {
 	*eventImpl
 }
 
-func wrapIDBVersionChangeEvent(v js.Value) IDBVersionChangeEvent {
-	if isNil(v) {
-		return nil
+func wrapIDBVersionChangeEvent(v Value) IDBVersionChangeEvent {
+	if v.Valid() {
+		return &idbVersionChangeEventImpl{
+			eventImpl: newEventImpl(v),
+		}
 	}
-
-	return &idbVersionChangeEventImpl{
-		eventImpl: newEventImpl(v),
-	}
+	return nil
 }
 
 func (p *idbVersionChangeEventImpl) OldVersion() int {
@@ -130,17 +122,16 @@ func (p *idbVersionChangeEventImpl) NewVersion() int {
 // -------------8<---------------------------------------
 
 type idbFactoryImpl struct {
-	js.Value
+	Value
 }
 
-func wrapIDBFactory(v js.Value) IDBFactory {
-	if isNil(v) {
-		return nil
+func wrapIDBFactory(v Value) IDBFactory {
+	if v.Valid() {
+		return &idbFactoryImpl{
+			Value: v,
+		}
 	}
-
-	return &idbFactoryImpl{
-		Value: v,
-	}
+	return nil
 }
 
 func (p *idbFactoryImpl) Open(name string, version ...int) IDBOpenDBRequest {
@@ -165,14 +156,13 @@ type idbDatabaseImpl struct {
 	*eventTargetImpl
 }
 
-func wrapIDBDatabase(v js.Value) IDBDatabase {
-	if isNil(v) {
-		return nil
+func wrapIDBDatabase(v Value) IDBDatabase {
+	if v.Valid() {
+		return &idbDatabaseImpl{
+			eventTargetImpl: newEventTargetImpl(v),
+		}
 	}
-
-	return &idbDatabaseImpl{
-		eventTargetImpl: newEventTargetImpl(v),
-	}
+	return nil
 }
 
 func (p *idbDatabaseImpl) Name() string {
@@ -233,17 +223,16 @@ func (p *idbDatabaseImpl) OnVersionchange(fn func(Event)) EventHandler {
 // -------------8<---------------------------------------
 
 type idbObjectStoreImpl struct {
-	js.Value
+	Value
 }
 
-func wrapIDBObjectStore(v js.Value) IDBObjectStore {
-	if isNil(v) {
-		return nil
+func wrapIDBObjectStore(v Value) IDBObjectStore {
+	if v.Valid() {
+		return &idbObjectStoreImpl{
+			Value: v,
+		}
 	}
-
-	return &idbObjectStoreImpl{
-		Value: v,
-	}
+	return nil
 }
 
 func (p *idbObjectStoreImpl) Name() string {
@@ -385,17 +374,16 @@ func (p *idbObjectStoreImpl) DeleteIndex(name string) {
 // -------------8<---------------------------------------
 
 type idbIndexImpl struct {
-	js.Value
+	Value
 }
 
-func wrapIDBIndex(v js.Value) IDBIndex {
-	if isNil(v) {
-		return nil
+func wrapIDBIndex(v Value) IDBIndex {
+	if v.Valid() {
+		return &idbIndexImpl{
+			Value: v,
+		}
 	}
-
-	return &idbIndexImpl{
-		Value: v,
-	}
+	return nil
 }
 
 func (p *idbIndexImpl) Name() string {
@@ -494,17 +482,16 @@ func (p *idbIndexImpl) OpenKeyCursor(args ...interface{}) IDBRequest {
 // -------------8<---------------------------------------
 
 type idbKeyRangeImpl struct {
-	js.Value
+	Value
 }
 
-func wrapIDBKeyRange(v js.Value) IDBKeyRange {
-	if isNil(v) {
-		return nil
+func wrapIDBKeyRange(v Value) IDBKeyRange {
+	if v.Valid() {
+		return &idbKeyRangeImpl{
+			Value: v,
+		}
 	}
-
-	return &idbKeyRangeImpl{
-		Value: v,
-	}
+	return nil
 }
 
 func (p *idbKeyRangeImpl) Lower() interface{} {
@@ -567,24 +554,23 @@ func (p *idbKeyRangeImpl) Includes(key interface{}) bool {
 // -------------8<---------------------------------------
 
 type idbCursorImpl struct {
-	js.Value
+	Value
 }
 
-func wrapIDBCursor(v js.Value) IDBCursor {
+func wrapIDBCursor(v Value) IDBCursor {
 	if p := newIDBCursorImpl(v); p != nil {
 		return p
 	}
 	return nil
 }
 
-func newIDBCursorImpl(v js.Value) *idbCursorImpl {
-	if isNil(v) {
-		return nil
+func newIDBCursorImpl(v Value) *idbCursorImpl {
+	if v.Valid() {
+		return &idbCursorImpl{
+			Value: v,
+		}
 	}
-
-	return &idbCursorImpl{
-		Value: v,
-	}
+	return nil
 }
 
 func (p *idbCursorImpl) Source() IDBCursorSource {
@@ -631,17 +617,16 @@ func (p *idbCursorImpl) Delete() IDBRequest {
 // -------------8<---------------------------------------
 // (IDBObjectStore or IDBIndex)
 type idbCursorSourceImpl struct {
-	js.Value
+	Value
 }
 
-func wrapIDBCursorSource(v js.Value) IDBCursorSource {
-	if isNil(v) {
-		return nil
+func wrapIDBCursorSource(v Value) IDBCursorSource {
+	if v.Valid() {
+		return &idbCursorSourceImpl{
+			Value: v,
+		}
 	}
-
-	return &idbCursorSourceImpl{
-		Value: v,
-	}
+	return nil
 }
 
 // -------------8<---------------------------------------
@@ -650,14 +635,13 @@ type idbCursorWithValueImpl struct {
 	*idbCursorImpl
 }
 
-func wrapIDBCursorWithValue(v js.Value) IDBCursorWithValue {
-	if isNil(v) {
-		return nil
+func wrapIDBCursorWithValue(v Value) IDBCursorWithValue {
+	if v.Valid() {
+		return &idbCursorWithValueImpl{
+			idbCursorImpl: newIDBCursorImpl(v),
+		}
 	}
-
-	return &idbCursorWithValueImpl{
-		idbCursorImpl: newIDBCursorImpl(v),
-	}
+	return nil
 }
 
 func (p *idbCursorWithValueImpl) Value() interface{} {
@@ -670,14 +654,13 @@ type idbTransactionImpl struct {
 	*eventTargetImpl
 }
 
-func wrapIDBTransaction(v js.Value) IDBTransaction {
-	if isNil(v) {
-		return nil
+func wrapIDBTransaction(v Value) IDBTransaction {
+	if v.Valid() {
+		return &idbTransactionImpl{
+			eventTargetImpl: newEventTargetImpl(v),
+		}
 	}
-
-	return &idbTransactionImpl{
-		eventTargetImpl: newEventTargetImpl(v),
-	}
+	return nil
 }
 
 func (p *idbTransactionImpl) ObjectStoreNames() []string {
@@ -719,15 +702,13 @@ func (p *idbTransactionImpl) OnError(fn func(Event)) EventHandler {
 // -------------8<---------------------------------------
 
 func NewIDBVersionChangeEvent(typ string, vce ...IDBVersionChangeEventInit) IDBVersionChangeEvent {
-	jsIDBVersionChangeEvent := js.Global().Get("IDBVersionChangeEvent")
-	if isNil(jsIDBVersionChangeEvent) {
-		return nil
+	if jsIDBVersionChangeEvent := jsGlobal.Get("IDBVersionChangeEvent"); jsIDBVersionChangeEvent.Valid() {
+		switch len(vce) {
+		case 0:
+			return wrapIDBVersionChangeEvent(jsIDBVersionChangeEvent.New(typ))
+		default:
+			return wrapIDBVersionChangeEvent(jsIDBVersionChangeEvent.New(typ, vce[0].toJSObject()))
+		}
 	}
-
-	switch len(vce) {
-	case 0:
-		return wrapIDBVersionChangeEvent(jsIDBVersionChangeEvent.New(typ))
-	default:
-		return wrapIDBVersionChangeEvent(jsIDBVersionChangeEvent.New(typ, vce[0].toJSObject()))
-	}
+	return nil
 }

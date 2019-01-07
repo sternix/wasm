@@ -9,33 +9,29 @@ import (
 // -------------8<---------------------------------------
 
 func NewWebSocket(url string, protocols ...string) WebSocket {
-	jsWebSocket := js.Global().Get("WebSocket")
-	if isNil(jsWebSocket) {
-		return nil
+	if jsWebSocket := jsGlobal.Get("WebSocket"); jsWebSocket.Valid() {
+		switch len(protocols) {
+		case 0:
+			return wrapWebSocket(jsWebSocket.New(url))
+		case 1:
+			return wrapWebSocket(jsWebSocket.New(url, protocols[0]))
+		default:
+			return wrapWebSocket(jsWebSocket.New(url, sliceToJsArray(protocols)))
+		}
 	}
-
-	switch len(protocols) {
-	case 0:
-		return wrapWebSocket(jsWebSocket.New(url))
-	case 1:
-		return wrapWebSocket(jsWebSocket.New(url, protocols[0]))
-	default:
-		return wrapWebSocket(jsWebSocket.New(url, sliceToJsArray(protocols)))
-	}
+	return nil
 }
 
 func NewCloseEvent(typ string, cei ...CloseEventInit) CloseEvent {
-	jsCloseEvent := js.Global().Get("CloseEvent")
-	if isNil(jsCloseEvent) {
-		return nil
+	if jsCloseEvent := jsGlobal.Get("CloseEvent"); jsCloseEvent.Valid() {
+		switch len(cei) {
+		case 0:
+			return wrapCloseEvent(jsCloseEvent.New(typ))
+		default:
+			return wrapCloseEvent(jsCloseEvent.New(typ, cei[0].toJSObject()))
+		}
 	}
-
-	switch len(cei) {
-	case 0:
-		return wrapCloseEvent(jsCloseEvent.New(typ))
-	default:
-		return wrapCloseEvent(jsCloseEvent.New(typ, cei[0].toJSObject()))
-	}
+	return nil
 }
 
 // -------------8<---------------------------------------
@@ -44,14 +40,13 @@ type webSocketImpl struct {
 	*eventTargetImpl
 }
 
-func wrapWebSocket(v js.Value) WebSocket {
-	if isNil(v) {
-		return nil
+func wrapWebSocket(v Value) WebSocket {
+	if v.Valid() {
+		return &webSocketImpl{
+			eventTargetImpl: newEventTargetImpl(v),
+		}
 	}
-
-	return &webSocketImpl{
-		eventTargetImpl: newEventTargetImpl(v),
-	}
+	return nil
 }
 
 func (p *webSocketImpl) URL() string {
@@ -147,14 +142,13 @@ type closeEventImpl struct {
 	*eventImpl
 }
 
-func wrapCloseEvent(v js.Value) CloseEvent {
-	if isNil(v) {
-		return nil
+func wrapCloseEvent(v Value) CloseEvent {
+	if v.Valid() {
+		return &closeEventImpl{
+			eventImpl: newEventImpl(v),
+		}
 	}
-
-	return &closeEventImpl{
-		eventImpl: newEventImpl(v),
-	}
+	return nil
 }
 
 func (p *closeEventImpl) WasClean() bool {

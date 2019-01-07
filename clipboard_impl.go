@@ -2,24 +2,19 @@
 
 package wasm
 
-import (
-	"syscall/js"
-)
-
 // -------------8<---------------------------------------
 
 type clipboardImpl struct {
 	*eventTargetImpl
 }
 
-func wrapClipboard(v js.Value) Clipboard {
-	if isNil(v) {
-		return nil
+func wrapClipboard(v Value) Clipboard {
+	if v.Valid() {
+		return &clipboardImpl{
+			eventTargetImpl: newEventTargetImpl(v),
+		}
 	}
-
-	return &clipboardImpl{
-		eventTargetImpl: newEventTargetImpl(v),
-	}
+	return nil
 }
 
 func (p *clipboardImpl) Read() func() (DataTransfer, error) {
@@ -62,14 +57,13 @@ type clipboardEventImpl struct {
 	*eventImpl
 }
 
-func wrapClipboardEvent(v js.Value) ClipboardEvent {
-	if isNil(v) {
-		return nil
+func wrapClipboardEvent(v Value) ClipboardEvent {
+	if v.Valid() {
+		return &clipboardEventImpl{
+			eventImpl: newEventImpl(v),
+		}
 	}
-
-	return &clipboardEventImpl{
-		eventImpl: newEventImpl(v),
-	}
+	return nil
 }
 
 func (p *clipboardEventImpl) ClipboardData() DataTransfer {
@@ -79,15 +73,13 @@ func (p *clipboardEventImpl) ClipboardData() DataTransfer {
 // -------------8<---------------------------------------
 
 func NewClipboardEvent(typ string, eventInitDict ...ClipboardEventInit) ClipboardEvent {
-	jsClipboardEvent := js.Global().Get("ClipboardEvent")
-	if isNil(jsClipboardEvent) {
-		return nil
+	if jsClipboardEvent := jsGlobal.Get("ClipboardEvent"); jsClipboardEvent.Valid() {
+		switch len(eventInitDict) {
+		case 0:
+			return wrapClipboardEvent(jsClipboardEvent.New(typ))
+		default:
+			return wrapClipboardEvent(jsClipboardEvent.New(typ, eventInitDict[0].toJSObject()))
+		}
 	}
-
-	switch len(eventInitDict) {
-	case 0:
-		return wrapClipboardEvent(jsClipboardEvent.New(typ))
-	default:
-		return wrapClipboardEvent(jsClipboardEvent.New(typ, eventInitDict[0].toJSObject()))
-	}
+	return nil
 }

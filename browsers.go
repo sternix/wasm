@@ -2,10 +2,6 @@
 
 package wasm
 
-import (
-	"syscall/js"
-)
-
 type (
 	// https://www.w3.org/TR/html52/browsers.html#the-window-object
 	Window interface {
@@ -183,7 +179,7 @@ type PopStateEventInit struct {
 	State interface{}
 }
 
-func (p PopStateEventInit) toJSObject() js.Value {
+func (p PopStateEventInit) toJSObject() Value {
 	o := p.EventInit.toJSObject()
 	o.Set("state", p.State)
 	return o
@@ -199,7 +195,7 @@ type HashChangeEventInit struct {
 	NewURL string
 }
 
-func (p HashChangeEventInit) toJSObject() js.Value {
+func (p HashChangeEventInit) toJSObject() Value {
 	o := p.EventInit.toJSObject()
 	o.Set("oldURL", p.OldUrl)
 	o.Set("newURL", p.NewURL)
@@ -215,7 +211,7 @@ type PageTransitionEventInit struct {
 	Persisted bool
 }
 
-func (p PageTransitionEventInit) toJSObject() js.Value {
+func (p PageTransitionEventInit) toJSObject() Value {
 	o := p.EventInit.toJSObject()
 	o.Set("persisted", p.Persisted)
 	return o

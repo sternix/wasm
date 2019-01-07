@@ -2,24 +2,19 @@
 
 package wasm
 
-import (
-	"syscall/js"
-)
-
 // -------------8<---------------------------------------
 
 type screenImpl struct {
-	js.Value
+	Value
 }
 
-func wrapScreen(v js.Value) Screen {
-	if isNil(v) {
-		return nil
+func wrapScreen(v Value) Screen {
+	if v.Valid() {
+		return &screenImpl{
+			Value: v,
+		}
 	}
-
-	return &screenImpl{
-		Value: v,
-	}
+	return nil
 }
 
 func (p *screenImpl) AvailWidth() int {
@@ -52,14 +47,13 @@ type mediaQueryListImpl struct {
 	*eventTargetImpl
 }
 
-func wrapMediaQueryList(v js.Value) MediaQueryList {
-	if isNil(v) {
-		return nil
+func wrapMediaQueryList(v Value) MediaQueryList {
+	if v.Valid() {
+		return &mediaQueryListImpl{
+			eventTargetImpl: newEventTargetImpl(v),
+		}
 	}
-
-	return &mediaQueryListImpl{
-		eventTargetImpl: newEventTargetImpl(v),
-	}
+	return nil
 }
 
 func (p *mediaQueryListImpl) Media() string {
@@ -80,14 +74,13 @@ type mediaQueryListEventImpl struct {
 	*eventImpl
 }
 
-func wrapMediaQueryListEvent(v js.Value) MediaQueryListEvent {
-	if isNil(v) {
-		return nil
+func wrapMediaQueryListEvent(v Value) MediaQueryListEvent {
+	if v.Valid() {
+		return &mediaQueryListEventImpl{
+			eventImpl: newEventImpl(v),
+		}
 	}
-
-	return &mediaQueryListEventImpl{
-		eventImpl: newEventImpl(v),
-	}
+	return nil
 }
 
 func (p *mediaQueryListEventImpl) Media() string {
@@ -101,17 +94,16 @@ func (p *mediaQueryListEventImpl) Matches() bool {
 // -------------8<---------------------------------------
 
 type caretPositionImpl struct {
-	js.Value
+	Value
 }
 
-func wrapCaretPosition(v js.Value) CaretPosition {
-	if isNil(v) {
-		return nil
+func wrapCaretPosition(v Value) CaretPosition {
+	if v.Valid() {
+		return &caretPositionImpl{
+			Value: v,
+		}
 	}
-
-	return &caretPositionImpl{
-		Value: v,
-	}
+	return nil
 }
 
 func (p *caretPositionImpl) OffsetNode() Node {
@@ -129,23 +121,23 @@ func (p *caretPositionImpl) ClientRect() DOMRect {
 // -------------8<---------------------------------------
 
 type geometryUtilsImpl struct {
-	js.Value
+	Value
 }
 
-func wrapGeometryUtils(v js.Value) GeometryUtils {
+func wrapGeometryUtils(v Value) GeometryUtils {
 	if p := newGeometryUtilsImpl(v); p != nil {
 		return p
 	}
 	return nil
 }
 
-func newGeometryUtilsImpl(v js.Value) *geometryUtilsImpl {
-	if isNil(v) {
-		return nil
+func newGeometryUtilsImpl(v Value) *geometryUtilsImpl {
+	if v.Valid() {
+		return &geometryUtilsImpl{
+			Value: v,
+		}
 	}
-	return &geometryUtilsImpl{
-		Value: v,
-	}
+	return nil
 }
 
 func (p *geometryUtilsImpl) BoxQuads(options ...BoxQuadOptions) []DOMQuad {
@@ -190,13 +182,13 @@ type cssPseudoElementImpl struct {
 	*eventTargetImpl
 }
 
-func wrapCSSPseudoElement(v js.Value) CSSPseudoElement {
-	if isNil(v) {
-		return nil
+func wrapCSSPseudoElement(v Value) CSSPseudoElement {
+	if v.Valid() {
+		return &cssPseudoElementImpl{
+			eventTargetImpl: newEventTargetImpl(v),
+		}
 	}
-	return &cssPseudoElementImpl{
-		eventTargetImpl: newEventTargetImpl(v),
-	}
+	return nil
 }
 
 func (p *cssPseudoElementImpl) Type() string {
@@ -210,16 +202,16 @@ func (p *cssPseudoElementImpl) Style() CSSStyleDeclaration {
 // -------------8<---------------------------------------
 
 type cssPseudoElementListImpl struct {
-	js.Value
+	Value
 }
 
-func wrapCSSPseudoElementList(v js.Value) CSSPseudoElementList {
-	if isNil(v) {
-		return nil
+func wrapCSSPseudoElementList(v Value) CSSPseudoElementList {
+	if v.Valid() {
+		return &cssPseudoElementListImpl{
+			Value: v,
+		}
 	}
-	return &cssPseudoElementListImpl{
-		Value: v,
-	}
+	return nil
 }
 
 func (p *cssPseudoElementListImpl) Length() int {
@@ -236,7 +228,7 @@ func (p *cssPseudoElementListImpl) ByType(typ string) CSSPseudoElement {
 
 // -------------8<---------------------------------------
 func NewMediaQueryListEvent(typ string, eventInitDict ...MediaQueryListEventInit) MediaQueryListEvent {
-	jsMQLE := js.Global().Get("MediaQueryListEvent")
+	jsMQLE := jsGlobal.Get("MediaQueryListEvent")
 
 	switch len(eventInitDict) {
 	case 0:

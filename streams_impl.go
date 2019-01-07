@@ -2,24 +2,19 @@
 
 package wasm
 
-import (
-	"syscall/js"
-)
-
 // -------------8<---------------------------------------
 
 type readableStreamImpl struct {
-	js.Value
+	Value
 }
 
-func wrapReadableStream(v js.Value) ReadableStream {
-	if isNil(v) {
-		return nil
+func wrapReadableStream(v Value) ReadableStream {
+	if v.Valid() {
+		return &readableStreamImpl{
+			Value: v,
+		}
 	}
-
-	return &readableStreamImpl{
-		Value: v,
-	}
+	return nil
 }
 
 func (p *readableStreamImpl) Locked() bool {
@@ -53,17 +48,16 @@ func (p *readableStreamImpl) Tee() {
 // -------------8<---------------------------------------
 
 type writableStreamImpl struct {
-	js.Value
+	Value
 }
 
-func wrapWritableStream(v js.Value) WritableStream {
-	if isNil(v) {
-		return nil
+func wrapWritableStream(v Value) WritableStream {
+	if v.Valid() {
+		return &writableStreamImpl{
+			Value: v,
+		}
 	}
-
-	return &writableStreamImpl{
-		Value: v,
-	}
+	return nil
 }
 
 func (p *writableStreamImpl) Locked() bool {

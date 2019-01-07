@@ -2,10 +2,6 @@
 
 package wasm
 
-import (
-	"syscall/js"
-)
-
 // -------------8<---------------------------------------
 
 type htmlScriptElementImpl struct {
@@ -21,14 +17,13 @@ func NewHTMLScriptElement() HTMLScriptElement {
 	return nil
 }
 
-func wrapHTMLScriptElement(v js.Value) HTMLScriptElement {
-	if isNil(v) {
-		return nil
+func wrapHTMLScriptElement(v Value) HTMLScriptElement {
+	if v.Valid() {
+		return &htmlScriptElementImpl{
+			htmlElementImpl: newHTMLElementImpl(v),
+		}
 	}
-
-	return &htmlScriptElementImpl{
-		htmlElementImpl: newHTMLElementImpl(v),
-	}
+	return nil
 }
 
 func (p *htmlScriptElementImpl) Src() string {
@@ -110,14 +105,13 @@ func NewHTMLTemplateElement() HTMLTemplateElement {
 	return nil
 }
 
-func wrapHTMLTemplateElement(v js.Value) HTMLTemplateElement {
-	if isNil(v) {
-		return nil
+func wrapHTMLTemplateElement(v Value) HTMLTemplateElement {
+	if v.Valid() {
+		return &htmlTemplateElementImpl{
+			htmlElementImpl: newHTMLElementImpl(v),
+		}
 	}
-
-	return &htmlTemplateElementImpl{
-		htmlElementImpl: newHTMLElementImpl(v),
-	}
+	return nil
 }
 
 func (p *htmlTemplateElementImpl) Content() DocumentFragment {
@@ -143,14 +137,13 @@ func NewHTMLCanvasElement(size ...int) HTMLCanvasElement {
 	return nil
 }
 
-func wrapHTMLCanvasElement(v js.Value) HTMLCanvasElement {
-	if isNil(v) {
-		return nil
+func wrapHTMLCanvasElement(v Value) HTMLCanvasElement {
+	if v.Valid() {
+		return &htmlCanvasElementImpl{
+			htmlElementImpl: newHTMLElementImpl(v),
+		}
 	}
-
-	return &htmlCanvasElementImpl{
-		htmlElementImpl: newHTMLElementImpl(v),
-	}
+	return nil
 }
 
 func (p *htmlCanvasElementImpl) Width() int {
@@ -179,25 +172,25 @@ func (p *htmlCanvasElementImpl) Context2D(settings ...CanvasRenderingContext2DSe
 }
 
 func (p *htmlCanvasElementImpl) ContextWebGL(attrs ...WebGLContextAttributes) WebGLRenderingContext {
-	var v js.Value
+	var v Value
 
 	switch len(attrs) {
 	case 0:
 		v = p.Call("getContext", "webgl")
-		if v == js.Undefined() {
+		if !v.Valid() {
 			v = p.Call("getContext", "experimental-webgl")
 		}
 
-		if isNil(v) {
+		if !v.Valid() {
 			return nil
 		}
 	default:
 		v = p.Call("getContext", "webgl", attrs[0].toJSObject())
-		if v == js.Undefined() {
+		if !v.Valid() {
 			v = p.Call("getContext", "experimental-webgl", attrs[0].toJSObject())
 		}
 
-		if isNil(v) {
+		if !v.Valid() {
 			return nil
 		}
 	}

@@ -2,10 +2,6 @@
 
 package wasm
 
-import (
-	"syscall/js"
-)
-
 // https://drafts.csswg.org/cssom-view/
 
 type (
@@ -112,7 +108,7 @@ type ScrollOptions struct {
 	Behavior ScrollBehavior // default auto
 }
 
-func (p ScrollOptions) toJSObject() js.Value {
+func (p ScrollOptions) toJSObject() Value {
 	o := jsObject.New()
 	if p.Behavior != "" && p.Behavior != ScrollBehaviorAuto {
 		o.Set("behavior", string(p.Behavior))
@@ -130,7 +126,7 @@ type ScrollToOptions struct {
 	Top  float64
 }
 
-func (p ScrollToOptions) toJSObject() js.Value {
+func (p ScrollToOptions) toJSObject() Value {
 	o := p.ScrollOptions.toJSObject()
 	o.Set("left", p.Left)
 	o.Set("top", p.Top)
@@ -147,7 +143,7 @@ type ScrollIntoViewOptions struct {
 	Inline ScrollLogicalPosition // default "nearest"
 }
 
-func (p ScrollIntoViewOptions) toJSObject() js.Value {
+func (p ScrollIntoViewOptions) toJSObject() Value {
 	o := p.ScrollOptions.toJSObject()
 	if p.Block != "" && p.Block != ScrollLogicalPositionStart {
 		o.Set("block", string(p.Block))
@@ -168,7 +164,7 @@ type MediaQueryListEventInit struct {
 	Matches bool
 }
 
-func (p MediaQueryListEventInit) toJSObject() js.Value {
+func (p MediaQueryListEventInit) toJSObject() Value {
 	o := p.EventInit.toJSObject()
 	o.Set("media", p.Media)
 	o.Set("matches", p.Matches)
@@ -183,7 +179,7 @@ type BoxQuadOptions struct {
 	RelativeTo GeometryNode
 }
 
-func (p BoxQuadOptions) toJSObject() js.Value {
+func (p BoxQuadOptions) toJSObject() Value {
 	o := jsObject.New()
 	o.Set("box", string(p.Box))
 	o.Set("relativeTo", JSValue(p.RelativeTo))
@@ -198,7 +194,7 @@ type ConvertCoordinateOptions struct {
 	ToBox   CSSBoxType // default "border"
 }
 
-func (p ConvertCoordinateOptions) toJSObject() js.Value {
+func (p ConvertCoordinateOptions) toJSObject() Value {
 	o := jsObject.New()
 	if p.FromBox != "" && p.FromBox != CSSBoxTypeBorder {
 		o.Set("fromBox", string(p.FromBox))

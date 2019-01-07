@@ -2,10 +2,6 @@
 
 package wasm
 
-import (
-	"syscall/js"
-)
-
 type (
 	// https://www.w3.org/TR/html52/editing.html#datatransfer
 	DataTransfer interface {
@@ -57,7 +53,7 @@ type DragEventInit struct {
 	DataTransfer DataTransfer
 }
 
-func (p DragEventInit) toJSObject() js.Value {
+func (p DragEventInit) toJSObject() Value {
 	o := p.MouseEventInit.toJSObject()
 	o.Set("dataTransfer", JSValue(p.DataTransfer))
 	return o
