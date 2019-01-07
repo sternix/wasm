@@ -217,8 +217,7 @@ func FuncOf(fn func(this Value, args []Value) interface{}) Func {
 				fxArgs[i] = Value{v}
 			}
 		}
-		fn(fxThis, fxArgs)
-		return nil
+		return fn(fxThis, fxArgs)
 	}
 	return Func{js.FuncOf(fx)}
 }
