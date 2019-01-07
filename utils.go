@@ -4,7 +4,6 @@ package wasm
 
 import (
 	"errors"
-	"reflect"
 	"syscall/js"
 	"time"
 )
