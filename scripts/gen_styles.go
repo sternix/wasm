@@ -70,7 +70,7 @@ func main() {
 
 	scanner := bufio.NewScanner(f)
 	for scanner.Scan() {
-		line := scanner.Text()
+		line := strings.Trim(scanner.Text()," ")
 		s := style{
 			Name:   line,
 			UpName: toUpper(line),
@@ -101,6 +101,7 @@ func toUpper(s string) string {
 	strs := strings.Split(s, "-")
 	for i, str := range strs {
 		strs[i] = strings.Title(str)
+
 	}
 	return strings.Join(strs, "")
 }
