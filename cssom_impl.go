@@ -429,13 +429,16 @@ func (p *cssNamespaceRuleImpl) Prefix() string {
 
 type cssStyleDeclarationImpl struct {
 	Value
+	*cssStyleHelperImpl
 }
 
 func wrapCSSStyleDeclaration(v Value) CSSStyleDeclaration {
 	if v.Valid() {
-		return &cssStyleDeclarationImpl{
+		p := &cssStyleDeclarationImpl{
 			Value: v,
 		}
+		p.cssStyleHelperImpl = newCSSStyleHelperImpl(p)
+		return p
 	}
 	return nil
 }

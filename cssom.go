@@ -117,6 +117,8 @@ type (
 
 	// https://drafts.csswg.org/cssom/#cssstyledeclaration
 	CSSStyleDeclaration interface {
+		cssStyleHelper
+
 		CSSText() string
 		SetCSSText(string)
 		Length() int

@@ -45,7 +45,7 @@ direction
 display
 elevation
 empty-cells
-float
+css-float
 font
 font-family
 font-feature-settings

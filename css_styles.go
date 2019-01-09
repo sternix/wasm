@@ -1,3 +1,4 @@
+
 // +build js,wasm
 
 package wasm
@@ -7,6 +8,7 @@ https://www.w3.org/Style/CSS/all-properties#list
 */
 
 type cssStyleHelper interface {
+	
 	Azimuth() string
 	SetAzimuth(string)
 	Background() string
@@ -101,8 +103,8 @@ type cssStyleHelper interface {
 	SetElevation(string)
 	EmptyCells() string
 	SetEmptyCells(string)
-	Float() string
-	SetFloat(string)
+	CssFloat() string
+	SetCssFloat(string)
 	Font() string
 	SetFont(string)
 	FontFamily() string
@@ -277,19 +279,20 @@ type cssStyleHelperImpl struct {
 
 func newCSSStyleHelperImpl(v *cssStyleDeclarationImpl) *cssStyleHelperImpl {
 	if v.Valid() {
-		return &cssStyleHelperImpl{
+		return &cssStyleHelperImpl {
 			cssStyleDeclarationImpl: v,
 		}
 	}
 	return nil
 }
 
+
 func (p *cssStyleHelperImpl) Azimuth() string {
 	return p.PropertyValue("azimuth")
 }
 
 func (p *cssStyleHelperImpl) SetAzimuth(s string) {
-	p.SetProperty("azimuth", s)
+	p.SetProperty("azimuth",s)
 }
 
 func (p *cssStyleHelperImpl) Background() string {
@@ -297,7 +300,7 @@ func (p *cssStyleHelperImpl) Background() string {
 }
 
 func (p *cssStyleHelperImpl) SetBackground(s string) {
-	p.SetProperty("background", s)
+	p.SetProperty("background",s)
 }
 
 func (p *cssStyleHelperImpl) BackgroundAttachment() string {
@@ -305,7 +308,7 @@ func (p *cssStyleHelperImpl) BackgroundAttachment() string {
 }
 
 func (p *cssStyleHelperImpl) SetBackgroundAttachment(s string) {
-	p.SetProperty("background-attachment", s)
+	p.SetProperty("background-attachment",s)
 }
 
 func (p *cssStyleHelperImpl) BackgroundColor() string {
@@ -313,7 +316,7 @@ func (p *cssStyleHelperImpl) BackgroundColor() string {
 }
 
 func (p *cssStyleHelperImpl) SetBackgroundColor(s string) {
-	p.SetProperty("background-color", s)
+	p.SetProperty("background-color",s)
 }
 
 func (p *cssStyleHelperImpl) BackgroundImage() string {
@@ -321,7 +324,7 @@ func (p *cssStyleHelperImpl) BackgroundImage() string {
 }
 
 func (p *cssStyleHelperImpl) SetBackgroundImage(s string) {
-	p.SetProperty("background-image", s)
+	p.SetProperty("background-image",s)
 }
 
 func (p *cssStyleHelperImpl) BackgroundPosition() string {
@@ -329,7 +332,7 @@ func (p *cssStyleHelperImpl) BackgroundPosition() string {
 }
 
 func (p *cssStyleHelperImpl) SetBackgroundPosition(s string) {
-	p.SetProperty("background-position", s)
+	p.SetProperty("background-position",s)
 }
 
 func (p *cssStyleHelperImpl) BackgroundRepeat() string {
@@ -337,7 +340,7 @@ func (p *cssStyleHelperImpl) BackgroundRepeat() string {
 }
 
 func (p *cssStyleHelperImpl) SetBackgroundRepeat(s string) {
-	p.SetProperty("background-repeat", s)
+	p.SetProperty("background-repeat",s)
 }
 
 func (p *cssStyleHelperImpl) Border() string {
@@ -345,7 +348,7 @@ func (p *cssStyleHelperImpl) Border() string {
 }
 
 func (p *cssStyleHelperImpl) SetBorder(s string) {
-	p.SetProperty("border", s)
+	p.SetProperty("border",s)
 }
 
 func (p *cssStyleHelperImpl) BorderBottom() string {
@@ -353,7 +356,7 @@ func (p *cssStyleHelperImpl) BorderBottom() string {
 }
 
 func (p *cssStyleHelperImpl) SetBorderBottom(s string) {
-	p.SetProperty("border-bottom", s)
+	p.SetProperty("border-bottom",s)
 }
 
 func (p *cssStyleHelperImpl) BorderBottomColor() string {
@@ -361,7 +364,7 @@ func (p *cssStyleHelperImpl) BorderBottomColor() string {
 }
 
 func (p *cssStyleHelperImpl) SetBorderBottomColor(s string) {
-	p.SetProperty("border-bottom-color", s)
+	p.SetProperty("border-bottom-color",s)
 }
 
 func (p *cssStyleHelperImpl) BorderBottomStyle() string {
@@ -369,7 +372,7 @@ func (p *cssStyleHelperImpl) BorderBottomStyle() string {
 }
 
 func (p *cssStyleHelperImpl) SetBorderBottomStyle(s string) {
-	p.SetProperty("border-bottom-style", s)
+	p.SetProperty("border-bottom-style",s)
 }
 
 func (p *cssStyleHelperImpl) BorderBottomWidth() string {
@@ -377,7 +380,7 @@ func (p *cssStyleHelperImpl) BorderBottomWidth() string {
 }
 
 func (p *cssStyleHelperImpl) SetBorderBottomWidth(s string) {
-	p.SetProperty("border-bottom-width", s)
+	p.SetProperty("border-bottom-width",s)
 }
 
 func (p *cssStyleHelperImpl) BorderCollapse() string {
@@ -385,7 +388,7 @@ func (p *cssStyleHelperImpl) BorderCollapse() string {
 }
 
 func (p *cssStyleHelperImpl) SetBorderCollapse(s string) {
-	p.SetProperty("border-collapse", s)
+	p.SetProperty("border-collapse",s)
 }
 
 func (p *cssStyleHelperImpl) BorderColor() string {
@@ -393,7 +396,7 @@ func (p *cssStyleHelperImpl) BorderColor() string {
 }
 
 func (p *cssStyleHelperImpl) SetBorderColor(s string) {
-	p.SetProperty("border-color", s)
+	p.SetProperty("border-color",s)
 }
 
 func (p *cssStyleHelperImpl) BorderLeft() string {
@@ -401,7 +404,7 @@ func (p *cssStyleHelperImpl) BorderLeft() string {
 }
 
 func (p *cssStyleHelperImpl) SetBorderLeft(s string) {
-	p.SetProperty("border-left", s)
+	p.SetProperty("border-left",s)
 }
 
 func (p *cssStyleHelperImpl) BorderLeftColor() string {
@@ -409,7 +412,7 @@ func (p *cssStyleHelperImpl) BorderLeftColor() string {
 }
 
 func (p *cssStyleHelperImpl) SetBorderLeftColor(s string) {
-	p.SetProperty("border-left-color", s)
+	p.SetProperty("border-left-color",s)
 }
 
 func (p *cssStyleHelperImpl) BorderLeftStyle() string {
@@ -417,7 +420,7 @@ func (p *cssStyleHelperImpl) BorderLeftStyle() string {
 }
 
 func (p *cssStyleHelperImpl) SetBorderLeftStyle(s string) {
-	p.SetProperty("border-left-style", s)
+	p.SetProperty("border-left-style",s)
 }
 
 func (p *cssStyleHelperImpl) BorderLeftWidth() string {
@@ -425,7 +428,7 @@ func (p *cssStyleHelperImpl) BorderLeftWidth() string {
 }
 
 func (p *cssStyleHelperImpl) SetBorderLeftWidth(s string) {
-	p.SetProperty("border-left-width", s)
+	p.SetProperty("border-left-width",s)
 }
 
 func (p *cssStyleHelperImpl) BorderRight() string {
@@ -433,7 +436,7 @@ func (p *cssStyleHelperImpl) BorderRight() string {
 }
 
 func (p *cssStyleHelperImpl) SetBorderRight(s string) {
-	p.SetProperty("border-right", s)
+	p.SetProperty("border-right",s)
 }
 
 func (p *cssStyleHelperImpl) BorderRightColor() string {
@@ -441,7 +444,7 @@ func (p *cssStyleHelperImpl) BorderRightColor() string {
 }
 
 func (p *cssStyleHelperImpl) SetBorderRightColor(s string) {
-	p.SetProperty("border-right-color", s)
+	p.SetProperty("border-right-color",s)
 }
 
 func (p *cssStyleHelperImpl) BorderRightStyle() string {
@@ -449,7 +452,7 @@ func (p *cssStyleHelperImpl) BorderRightStyle() string {
 }
 
 func (p *cssStyleHelperImpl) SetBorderRightStyle(s string) {
-	p.SetProperty("border-right-style", s)
+	p.SetProperty("border-right-style",s)
 }
 
 func (p *cssStyleHelperImpl) BorderRightWidth() string {
@@ -457,7 +460,7 @@ func (p *cssStyleHelperImpl) BorderRightWidth() string {
 }
 
 func (p *cssStyleHelperImpl) SetBorderRightWidth(s string) {
-	p.SetProperty("border-right-width", s)
+	p.SetProperty("border-right-width",s)
 }
 
 func (p *cssStyleHelperImpl) BorderSpacing() string {
@@ -465,7 +468,7 @@ func (p *cssStyleHelperImpl) BorderSpacing() string {
 }
 
 func (p *cssStyleHelperImpl) SetBorderSpacing(s string) {
-	p.SetProperty("border-spacing", s)
+	p.SetProperty("border-spacing",s)
 }
 
 func (p *cssStyleHelperImpl) BorderStyle() string {
@@ -473,7 +476,7 @@ func (p *cssStyleHelperImpl) BorderStyle() string {
 }
 
 func (p *cssStyleHelperImpl) SetBorderStyle(s string) {
-	p.SetProperty("border-style", s)
+	p.SetProperty("border-style",s)
 }
 
 func (p *cssStyleHelperImpl) BorderTop() string {
@@ -481,7 +484,7 @@ func (p *cssStyleHelperImpl) BorderTop() string {
 }
 
 func (p *cssStyleHelperImpl) SetBorderTop(s string) {
-	p.SetProperty("border-top", s)
+	p.SetProperty("border-top",s)
 }
 
 func (p *cssStyleHelperImpl) BorderTopColor() string {
@@ -489,7 +492,7 @@ func (p *cssStyleHelperImpl) BorderTopColor() string {
 }
 
 func (p *cssStyleHelperImpl) SetBorderTopColor(s string) {
-	p.SetProperty("border-top-color", s)
+	p.SetProperty("border-top-color",s)
 }
 
 func (p *cssStyleHelperImpl) BorderTopStyle() string {
@@ -497,7 +500,7 @@ func (p *cssStyleHelperImpl) BorderTopStyle() string {
 }
 
 func (p *cssStyleHelperImpl) SetBorderTopStyle(s string) {
-	p.SetProperty("border-top-style", s)
+	p.SetProperty("border-top-style",s)
 }
 
 func (p *cssStyleHelperImpl) BorderTopWidth() string {
@@ -505,7 +508,7 @@ func (p *cssStyleHelperImpl) BorderTopWidth() string {
 }
 
 func (p *cssStyleHelperImpl) SetBorderTopWidth(s string) {
-	p.SetProperty("border-top-width", s)
+	p.SetProperty("border-top-width",s)
 }
 
 func (p *cssStyleHelperImpl) BorderWidth() string {
@@ -513,7 +516,7 @@ func (p *cssStyleHelperImpl) BorderWidth() string {
 }
 
 func (p *cssStyleHelperImpl) SetBorderWidth(s string) {
-	p.SetProperty("border-width", s)
+	p.SetProperty("border-width",s)
 }
 
 func (p *cssStyleHelperImpl) Bottom() string {
@@ -521,7 +524,7 @@ func (p *cssStyleHelperImpl) Bottom() string {
 }
 
 func (p *cssStyleHelperImpl) SetBottom(s string) {
-	p.SetProperty("bottom", s)
+	p.SetProperty("bottom",s)
 }
 
 func (p *cssStyleHelperImpl) BoxSizing() string {
@@ -529,7 +532,7 @@ func (p *cssStyleHelperImpl) BoxSizing() string {
 }
 
 func (p *cssStyleHelperImpl) SetBoxSizing(s string) {
-	p.SetProperty("box-sizing", s)
+	p.SetProperty("box-sizing",s)
 }
 
 func (p *cssStyleHelperImpl) CaptionSide() string {
@@ -537,7 +540,7 @@ func (p *cssStyleHelperImpl) CaptionSide() string {
 }
 
 func (p *cssStyleHelperImpl) SetCaptionSide(s string) {
-	p.SetProperty("caption-side", s)
+	p.SetProperty("caption-side",s)
 }
 
 func (p *cssStyleHelperImpl) CaretColor() string {
@@ -545,7 +548,7 @@ func (p *cssStyleHelperImpl) CaretColor() string {
 }
 
 func (p *cssStyleHelperImpl) SetCaretColor(s string) {
-	p.SetProperty("caret-color", s)
+	p.SetProperty("caret-color",s)
 }
 
 func (p *cssStyleHelperImpl) Clear() string {
@@ -553,7 +556,7 @@ func (p *cssStyleHelperImpl) Clear() string {
 }
 
 func (p *cssStyleHelperImpl) SetClear(s string) {
-	p.SetProperty("clear", s)
+	p.SetProperty("clear",s)
 }
 
 func (p *cssStyleHelperImpl) Clip() string {
@@ -561,7 +564,7 @@ func (p *cssStyleHelperImpl) Clip() string {
 }
 
 func (p *cssStyleHelperImpl) SetClip(s string) {
-	p.SetProperty("clip", s)
+	p.SetProperty("clip",s)
 }
 
 func (p *cssStyleHelperImpl) Color() string {
@@ -569,7 +572,7 @@ func (p *cssStyleHelperImpl) Color() string {
 }
 
 func (p *cssStyleHelperImpl) SetColor(s string) {
-	p.SetProperty("color", s)
+	p.SetProperty("color",s)
 }
 
 func (p *cssStyleHelperImpl) Content() string {
@@ -577,7 +580,7 @@ func (p *cssStyleHelperImpl) Content() string {
 }
 
 func (p *cssStyleHelperImpl) SetContent(s string) {
-	p.SetProperty("content", s)
+	p.SetProperty("content",s)
 }
 
 func (p *cssStyleHelperImpl) CounterIncrement() string {
@@ -585,7 +588,7 @@ func (p *cssStyleHelperImpl) CounterIncrement() string {
 }
 
 func (p *cssStyleHelperImpl) SetCounterIncrement(s string) {
-	p.SetProperty("counter-increment", s)
+	p.SetProperty("counter-increment",s)
 }
 
 func (p *cssStyleHelperImpl) CounterReset() string {
@@ -593,7 +596,7 @@ func (p *cssStyleHelperImpl) CounterReset() string {
 }
 
 func (p *cssStyleHelperImpl) SetCounterReset(s string) {
-	p.SetProperty("counter-reset", s)
+	p.SetProperty("counter-reset",s)
 }
 
 func (p *cssStyleHelperImpl) Cue() string {
@@ -601,7 +604,7 @@ func (p *cssStyleHelperImpl) Cue() string {
 }
 
 func (p *cssStyleHelperImpl) SetCue(s string) {
-	p.SetProperty("cue", s)
+	p.SetProperty("cue",s)
 }
 
 func (p *cssStyleHelperImpl) CueAfter() string {
@@ -609,7 +612,7 @@ func (p *cssStyleHelperImpl) CueAfter() string {
 }
 
 func (p *cssStyleHelperImpl) SetCueAfter(s string) {
-	p.SetProperty("cue-after", s)
+	p.SetProperty("cue-after",s)
 }
 
 func (p *cssStyleHelperImpl) CueBefore() string {
@@ -617,7 +620,7 @@ func (p *cssStyleHelperImpl) CueBefore() string {
 }
 
 func (p *cssStyleHelperImpl) SetCueBefore(s string) {
-	p.SetProperty("cue-before", s)
+	p.SetProperty("cue-before",s)
 }
 
 func (p *cssStyleHelperImpl) Cursor() string {
@@ -625,7 +628,7 @@ func (p *cssStyleHelperImpl) Cursor() string {
 }
 
 func (p *cssStyleHelperImpl) SetCursor(s string) {
-	p.SetProperty("cursor", s)
+	p.SetProperty("cursor",s)
 }
 
 func (p *cssStyleHelperImpl) Direction() string {
@@ -633,7 +636,7 @@ func (p *cssStyleHelperImpl) Direction() string {
 }
 
 func (p *cssStyleHelperImpl) SetDirection(s string) {
-	p.SetProperty("direction", s)
+	p.SetProperty("direction",s)
 }
 
 func (p *cssStyleHelperImpl) Display() string {
@@ -641,7 +644,7 @@ func (p *cssStyleHelperImpl) Display() string {
 }
 
 func (p *cssStyleHelperImpl) SetDisplay(s string) {
-	p.SetProperty("display", s)
+	p.SetProperty("display",s)
 }
 
 func (p *cssStyleHelperImpl) Elevation() string {
@@ -649,7 +652,7 @@ func (p *cssStyleHelperImpl) Elevation() string {
 }
 
 func (p *cssStyleHelperImpl) SetElevation(s string) {
-	p.SetProperty("elevation", s)
+	p.SetProperty("elevation",s)
 }
 
 func (p *cssStyleHelperImpl) EmptyCells() string {
@@ -657,15 +660,15 @@ func (p *cssStyleHelperImpl) EmptyCells() string {
 }
 
 func (p *cssStyleHelperImpl) SetEmptyCells(s string) {
-	p.SetProperty("empty-cells", s)
+	p.SetProperty("empty-cells",s)
 }
 
-func (p *cssStyleHelperImpl) Float() string {
-	return p.PropertyValue("float")
+func (p *cssStyleHelperImpl) CssFloat() string {
+	return p.PropertyValue("css-float")
 }
 
-func (p *cssStyleHelperImpl) SetFloat(s string) {
-	p.SetProperty("float", s)
+func (p *cssStyleHelperImpl) SetCssFloat(s string) {
+	p.SetProperty("css-float",s)
 }
 
 func (p *cssStyleHelperImpl) Font() string {
@@ -673,7 +676,7 @@ func (p *cssStyleHelperImpl) Font() string {
 }
 
 func (p *cssStyleHelperImpl) SetFont(s string) {
-	p.SetProperty("font", s)
+	p.SetProperty("font",s)
 }
 
 func (p *cssStyleHelperImpl) FontFamily() string {
@@ -681,7 +684,7 @@ func (p *cssStyleHelperImpl) FontFamily() string {
 }
 
 func (p *cssStyleHelperImpl) SetFontFamily(s string) {
-	p.SetProperty("font-family", s)
+	p.SetProperty("font-family",s)
 }
 
 func (p *cssStyleHelperImpl) FontFeatureSettings() string {
@@ -689,7 +692,7 @@ func (p *cssStyleHelperImpl) FontFeatureSettings() string {
 }
 
 func (p *cssStyleHelperImpl) SetFontFeatureSettings(s string) {
-	p.SetProperty("font-feature-settings", s)
+	p.SetProperty("font-feature-settings",s)
 }
 
 func (p *cssStyleHelperImpl) FontKerning() string {
@@ -697,7 +700,7 @@ func (p *cssStyleHelperImpl) FontKerning() string {
 }
 
 func (p *cssStyleHelperImpl) SetFontKerning(s string) {
-	p.SetProperty("font-kerning", s)
+	p.SetProperty("font-kerning",s)
 }
 
 func (p *cssStyleHelperImpl) FontSize() string {
@@ -705,7 +708,7 @@ func (p *cssStyleHelperImpl) FontSize() string {
 }
 
 func (p *cssStyleHelperImpl) SetFontSize(s string) {
-	p.SetProperty("font-size", s)
+	p.SetProperty("font-size",s)
 }
 
 func (p *cssStyleHelperImpl) FontSizeAdjust() string {
@@ -713,7 +716,7 @@ func (p *cssStyleHelperImpl) FontSizeAdjust() string {
 }
 
 func (p *cssStyleHelperImpl) SetFontSizeAdjust(s string) {
-	p.SetProperty("font-size-adjust", s)
+	p.SetProperty("font-size-adjust",s)
 }
 
 func (p *cssStyleHelperImpl) FontStretch() string {
@@ -721,7 +724,7 @@ func (p *cssStyleHelperImpl) FontStretch() string {
 }
 
 func (p *cssStyleHelperImpl) SetFontStretch(s string) {
-	p.SetProperty("font-stretch", s)
+	p.SetProperty("font-stretch",s)
 }
 
 func (p *cssStyleHelperImpl) FontStyle() string {
@@ -729,7 +732,7 @@ func (p *cssStyleHelperImpl) FontStyle() string {
 }
 
 func (p *cssStyleHelperImpl) SetFontStyle(s string) {
-	p.SetProperty("font-style", s)
+	p.SetProperty("font-style",s)
 }
 
 func (p *cssStyleHelperImpl) FontSynthesis() string {
@@ -737,7 +740,7 @@ func (p *cssStyleHelperImpl) FontSynthesis() string {
 }
 
 func (p *cssStyleHelperImpl) SetFontSynthesis(s string) {
-	p.SetProperty("font-synthesis", s)
+	p.SetProperty("font-synthesis",s)
 }
 
 func (p *cssStyleHelperImpl) FontVariant() string {
@@ -745,7 +748,7 @@ func (p *cssStyleHelperImpl) FontVariant() string {
 }
 
 func (p *cssStyleHelperImpl) SetFontVariant(s string) {
-	p.SetProperty("font-variant", s)
+	p.SetProperty("font-variant",s)
 }
 
 func (p *cssStyleHelperImpl) FontVariantCaps() string {
@@ -753,7 +756,7 @@ func (p *cssStyleHelperImpl) FontVariantCaps() string {
 }
 
 func (p *cssStyleHelperImpl) SetFontVariantCaps(s string) {
-	p.SetProperty("font-variant-caps", s)
+	p.SetProperty("font-variant-caps",s)
 }
 
 func (p *cssStyleHelperImpl) FontVariantEastAsian() string {
@@ -761,7 +764,7 @@ func (p *cssStyleHelperImpl) FontVariantEastAsian() string {
 }
 
 func (p *cssStyleHelperImpl) SetFontVariantEastAsian(s string) {
-	p.SetProperty("font-variant-east-asian", s)
+	p.SetProperty("font-variant-east-asian",s)
 }
 
 func (p *cssStyleHelperImpl) FontVariantLigatures() string {
@@ -769,7 +772,7 @@ func (p *cssStyleHelperImpl) FontVariantLigatures() string {
 }
 
 func (p *cssStyleHelperImpl) SetFontVariantLigatures(s string) {
-	p.SetProperty("font-variant-ligatures", s)
+	p.SetProperty("font-variant-ligatures",s)
 }
 
 func (p *cssStyleHelperImpl) FontVariantNumeric() string {
@@ -777,7 +780,7 @@ func (p *cssStyleHelperImpl) FontVariantNumeric() string {
 }
 
 func (p *cssStyleHelperImpl) SetFontVariantNumeric(s string) {
-	p.SetProperty("font-variant-numeric", s)
+	p.SetProperty("font-variant-numeric",s)
 }
 
 func (p *cssStyleHelperImpl) FontVariantPosition() string {
@@ -785,7 +788,7 @@ func (p *cssStyleHelperImpl) FontVariantPosition() string {
 }
 
 func (p *cssStyleHelperImpl) SetFontVariantPosition(s string) {
-	p.SetProperty("font-variant-position", s)
+	p.SetProperty("font-variant-position",s)
 }
 
 func (p *cssStyleHelperImpl) FontWeight() string {
@@ -793,7 +796,7 @@ func (p *cssStyleHelperImpl) FontWeight() string {
 }
 
 func (p *cssStyleHelperImpl) SetFontWeight(s string) {
-	p.SetProperty("font-weight", s)
+	p.SetProperty("font-weight",s)
 }
 
 func (p *cssStyleHelperImpl) Height() string {
@@ -801,7 +804,7 @@ func (p *cssStyleHelperImpl) Height() string {
 }
 
 func (p *cssStyleHelperImpl) SetHeight(s string) {
-	p.SetProperty("height", s)
+	p.SetProperty("height",s)
 }
 
 func (p *cssStyleHelperImpl) Left() string {
@@ -809,7 +812,7 @@ func (p *cssStyleHelperImpl) Left() string {
 }
 
 func (p *cssStyleHelperImpl) SetLeft(s string) {
-	p.SetProperty("left", s)
+	p.SetProperty("left",s)
 }
 
 func (p *cssStyleHelperImpl) LetterSpacing() string {
@@ -817,7 +820,7 @@ func (p *cssStyleHelperImpl) LetterSpacing() string {
 }
 
 func (p *cssStyleHelperImpl) SetLetterSpacing(s string) {
-	p.SetProperty("letter-spacing", s)
+	p.SetProperty("letter-spacing",s)
 }
 
 func (p *cssStyleHelperImpl) LineHeight() string {
@@ -825,7 +828,7 @@ func (p *cssStyleHelperImpl) LineHeight() string {
 }
 
 func (p *cssStyleHelperImpl) SetLineHeight(s string) {
-	p.SetProperty("line-height", s)
+	p.SetProperty("line-height",s)
 }
 
 func (p *cssStyleHelperImpl) ListStyle() string {
@@ -833,7 +836,7 @@ func (p *cssStyleHelperImpl) ListStyle() string {
 }
 
 func (p *cssStyleHelperImpl) SetListStyle(s string) {
-	p.SetProperty("list-style", s)
+	p.SetProperty("list-style",s)
 }
 
 func (p *cssStyleHelperImpl) ListStyleImage() string {
@@ -841,7 +844,7 @@ func (p *cssStyleHelperImpl) ListStyleImage() string {
 }
 
 func (p *cssStyleHelperImpl) SetListStyleImage(s string) {
-	p.SetProperty("list-style-image", s)
+	p.SetProperty("list-style-image",s)
 }
 
 func (p *cssStyleHelperImpl) ListStylePosition() string {
@@ -849,7 +852,7 @@ func (p *cssStyleHelperImpl) ListStylePosition() string {
 }
 
 func (p *cssStyleHelperImpl) SetListStylePosition(s string) {
-	p.SetProperty("list-style-position", s)
+	p.SetProperty("list-style-position",s)
 }
 
 func (p *cssStyleHelperImpl) ListStyleType() string {
@@ -857,7 +860,7 @@ func (p *cssStyleHelperImpl) ListStyleType() string {
 }
 
 func (p *cssStyleHelperImpl) SetListStyleType(s string) {
-	p.SetProperty("list-style-type", s)
+	p.SetProperty("list-style-type",s)
 }
 
 func (p *cssStyleHelperImpl) Margin() string {
@@ -865,7 +868,7 @@ func (p *cssStyleHelperImpl) Margin() string {
 }
 
 func (p *cssStyleHelperImpl) SetMargin(s string) {
-	p.SetProperty("margin", s)
+	p.SetProperty("margin",s)
 }
 
 func (p *cssStyleHelperImpl) MarginBottom() string {
@@ -873,7 +876,7 @@ func (p *cssStyleHelperImpl) MarginBottom() string {
 }
 
 func (p *cssStyleHelperImpl) SetMarginBottom(s string) {
-	p.SetProperty("margin-bottom", s)
+	p.SetProperty("margin-bottom",s)
 }
 
 func (p *cssStyleHelperImpl) MarginLeft() string {
@@ -881,7 +884,7 @@ func (p *cssStyleHelperImpl) MarginLeft() string {
 }
 
 func (p *cssStyleHelperImpl) SetMarginLeft(s string) {
-	p.SetProperty("margin-left", s)
+	p.SetProperty("margin-left",s)
 }
 
 func (p *cssStyleHelperImpl) MarginRight() string {
@@ -889,7 +892,7 @@ func (p *cssStyleHelperImpl) MarginRight() string {
 }
 
 func (p *cssStyleHelperImpl) SetMarginRight(s string) {
-	p.SetProperty("margin-right", s)
+	p.SetProperty("margin-right",s)
 }
 
 func (p *cssStyleHelperImpl) MarginTop() string {
@@ -897,7 +900,7 @@ func (p *cssStyleHelperImpl) MarginTop() string {
 }
 
 func (p *cssStyleHelperImpl) SetMarginTop(s string) {
-	p.SetProperty("margin-top", s)
+	p.SetProperty("margin-top",s)
 }
 
 func (p *cssStyleHelperImpl) MaxHeight() string {
@@ -905,7 +908,7 @@ func (p *cssStyleHelperImpl) MaxHeight() string {
 }
 
 func (p *cssStyleHelperImpl) SetMaxHeight(s string) {
-	p.SetProperty("max-height", s)
+	p.SetProperty("max-height",s)
 }
 
 func (p *cssStyleHelperImpl) MaxWidth() string {
@@ -913,7 +916,7 @@ func (p *cssStyleHelperImpl) MaxWidth() string {
 }
 
 func (p *cssStyleHelperImpl) SetMaxWidth(s string) {
-	p.SetProperty("max-width", s)
+	p.SetProperty("max-width",s)
 }
 
 func (p *cssStyleHelperImpl) MinHeight() string {
@@ -921,7 +924,7 @@ func (p *cssStyleHelperImpl) MinHeight() string {
 }
 
 func (p *cssStyleHelperImpl) SetMinHeight(s string) {
-	p.SetProperty("min-height", s)
+	p.SetProperty("min-height",s)
 }
 
 func (p *cssStyleHelperImpl) MinWidth() string {
@@ -929,7 +932,7 @@ func (p *cssStyleHelperImpl) MinWidth() string {
 }
 
 func (p *cssStyleHelperImpl) SetMinWidth(s string) {
-	p.SetProperty("min-width", s)
+	p.SetProperty("min-width",s)
 }
 
 func (p *cssStyleHelperImpl) Opacity() string {
@@ -937,7 +940,7 @@ func (p *cssStyleHelperImpl) Opacity() string {
 }
 
 func (p *cssStyleHelperImpl) SetOpacity(s string) {
-	p.SetProperty("opacity", s)
+	p.SetProperty("opacity",s)
 }
 
 func (p *cssStyleHelperImpl) Orphans() string {
@@ -945,7 +948,7 @@ func (p *cssStyleHelperImpl) Orphans() string {
 }
 
 func (p *cssStyleHelperImpl) SetOrphans(s string) {
-	p.SetProperty("orphans", s)
+	p.SetProperty("orphans",s)
 }
 
 func (p *cssStyleHelperImpl) Outline() string {
@@ -953,7 +956,7 @@ func (p *cssStyleHelperImpl) Outline() string {
 }
 
 func (p *cssStyleHelperImpl) SetOutline(s string) {
-	p.SetProperty("outline", s)
+	p.SetProperty("outline",s)
 }
 
 func (p *cssStyleHelperImpl) OutlineColor() string {
@@ -961,7 +964,7 @@ func (p *cssStyleHelperImpl) OutlineColor() string {
 }
 
 func (p *cssStyleHelperImpl) SetOutlineColor(s string) {
-	p.SetProperty("outline-color", s)
+	p.SetProperty("outline-color",s)
 }
 
 func (p *cssStyleHelperImpl) OutlineOffset() string {
@@ -969,7 +972,7 @@ func (p *cssStyleHelperImpl) OutlineOffset() string {
 }
 
 func (p *cssStyleHelperImpl) SetOutlineOffset(s string) {
-	p.SetProperty("outline-offset", s)
+	p.SetProperty("outline-offset",s)
 }
 
 func (p *cssStyleHelperImpl) OutlineStyle() string {
@@ -977,7 +980,7 @@ func (p *cssStyleHelperImpl) OutlineStyle() string {
 }
 
 func (p *cssStyleHelperImpl) SetOutlineStyle(s string) {
-	p.SetProperty("outline-style", s)
+	p.SetProperty("outline-style",s)
 }
 
 func (p *cssStyleHelperImpl) OutlineWidth() string {
@@ -985,7 +988,7 @@ func (p *cssStyleHelperImpl) OutlineWidth() string {
 }
 
 func (p *cssStyleHelperImpl) SetOutlineWidth(s string) {
-	p.SetProperty("outline-width", s)
+	p.SetProperty("outline-width",s)
 }
 
 func (p *cssStyleHelperImpl) Overflow() string {
@@ -993,7 +996,7 @@ func (p *cssStyleHelperImpl) Overflow() string {
 }
 
 func (p *cssStyleHelperImpl) SetOverflow(s string) {
-	p.SetProperty("overflow", s)
+	p.SetProperty("overflow",s)
 }
 
 func (p *cssStyleHelperImpl) Padding() string {
@@ -1001,7 +1004,7 @@ func (p *cssStyleHelperImpl) Padding() string {
 }
 
 func (p *cssStyleHelperImpl) SetPadding(s string) {
-	p.SetProperty("padding", s)
+	p.SetProperty("padding",s)
 }
 
 func (p *cssStyleHelperImpl) PaddingBottom() string {
@@ -1009,7 +1012,7 @@ func (p *cssStyleHelperImpl) PaddingBottom() string {
 }
 
 func (p *cssStyleHelperImpl) SetPaddingBottom(s string) {
-	p.SetProperty("padding-bottom", s)
+	p.SetProperty("padding-bottom",s)
 }
 
 func (p *cssStyleHelperImpl) PaddingLeft() string {
@@ -1017,7 +1020,7 @@ func (p *cssStyleHelperImpl) PaddingLeft() string {
 }
 
 func (p *cssStyleHelperImpl) SetPaddingLeft(s string) {
-	p.SetProperty("padding-left", s)
+	p.SetProperty("padding-left",s)
 }
 
 func (p *cssStyleHelperImpl) PaddingRight() string {
@@ -1025,7 +1028,7 @@ func (p *cssStyleHelperImpl) PaddingRight() string {
 }
 
 func (p *cssStyleHelperImpl) SetPaddingRight(s string) {
-	p.SetProperty("padding-right", s)
+	p.SetProperty("padding-right",s)
 }
 
 func (p *cssStyleHelperImpl) PaddingTop() string {
@@ -1033,7 +1036,7 @@ func (p *cssStyleHelperImpl) PaddingTop() string {
 }
 
 func (p *cssStyleHelperImpl) SetPaddingTop(s string) {
-	p.SetProperty("padding-top", s)
+	p.SetProperty("padding-top",s)
 }
 
 func (p *cssStyleHelperImpl) PageBreakAfter() string {
@@ -1041,7 +1044,7 @@ func (p *cssStyleHelperImpl) PageBreakAfter() string {
 }
 
 func (p *cssStyleHelperImpl) SetPageBreakAfter(s string) {
-	p.SetProperty("page-break-after", s)
+	p.SetProperty("page-break-after",s)
 }
 
 func (p *cssStyleHelperImpl) PageBreakBefore() string {
@@ -1049,7 +1052,7 @@ func (p *cssStyleHelperImpl) PageBreakBefore() string {
 }
 
 func (p *cssStyleHelperImpl) SetPageBreakBefore(s string) {
-	p.SetProperty("page-break-before", s)
+	p.SetProperty("page-break-before",s)
 }
 
 func (p *cssStyleHelperImpl) PageBreakInside() string {
@@ -1057,7 +1060,7 @@ func (p *cssStyleHelperImpl) PageBreakInside() string {
 }
 
 func (p *cssStyleHelperImpl) SetPageBreakInside(s string) {
-	p.SetProperty("page-break-inside", s)
+	p.SetProperty("page-break-inside",s)
 }
 
 func (p *cssStyleHelperImpl) Pause() string {
@@ -1065,7 +1068,7 @@ func (p *cssStyleHelperImpl) Pause() string {
 }
 
 func (p *cssStyleHelperImpl) SetPause(s string) {
-	p.SetProperty("pause", s)
+	p.SetProperty("pause",s)
 }
 
 func (p *cssStyleHelperImpl) PauseAfter() string {
@@ -1073,7 +1076,7 @@ func (p *cssStyleHelperImpl) PauseAfter() string {
 }
 
 func (p *cssStyleHelperImpl) SetPauseAfter(s string) {
-	p.SetProperty("pause-after", s)
+	p.SetProperty("pause-after",s)
 }
 
 func (p *cssStyleHelperImpl) PauseBefore() string {
@@ -1081,7 +1084,7 @@ func (p *cssStyleHelperImpl) PauseBefore() string {
 }
 
 func (p *cssStyleHelperImpl) SetPauseBefore(s string) {
-	p.SetProperty("pause-before", s)
+	p.SetProperty("pause-before",s)
 }
 
 func (p *cssStyleHelperImpl) Pitch() string {
@@ -1089,7 +1092,7 @@ func (p *cssStyleHelperImpl) Pitch() string {
 }
 
 func (p *cssStyleHelperImpl) SetPitch(s string) {
-	p.SetProperty("pitch", s)
+	p.SetProperty("pitch",s)
 }
 
 func (p *cssStyleHelperImpl) PitchRange() string {
@@ -1097,7 +1100,7 @@ func (p *cssStyleHelperImpl) PitchRange() string {
 }
 
 func (p *cssStyleHelperImpl) SetPitchRange(s string) {
-	p.SetProperty("pitch-range", s)
+	p.SetProperty("pitch-range",s)
 }
 
 func (p *cssStyleHelperImpl) PlayDuring() string {
@@ -1105,7 +1108,7 @@ func (p *cssStyleHelperImpl) PlayDuring() string {
 }
 
 func (p *cssStyleHelperImpl) SetPlayDuring(s string) {
-	p.SetProperty("play-during", s)
+	p.SetProperty("play-during",s)
 }
 
 func (p *cssStyleHelperImpl) Position() string {
@@ -1113,7 +1116,7 @@ func (p *cssStyleHelperImpl) Position() string {
 }
 
 func (p *cssStyleHelperImpl) SetPosition(s string) {
-	p.SetProperty("position", s)
+	p.SetProperty("position",s)
 }
 
 func (p *cssStyleHelperImpl) Quotes() string {
@@ -1121,7 +1124,7 @@ func (p *cssStyleHelperImpl) Quotes() string {
 }
 
 func (p *cssStyleHelperImpl) SetQuotes(s string) {
-	p.SetProperty("quotes", s)
+	p.SetProperty("quotes",s)
 }
 
 func (p *cssStyleHelperImpl) Resize() string {
@@ -1129,7 +1132,7 @@ func (p *cssStyleHelperImpl) Resize() string {
 }
 
 func (p *cssStyleHelperImpl) SetResize(s string) {
-	p.SetProperty("resize", s)
+	p.SetProperty("resize",s)
 }
 
 func (p *cssStyleHelperImpl) Richness() string {
@@ -1137,7 +1140,7 @@ func (p *cssStyleHelperImpl) Richness() string {
 }
 
 func (p *cssStyleHelperImpl) SetRichness(s string) {
-	p.SetProperty("richness", s)
+	p.SetProperty("richness",s)
 }
 
 func (p *cssStyleHelperImpl) Right() string {
@@ -1145,7 +1148,7 @@ func (p *cssStyleHelperImpl) Right() string {
 }
 
 func (p *cssStyleHelperImpl) SetRight(s string) {
-	p.SetProperty("right", s)
+	p.SetProperty("right",s)
 }
 
 func (p *cssStyleHelperImpl) Speak() string {
@@ -1153,7 +1156,7 @@ func (p *cssStyleHelperImpl) Speak() string {
 }
 
 func (p *cssStyleHelperImpl) SetSpeak(s string) {
-	p.SetProperty("speak", s)
+	p.SetProperty("speak",s)
 }
 
 func (p *cssStyleHelperImpl) SpeakHeader() string {
@@ -1161,7 +1164,7 @@ func (p *cssStyleHelperImpl) SpeakHeader() string {
 }
 
 func (p *cssStyleHelperImpl) SetSpeakHeader(s string) {
-	p.SetProperty("speak-header", s)
+	p.SetProperty("speak-header",s)
 }
 
 func (p *cssStyleHelperImpl) SpeakNumeral() string {
@@ -1169,7 +1172,7 @@ func (p *cssStyleHelperImpl) SpeakNumeral() string {
 }
 
 func (p *cssStyleHelperImpl) SetSpeakNumeral(s string) {
-	p.SetProperty("speak-numeral", s)
+	p.SetProperty("speak-numeral",s)
 }
 
 func (p *cssStyleHelperImpl) SpeakPunctuation() string {
@@ -1177,7 +1180,7 @@ func (p *cssStyleHelperImpl) SpeakPunctuation() string {
 }
 
 func (p *cssStyleHelperImpl) SetSpeakPunctuation(s string) {
-	p.SetProperty("speak-punctuation", s)
+	p.SetProperty("speak-punctuation",s)
 }
 
 func (p *cssStyleHelperImpl) SpeechRate() string {
@@ -1185,7 +1188,7 @@ func (p *cssStyleHelperImpl) SpeechRate() string {
 }
 
 func (p *cssStyleHelperImpl) SetSpeechRate(s string) {
-	p.SetProperty("speech-rate", s)
+	p.SetProperty("speech-rate",s)
 }
 
 func (p *cssStyleHelperImpl) Stress() string {
@@ -1193,7 +1196,7 @@ func (p *cssStyleHelperImpl) Stress() string {
 }
 
 func (p *cssStyleHelperImpl) SetStress(s string) {
-	p.SetProperty("stress", s)
+	p.SetProperty("stress",s)
 }
 
 func (p *cssStyleHelperImpl) TableLayout() string {
@@ -1201,7 +1204,7 @@ func (p *cssStyleHelperImpl) TableLayout() string {
 }
 
 func (p *cssStyleHelperImpl) SetTableLayout(s string) {
-	p.SetProperty("table-layout", s)
+	p.SetProperty("table-layout",s)
 }
 
 func (p *cssStyleHelperImpl) TextAlign() string {
@@ -1209,7 +1212,7 @@ func (p *cssStyleHelperImpl) TextAlign() string {
 }
 
 func (p *cssStyleHelperImpl) SetTextAlign(s string) {
-	p.SetProperty("text-align", s)
+	p.SetProperty("text-align",s)
 }
 
 func (p *cssStyleHelperImpl) TextDecoration() string {
@@ -1217,7 +1220,7 @@ func (p *cssStyleHelperImpl) TextDecoration() string {
 }
 
 func (p *cssStyleHelperImpl) SetTextDecoration(s string) {
-	p.SetProperty("text-decoration", s)
+	p.SetProperty("text-decoration",s)
 }
 
 func (p *cssStyleHelperImpl) TextIndent() string {
@@ -1225,7 +1228,7 @@ func (p *cssStyleHelperImpl) TextIndent() string {
 }
 
 func (p *cssStyleHelperImpl) SetTextIndent(s string) {
-	p.SetProperty("text-indent", s)
+	p.SetProperty("text-indent",s)
 }
 
 func (p *cssStyleHelperImpl) TextOverflow() string {
@@ -1233,7 +1236,7 @@ func (p *cssStyleHelperImpl) TextOverflow() string {
 }
 
 func (p *cssStyleHelperImpl) SetTextOverflow(s string) {
-	p.SetProperty("text-overflow", s)
+	p.SetProperty("text-overflow",s)
 }
 
 func (p *cssStyleHelperImpl) TextTransform() string {
@@ -1241,7 +1244,7 @@ func (p *cssStyleHelperImpl) TextTransform() string {
 }
 
 func (p *cssStyleHelperImpl) SetTextTransform(s string) {
-	p.SetProperty("text-transform", s)
+	p.SetProperty("text-transform",s)
 }
 
 func (p *cssStyleHelperImpl) Top() string {
@@ -1249,7 +1252,7 @@ func (p *cssStyleHelperImpl) Top() string {
 }
 
 func (p *cssStyleHelperImpl) SetTop(s string) {
-	p.SetProperty("top", s)
+	p.SetProperty("top",s)
 }
 
 func (p *cssStyleHelperImpl) UnicodeBidi() string {
@@ -1257,7 +1260,7 @@ func (p *cssStyleHelperImpl) UnicodeBidi() string {
 }
 
 func (p *cssStyleHelperImpl) SetUnicodeBidi(s string) {
-	p.SetProperty("unicode-bidi", s)
+	p.SetProperty("unicode-bidi",s)
 }
 
 func (p *cssStyleHelperImpl) VerticalAlign() string {
@@ -1265,7 +1268,7 @@ func (p *cssStyleHelperImpl) VerticalAlign() string {
 }
 
 func (p *cssStyleHelperImpl) SetVerticalAlign(s string) {
-	p.SetProperty("vertical-align", s)
+	p.SetProperty("vertical-align",s)
 }
 
 func (p *cssStyleHelperImpl) Visibility() string {
@@ -1273,7 +1276,7 @@ func (p *cssStyleHelperImpl) Visibility() string {
 }
 
 func (p *cssStyleHelperImpl) SetVisibility(s string) {
-	p.SetProperty("visibility", s)
+	p.SetProperty("visibility",s)
 }
 
 func (p *cssStyleHelperImpl) VoiceFamily() string {
@@ -1281,7 +1284,7 @@ func (p *cssStyleHelperImpl) VoiceFamily() string {
 }
 
 func (p *cssStyleHelperImpl) SetVoiceFamily(s string) {
-	p.SetProperty("voice-family", s)
+	p.SetProperty("voice-family",s)
 }
 
 func (p *cssStyleHelperImpl) Volume() string {
@@ -1289,7 +1292,7 @@ func (p *cssStyleHelperImpl) Volume() string {
 }
 
 func (p *cssStyleHelperImpl) SetVolume(s string) {
-	p.SetProperty("volume", s)
+	p.SetProperty("volume",s)
 }
 
 func (p *cssStyleHelperImpl) WhiteSpace() string {
@@ -1297,7 +1300,7 @@ func (p *cssStyleHelperImpl) WhiteSpace() string {
 }
 
 func (p *cssStyleHelperImpl) SetWhiteSpace(s string) {
-	p.SetProperty("white-space", s)
+	p.SetProperty("white-space",s)
 }
 
 func (p *cssStyleHelperImpl) Widows() string {
@@ -1305,7 +1308,7 @@ func (p *cssStyleHelperImpl) Widows() string {
 }
 
 func (p *cssStyleHelperImpl) SetWidows(s string) {
-	p.SetProperty("widows", s)
+	p.SetProperty("widows",s)
 }
 
 func (p *cssStyleHelperImpl) Width() string {
@@ -1313,7 +1316,7 @@ func (p *cssStyleHelperImpl) Width() string {
 }
 
 func (p *cssStyleHelperImpl) SetWidth(s string) {
-	p.SetProperty("width", s)
+	p.SetProperty("width",s)
 }
 
 func (p *cssStyleHelperImpl) WordSpacing() string {
@@ -1321,7 +1324,7 @@ func (p *cssStyleHelperImpl) WordSpacing() string {
 }
 
 func (p *cssStyleHelperImpl) SetWordSpacing(s string) {
-	p.SetProperty("word-spacing", s)
+	p.SetProperty("word-spacing",s)
 }
 
 func (p *cssStyleHelperImpl) ZIndex() string {
@@ -1329,5 +1332,6 @@ func (p *cssStyleHelperImpl) ZIndex() string {
 }
 
 func (p *cssStyleHelperImpl) SetZIndex(s string) {
-	p.SetProperty("z-index", s)
+	p.SetProperty("z-index",s)
 }
+
