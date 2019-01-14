@@ -58,9 +58,9 @@ type CloseEventInit struct {
 }
 
 func (p CloseEventInit) toJSObject() Value {
-	o := jsObject.New()
-	o.Set("wasClean", p.WasClean)
-	o.Set("code", p.Code)
-	o.Set("reason", p.Reason)
+	o := jsObject.jsNew()
+	o.set("wasClean", p.WasClean)
+	o.set("code", p.Code)
+	o.set("reason", p.Reason)
 	return o
 }

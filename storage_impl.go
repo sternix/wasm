@@ -5,12 +5,12 @@ package wasm
 // -------------8<---------------------------------------
 
 func NewStorageEvent(typ string, sei ...StorageEventInit) StorageEvent {
-	if jsStorageEvent := jsGlobal.Get("StorageEvent"); jsStorageEvent.Valid() {
+	if jsStorageEvent := jsGlobal.get("StorageEvent"); jsStorageEvent.valid() {
 		switch len(sei) {
 		case 0:
-			return wrapStorageEvent(jsStorageEvent.New(typ))
+			return wrapStorageEvent(jsStorageEvent.jsNew(typ))
 		default:
-			return wrapStorageEvent(jsStorageEvent.New(typ, sei[0].toJSObject()))
+			return wrapStorageEvent(jsStorageEvent.jsNew(typ, sei[0].toJSObject()))
 		}
 	}
 	return nil
@@ -23,7 +23,7 @@ type storageImpl struct {
 }
 
 func wrapStorage(v Value) Storage {
-	if v.Valid() {
+	if v.valid() {
 		return &storageImpl{
 			Value: v,
 		}
@@ -32,27 +32,27 @@ func wrapStorage(v Value) Storage {
 }
 
 func (p *storageImpl) SetItem(key, value string) {
-	p.Call("setItem", key, value)
+	p.call("setItem", key, value)
 }
 
 func (p *storageImpl) Item(key string) string {
-	return p.Call("getItem", key).String()
+	return p.call("getItem", key).toString()
 }
 
 func (p *storageImpl) Clear() {
-	p.Call("clear")
+	p.call("clear")
 }
 
 func (p *storageImpl) Length() int {
-	return p.Call("length").Int()
+	return p.call("length").toInt()
 }
 
 func (p *storageImpl) Key(i int) string {
-	return p.Call("key", i).String()
+	return p.call("key", i).toString()
 }
 
 func (p *storageImpl) RemoveItem(key string) {
-	p.Call("removeItem", key)
+	p.call("removeItem", key)
 }
 
 // -------------8<---------------------------------------
@@ -62,7 +62,7 @@ type storageEventImpl struct {
 }
 
 func wrapStorageEvent(v Value) StorageEvent {
-	if v.Valid() {
+	if v.valid() {
 		return &storageEventImpl{
 			eventImpl: newEventImpl(v),
 		}
@@ -71,23 +71,23 @@ func wrapStorageEvent(v Value) StorageEvent {
 }
 
 func (p *storageEventImpl) Key() string {
-	return p.Get("key").String()
+	return p.get("key").toString()
 }
 
 func (p *storageEventImpl) OldValue() string {
-	return p.Get("oldValue").String()
+	return p.get("oldValue").toString()
 }
 
 func (p *storageEventImpl) NewValue() string {
-	return p.Get("newValue").String()
+	return p.get("newValue").toString()
 }
 
 func (p *storageEventImpl) Url() string {
-	return p.Get("url").String()
+	return p.get("url").toString()
 }
 
 func (p *storageEventImpl) StorageArea() Storage {
-	return wrapStorage(p.Get("storageArea"))
+	return wrapStorage(p.get("storageArea"))
 }
 
 // -------------8<---------------------------------------

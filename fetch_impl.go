@@ -9,7 +9,7 @@ type headersImpl struct {
 }
 
 func wrapHeaders(v Value) Headers {
-	if v.Valid() {
+	if v.valid() {
 		return &headersImpl{
 			Value: v,
 		}
@@ -18,38 +18,38 @@ func wrapHeaders(v Value) Headers {
 }
 
 func (p *headersImpl) Append(name string, value string) {
-	p.Call("append", name, value)
+	p.call("append", name, value)
 }
 func (p *headersImpl) Delete(name string) {
-	p.Call("delete", name)
+	p.call("delete", name)
 }
 
 func (p *headersImpl) Get(name string) string {
-	return p.Call("get", name).String()
+	return p.call("get", name).toString()
 }
 
 func (p *headersImpl) Has(name string) bool {
-	return p.Call("has", name).Bool()
+	return p.call("has", name).toBool()
 }
 
 func (p *headersImpl) Set(name string, value string) {
-	p.Call("set", name, value)
+	p.call("set", name, value)
 }
 
 func (p *headersImpl) Entries() map[string]string {
 	ret := make(map[string]string)
 
-	it := p.Call("entries")
+	it := p.call("entries")
 	for {
-		n := it.Call("next")
-		if n.Get("done").Bool() {
+		n := it.call("next")
+		if n.get("done").toBool() {
 			break
 		}
 
-		pair := n.Get("value")
+		pair := n.get("value")
 
-		key := pair.Index(0).String()
-		value := pair.Index(1).String()
+		key := pair.index(0).toString()
+		value := pair.index(1).toString()
 
 		ret[key] = value
 	}
@@ -70,7 +70,7 @@ func wrapBody(v Value) Body {
 }
 
 func newBodyImpl(v Value) *bodyImpl {
-	if v.Valid() {
+	if v.valid() {
 		return &bodyImpl{
 			Value: v,
 		}
@@ -84,12 +84,12 @@ func (p *bodyImpl) Body() ReadableStream {
 }
 
 func (p *bodyImpl) BodyUsed() bool {
-	return p.Get("bodyUsed").Bool()
+	return p.get("bodyUsed").toBool()
 }
 
 func (p *bodyImpl) ArrayBuffer() func() (ArrayBuffer, bool) {
 	return func() (ArrayBuffer, bool) {
-		res, ok := await(p.Call("arrayBuffer"))
+		res, ok := await(p.call("arrayBuffer"))
 		if ok {
 			return wrapArrayBuffer(res), true
 		}
@@ -99,7 +99,7 @@ func (p *bodyImpl) ArrayBuffer() func() (ArrayBuffer, bool) {
 
 func (p *bodyImpl) Blob() func() (Blob, bool) {
 	return func() (Blob, bool) {
-		res, ok := await(p.Call("blob"))
+		res, ok := await(p.call("blob"))
 		if ok {
 			return wrapBlob(res), true
 		}
@@ -109,7 +109,7 @@ func (p *bodyImpl) Blob() func() (Blob, bool) {
 
 func (p *bodyImpl) FormData() func() (FormData, bool) {
 	return func() (FormData, bool) {
-		res, ok := await(p.Call("formData"))
+		res, ok := await(p.call("formData"))
 		if ok {
 			return wrapFormData(res), true
 		}
@@ -119,9 +119,9 @@ func (p *bodyImpl) FormData() func() (FormData, bool) {
 
 func (p *bodyImpl) JSON() func() ([]byte, bool) {
 	return func() ([]byte, bool) {
-		res, ok := await(p.Call("json"))
+		res, ok := await(p.call("json"))
 		if ok {
-			return []byte(jsJSON.Call("stringify", res).String()), true
+			return []byte(jsJSON.call("stringify", res).toString()), true
 		}
 		return nil, false
 	}
@@ -129,9 +129,9 @@ func (p *bodyImpl) JSON() func() ([]byte, bool) {
 
 func (p *bodyImpl) Text() func() (string, bool) {
 	return func() (string, bool) {
-		res, ok := await(p.Call("text"))
+		res, ok := await(p.call("text"))
 		if ok {
-			return res.String(), true
+			return res.toString(), true
 		}
 		return "", false
 	}
@@ -144,7 +144,7 @@ type requestImpl struct {
 }
 
 func wrapRequest(v Value) Request {
-	if v.Valid() {
+	if v.valid() {
 		return &requestImpl{
 			bodyImpl: newBodyImpl(v),
 		}
@@ -153,67 +153,67 @@ func wrapRequest(v Value) Request {
 }
 
 func (p *requestImpl) Method() string {
-	return p.Get("method").String()
+	return p.get("method").toString()
 }
 
 func (p *requestImpl) URL() string {
-	return p.Get("url").String()
+	return p.get("url").toString()
 }
 
 func (p *requestImpl) Headers() Headers {
-	return wrapHeaders(p.Get("headers"))
+	return wrapHeaders(p.get("headers"))
 }
 
 func (p *requestImpl) Destination() RequestDestination {
-	return RequestDestination(p.Get("destination").String())
+	return RequestDestination(p.get("destination").toString())
 }
 
 func (p *requestImpl) Referrer() string {
-	return p.Get("referrer").String()
+	return p.get("referrer").toString()
 }
 
 func (p *requestImpl) ReferrerPolicy() ReferrerPolicy {
-	return ReferrerPolicy(p.Get("referrerPolicy").String())
+	return ReferrerPolicy(p.get("referrerPolicy").toString())
 }
 
 func (p *requestImpl) Mode() RequestMode {
-	return RequestMode(p.Get("mode").String())
+	return RequestMode(p.get("mode").toString())
 }
 
 func (p *requestImpl) Credentials() RequestCredentials {
-	return RequestCredentials(p.Get("credentials").String())
+	return RequestCredentials(p.get("credentials").toString())
 }
 
 func (p *requestImpl) Cache() RequestCache {
-	return RequestCache(p.Get("cache").String())
+	return RequestCache(p.get("cache").toString())
 }
 
 func (p *requestImpl) Redirect() RequestRedirect {
-	return RequestRedirect(p.Get("redirect").String())
+	return RequestRedirect(p.get("redirect").toString())
 }
 
 func (p *requestImpl) Integrity() string {
-	return p.Get("integrity").String()
+	return p.get("integrity").toString()
 }
 
 func (p *requestImpl) Keepalive() bool {
-	return p.Get("keepalive").Bool()
+	return p.get("keepalive").toBool()
 }
 
 func (p *requestImpl) IsReloadNavigation() bool {
-	return p.Get("isReloadNavigation").Bool()
+	return p.get("isReloadNavigation").toBool()
 }
 
 func (p *requestImpl) IsHistoryNavigation() bool {
-	return p.Get("isHistoryNavigation").Bool()
+	return p.get("isHistoryNavigation").toBool()
 }
 
 func (p *requestImpl) Signal() AbortSignal {
-	return wrapAbortSignal(p.Get("signal"))
+	return wrapAbortSignal(p.get("signal"))
 }
 
 func (p *requestImpl) Clone() Request {
-	return wrapRequest(p.Call("clone"))
+	return wrapRequest(p.call("clone"))
 }
 
 // -------------8<---------------------------------------
@@ -223,7 +223,7 @@ type responseImpl struct {
 }
 
 func wrapResponse(v Value) Response {
-	if v.Valid() {
+	if v.valid() {
 		return &responseImpl{
 			bodyImpl: newBodyImpl(v),
 		}
@@ -232,48 +232,48 @@ func wrapResponse(v Value) Response {
 }
 
 func (p *responseImpl) Error() Response {
-	return wrapResponse(p.Call("error"))
+	return wrapResponse(p.call("error"))
 }
 
 func (p *responseImpl) Redirect(url string, status ...int) Response {
 	if len(status) > 0 {
-		return wrapResponse(p.Call("redirect", url, status[0]))
+		return wrapResponse(p.call("redirect", url, status[0]))
 	}
 
-	return wrapResponse(p.Call("redirect", url))
+	return wrapResponse(p.call("redirect", url))
 }
 
 func (p *responseImpl) Type() ResponseType {
-	return ResponseType(p.Get("type").String())
+	return ResponseType(p.get("type").toString())
 }
 
 func (p *responseImpl) URL() string {
-	return p.Get("url").String()
+	return p.get("url").toString()
 }
 
 func (p *responseImpl) Redirected() bool {
-	return p.Get("redirected").Bool()
+	return p.get("redirected").toBool()
 }
 
 func (p *responseImpl) Status() int {
-	return p.Get("status").Int()
+	return p.get("status").toInt()
 }
 
 func (p *responseImpl) Ok() bool {
-	return p.Get("ok").Bool()
+	return p.get("ok").toBool()
 }
 
 func (p *responseImpl) StatusText() string {
-	return p.Get("statusText").String()
+	return p.get("statusText").toString()
 }
 
 func (p *responseImpl) Headers() Headers {
-	return wrapHeaders(p.Get("headers"))
+	return wrapHeaders(p.get("headers"))
 }
 
 func (p *responseImpl) Trailer() func() (Headers, bool) {
 	return func() (Headers, bool) {
-		res, ok := await(p.Call("trailer"))
+		res, ok := await(p.call("trailer"))
 		if ok {
 			return wrapHeaders(res), true
 		}
@@ -282,7 +282,7 @@ func (p *responseImpl) Trailer() func() (Headers, bool) {
 }
 
 func (p *responseImpl) Clone() Response {
-	return wrapResponse(p.Call("clone"))
+	return wrapResponse(p.call("clone"))
 }
 
 // -------------8<---------------------------------------
@@ -292,19 +292,19 @@ type formDataImpl struct {
 }
 
 func NewFormData(form ...HTMLFormElement) FormData {
-	if jsFormData := jsGlobal.Get("FormData"); jsFormData.Valid() {
+	if jsFormData := jsGlobal.get("FormData"); jsFormData.valid() {
 		switch len(form) {
 		case 0:
-			return wrapFormData(jsFormData.New())
+			return wrapFormData(jsFormData.jsNew())
 		default:
-			return wrapFormData(jsFormData.New(JSValue(form[0])))
+			return wrapFormData(jsFormData.jsNew(JSValue(form[0])))
 		}
 	}
 	return nil
 }
 
 func wrapFormData(v Value) FormData {
-	if v.Valid() {
+	if v.valid() {
 		return &formDataImpl{
 			Value: v,
 		}
@@ -315,27 +315,27 @@ func wrapFormData(v Value) FormData {
 func (p *formDataImpl) Append(name string, value interface{}, filename ...string) {
 	switch x := value.(type) {
 	case string:
-		p.Call("append", x)
+		p.call("append", x)
 	case Blob:
 		switch len(filename) {
 		case 0:
-			p.Call("append", JSValue(x))
+			p.call("append", JSValue(x))
 		default:
-			p.Call("append", JSValue(x), filename[0])
+			p.call("append", JSValue(x), filename[0])
 		}
 	}
 }
 
 func (p *formDataImpl) Delete(name string) {
-	p.Call("delete", name)
+	p.call("delete", name)
 }
 
 func (p *formDataImpl) Get(name string) FormDataEntryValue {
-	return wrapFormDataEntryValue(p.Call("get", name))
+	return wrapFormDataEntryValue(p.call("get", name))
 }
 
 func (p *formDataImpl) GetAll(name string) []FormDataEntryValue {
-	if slc := p.Call("getAll", name).ToSlice(); slc != nil {
+	if slc := p.call("getAll", name).toSlice(); slc != nil {
 		var ret []FormDataEntryValue
 		for _, v := range slc {
 			if fd := wrapFormDataEntryValue(v); fd != nil {
@@ -348,25 +348,25 @@ func (p *formDataImpl) GetAll(name string) []FormDataEntryValue {
 }
 
 func (p *formDataImpl) Has(name string) bool {
-	return p.Call("has", name).Bool()
+	return p.call("has", name).toBool()
 }
 
 func (p *formDataImpl) Set(name string, value interface{}, filename ...string) {
 	switch x := value.(type) {
 	case string:
-		p.Call("set", x)
+		p.call("set", x)
 	case Blob:
 		switch len(filename) {
 		case 0:
-			p.Call("set", JSValue(x))
+			p.call("set", JSValue(x))
 		default:
-			p.Call("set", JSValue(x), filename[0])
+			p.call("set", JSValue(x), filename[0])
 		}
 	}
 }
 
 func (p *formDataImpl) Values() []FormDataEntryValue {
-	if slc := p.Call("values").ToSlice(); slc != nil {
+	if slc := p.call("values").toSlice(); slc != nil {
 		var ret []FormDataEntryValue
 		for _, v := range slc {
 			if fd := wrapFormDataEntryValue(v); fd != nil {
@@ -380,57 +380,56 @@ func (p *formDataImpl) Values() []FormDataEntryValue {
 
 // -------------8<---------------------------------------
 
-var jsFile = jsGlobal.Get("File")
-
 func wrapFormDataEntryValue(v Value) FormDataEntryValue {
-	if v.Type() == TypeString {
-		return v.String()
-	} else if v.InstanceOf(jsFile) {
+	switch v.jsType() {
+	case "string":
+		return v.toString()
+	case "File":
 		return wrapFile(v)
+	default:
+		return nil
 	}
-
-	return nil
 }
 
 // -------------8<---------------------------------------
 
 func NewRequest(info RequestInfo, ri ...RequestInit) Request {
-	if request := jsGlobal.Get("Request"); request.Valid() {
+	if request := jsGlobal.get("Request"); request.valid() {
 		switch len(ri) {
 		case 0:
-			return wrapRequest(request.New(info))
+			return wrapRequest(request.jsNew(info))
 		default:
-			return wrapRequest(request.New(info, ri[0].toJSObject()))
+			return wrapRequest(request.jsNew(info, ri[0].toJSObject()))
 		}
 	}
 	return nil
 }
 
 func NewHeaders(hi ...HeadersInit) Headers {
-	if headers := jsGlobal.Get("Headers"); headers.Valid() {
+	if headers := jsGlobal.get("Headers"); headers.valid() {
 		switch len(hi) {
 		case 0:
-			return wrapHeaders(headers.New())
+			return wrapHeaders(headers.jsNew())
 		default:
-			return wrapHeaders(headers.New(hi[0]))
+			return wrapHeaders(headers.jsNew(hi[0]))
 		}
 	}
 	return nil
 }
 
 func NewResponse(args ...interface{}) Response {
-	if response := jsGlobal.Get("Response"); response.Valid() {
+	if response := jsGlobal.get("Response"); response.valid() {
 		switch len(args) {
 		case 0:
-			return wrapResponse(response.New())
+			return wrapResponse(response.jsNew())
 		case 1:
 			if body, ok := args[0].(BodyInit); ok {
-				return wrapResponse(response.New(body))
+				return wrapResponse(response.jsNew(body))
 			}
 		case 2:
 			if body, ok := args[0].(BodyInit); ok {
 				if ri, ok := args[1].(ResponseInit); ok {
-					return wrapResponse(response.New(body, ri.toJSObject()))
+					return wrapResponse(response.jsNew(body, ri.toJSObject()))
 				}
 			}
 		}

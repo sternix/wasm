@@ -66,10 +66,10 @@ type PipeToOptions struct {
 }
 
 func (p PipeToOptions) toJSObject() Value {
-	o := jsObject.New()
-	o.Set("preventClose", p.PreventClose)
-	o.Set("preventAbort", p.PreventAbort)
-	o.Set("preventCancel", p.PreventCancel)
+	o := jsObject.jsNew()
+	o.set("preventClose", p.PreventClose)
+	o.set("preventAbort", p.PreventAbort)
+	o.set("preventCancel", p.PreventCancel)
 	return o
 }
 
@@ -81,8 +81,8 @@ type TransformStream struct {
 }
 
 func (p TransformStream) toJSObject() Value {
-	o := jsObject.New()
-	o.Set("writable", JSValue(p.Readable))
-	o.Set("readable", JSValue(p.Writable))
+	o := jsObject.jsNew()
+	o.set("writable", JSValue(p.Readable))
+	o.set("readable", JSValue(p.Writable))
 	return o
 }

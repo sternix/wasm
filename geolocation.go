@@ -58,9 +58,9 @@ type PositionOptions struct {
 }
 
 func (p PositionOptions) toJSObject() Value {
-	o := jsObject.New()
-	o.Set("enableHighAccuracy", p.EnableHighAccuracy)
-	o.Set("timeout", p.Timeout)
-	o.Set("maximumAge", p.MaximumAge)
+	o := jsObject.jsNew()
+	o.set("enableHighAccuracy", p.EnableHighAccuracy)
+	o.set("timeout", p.Timeout)
+	o.set("maximumAge", p.MaximumAge)
 	return o
 }

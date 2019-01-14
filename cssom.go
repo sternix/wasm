@@ -135,7 +135,7 @@ type (
 
 // https://drafts.csswg.org/cssom/#namespacedef-css
 func CSSEscape(ident string) string {
-	return jsGlobal.Invoke("CSS.escape", ident).String()
+	return jsGlobal.invoke("CSS.escape", ident).toString()
 }
 
 // -------------8<---------------------------------------

@@ -68,22 +68,22 @@ type TouchInit struct {
 }
 
 func (p TouchInit) toJSObject() Value {
-	o := jsObject.New()
-	o.Set("identifier", p.Identifier)
-	o.Set("target", JSValue(p.Target))
-	o.Set("clientX", p.ClientX)
-	o.Set("clientY", p.ClientY)
-	o.Set("screenX", p.ScreenX)
-	o.Set("screenY", p.ScreenY)
-	o.Set("pageX", p.PageX)
-	o.Set("pageY", p.PageY)
-	o.Set("radiusX", p.RadiusX)
-	o.Set("radiusY", p.RadiusY)
-	o.Set("rotationAngle", p.RotationAngle)
-	o.Set("force", p.Force)
-	o.Set("altitudeAngle", p.AltitudeAngle)
-	o.Set("azimuthAngle", p.AzimuthAngle)
-	o.Set("touchType", string(p.TouchType))
+	o := jsObject.jsNew()
+	o.set("identifier", p.Identifier)
+	o.set("target", JSValue(p.Target))
+	o.set("clientX", p.ClientX)
+	o.set("clientY", p.ClientY)
+	o.set("screenX", p.ScreenX)
+	o.set("screenY", p.ScreenY)
+	o.set("pageX", p.PageX)
+	o.set("pageY", p.PageY)
+	o.set("radiusX", p.RadiusX)
+	o.set("radiusY", p.RadiusY)
+	o.set("rotationAngle", p.RotationAngle)
+	o.set("force", p.Force)
+	o.set("altitudeAngle", p.AltitudeAngle)
+	o.set("azimuthAngle", p.AzimuthAngle)
+	o.set("touchType", string(p.TouchType))
 	return o
 }
 
@@ -99,8 +99,8 @@ type TouchEventInit struct {
 
 func (p TouchEventInit) toJSObject() Value {
 	o := p.EventModifierInit.toJSObject()
-	o.Set("touches", sliceToJsArray(p.Touches))
-	o.Set("targetTouches", sliceToJsArray(p.TargetTouches))
-	o.Set("changedTouches", sliceToJsArray(p.ChangedTouches))
+	o.set("touches", sliceToJsArray(p.Touches))
+	o.set("targetTouches", sliceToJsArray(p.TargetTouches))
+	o.set("changedTouches", sliceToJsArray(p.ChangedTouches))
 	return o
 }

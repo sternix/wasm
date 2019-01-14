@@ -188,9 +188,9 @@ type IDBVersionChangeEventInit struct {
 }
 
 func (p IDBVersionChangeEventInit) toJSObject() Value {
-	o := jsObject.New()
-	o.Set("oldVersion", p.OldVersion)
-	o.Set("newVersion", p.NewVersion)
+	o := jsObject.jsNew()
+	o.set("oldVersion", p.OldVersion)
+	o.set("newVersion", p.NewVersion)
 	return o
 }
 
@@ -203,9 +203,9 @@ type IDBObjectStoreParameters struct {
 }
 
 func (p IDBObjectStoreParameters) toJSObject() Value {
-	o := jsObject.New()
-	o.Set("keyPath", sliceToJsArray(p.KeyPath))
-	o.Set("autoIncrement", p.AutoIncrement)
+	o := jsObject.jsNew()
+	o.set("keyPath", sliceToJsArray(p.KeyPath))
+	o.set("autoIncrement", p.AutoIncrement)
 	return o
 }
 
@@ -218,8 +218,8 @@ type IDBIndexParameters struct {
 }
 
 func (p IDBIndexParameters) toJSObject() Value {
-	o := jsObject.New()
-	o.Set("unique", p.Unique)
-	o.Set("multiEntry", p.MultiEntry)
+	o := jsObject.jsNew()
+	o.set("unique", p.Unique)
+	o.set("multiEntry", p.MultiEntry)
 	return o
 }

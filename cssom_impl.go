@@ -16,7 +16,7 @@ func wrapLinkStyle(v Value) LinkStyle {
 }
 
 func newLinkStyleImpl(v Value) *linkStyleImpl {
-	if v.Valid() {
+	if v.valid() {
 		return &linkStyleImpl{
 			Value: v,
 		}
@@ -25,7 +25,7 @@ func newLinkStyleImpl(v Value) *linkStyleImpl {
 }
 
 func (p *linkStyleImpl) Sheet() StyleSheet {
-	return wrapStyleSheet(p.Get("sheet"))
+	return wrapStyleSheet(p.get("sheet"))
 }
 
 // -------------8<---------------------------------------
@@ -42,7 +42,7 @@ func wrapStyleSheet(v Value) StyleSheet {
 }
 
 func newStyleSheetImpl(v Value) *styleSheetImpl {
-	if v.Valid() {
+	if v.valid() {
 		return &styleSheetImpl{
 			Value: v,
 		}
@@ -51,35 +51,35 @@ func newStyleSheetImpl(v Value) *styleSheetImpl {
 }
 
 func (p *styleSheetImpl) Type() string {
-	return p.Get("type").String()
+	return p.get("type").toString()
 }
 
 func (p *styleSheetImpl) Href() string {
-	return p.Get("href").String()
+	return p.get("href").toString()
 }
 
 func (p *styleSheetImpl) OwnerNode() Node {
-	return wrapAsNode(p.Get("ownerNode"))
+	return wrapAsNode(p.get("ownerNode"))
 }
 
 func (p *styleSheetImpl) ParentStyleSheet() StyleSheet {
-	return wrapStyleSheet(p.Get("parentStyleSheet"))
+	return wrapStyleSheet(p.get("parentStyleSheet"))
 }
 
 func (p *styleSheetImpl) Title() string {
-	return p.Get("title").String()
+	return p.get("title").toString()
 }
 
 func (p *styleSheetImpl) Media() MediaList {
-	return wrapMediaList(p.Get("media"))
+	return wrapMediaList(p.get("media"))
 }
 
 func (p *styleSheetImpl) Disabled() bool {
-	return p.Get("disabled").Bool()
+	return p.get("disabled").toBool()
 }
 
 func (p *styleSheetImpl) SetDisabled(d bool) {
-	p.Set("disabled", d)
+	p.set("disabled", d)
 }
 
 // -------------8<---------------------------------------
@@ -89,7 +89,7 @@ type mediaListImpl struct {
 }
 
 func wrapMediaList(v Value) MediaList {
-	if v.Valid() {
+	if v.valid() {
 		return &mediaListImpl{
 			Value: v,
 		}
@@ -98,27 +98,27 @@ func wrapMediaList(v Value) MediaList {
 }
 
 func (p *mediaListImpl) MediaText() string {
-	return p.Get("mediaText").String()
+	return p.get("mediaText").toString()
 }
 
 func (p *mediaListImpl) SetMediaText(text string) {
-	p.Set("mediaText", text)
+	p.set("mediaText", text)
 }
 
 func (p *mediaListImpl) Length() int {
-	return p.Get("length").Int()
+	return p.get("length").toInt()
 }
 
 func (p *mediaListImpl) Item(index int) string {
-	return p.Call("item", index).String()
+	return p.call("item", index).toString()
 }
 
 func (p *mediaListImpl) AppendMedium(medium string) {
-	p.Call("appendMedium", medium)
+	p.call("appendMedium", medium)
 }
 
 func (p *mediaListImpl) DeleteMedium(medium string) {
-	p.Call("deleteMedium", medium)
+	p.call("deleteMedium", medium)
 }
 
 // -------------8<---------------------------------------
@@ -128,7 +128,7 @@ type cssStyleSheetImpl struct {
 }
 
 func wrapCSSStyleSheet(v Value) CSSStyleSheet {
-	if v.Valid() {
+	if v.valid() {
 		return &cssStyleSheetImpl{
 			styleSheetImpl: newStyleSheetImpl(v),
 		}
@@ -137,11 +137,11 @@ func wrapCSSStyleSheet(v Value) CSSStyleSheet {
 }
 
 func (p *cssStyleSheetImpl) OwnerRule() CSSRule {
-	return wrapCSSRule(p.Get("ownerRule"))
+	return wrapCSSRule(p.get("ownerRule"))
 }
 
 func (p *cssStyleSheetImpl) CSSRules() []CSSRule {
-	if list := wrapCSSRuleList(p.Get("cssRules")); list != nil && list.Length() > 0 {
+	if list := wrapCSSRuleList(p.get("cssRules")); list != nil && list.Length() > 0 {
 		ret := make([]CSSRule, list.Length())
 		for i := 0; i < list.Length(); i++ {
 			ret[i] = list.Item(i)
@@ -154,14 +154,14 @@ func (p *cssStyleSheetImpl) CSSRules() []CSSRule {
 func (p *cssStyleSheetImpl) InsertRule(rule string, index ...int) int {
 	switch len(index) {
 	case 0:
-		return p.Call("insertRule", rule).Int()
+		return p.call("insertRule", rule).toInt()
 	default:
-		return p.Call("insertRule", rule, index[0]).Int()
+		return p.call("insertRule", rule, index[0]).toInt()
 	}
 }
 
 func (p *cssStyleSheetImpl) DeleteRule(index int) {
-	p.Call("deleteRule", index)
+	p.call("deleteRule", index)
 }
 
 // -------------8<---------------------------------------
@@ -178,7 +178,7 @@ func wrapCSSRule(v Value) CSSRule {
 }
 
 func newCSSRuleImpl(v Value) *cssRuleImpl {
-	if v.Valid() {
+	if v.valid() {
 		return &cssRuleImpl{
 			Value: v,
 		}
@@ -187,23 +187,23 @@ func newCSSRuleImpl(v Value) *cssRuleImpl {
 }
 
 func (p *cssRuleImpl) Type() CSSRuleType {
-	return CSSRuleType(uint(p.Get("type").Int()))
+	return CSSRuleType(uint(p.get("type").toInt()))
 }
 
 func (p *cssRuleImpl) CSSText() string {
-	return p.Get("cssText").String()
+	return p.get("cssText").toString()
 }
 
 func (p *cssRuleImpl) SetCSSText(text string) {
-	p.Set("cssText", text)
+	p.set("cssText", text)
 }
 
 func (p *cssRuleImpl) ParentRule() CSSRule {
-	return wrapCSSRule(p.Get("parentRule"))
+	return wrapCSSRule(p.get("parentRule"))
 }
 
 func (p *cssRuleImpl) ParentStyleSheet() CSSStyleSheet {
-	return wrapCSSStyleSheet(p.Get("parentStyleSheet"))
+	return wrapCSSStyleSheet(p.get("parentStyleSheet"))
 }
 
 // -------------8<---------------------------------------
@@ -213,7 +213,7 @@ type styleSheetListImpl struct {
 }
 
 func wrapStyleSheetList(v Value) StyleSheetList {
-	if v.Valid() {
+	if v.valid() {
 		return &styleSheetListImpl{
 			Value: v,
 		}
@@ -222,11 +222,11 @@ func wrapStyleSheetList(v Value) StyleSheetList {
 }
 
 func (p *styleSheetListImpl) Item(index int) CSSStyleSheet {
-	return wrapCSSStyleSheet(p.Call("item", index))
+	return wrapCSSStyleSheet(p.call("item", index))
 }
 
 func (p *styleSheetListImpl) Length() int {
-	return p.Get("length").Int()
+	return p.get("length").toInt()
 }
 
 // -------------8<---------------------------------------
@@ -236,7 +236,7 @@ type cssRuleList struct {
 }
 
 func wrapCSSRuleList(v Value) CSSRuleList {
-	if v.Valid() {
+	if v.valid() {
 		return &cssRuleList{
 			Value: v,
 		}
@@ -245,11 +245,11 @@ func wrapCSSRuleList(v Value) CSSRuleList {
 }
 
 func (p *cssRuleList) Item(index int) CSSRule {
-	return wrapCSSRule(p.Call("item", index))
+	return wrapCSSRule(p.call("item", index))
 }
 
 func (p *cssRuleList) Length() int {
-	return p.Get("length").Int()
+	return p.get("length").toInt()
 }
 
 // -------------8<---------------------------------------
@@ -259,7 +259,7 @@ type cssStyleRuleImpl struct {
 }
 
 func wrapCSSStyleRule(v Value) CSSStyleRule {
-	if v.Valid() {
+	if v.valid() {
 		return &cssStyleRuleImpl{
 			cssRuleImpl: newCSSRuleImpl(v),
 		}
@@ -268,15 +268,15 @@ func wrapCSSStyleRule(v Value) CSSStyleRule {
 }
 
 func (p *cssStyleRuleImpl) SelectorText() string {
-	return p.Get("selectorText").String()
+	return p.get("selectorText").toString()
 }
 
 func (p *cssStyleRuleImpl) SetSelectorText(text string) {
-	p.Set("selectorText", text)
+	p.set("selectorText", text)
 }
 
 func (p *cssStyleRuleImpl) Style() CSSStyleDeclaration {
-	return wrapCSSStyleDeclaration(p.Get("style"))
+	return wrapCSSStyleDeclaration(p.get("style"))
 }
 
 // -------------8<---------------------------------------
@@ -286,7 +286,7 @@ type cssImportRuleImpl struct {
 }
 
 func wrapCSSImportRule(v Value) CSSImportRule {
-	if v.Valid() {
+	if v.valid() {
 		return &cssImportRuleImpl{
 			cssRuleImpl: newCSSRuleImpl(v),
 		}
@@ -295,15 +295,15 @@ func wrapCSSImportRule(v Value) CSSImportRule {
 }
 
 func (p *cssImportRuleImpl) Href() string {
-	return p.Get("href").String()
+	return p.get("href").toString()
 }
 
 func (p *cssImportRuleImpl) Media() MediaList {
-	return wrapMediaList(p.Get("media"))
+	return wrapMediaList(p.get("media"))
 }
 
 func (p *cssImportRuleImpl) StyleSheet() CSSStyleSheet {
-	return wrapCSSStyleSheet(p.Get("styleSheet"))
+	return wrapCSSStyleSheet(p.get("styleSheet"))
 }
 
 // -------------8<---------------------------------------
@@ -320,7 +320,7 @@ func wrapCSSGroupingRule(v Value) CSSGroupingRule {
 }
 
 func newCSSGroupingRuleImpl(v Value) *cssGroupingRuleImpl {
-	if v.Valid() {
+	if v.valid() {
 		return &cssGroupingRuleImpl{
 			cssRuleImpl: newCSSRuleImpl(v),
 		}
@@ -329,7 +329,7 @@ func newCSSGroupingRuleImpl(v Value) *cssGroupingRuleImpl {
 }
 
 func (p *cssGroupingRuleImpl) CSSRules() []CSSRule {
-	if list := wrapCSSRuleList(p.Get("cssRules")); list != nil && list.Length() > 0 {
+	if list := wrapCSSRuleList(p.get("cssRules")); list != nil && list.Length() > 0 {
 		ret := make([]CSSRule, list.Length())
 		for i := 0; i < list.Length(); i++ {
 			ret[i] = list.Item(i)
@@ -342,14 +342,14 @@ func (p *cssGroupingRuleImpl) CSSRules() []CSSRule {
 func (p *cssGroupingRuleImpl) InsertRule(rule string, index ...int) int {
 	switch len(index) {
 	case 0:
-		return p.Call("insertRule", rule).Int()
+		return p.call("insertRule", rule).toInt()
 	default:
-		return p.Call("insertRule", rule, index[0]).Int()
+		return p.call("insertRule", rule, index[0]).toInt()
 	}
 }
 
 func (p *cssGroupingRuleImpl) DeleteRule(index int) {
-	p.Call("deleteRule", index)
+	p.call("deleteRule", index)
 }
 
 // -------------8<---------------------------------------
@@ -359,7 +359,7 @@ type cssPageRuleImpl struct {
 }
 
 func wrapCSSPageRule(v Value) CSSPageRule {
-	if v.Valid() {
+	if v.valid() {
 		return &cssPageRuleImpl{
 			cssGroupingRuleImpl: newCSSGroupingRuleImpl(v),
 		}
@@ -368,15 +368,15 @@ func wrapCSSPageRule(v Value) CSSPageRule {
 }
 
 func (p *cssPageRuleImpl) SelectorText() string {
-	return p.Get("selectorText").String()
+	return p.get("selectorText").toString()
 }
 
 func (p *cssPageRuleImpl) SetSelectorText(text string) {
-	p.Set("selectorText", text)
+	p.set("selectorText", text)
 }
 
 func (p *cssPageRuleImpl) Style() CSSStyleDeclaration {
-	return wrapCSSStyleDeclaration(p.Get("style"))
+	return wrapCSSStyleDeclaration(p.get("style"))
 }
 
 // -------------8<---------------------------------------
@@ -386,7 +386,7 @@ type cssMarginRuleImpl struct {
 }
 
 func wrapCSSMarginRule(v Value) CSSMarginRule {
-	if v.Valid() {
+	if v.valid() {
 		return &cssMarginRuleImpl{
 			cssRuleImpl: newCSSRuleImpl(v),
 		}
@@ -395,11 +395,11 @@ func wrapCSSMarginRule(v Value) CSSMarginRule {
 }
 
 func (p *cssMarginRuleImpl) Name() string {
-	return p.Get("name").String()
+	return p.get("name").toString()
 }
 
 func (p *cssMarginRuleImpl) Style() CSSStyleDeclaration {
-	return wrapCSSStyleDeclaration(p.Get("style"))
+	return wrapCSSStyleDeclaration(p.get("style"))
 }
 
 // -------------8<---------------------------------------
@@ -409,7 +409,7 @@ type cssNamespaceRuleImpl struct {
 }
 
 func wrapCSSNamespaceRule(v Value) CSSNamespaceRule {
-	if v.Valid() {
+	if v.valid() {
 		return &cssNamespaceRuleImpl{
 			cssRuleImpl: newCSSRuleImpl(v),
 		}
@@ -418,11 +418,11 @@ func wrapCSSNamespaceRule(v Value) CSSNamespaceRule {
 }
 
 func (p *cssNamespaceRuleImpl) NamespaceURI() string {
-	return p.Get("namespaceURI").String()
+	return p.get("namespaceURI").toString()
 }
 
 func (p *cssNamespaceRuleImpl) Prefix() string {
-	return p.Get("prefix").String()
+	return p.get("prefix").toString()
 }
 
 // -------------8<---------------------------------------
@@ -433,7 +433,7 @@ type cssStyleDeclarationImpl struct {
 }
 
 func wrapCSSStyleDeclaration(v Value) CSSStyleDeclaration {
-	if v.Valid() {
+	if v.valid() {
 		p := &cssStyleDeclarationImpl{
 			Value: v,
 		}
@@ -444,52 +444,52 @@ func wrapCSSStyleDeclaration(v Value) CSSStyleDeclaration {
 }
 
 func (p *cssStyleDeclarationImpl) CSSText() string {
-	return p.Get("cssText").String()
+	return p.get("cssText").toString()
 }
 
 func (p *cssStyleDeclarationImpl) SetCSSText(text string) {
-	p.Set("cssText", text)
+	p.set("cssText", text)
 }
 
 func (p *cssStyleDeclarationImpl) Length() int {
-	return p.Get("length").Int()
+	return p.get("length").toInt()
 }
 
 func (p *cssStyleDeclarationImpl) Item(index int) string {
-	return p.Call("item", index).String()
+	return p.call("item", index).toString()
 }
 
 func (p *cssStyleDeclarationImpl) PropertyValue(property string) string {
-	return p.Call("getPropertyValue", property).String()
+	return p.call("getPropertyValue", property).toString()
 }
 
 func (p *cssStyleDeclarationImpl) PropertyPriority(property string) string {
-	return p.Call("getPropertyPriority", property).String()
+	return p.call("getPropertyPriority", property).toString()
 }
 
 func (p *cssStyleDeclarationImpl) SetProperty(property string, value string, priority ...string) {
 	switch len(priority) {
 	case 0:
-		p.Call("setProperty", property, value)
+		p.call("setProperty", property, value)
 	default:
-		p.Call("setProperty", property, value, priority[0])
+		p.call("setProperty", property, value, priority[0])
 	}
 }
 
 func (p *cssStyleDeclarationImpl) RemoveProperty(property string) string {
-	return p.Call("removeProperty", property).String()
+	return p.call("removeProperty", property).toString()
 }
 
 func (p *cssStyleDeclarationImpl) ParentRule() CSSRule {
-	return wrapCSSRule(p.Get("parentRule"))
+	return wrapCSSRule(p.get("parentRule"))
 }
 
 func (p *cssStyleDeclarationImpl) CSSFloat() string {
-	return p.Get("cssFloat").String()
+	return p.get("cssFloat").toString()
 }
 
 func (p *cssStyleDeclarationImpl) SetCSSFloat(cf string) {
-	p.Set("cssFloat", cf)
+	p.set("cssFloat", cf)
 }
 
 // -------------8<---------------------------------------

@@ -9,7 +9,7 @@ type htmlSlotElementImpl struct {
 }
 
 func wrapHTMLSlotElement(v Value) HTMLSlotElement {
-	if v.Valid() {
+	if v.valid() {
 		return &htmlSlotElementImpl{
 			htmlElementImpl: newHTMLElementImpl(v),
 		}
@@ -18,25 +18,25 @@ func wrapHTMLSlotElement(v Value) HTMLSlotElement {
 }
 
 func (p *htmlSlotElementImpl) Name() string {
-	return p.Get("name").String()
+	return p.get("name").toString()
 }
 
 func (p *htmlSlotElementImpl) SetName(name string) {
-	p.Set("name", name)
+	p.set("name", name)
 }
 
 func (p *htmlSlotElementImpl) AssignedNodes(options ...AssignedNodesOptions) []Node {
 	if len(options) > 0 {
-		return nodeListToSlice(p.Call("assignedNodes", options[0].toJSObject()))
+		return nodeListToSlice(p.call("assignedNodes", options[0].toJSObject()))
 	}
-	return nodeListToSlice(p.Call("assignedNodes"))
+	return nodeListToSlice(p.call("assignedNodes"))
 }
 
 func (p *htmlSlotElementImpl) AssignedElements(options ...AssignedNodesOptions) []Element {
 	if len(options) > 0 {
-		return elementArrayToSlice(p.Call("assignedElements", options[0].toJSObject()))
+		return elementArrayToSlice(p.call("assignedElements", options[0].toJSObject()))
 	}
-	return elementArrayToSlice(p.Call("assignedElements"))
+	return elementArrayToSlice(p.call("assignedElements"))
 }
 
 // -------------8<---------------------------------------
@@ -46,7 +46,7 @@ type htmlOrSVGElementImpl struct {
 }
 
 func wrapHTMLOrSVGElement(v Value) HTMLOrSVGElement {
-	if v.Valid() {
+	if v.valid() {
 		return &htmlOrSVGElementImpl{
 			Value: v,
 		}
@@ -55,35 +55,35 @@ func wrapHTMLOrSVGElement(v Value) HTMLOrSVGElement {
 }
 
 func (p *htmlOrSVGElementImpl) DataSet() map[string]string {
-	return domStringMapToMap(p.Get("dataset"))
+	return domStringMapToMap(p.get("dataset"))
 }
 
 func (p *htmlOrSVGElementImpl) Nonce() string {
-	return p.Get("nonce").String()
+	return p.get("nonce").toString()
 }
 
 func (p *htmlOrSVGElementImpl) SetNonce(nonce string) {
-	p.Set("nonce", nonce)
+	p.set("nonce", nonce)
 }
 
 func (p *htmlOrSVGElementImpl) TabIndex() int {
-	return p.Get("tabIndex").Int()
+	return p.get("tabIndex").toInt()
 }
 
 func (p *htmlOrSVGElementImpl) SetTabIndex(index int) {
-	p.Set("tabIndex", index)
+	p.set("tabIndex", index)
 }
 
 func (p *htmlOrSVGElementImpl) Focus(options ...FocusOptions) {
 	if len(options) > 0 {
-		p.Call("focus", options[0].toJSObject())
+		p.call("focus", options[0].toJSObject())
 	} else {
-		p.Call("focus")
+		p.call("focus")
 	}
 }
 
 func (p *htmlOrSVGElementImpl) Blur() {
-	p.Call("blur")
+	p.call("blur")
 }
 
 // -------------8<---------------------------------------
@@ -93,7 +93,7 @@ type elementContentEditableImpl struct {
 }
 
 func wrapElementContentEditable(v Value) ElementContentEditable {
-	if v.Valid() {
+	if v.valid() {
 		return &elementContentEditableImpl{
 			Value: v,
 		}
@@ -102,23 +102,23 @@ func wrapElementContentEditable(v Value) ElementContentEditable {
 }
 
 func (p *elementContentEditableImpl) ContentEditable() string {
-	return p.Get("contentEditable").String()
+	return p.get("contentEditable").toString()
 }
 
 func (p *elementContentEditableImpl) SetContentEditable(ce string) {
-	p.Set("contentEditable", ce)
+	p.set("contentEditable", ce)
 }
 
 func (p *elementContentEditableImpl) IsContentEditable() bool {
-	return p.Get("isContentEditable").Bool()
+	return p.get("isContentEditable").toBool()
 }
 
 func (p *elementContentEditableImpl) InputMode() string {
-	return p.Get("inputMode").String()
+	return p.get("inputMode").toString()
 }
 
 func (p *elementContentEditableImpl) SetInputMode(im string) {
-	p.Set("inputMode", im)
+	p.set("inputMode", im)
 }
 
 // -------------8<---------------------------------------
@@ -128,7 +128,7 @@ type abortSignalImpl struct {
 }
 
 func wrapAbortSignal(v Value) AbortSignal {
-	if v.Valid() {
+	if v.valid() {
 		return &abortSignalImpl{
 			eventTargetImpl: newEventTargetImpl(v),
 		}
@@ -137,7 +137,7 @@ func wrapAbortSignal(v Value) AbortSignal {
 }
 
 func (p *abortSignalImpl) Aborted() bool {
-	return p.Get("aborted").Bool()
+	return p.get("aborted").toBool()
 }
 
 func (p *abortSignalImpl) OnAbort(fn func(Event)) EventHandler {
@@ -151,7 +151,7 @@ type abortControllerImpl struct {
 }
 
 func wrapAbortController(v Value) AbortController {
-	if v.Valid() {
+	if v.valid() {
 		return &abortControllerImpl{
 			Value: v,
 		}
@@ -160,17 +160,17 @@ func wrapAbortController(v Value) AbortController {
 }
 
 func (p *abortControllerImpl) Signal() AbortSignal {
-	return wrapAbortSignal(p.Get("signal"))
+	return wrapAbortSignal(p.get("signal"))
 }
 
 func (p *abortControllerImpl) Abort() {
-	p.Call("abort")
+	p.call("abort")
 }
 
 // -------------8<---------------------------------------
 
 func NewAbortController() AbortController {
-	return wrapAbortController(jsGlobal.Get("AbortController"))
+	return wrapAbortController(jsGlobal.get("AbortController"))
 }
 
 // -------------8<---------------------------------------

@@ -5,37 +5,37 @@ package wasm
 // -------------8<---------------------------------------
 
 func NewPopStateEvent(typ string, p ...PopStateEventInit) PopStateEvent {
-	jsPopStateEvent := jsGlobal.Get("PopStateEvent")
-	if jsPopStateEvent.Valid() {
+	jsPopStateEvent := jsGlobal.get("PopStateEvent")
+	if jsPopStateEvent.valid() {
 		if len(p) > 0 {
-			return wrapPopStateEvent(jsPopStateEvent.New(typ, p[0].toJSObject()))
+			return wrapPopStateEvent(jsPopStateEvent.jsNew(typ, p[0].toJSObject()))
 		}
 
-		return wrapPopStateEvent(jsPopStateEvent.New(typ))
+		return wrapPopStateEvent(jsPopStateEvent.jsNew(typ))
 	}
 	return nil
 
 }
 
 func NewHashChangeEvent(typ string, p ...HashChangeEventInit) HashChangeEvent {
-	if jsHashChangeEvent := jsGlobal.Get("HashChangeEvent"); jsHashChangeEvent.Valid() {
+	if jsHashChangeEvent := jsGlobal.get("HashChangeEvent"); jsHashChangeEvent.valid() {
 		switch len(p) {
 		case 0:
-			return wrapHashChangeEvent(jsHashChangeEvent.New(typ))
+			return wrapHashChangeEvent(jsHashChangeEvent.jsNew(typ))
 		default:
-			return wrapHashChangeEvent(jsHashChangeEvent.New(typ, p[0].toJSObject()))
+			return wrapHashChangeEvent(jsHashChangeEvent.jsNew(typ, p[0].toJSObject()))
 		}
 	}
 	return nil
 }
 
 func NewPageTransitionEvent(typ string, p ...PageTransitionEventInit) PageTransitionEvent {
-	if jsPageTransitionEvent := jsGlobal.Get("PageTransitionEvent"); jsPageTransitionEvent.Valid() {
+	if jsPageTransitionEvent := jsGlobal.get("PageTransitionEvent"); jsPageTransitionEvent.valid() {
 		switch len(p) {
 		case 0:
-			return wrapPageTransitionEvent(jsPageTransitionEvent.New(typ))
+			return wrapPageTransitionEvent(jsPageTransitionEvent.jsNew(typ))
 		default:
-			return wrapPageTransitionEvent(jsPageTransitionEvent.New(typ, p[0].toJSObject()))
+			return wrapPageTransitionEvent(jsPageTransitionEvent.jsNew(typ, p[0].toJSObject()))
 		}
 	}
 	return nil
@@ -59,7 +59,7 @@ func wrapWindow(v Value) Window {
 }
 
 func newWindowImpl(v Value) *windowImpl {
-	if v.Valid() {
+	if v.valid() {
 		wi := &windowImpl{
 			eventTargetImpl:               newEventTargetImpl(v),
 			windowOrWorkerGlobalScopeImpl: newWindowOrWorkerGlobalScopeImpl(v),
@@ -73,130 +73,130 @@ func newWindowImpl(v Value) *windowImpl {
 }
 
 func (p *windowImpl) Console() Console {
-	return wrapConsole(p.Get("console"))
+	return wrapConsole(p.get("console"))
 }
 
 func (p *windowImpl) Window() WindowProxy {
-	return wrapWindowProxy(p.Get("window"))
+	return wrapWindowProxy(p.get("window"))
 }
 
 func (p *windowImpl) Self() WindowProxy {
-	return wrapWindowProxy(p.Get("self"))
+	return wrapWindowProxy(p.get("self"))
 }
 
 func (p *windowImpl) Document() Document {
-	return wrapDocument(p.Get("document"))
+	return wrapDocument(p.get("document"))
 }
 
 func (p *windowImpl) Name() string {
-	return p.Get("name").String()
+	return p.get("name").toString()
 }
 
 func (p *windowImpl) SetName(name string) {
-	p.Set("name", name)
+	p.set("name", name)
 }
 
 func (p *windowImpl) Location() Location {
-	return wrapLocation(p.Get("location"))
+	return wrapLocation(p.get("location"))
 }
 
 func (p *windowImpl) History() History {
-	return wrapHistory(p.Get("history"))
+	return wrapHistory(p.get("history"))
 }
 
 func (p *windowImpl) Locationbar() BarProp {
-	return wrapBarProp(p.Get("locationbar"))
+	return wrapBarProp(p.get("locationbar"))
 }
 
 func (p *windowImpl) Menubar() BarProp {
-	return wrapBarProp(p.Get("menubar"))
+	return wrapBarProp(p.get("menubar"))
 }
 
 func (p *windowImpl) Personalbar() BarProp {
-	return wrapBarProp(p.Get("personalbar"))
+	return wrapBarProp(p.get("personalbar"))
 }
 
 func (p *windowImpl) Scrollbars() BarProp {
-	return wrapBarProp(p.Get("scrollbars"))
+	return wrapBarProp(p.get("scrollbars"))
 }
 
 func (p *windowImpl) Statusbar() BarProp {
-	return wrapBarProp(p.Get("statusbar"))
+	return wrapBarProp(p.get("statusbar"))
 }
 
 func (p *windowImpl) Toolbar() BarProp {
-	return wrapBarProp(p.Get("toolbar"))
+	return wrapBarProp(p.get("toolbar"))
 }
 
 func (p *windowImpl) Status() string {
-	return p.Get("status").String()
+	return p.get("status").toString()
 }
 
 func (p *windowImpl) SetStatus(status string) {
-	p.Set("status", status)
+	p.set("status", status)
 }
 
 func (p *windowImpl) Close() {
-	p.Call("close")
+	p.call("close")
 }
 
 func (p *windowImpl) Closed() bool {
-	return p.Get("closed").Bool()
+	return p.get("closed").toBool()
 }
 
 func (p *windowImpl) Stop() {
-	p.Call("stop")
+	p.call("stop")
 }
 
 func (p *windowImpl) Focus() {
-	p.Call("focus")
+	p.call("focus")
 }
 
 func (p *windowImpl) Blur() {
-	p.Call("blur")
+	p.call("blur")
 }
 
 func (p *windowImpl) Frames() WindowProxy {
-	return wrapWindowProxy(p.Get("frames"))
+	return wrapWindowProxy(p.get("frames"))
 }
 
 func (p *windowImpl) Length() int {
-	return p.Get("length").Int()
+	return p.get("length").toInt()
 }
 
 func (p *windowImpl) Top() WindowProxy {
-	return wrapWindowProxy(p.Get("top"))
+	return wrapWindowProxy(p.get("top"))
 }
 
 func (p *windowImpl) Opener() WindowProxy {
-	return wrapWindowProxy(p.Get("opener"))
+	return wrapWindowProxy(p.get("opener"))
 }
 
 func (p *windowImpl) Parent() WindowProxy {
-	return wrapWindowProxy(p.Get("parent"))
+	return wrapWindowProxy(p.get("parent"))
 }
 
 func (p *windowImpl) FrameElement() Element {
-	return wrapAsElement(p.Get("frameElement"))
+	return wrapAsElement(p.get("frameElement"))
 }
 
 func (p *windowImpl) Open(args ...interface{}) WindowProxy {
 	switch len(args) {
 	case 1:
 		if url, ok := args[0].(string); ok {
-			return wrapWindowProxy(p.Call("open", url))
+			return wrapWindowProxy(p.call("open", url))
 		}
 	case 2:
 		if url, ok := args[0].(string); ok {
 			if target, ok := args[1].(string); ok {
-				return wrapWindowProxy(p.Call("open", url, target))
+				return wrapWindowProxy(p.call("open", url, target))
 			}
 		}
 	case 3:
 		if url, ok := args[0].(string); ok {
 			if target, ok := args[1].(string); ok {
 				if features, ok := args[2].(string); ok {
-					return wrapWindowProxy(p.Call("open", url, target, features))
+					return wrapWindowProxy(p.call("open", url, target, features))
 				}
 			}
 		}
@@ -205,121 +205,121 @@ func (p *windowImpl) Open(args ...interface{}) WindowProxy {
 			if target, ok := args[1].(string); ok {
 				if features, ok := args[2].(string); ok {
 					if replace, ok := args[3].(bool); ok {
-						return wrapWindowProxy(p.Call("open", url, target, features, replace))
+						return wrapWindowProxy(p.call("open", url, target, features, replace))
 					}
 				}
 			}
 		}
 	}
 
-	return wrapWindowProxy(p.Call("open"))
+	return wrapWindowProxy(p.call("open"))
 }
 
 func (p *windowImpl) Navigator() Navigator {
-	return wrapNavigator(p.Get("navigator"))
+	return wrapNavigator(p.get("navigator"))
 }
 
 func (p *windowImpl) Alert(msg ...string) {
 	switch len(msg) {
 	case 0:
-		p.Call("alert")
+		p.call("alert")
 	default:
-		p.Call("alert", msg[0])
+		p.call("alert", msg[0])
 	}
 }
 
 func (p *windowImpl) Confirm(msg ...string) bool {
 	switch len(msg) {
 	case 0:
-		return p.Call("confirm").Bool()
+		return p.call("confirm").toBool()
 	default:
-		return p.Call("confirm", msg[0]).Bool()
+		return p.call("confirm", msg[0]).toBool()
 	}
 }
 
 func (p *windowImpl) Prompt(args ...string) string {
 	switch len(args) {
 	case 0:
-		return p.Call("prompt").String()
+		return p.call("prompt").toString()
 	case 1:
-		return p.Call("prompt", args[0]).String() // message
+		return p.call("prompt", args[0]).toString() // message
 	default:
-		return p.Call("prompt", args[0], args[1]).String() // message, default
+		return p.call("prompt", args[0], args[1]).toString() // message, default
 	}
 }
 
 func (p *windowImpl) Print() {
-	p.Call("print")
+	p.call("print")
 }
 
 func (p *windowImpl) RequestAnimationFrame(cb FrameRequestCallback) int {
-	return p.Call("requestAnimationFrame", cb.jsCallback()).Int()
+	return p.call("requestAnimationFrame", cb.jsCallback()).toInt()
 }
 
 func (p *windowImpl) CancelAnimationFrame(handle int) {
-	p.Call("cancelAnimationFrame", handle)
+	p.call("cancelAnimationFrame", handle)
 }
 
 func (p *windowImpl) MatchMedia(query string) MediaQueryList {
-	return wrapMediaQueryList(p.Call("matchMedia", query))
+	return wrapMediaQueryList(p.call("matchMedia", query))
 }
 
 func (p *windowImpl) Screen() Screen {
-	return wrapScreen(p.Get("screen"))
+	return wrapScreen(p.get("screen"))
 }
 
 func (p *windowImpl) MoveTo(x int, y int) {
-	p.Call("moveTo", x, y)
+	p.call("moveTo", x, y)
 }
 
 func (p *windowImpl) MoveBy(x int, y int) {
-	p.Call("moveBy", x, y)
+	p.call("moveBy", x, y)
 }
 
 func (p *windowImpl) ResizeTo(x int, y int) {
-	p.Call("resizeTo", x, y)
+	p.call("resizeTo", x, y)
 }
 
 func (p *windowImpl) ResizeBy(x int, y int) {
-	p.Call("resizeBy", x, y)
+	p.call("resizeBy", x, y)
 }
 
 func (p *windowImpl) InnerWidth() int {
-	return p.Get("innerWidth").Int()
+	return p.get("innerWidth").toInt()
 }
 
 func (p *windowImpl) InnerHeight() int {
-	return p.Get("innerHeight").Int()
+	return p.get("innerHeight").toInt()
 }
 
 func (p *windowImpl) ScrollX() float64 {
-	return p.Get("scrollX").Float()
+	return p.get("scrollX").toFloat64()
 }
 
 func (p *windowImpl) PageXOffset() float64 {
-	return p.Get("pageXOffset").Float()
+	return p.get("pageXOffset").toFloat64()
 }
 
 func (p *windowImpl) ScrollY() float64 {
-	return p.Get("scrollY").Float()
+	return p.get("scrollY").toFloat64()
 }
 
 func (p *windowImpl) PageYOffset() float64 {
-	return p.Get("pageYOffset").Float()
+	return p.get("pageYOffset").toFloat64()
 }
 
 func (p *windowImpl) Scroll(args ...interface{}) {
 	switch len(args) {
 	case 0:
-		p.Call("scroll")
+		p.call("scroll")
 	case 1:
 		if options, ok := args[0].(ScrollToOptions); ok {
-			p.Call("scroll", options.toJSObject())
+			p.call("scroll", options.toJSObject())
 		}
 	case 2:
 		if x, ok := args[0].(float64); ok {
 			if y, ok := args[1].(float64); ok {
-				p.Call("scroll", x, y)
+				p.call("scroll", x, y)
 			}
 		}
 	}
@@ -328,15 +328,15 @@ func (p *windowImpl) Scroll(args ...interface{}) {
 func (p *windowImpl) ScrollTo(args ...interface{}) {
 	switch len(args) {
 	case 0:
-		p.Call("scrollTo")
+		p.call("scrollTo")
 	case 1:
 		if options, ok := args[0].(ScrollToOptions); ok {
-			p.Call("scrollTo", options.toJSObject())
+			p.call("scrollTo", options.toJSObject())
 		}
 	case 2:
 		if x, ok := args[0].(float64); ok {
 			if y, ok := args[1].(float64); ok {
-				p.Call("scrollTo", x, y)
+				p.call("scrollTo", x, y)
 			}
 		}
 	}
@@ -345,54 +345,54 @@ func (p *windowImpl) ScrollTo(args ...interface{}) {
 func (p *windowImpl) ScrollBy(args ...interface{}) {
 	switch len(args) {
 	case 0:
-		p.Call("scrollBy")
+		p.call("scrollBy")
 	case 1:
 		if options, ok := args[0].(ScrollToOptions); ok {
-			p.Call("scrollBy", options.toJSObject())
+			p.call("scrollBy", options.toJSObject())
 		}
 	case 2:
 		if x, ok := args[0].(float64); ok {
 			if y, ok := args[1].(float64); ok {
-				p.Call("scrollBy", x, y)
+				p.call("scrollBy", x, y)
 			}
 		}
 	}
 }
 
 func (p *windowImpl) ScreenX() int {
-	return p.Get("screenX").Int()
+	return p.get("screenX").toInt()
 }
 
 func (p *windowImpl) ScreenLeft() int {
-	return p.Get("screenLeft").Int()
+	return p.get("screenLeft").toInt()
 }
 
 func (p *windowImpl) ScreenY() int {
-	return p.Get("screenY").Int()
+	return p.get("screenY").toInt()
 }
 
 func (p *windowImpl) ScreenTop() int {
-	return p.Get("screenTop").Int()
+	return p.get("screenTop").toInt()
 }
 
 func (p *windowImpl) OuterWidth() int {
-	return p.Get("outerWidth").Int()
+	return p.get("outerWidth").toInt()
 }
 
 func (p *windowImpl) OuterHeight() int {
-	return p.Get("outerHeight").Int()
+	return p.get("outerHeight").toInt()
 }
 
 func (p *windowImpl) DevicePixelRatio() float64 {
-	return p.Get("devicePixelRatio").Float()
+	return p.get("devicePixelRatio").toFloat64()
 }
 
 func (p *windowImpl) ComputedStyle(Element, ...string) CSSStyleDeclaration {
-	return wrapCSSStyleDeclaration(p.Call("getComputedStyle"))
+	return wrapCSSStyleDeclaration(p.call("getComputedStyle"))
 }
 
 func (p *windowImpl) PseudoElements(elt Element, typ string) []CSSPseudoElement {
-	l := wrapCSSPseudoElementList(p.Call("getPseudoElements", JSValue(elt), typ))
+	l := wrapCSSPseudoElementList(p.call("getPseudoElements", JSValue(elt), typ))
 	if l != nil && l.Length() > 0 {
 		ret := make([]CSSPseudoElement, l.Length())
 		for i := range ret {
@@ -410,7 +410,7 @@ type barPropImpl struct {
 }
 
 func wrapBarProp(v Value) BarProp {
-	if v.Valid() {
+	if v.valid() {
 		return &barPropImpl{
 			Value: v,
 		}
@@ -419,7 +419,7 @@ func wrapBarProp(v Value) BarProp {
 }
 
 func (p *barPropImpl) Visible() bool {
-	return p.Get("visible").Bool()
+	return p.get("visible").toBool()
 }
 
 // -------------8<---------------------------------------
@@ -429,7 +429,7 @@ type locationImpl struct {
 }
 
 func wrapLocation(v Value) Location {
-	if v.Valid() {
+	if v.valid() {
 		return &locationImpl{
 			workerLocationImpl: newWorkerLocationImpl(v),
 		}
@@ -438,51 +438,51 @@ func wrapLocation(v Value) Location {
 }
 
 func (p *locationImpl) SetHref(href string) {
-	p.Set("href", href)
+	p.set("href", href)
 }
 
 func (p *locationImpl) SetProtocol(protocol string) {
-	p.Set("protocol", protocol)
+	p.set("protocol", protocol)
 }
 
 func (p *locationImpl) SetHost(host string) {
-	p.Set("host", host)
+	p.set("host", host)
 }
 
 func (p *locationImpl) SetHostname(hostname string) {
-	p.Set("hostname", hostname)
+	p.set("hostname", hostname)
 }
 
 func (p *locationImpl) SetPort(port string) {
-	p.Set("port", port)
+	p.set("port", port)
 }
 
 func (p *locationImpl) SetPathname(pathname string) {
-	p.Set("pathname", pathname)
+	p.set("pathname", pathname)
 }
 
 func (p *locationImpl) SetSearch(search string) {
-	p.Set("search", search)
+	p.set("search", search)
 }
 
 func (p *locationImpl) SetHash(hash string) {
-	p.Set("hash", hash)
+	p.set("hash", hash)
 }
 
 func (p *locationImpl) Assign(url string) {
-	p.Call("assign", url)
+	p.call("assign", url)
 }
 
 func (p *locationImpl) Replace(url string) {
-	p.Call("replace", url)
+	p.call("replace", url)
 }
 
 func (p *locationImpl) Reload() {
-	p.Call("reload")
+	p.call("reload")
 }
 
 func (p *locationImpl) AncestorOrigins() []string {
-	return stringSequenceToSlice(p.Get("ancestorOrigins"))
+	return stringSequenceToSlice(p.get("ancestorOrigins"))
 }
 
 // -------------8<---------------------------------------
@@ -492,7 +492,7 @@ type historyImpl struct {
 }
 
 func wrapHistory(v Value) History {
-	if v.Valid() {
+	if v.valid() {
 		return &historyImpl{
 			Value: v,
 		}
@@ -501,53 +501,53 @@ func wrapHistory(v Value) History {
 }
 
 func (p *historyImpl) Length() int {
-	return p.Get("length").Int()
+	return p.get("length").toInt()
 }
 
 func (p *historyImpl) ScrollRestoration() ScrollRestorationType {
-	return ScrollRestorationType(p.Get("scrollRestoration").String())
+	return ScrollRestorationType(p.get("scrollRestoration").toString())
 }
 
 func (p *historyImpl) SetScrollRestoration(sr ScrollRestorationType) {
-	p.Set("scrollRestoration", sr)
+	p.set("scrollRestoration", sr)
 }
 
 func (p *historyImpl) State() interface{} {
-	return Wrap(p.Get("state"))
+	return Wrap(p.get("state"))
 }
 
 func (p *historyImpl) Go(delta ...int) {
 	switch len(delta) {
 	case 0:
-		p.Call("go")
+		p.call("go")
 	default:
-		p.Call("go", delta[0])
+		p.call("go", delta[0])
 	}
 }
 
 func (p *historyImpl) Back() {
-	p.Call("back")
+	p.call("back")
 }
 
 func (p *historyImpl) Forward() {
-	p.Call("forward")
+	p.call("forward")
 }
 
 func (p *historyImpl) PushState(data interface{}, title string, url ...string) {
 	switch len(url) {
 	case 0:
-		p.Call("pushState", data, title)
+		p.call("pushState", data, title)
 	default:
-		p.Call("pushState", data, title, url[0])
+		p.call("pushState", data, title, url[0])
 	}
 }
 
 func (p *historyImpl) ReplaceState(data interface{}, title string, url ...string) {
 	switch len(url) {
 	case 0:
-		p.Call("replaceState", data, title)
+		p.call("replaceState", data, title)
 	default:
-		p.Call("replaceState", data, title, url[0])
+		p.call("replaceState", data, title, url[0])
 	}
 }
 
@@ -558,7 +558,7 @@ type popStateEventImpl struct {
 }
 
 func wrapPopStateEvent(v Value) PopStateEvent {
-	if !v.Valid() {
+	if !v.valid() {
 		return nil
 	}
 
@@ -568,11 +568,11 @@ func wrapPopStateEvent(v Value) PopStateEvent {
 }
 
 func (p *popStateEventImpl) State() interface{} {
-	return Wrap(p.Get("state"))
+	return Wrap(p.get("state"))
 }
 
 func (p *popStateEventImpl) SetState(state interface{}) {
-	p.Set("state", state)
+	p.set("state", state)
 }
 
 // -------------8<---------------------------------------
@@ -582,7 +582,7 @@ type hashChangeEventImpl struct {
 }
 
 func wrapHashChangeEvent(v Value) HashChangeEvent {
-	if v.Valid() {
+	if v.valid() {
 		return &hashChangeEventImpl{
 			eventImpl: newEventImpl(v),
 		}
@@ -591,11 +591,11 @@ func wrapHashChangeEvent(v Value) HashChangeEvent {
 }
 
 func (p *hashChangeEventImpl) OldURL() string {
-	return p.Get("oldURL").String()
+	return p.get("oldURL").toString()
 }
 
 func (p *hashChangeEventImpl) NewURL() string {
-	return p.Get("newURL").String()
+	return p.get("newURL").toString()
 }
 
 // -------------8<---------------------------------------
@@ -605,7 +605,7 @@ type pageTransitionEventImpl struct {
 }
 
 func wrapPageTransitionEvent(v Value) PageTransitionEvent {
-	if v.Valid() {
+	if v.valid() {
 		return &pageTransitionEventImpl{
 			eventImpl: newEventImpl(v),
 		}
@@ -614,7 +614,7 @@ func wrapPageTransitionEvent(v Value) PageTransitionEvent {
 }
 
 func (p *pageTransitionEventImpl) Persisted() bool {
-	return p.Get("persisted").Bool()
+	return p.get("persisted").toBool()
 }
 
 // -------------8<---------------------------------------
@@ -624,7 +624,7 @@ type windowProxyImpl struct {
 }
 
 func wrapWindowProxy(v Value) WindowProxy {
-	if v.Valid() {
+	if v.valid() {
 		return &windowProxyImpl{
 			windowImpl: newWindowImpl(v),
 		}
@@ -646,7 +646,7 @@ func wrapNavigatorOnLine(v Value) NavigatorOnLine {
 }
 
 func newNavigatorOnLineImpl(v Value) *navigatorOnLineImpl {
-	if v.Valid() {
+	if v.valid() {
 		return &navigatorOnLineImpl{
 			Value: v,
 		}
@@ -655,7 +655,7 @@ func newNavigatorOnLineImpl(v Value) *navigatorOnLineImpl {
 }
 
 func (p *navigatorOnLineImpl) OnLine() bool {
-	return p.Get("onLine").Bool()
+	return p.get("onLine").toBool()
 }
 
 // -------------8<---------------------------------------
@@ -665,7 +665,7 @@ type beforeUnloadEventImpl struct {
 }
 
 func wrapBeforeUnloadEvent(v Value) BeforeUnloadEvent {
-	if v.Valid() {
+	if v.valid() {
 		return &beforeUnloadEventImpl{
 			eventImpl: newEventImpl(v),
 		}
@@ -674,11 +674,11 @@ func wrapBeforeUnloadEvent(v Value) BeforeUnloadEvent {
 }
 
 func (p *beforeUnloadEventImpl) ReturnValue() string {
-	return p.Get("returnValue").String()
+	return p.get("returnValue").toString()
 }
 
 func (p *beforeUnloadEventImpl) SetReturnValue(retVal string) {
-	p.Set("returnValue", retVal)
+	p.set("returnValue", retVal)
 }
 
 // -------------8<---------------------------------------

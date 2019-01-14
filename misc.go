@@ -23,21 +23,21 @@ type domExceptionImpl struct {
 }
 
 func NewDOMException(args ...string) DOMException {
-	if jsEx := jsGlobal.Get("DOMException"); jsEx.Valid() {
+	if jsEx := jsGlobal.get("DOMException"); jsEx.valid() {
 		switch len(args) {
 		case 0:
-			return wrapDOMException(jsEx.New())
+			return wrapDOMException(jsEx.jsNew())
 		case 1:
-			return wrapDOMException(jsEx.New(args[0])) // message
+			return wrapDOMException(jsEx.jsNew(args[0])) // message
 		default:
-			return wrapDOMException(jsEx.New(args[0], args[1])) // message, name
+			return wrapDOMException(jsEx.jsNew(args[0], args[1])) // message, name
 		}
 	}
 	return nil
 }
 
 func wrapDOMException(v Value) DOMException {
-	if v.Valid() {
+	if v.valid() {
 		return &domExceptionImpl{
 			Value: v,
 		}
@@ -46,15 +46,15 @@ func wrapDOMException(v Value) DOMException {
 }
 
 func (p *domExceptionImpl) Name() string {
-	return p.Get("name").String()
+	return p.get("name").toString()
 }
 
 func (p *domExceptionImpl) Message() string {
-	return p.Get("message").String()
+	return p.get("message").toString()
 }
 
 func (p *domExceptionImpl) Code() DOMError {
-	return DOMError(p.Get("code").Int())
+	return DOMError(p.get("code").toInt())
 }
 
 func (p *domExceptionImpl) Error() string {
@@ -67,15 +67,15 @@ func (p *domExceptionImpl) Error() string {
 // TODO remove mixins and non js types
 // TODO Array types
 func Wrap(v Value) interface{} {
-	switch v.Type() {
+	switch v.jsValue.Type() {
 	case TypeUndefined, TypeNull, TypeSymbol, TypeFunction:
 		return nil
 	case TypeBoolean:
-		return v.Bool()
+		return v.toBool()
 	case TypeNumber:
-		return v.Float()
+		return v.toFloat64()
 	case TypeString:
-		return v.String()
+		return v.toString()
 	default: // js.TypeObject
 		return wrapObject(v)
 	}
@@ -84,7 +84,7 @@ func Wrap(v Value) interface{} {
 // -------------8<---------------------------------------
 
 func wrapObject(v Value) interface{} {
-	switch v.JSType() {
+	switch v.jsType() {
 	case "AbortController":
 		return wrapAbortController(v)
 	case "AbortSignal":
@@ -630,13 +630,13 @@ func wrapObject(v Value) interface{} {
 	case "XMLDocument":
 		return wrapXMLDocument(v)
 	default:
-		fmt.Printf("Not supported type: %s\n", v.JSType())
+		fmt.Printf("Not supported type: %s\n", v.jsType())
 		return nil
 	}
 }
 
 func wrapAsElement(v Value) Element {
-	if v.Valid() {
+	if v.valid() {
 		if o := wrapObject(v); o != nil {
 			if e, ok := o.(Element); ok {
 				return e
@@ -647,7 +647,7 @@ func wrapAsElement(v Value) Element {
 }
 
 func wrapAsHTMLElement(v Value) HTMLElement {
-	if v.Valid() {
+	if v.valid() {
 		if o := wrapObject(v); o != nil {
 			if e, ok := o.(HTMLElement); ok {
 				return e
@@ -658,7 +658,7 @@ func wrapAsHTMLElement(v Value) HTMLElement {
 }
 
 func wrapAsEvent(v Value) Event {
-	if v.Valid() {
+	if v.valid() {
 		if o := wrapObject(v); o != nil {
 			if e, ok := o.(Event); ok {
 				return e
@@ -669,7 +669,7 @@ func wrapAsEvent(v Value) Event {
 }
 
 func wrapAsEventTarget(v Value) EventTarget {
-	if v.Valid() {
+	if v.valid() {
 		if o := wrapObject(v); o != nil {
 			if e, ok := o.(EventTarget); ok {
 				return e
@@ -680,7 +680,7 @@ func wrapAsEventTarget(v Value) EventTarget {
 }
 
 func wrapAsNode(v Value) Node {
-	if v.Valid() {
+	if v.valid() {
 		if o := wrapObject(v); o != nil {
 			if n, ok := o.(Node); ok {
 				return n

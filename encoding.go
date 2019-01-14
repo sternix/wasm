@@ -50,9 +50,9 @@ type TextDecoderOptions struct {
 }
 
 func (p TextDecoderOptions) toJSObject() Value {
-	o := jsObject.New()
-	o.Set("fatal", p.Fatal)
-	o.Set("ignoreBOM", p.IgnoreBOM)
+	o := jsObject.jsNew()
+	o.set("fatal", p.Fatal)
+	o.set("ignoreBOM", p.IgnoreBOM)
 	return o
 }
 
@@ -63,7 +63,7 @@ type TextDecodeOptions struct {
 }
 
 func (p TextDecodeOptions) toJSObject() Value {
-	o := jsObject.New()
-	o.Set("stream", p.Stream)
+	o := jsObject.jsNew()
+	o.set("stream", p.Stream)
 	return o
 }

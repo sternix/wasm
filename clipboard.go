@@ -31,7 +31,7 @@ type ClipboardPermissionDescriptor struct {
 
 func (p ClipboardPermissionDescriptor) toJSObject() Value {
 	o := p.PermissionDescriptor.toJSObject()
-	o.Set("allowWithoutGesture", p.AllowWithoutGesture)
+	o.set("allowWithoutGesture", p.AllowWithoutGesture)
 	return o
 }
 
@@ -45,7 +45,7 @@ type ClipboardEventInit struct {
 
 func (p ClipboardEventInit) toJSObject() Value {
 	o := p.EventInit.toJSObject()
-	o.Set("clipboardData", JSValue(p.ClipboardData))
+	o.set("clipboardData", JSValue(p.ClipboardData))
 	return o
 }
 

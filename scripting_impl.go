@@ -18,7 +18,7 @@ func NewHTMLScriptElement() HTMLScriptElement {
 }
 
 func wrapHTMLScriptElement(v Value) HTMLScriptElement {
-	if v.Valid() {
+	if v.valid() {
 		return &htmlScriptElementImpl{
 			htmlElementImpl: newHTMLElementImpl(v),
 		}
@@ -27,67 +27,67 @@ func wrapHTMLScriptElement(v Value) HTMLScriptElement {
 }
 
 func (p *htmlScriptElementImpl) Src() string {
-	return p.Get("src").String()
+	return p.get("src").toString()
 }
 
 func (p *htmlScriptElementImpl) SetSrc(src string) {
-	p.Set("src", src)
+	p.set("src", src)
 }
 
 func (p *htmlScriptElementImpl) Type() string {
-	return p.Get("type").String()
+	return p.get("type").toString()
 }
 
 func (p *htmlScriptElementImpl) SetType(t string) {
-	p.Set("type", t)
+	p.set("type", t)
 }
 
 func (p *htmlScriptElementImpl) Charset() string {
-	return p.Get("charset").String()
+	return p.get("charset").toString()
 }
 
 func (p *htmlScriptElementImpl) SetCharset(charset string) {
-	p.Set("charset", charset)
+	p.set("charset", charset)
 }
 
 func (p *htmlScriptElementImpl) Async() bool {
-	return p.Get("async").Bool()
+	return p.get("async").toBool()
 }
 
 func (p *htmlScriptElementImpl) SetAsync(async bool) {
-	p.Set("async", async)
+	p.set("async", async)
 }
 
 func (p *htmlScriptElementImpl) Defer() bool {
-	return p.Get("defer").Bool()
+	return p.get("defer").toBool()
 }
 
 func (p *htmlScriptElementImpl) SetDefer(d bool) {
-	p.Set("defer", d)
+	p.set("defer", d)
 }
 
 func (p *htmlScriptElementImpl) CrossOrigin() string {
-	return p.Get("crossOrigin").String()
+	return p.get("crossOrigin").toString()
 }
 
 func (p *htmlScriptElementImpl) SetCrossOrigin(co string) {
-	p.Set("crossOrigin", co)
+	p.set("crossOrigin", co)
 }
 
 func (p *htmlScriptElementImpl) Text() string {
-	return p.Get("text").String()
+	return p.get("text").toString()
 }
 
 func (p *htmlScriptElementImpl) SetText(t string) {
-	p.Set("text", t)
+	p.set("text", t)
 }
 
 func (p *htmlScriptElementImpl) Nonce() string {
-	return p.Get("nonce").String()
+	return p.get("nonce").toString()
 }
 
 func (p *htmlScriptElementImpl) SetNonce(n string) {
-	p.Set("nonce", n)
+	p.set("nonce", n)
 }
 
 // -------------8<---------------------------------------
@@ -106,7 +106,7 @@ func NewHTMLTemplateElement() HTMLTemplateElement {
 }
 
 func wrapHTMLTemplateElement(v Value) HTMLTemplateElement {
-	if v.Valid() {
+	if v.valid() {
 		return &htmlTemplateElementImpl{
 			htmlElementImpl: newHTMLElementImpl(v),
 		}
@@ -115,7 +115,7 @@ func wrapHTMLTemplateElement(v Value) HTMLTemplateElement {
 }
 
 func (p *htmlTemplateElementImpl) Content() DocumentFragment {
-	return wrapDocumentFragment(p.Get("content"))
+	return wrapDocumentFragment(p.get("content"))
 }
 
 // -------------8<---------------------------------------
@@ -138,7 +138,7 @@ func NewHTMLCanvasElement(size ...int) HTMLCanvasElement {
 }
 
 func wrapHTMLCanvasElement(v Value) HTMLCanvasElement {
-	if v.Valid() {
+	if v.valid() {
 		return &htmlCanvasElementImpl{
 			htmlElementImpl: newHTMLElementImpl(v),
 		}
@@ -147,27 +147,27 @@ func wrapHTMLCanvasElement(v Value) HTMLCanvasElement {
 }
 
 func (p *htmlCanvasElementImpl) Width() int {
-	return p.Get("width").Int()
+	return p.get("width").toInt()
 }
 
 func (p *htmlCanvasElementImpl) SetWidth(w int) {
-	p.Set("width", w)
+	p.set("width", w)
 }
 
 func (p *htmlCanvasElementImpl) Height() int {
-	return p.Get("height").Int()
+	return p.get("height").toInt()
 }
 
 func (p *htmlCanvasElementImpl) SetHeight(h int) {
-	p.Set("height", h)
+	p.set("height", h)
 }
 
 func (p *htmlCanvasElementImpl) Context2D(settings ...CanvasRenderingContext2DSettings) CanvasRenderingContext2D {
 	switch len(settings) {
 	case 0:
-		return wrapCanvasRenderingContext2D(p.Call("getContext", "2d"))
+		return wrapCanvasRenderingContext2D(p.call("getContext", "2d"))
 	default:
-		return wrapCanvasRenderingContext2D(p.Call("getContext", "2d", settings[0].toJSObject()))
+		return wrapCanvasRenderingContext2D(p.call("getContext", "2d", settings[0].toJSObject()))
 	}
 }
 
@@ -176,21 +176,21 @@ func (p *htmlCanvasElementImpl) ContextWebGL(attrs ...WebGLContextAttributes) We
 
 	switch len(attrs) {
 	case 0:
-		v = p.Call("getContext", "webgl")
-		if !v.Valid() {
-			v = p.Call("getContext", "experimental-webgl")
+		v = p.call("getContext", "webgl")
+		if !v.valid() {
+			v = p.call("getContext", "experimental-webgl")
 		}
 
-		if !v.Valid() {
+		if !v.valid() {
 			return nil
 		}
 	default:
-		v = p.Call("getContext", "webgl", attrs[0].toJSObject())
-		if !v.Valid() {
-			v = p.Call("getContext", "experimental-webgl", attrs[0].toJSObject())
+		v = p.call("getContext", "webgl", attrs[0].toJSObject())
+		if !v.valid() {
+			v = p.call("getContext", "experimental-webgl", attrs[0].toJSObject())
 		}
 
-		if !v.Valid() {
+		if !v.valid() {
 			return nil
 		}
 	}
@@ -202,40 +202,40 @@ func (p *htmlCanvasElementImpl) ContextWebGL(attrs ...WebGLContextAttributes) We
 // https://github.com/whatwg/html/commit/2cfb8e3f03d3166842d2ad0f661459d26e2a40eb
 func (p *htmlCanvasElementImpl) ProbablySupportsContext(ctxId string, args ...interface{}) bool {
 	// TODO
-	return p.Call("probablySupportsContext", ctxId).Bool()
+	return p.call("probablySupportsContext", ctxId).toBool()
 }
 
 func (p *htmlCanvasElementImpl) ToDataURL(args ...interface{}) string {
 	switch len(args) {
 	case 1:
 		if typ, ok := args[0].(string); ok { // type
-			return p.Call("toDataURL", typ).String()
+			return p.call("toDataURL", typ).toString()
 		}
 	case 2:
 		if typ, ok := args[0].(string); ok { // type
 			if quality, ok := args[1].(float64); ok { //quality
-				return p.Call("toDataURL", typ, quality).String()
+				return p.call("toDataURL", typ, quality).toString()
 			}
 		}
 	}
 
-	return p.Call("toDataURL").String()
+	return p.call("toDataURL").toString()
 }
 
 func (p *htmlCanvasElementImpl) ToBlob(cb BlobCallback, args ...interface{}) {
 	switch len(args) {
 	case 1:
 		if typ, ok := args[0].(string); ok { // type
-			p.Call("toBlob", cb.jsCallback(), typ)
+			p.call("toBlob", cb.jsCallback(), typ)
 		}
 	case 2:
 		if typ, ok := args[0].(string); ok { // type
 			if quality, ok := args[1].(float64); ok { //quality
-				p.Call("toBlob", cb.jsCallback(), typ, quality)
+				p.call("toBlob", cb.jsCallback(), typ, quality)
 			}
 		}
 	default:
-		p.Call("toBlob", cb.jsCallback())
+		p.call("toBlob", cb.jsCallback())
 	}
 }
 

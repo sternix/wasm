@@ -109,9 +109,9 @@ type ScrollOptions struct {
 }
 
 func (p ScrollOptions) toJSObject() Value {
-	o := jsObject.New()
+	o := jsObject.jsNew()
 	if p.Behavior != "" && p.Behavior != ScrollBehaviorAuto {
-		o.Set("behavior", string(p.Behavior))
+		o.set("behavior", string(p.Behavior))
 	}
 	return o
 }
@@ -128,8 +128,8 @@ type ScrollToOptions struct {
 
 func (p ScrollToOptions) toJSObject() Value {
 	o := p.ScrollOptions.toJSObject()
-	o.Set("left", p.Left)
-	o.Set("top", p.Top)
+	o.set("left", p.Left)
+	o.set("top", p.Top)
 	return o
 }
 
@@ -146,10 +146,10 @@ type ScrollIntoViewOptions struct {
 func (p ScrollIntoViewOptions) toJSObject() Value {
 	o := p.ScrollOptions.toJSObject()
 	if p.Block != "" && p.Block != ScrollLogicalPositionStart {
-		o.Set("block", string(p.Block))
+		o.set("block", string(p.Block))
 	}
 	if p.Inline != "" && p.Inline != ScrollLogicalPositionNearest {
-		o.Set("inline", string(p.Inline))
+		o.set("inline", string(p.Inline))
 	}
 	return o
 }
@@ -166,8 +166,8 @@ type MediaQueryListEventInit struct {
 
 func (p MediaQueryListEventInit) toJSObject() Value {
 	o := p.EventInit.toJSObject()
-	o.Set("media", p.Media)
-	o.Set("matches", p.Matches)
+	o.set("media", p.Media)
+	o.set("matches", p.Matches)
 	return o
 }
 
@@ -180,9 +180,9 @@ type BoxQuadOptions struct {
 }
 
 func (p BoxQuadOptions) toJSObject() Value {
-	o := jsObject.New()
-	o.Set("box", string(p.Box))
-	o.Set("relativeTo", JSValue(p.RelativeTo))
+	o := jsObject.jsNew()
+	o.set("box", string(p.Box))
+	o.set("relativeTo", JSValue(p.RelativeTo))
 	return o
 }
 
@@ -195,13 +195,13 @@ type ConvertCoordinateOptions struct {
 }
 
 func (p ConvertCoordinateOptions) toJSObject() Value {
-	o := jsObject.New()
+	o := jsObject.jsNew()
 	if p.FromBox != "" && p.FromBox != CSSBoxTypeBorder {
-		o.Set("fromBox", string(p.FromBox))
+		o.set("fromBox", string(p.FromBox))
 	}
 
 	if p.ToBox != "" && p.ToBox != CSSBoxTypeBorder {
-		o.Set("toBox", string(p.ToBox))
+		o.set("toBox", string(p.ToBox))
 	}
 	return o
 }

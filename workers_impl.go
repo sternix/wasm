@@ -5,12 +5,12 @@ package wasm
 // -------------8<---------------------------------------
 
 func NewWorker(scriptURL string, wo ...WorkerOptions) Worker {
-	if jsWorker := jsGlobal.Get("Worker"); jsWorker.Valid() {
+	if jsWorker := jsGlobal.get("Worker"); jsWorker.valid() {
 		switch len(wo) {
 		case 0:
-			return wrapWorker(jsWorker.New(scriptURL))
+			return wrapWorker(jsWorker.jsNew(scriptURL))
 		default:
-			return wrapWorker(jsWorker.New(scriptURL, wo[0].toJSObject()))
+			return wrapWorker(jsWorker.jsNew(scriptURL, wo[0].toJSObject()))
 		}
 	}
 	return nil
@@ -32,7 +32,7 @@ func wrapWorkerGlobalScope(v Value) WorkerGlobalScope {
 }
 
 func newWorkerGlobalScopeImpl(v Value) *workerGlobalScopeImpl {
-	if v.Valid() {
+	if v.valid() {
 		return &workerGlobalScopeImpl{
 			eventTargetImpl:               newEventTargetImpl(v),
 			windowOrWorkerGlobalScopeImpl: newWindowOrWorkerGlobalScopeImpl(v),
@@ -43,15 +43,15 @@ func newWorkerGlobalScopeImpl(v Value) *workerGlobalScopeImpl {
 }
 
 func (p *workerGlobalScopeImpl) Self() WorkerGlobalScope {
-	return wrapWorkerGlobalScope(p.Get("self"))
+	return wrapWorkerGlobalScope(p.get("self"))
 }
 
 func (p *workerGlobalScopeImpl) Location() WorkerLocation {
-	return wrapWorkerLocation(p.Get("location"))
+	return wrapWorkerLocation(p.get("location"))
 }
 
 func (p *workerGlobalScopeImpl) Navigator() WorkerNavigator {
-	return wrapWorkerNavigator(p.Get("navigator"))
+	return wrapWorkerNavigator(p.get("navigator"))
 }
 
 func (p *workerGlobalScopeImpl) ImportScripts(urls ...string) {
@@ -60,12 +60,12 @@ func (p *workerGlobalScopeImpl) ImportScripts(urls ...string) {
 		for _, url := range urls {
 			params = append(params, url)
 		}
-		p.Call("importScripts", params...)
+		p.call("importScripts", params...)
 	}
 }
 
 func (p *workerGlobalScopeImpl) Close() {
-	p.Call("close")
+	p.call("close")
 }
 
 func (p *workerGlobalScopeImpl) OnError(fn func(Event)) EventHandler { // TODO OnErrorEventHandler
@@ -99,7 +99,7 @@ type dedicatedWorkerGlobalScopeImpl struct {
 }
 
 func wrapDedicatedWorkerGlobalScope(v Value) DedicatedWorkerGlobalScope {
-	if v.Valid() {
+	if v.valid() {
 		return &dedicatedWorkerGlobalScopeImpl{
 			workerGlobalScopeImpl: newWorkerGlobalScopeImpl(v),
 		}
@@ -108,11 +108,11 @@ func wrapDedicatedWorkerGlobalScope(v Value) DedicatedWorkerGlobalScope {
 }
 
 func (p *dedicatedWorkerGlobalScopeImpl) Name() string {
-	return p.Get("name").String()
+	return p.get("name").toString()
 }
 
 func (p *dedicatedWorkerGlobalScopeImpl) PostMessage(message interface{}) {
-	p.Call("postMessage", message)
+	p.call("postMessage", message)
 }
 
 func (p *dedicatedWorkerGlobalScopeImpl) OnMessage(fn func(Event)) EventHandler {
@@ -130,7 +130,7 @@ type sharedWorkerGlobalScopeImpl struct {
 }
 
 func wrapSharedWorkerGlobalScope(v Value) SharedWorkerGlobalScope {
-	if v.Valid() {
+	if v.valid() {
 		return &sharedWorkerGlobalScopeImpl{
 			workerGlobalScopeImpl: newWorkerGlobalScopeImpl(v),
 		}
@@ -139,11 +139,11 @@ func wrapSharedWorkerGlobalScope(v Value) SharedWorkerGlobalScope {
 }
 
 func (p *workerGlobalScopeImpl) Name() string {
-	return p.Get("name").String()
+	return p.get("name").toString()
 }
 
 func (p *workerGlobalScopeImpl) ApplicationCache() ApplicationCache {
-	return wrapApplicationCache(p.Get("applicationCache"))
+	return wrapApplicationCache(p.get("applicationCache"))
 }
 
 func (p *workerGlobalScopeImpl) OnConnect(fn func(Event)) EventHandler {
@@ -157,7 +157,7 @@ type applicationCacheImpl struct {
 }
 
 func wrapApplicationCache(v Value) ApplicationCache {
-	if v.Valid() {
+	if v.valid() {
 		return &applicationCacheImpl{
 			eventTargetImpl: newEventTargetImpl(v),
 		}
@@ -166,15 +166,15 @@ func wrapApplicationCache(v Value) ApplicationCache {
 }
 
 func (p *applicationCacheImpl) Update() {
-	p.Call("update")
+	p.call("update")
 }
 
 func (p *applicationCacheImpl) Abort() {
-	p.Call("abort")
+	p.call("abort")
 }
 
 func (p *applicationCacheImpl) SwapCache() {
-	p.Call("swapCache")
+	p.call("swapCache")
 }
 
 func (p *applicationCacheImpl) OnChecking(fn func(Event)) EventHandler {
@@ -234,7 +234,7 @@ type workerImpl struct {
 }
 
 func wrapWorker(v Value) Worker {
-	if v.Valid() {
+	if v.valid() {
 		wi := &workerImpl{
 			eventTargetImpl: newEventTargetImpl(v),
 			Value:           v,
@@ -246,11 +246,11 @@ func wrapWorker(v Value) Worker {
 }
 
 func (p *workerImpl) Terminate() {
-	p.Call("terminate")
+	p.call("terminate")
 }
 
 func (p *workerImpl) PostMessage(message interface{}) {
-	p.Call("postMessage", message)
+	p.call("postMessage", message)
 }
 
 func (p *workerImpl) OnMessage(fn func(Event)) EventHandler {
@@ -270,7 +270,7 @@ type sharedWorkerImpl struct {
 }
 
 func wrapSharedWorker(v Value) SharedWorker {
-	if v.Valid() {
+	if v.valid() {
 		swi := &sharedWorkerImpl{
 			eventTargetImpl: newEventTargetImpl(v),
 			Value:           v,
@@ -282,7 +282,7 @@ func wrapSharedWorker(v Value) SharedWorker {
 }
 
 func (p *sharedWorkerImpl) Port() MessagePort {
-	return wrapMessagePort(p.Get("port"))
+	return wrapMessagePort(p.get("port"))
 }
 
 // -------------8<---------------------------------------
@@ -294,7 +294,7 @@ type navigatorConcurrentHardwareImpl struct {
 }
 
 func newNavigatorConcurrentHardwareImpl(v Value) *navigatorConcurrentHardwareImpl {
-	if v.Valid() {
+	if v.valid() {
 		return &navigatorConcurrentHardwareImpl{
 			Value: v,
 		}
@@ -303,7 +303,7 @@ func newNavigatorConcurrentHardwareImpl(v Value) *navigatorConcurrentHardwareImp
 }
 
 func (p *navigatorConcurrentHardwareImpl) HardwareConcurrency() int {
-	return p.Get("hardwareConcurrency").Int()
+	return p.get("hardwareConcurrency").toInt()
 }
 
 // -------------8<---------------------------------------
@@ -316,7 +316,7 @@ type workerNavigatorImpl struct {
 }
 
 func wrapWorkerNavigator(v Value) WorkerNavigator {
-	if v.Valid() {
+	if v.valid() {
 		return &workerNavigatorImpl{
 			navigatorIDImpl:                 newNavigatorIDImpl(v),
 			navigatorLanguageImpl:           newNavigatorLanguageImpl(v),
@@ -341,7 +341,7 @@ func wrapWorkerLocation(v Value) WorkerLocation {
 }
 
 func newWorkerLocationImpl(v Value) *workerLocationImpl {
-	if v.Valid() {
+	if v.valid() {
 		return &workerLocationImpl{
 			Value: v,
 		}
@@ -350,39 +350,39 @@ func newWorkerLocationImpl(v Value) *workerLocationImpl {
 }
 
 func (p *workerLocationImpl) Href() string {
-	return p.Get("href").String()
+	return p.get("href").toString()
 }
 
 func (p *workerLocationImpl) Origin() string {
-	return p.Get("origin").String()
+	return p.get("origin").toString()
 }
 
 func (p *workerLocationImpl) Protocol() string {
-	return p.Get("protocol").String()
+	return p.get("protocol").toString()
 }
 
 func (p *workerLocationImpl) Host() string {
-	return p.Get("host").String()
+	return p.get("host").toString()
 }
 
 func (p *workerLocationImpl) Hostname() string {
-	return p.Get("hostname").String()
+	return p.get("hostname").toString()
 }
 
 func (p *workerLocationImpl) Port() string {
-	return p.Get("port").String()
+	return p.get("port").toString()
 }
 
 func (p *workerLocationImpl) Pathname() string {
-	return p.Get("pathname").String()
+	return p.get("pathname").toString()
 }
 
 func (p *workerLocationImpl) Search() string {
-	return p.Get("search").String()
+	return p.get("search").toString()
 }
 
 func (p *workerLocationImpl) Hash() string {
-	return p.Get("hash").String()
+	return p.get("hash").toString()
 }
 
 // -------------8<---------------------------------------

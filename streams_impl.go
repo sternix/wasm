@@ -9,7 +9,7 @@ type readableStreamImpl struct {
 }
 
 func wrapReadableStream(v Value) ReadableStream {
-	if v.Valid() {
+	if v.valid() {
 		return &readableStreamImpl{
 			Value: v,
 		}
@@ -18,7 +18,7 @@ func wrapReadableStream(v Value) ReadableStream {
 }
 
 func (p *readableStreamImpl) Locked() bool {
-	return p.Get("locked").Bool()
+	return p.get("locked").toBool()
 }
 
 func (p *readableStreamImpl) Cancel(reason string) Promise { // Promise<reason>
@@ -52,7 +52,7 @@ type writableStreamImpl struct {
 }
 
 func wrapWritableStream(v Value) WritableStream {
-	if v.Valid() {
+	if v.valid() {
 		return &writableStreamImpl{
 			Value: v,
 		}
@@ -61,7 +61,7 @@ func wrapWritableStream(v Value) WritableStream {
 }
 
 func (p *writableStreamImpl) Locked() bool {
-	return p.Get("locked").Bool()
+	return p.get("locked").toBool()
 }
 
 func (p *writableStreamImpl) Abort(string) Promise { // Promise<reason>

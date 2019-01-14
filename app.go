@@ -45,9 +45,9 @@ func CurrentDocument() Document {
 }
 
 func SessionStorage() Storage {
-	return wrapStorage(jsGlobal.Get("sessionStorage"))
+	return wrapStorage(jsGlobal.get("sessionStorage"))
 }
 
 func LocalStorage() Storage {
-	return wrapStorage(jsGlobal.Get("localStorage"))
+	return wrapStorage(jsGlobal.get("localStorage"))
 }

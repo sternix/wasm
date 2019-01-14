@@ -126,9 +126,9 @@ type WorkerOptions struct {
 }
 
 func (p WorkerOptions) toJSObject() Value {
-	o := jsObject.New()
-	o.Set("type", string(p.Type))
-	o.Set("credentials", string(p.Credentials))
-	o.Set("name", p.Name)
+	o := jsObject.jsNew()
+	o.set("type", string(p.Type))
+	o.set("credentials", string(p.Credentials))
+	o.set("name", p.Name)
 	return o
 }

@@ -13,7 +13,7 @@ type fileImpl struct {
 }
 
 func wrapFile(v Value) File {
-	if v.Valid() {
+	if v.valid() {
 		return &fileImpl{
 			Value: v,
 		}
@@ -22,11 +22,11 @@ func wrapFile(v Value) File {
 }
 
 func (p *fileImpl) Name() string {
-	return p.Get("name").String()
+	return p.get("name").toString()
 }
 
 func (p *fileImpl) LastModified() int {
-	return p.Get("lastModified").Int()
+	return p.get("lastModified").toInt()
 }
 
 // -------------8<---------------------------------------
@@ -36,7 +36,7 @@ type blobImpl struct {
 }
 
 func wrapBlob(v Value) Blob {
-	if v.Valid() {
+	if v.valid() {
 		return &blobImpl{
 			Value: v,
 		}
@@ -45,36 +45,36 @@ func wrapBlob(v Value) Blob {
 }
 
 func (p *blobImpl) Size() int {
-	return p.Get("size").Int()
+	return p.get("size").toInt()
 }
 
 func (p *blobImpl) Type() string {
-	return p.Get("type").String()
+	return p.get("type").toString()
 }
 
 func (p *blobImpl) Slice(args ...interface{}) Blob {
 	switch len(args) {
 	case 1:
 		if start, ok := args[0].(int); ok {
-			return wrapBlob(p.Call("slice", start))
+			return wrapBlob(p.call("slice", start))
 		}
 	case 2:
 		if start, ok := args[0].(int); ok {
 			if end, ok := args[1].(int); ok {
-				return wrapBlob(p.Call("slice", start, end))
+				return wrapBlob(p.call("slice", start, end))
 			}
 		}
 	case 3:
 		if start, ok := args[0].(int); ok {
 			if end, ok := args[1].(int); ok {
 				if contentType, ok := args[2].(string); ok {
-					return wrapBlob(p.Call("slice", start, end, contentType))
+					return wrapBlob(p.call("slice", start, end, contentType))
 				}
 			}
 		}
 	}
 	// wrong parameter count or parameter not given
-	return wrapBlob(p.Call("slice"))
+	return wrapBlob(p.call("slice"))
 }
 
 // -------------8<---------------------------------------
@@ -84,7 +84,7 @@ type fileReaderImpl struct {
 }
 
 func wrapFileReader(v Value) FileReader {
-	if v.Valid() {
+	if v.valid() {
 		return &fileReaderImpl{
 			eventTargetImpl: newEventTargetImpl(v),
 		}
@@ -93,41 +93,40 @@ func wrapFileReader(v Value) FileReader {
 }
 
 func (p *fileReaderImpl) ReadAsArrayBuffer(blob Blob) {
-	p.Call("readAsArrayBuffer", JSValue(blob))
+	p.call("readAsArrayBuffer", JSValue(blob))
 }
 
 func (p *fileReaderImpl) ReadAsBinaryString(blob Blob) {
-	p.Call("readAsBinaryString", JSValue(blob))
+	p.call("readAsBinaryString", JSValue(blob))
 }
 
 func (p *fileReaderImpl) ReadAsText(blob Blob, label ...string) {
 	switch len(label) {
 	case 0:
-		p.Call("readAsText", JSValue(blob))
+		p.call("readAsText", JSValue(blob))
 	default: // 1 or more
-		p.Call("readAsText", JSValue(blob), label[0])
+		p.call("readAsText", JSValue(blob), label[0])
 	}
 }
 
 func (p *fileReaderImpl) ReadAsDataURL(blob Blob) {
-	p.Call("readAsDataURL", JSValue(blob))
+	p.call("readAsDataURL", JSValue(blob))
 }
 
 func (p *fileReaderImpl) Abort() {
-	p.Call("abort")
+	p.call("abort")
 }
 
 func (p *fileReaderImpl) ReadyState() FileReaderState {
-	return FileReaderState(p.Get("readyState").Int())
+	return FileReaderState(p.get("readyState").toInt())
 }
 
 // TODO
 func (p *fileReaderImpl) Result() []byte {
-	v := p.Get("result")
-
-	switch v.Type() {
+	v := p.get("result")
+	switch v.jsValue.Type() {
 	case TypeString:
-		return []byte(v.String())
+		return []byte(v.toString())
 	case TypeObject: // ArrayBuffer
 		return wrapArrayBuffer(v).ToByteSlice()
 	default:
@@ -136,7 +135,7 @@ func (p *fileReaderImpl) Result() []byte {
 }
 
 func (p *fileReaderImpl) Error() DOMException {
-	return wrapDOMException(p.Get("error"))
+	return wrapDOMException(p.get("error"))
 }
 
 func (p *fileReaderImpl) OnLoadStart(fn func(Event)) EventHandler {
@@ -170,7 +169,7 @@ type fileReaderSyncImpl struct {
 }
 
 func wrapFileReaderSync(v Value) FileReaderSync {
-	if v.Valid() {
+	if v.valid() {
 		return &fileReaderSyncImpl{
 			Value: v,
 		}
@@ -179,24 +178,24 @@ func wrapFileReaderSync(v Value) FileReaderSync {
 }
 
 func (p *fileReaderSyncImpl) ReadAsArrayBuffer(blob Blob) ArrayBuffer {
-	return wrapArrayBuffer(p.Call("readAsArrayBuffer", JSValue(blob)))
+	return wrapArrayBuffer(p.call("readAsArrayBuffer", JSValue(blob)))
 }
 
 func (p *fileReaderSyncImpl) ReadAsBinaryString(blob Blob) string {
-	return p.Call("readAsBinaryString", JSValue(blob)).String()
+	return p.call("readAsBinaryString", JSValue(blob)).toString()
 }
 
 func (p *fileReaderSyncImpl) ReadAsText(blob Blob, label ...string) string {
 	switch len(label) {
 	case 0:
-		return p.Call("readAsText", JSValue(blob)).String()
+		return p.call("readAsText", JSValue(blob)).toString()
 	default:
-		return p.Call("readAsText", JSValue(blob), label[0]).String()
+		return p.call("readAsText", JSValue(blob), label[0]).toString()
 	}
 }
 
 func (p *fileReaderSyncImpl) ReadAsDataURL(blob Blob) string {
-	return p.Call("readAsDataURL", JSValue(blob)).String()
+	return p.call("readAsDataURL", JSValue(blob)).toString()
 }
 
 // -------------8<---------------------------------------
@@ -206,7 +205,7 @@ type progressEventImpl struct {
 }
 
 func wrapProgressEvent(v Value) ProgressEvent {
-	if v.Valid() {
+	if v.valid() {
 		return &progressEventImpl{
 			eventImpl: newEventImpl(v),
 		}
@@ -215,79 +214,79 @@ func wrapProgressEvent(v Value) ProgressEvent {
 }
 
 func (p *progressEventImpl) LengthComputable() bool {
-	return p.Get("lengthComputable").Bool()
+	return p.get("lengthComputable").toBool()
 }
 
 func (p *progressEventImpl) Loaded() int {
-	return p.Get("loaded").Int()
+	return p.get("loaded").toInt()
 }
 
 func (p *progressEventImpl) Total() int {
-	return p.Get("total").Int()
+	return p.get("total").toInt()
 }
 
 // -------------8<---------------------------------------
 
 func NewBlob(args ...interface{}) Blob {
-	if jsBlob := jsGlobal.Get("Blob"); jsBlob.Valid() {
+	if jsBlob := jsGlobal.get("Blob"); jsBlob.valid() {
 		switch len(args) {
 		case 1:
 			if ar, ok := args[0].([]byte); ok {
 				ta := js.TypedArrayOf(ar)
 				defer ta.Release()
-				return wrapBlob(jsBlob.New(ta))
+				return wrapBlob(jsBlob.jsNew(ta))
 			}
 		case 2:
 			if ar, ok := args[0].([]byte); ok {
 				if options, ok := args[1].(BlobPropertyBag); ok {
 					ta := js.TypedArrayOf(ar)
 					defer ta.Release()
-					return wrapBlob(jsBlob.New(ta, options.toJSObject()))
+					return wrapBlob(jsBlob.jsNew(ta, options.toJSObject()))
 				}
 			}
 		}
 
-		return wrapBlob(jsBlob.New())
+		return wrapBlob(jsBlob.jsNew())
 	}
 	return nil
 }
 
 func NewFile(fileBits []byte, fileName string, options ...FilePropertyBag) File {
-	if jsFile := jsGlobal.Get("File"); jsFile.Valid() {
+	if jsFile := jsGlobal.get("File"); jsFile.valid() {
 		ta := js.TypedArrayOf(fileBits)
 		defer ta.Release()
 
 		switch len(options) {
 		case 0:
-			return wrapFile(jsFile.New(ta, fileName))
+			return wrapFile(jsFile.jsNew(ta, fileName))
 		default:
-			return wrapFile(jsFile.New(ta, fileName, options[0].toJSObject()))
+			return wrapFile(jsFile.jsNew(ta, fileName, options[0].toJSObject()))
 		}
 	}
 	return nil
 }
 
 func NewFileReader() FileReader {
-	if jsFileReader := jsGlobal.Get("FileReader"); jsFileReader.Valid() {
-		return wrapFileReader(jsFileReader.New())
+	if jsFileReader := jsGlobal.get("FileReader"); jsFileReader.valid() {
+		return wrapFileReader(jsFileReader.jsNew())
 	}
 	return nil
 }
 
 func NewFileReaderSync() FileReaderSync {
-	if jsFileReaderSync := jsGlobal.Get("FileReaderSync"); jsFileReaderSync.Valid() {
-		return wrapFileReaderSync(jsFileReaderSync.New())
+	if jsFileReaderSync := jsGlobal.get("FileReaderSync"); jsFileReaderSync.valid() {
+		return wrapFileReaderSync(jsFileReaderSync.jsNew())
 	}
 	return nil
 }
 
 func NewProgressEvent(typ string, pei ...ProgressEventInit) ProgressEvent {
-	if jsProgressEvent := jsGlobal.Get("ProgressEvent"); jsProgressEvent.Valid() {
+	if jsProgressEvent := jsGlobal.get("ProgressEvent"); jsProgressEvent.valid() {
 		switch len(pei) {
 		case 0:
-			return wrapProgressEvent(jsProgressEvent.New(typ))
+			return wrapProgressEvent(jsProgressEvent.jsNew(typ))
 		default:
-			return wrapProgressEvent(jsProgressEvent.New(typ, pei[0].toJSObject()))
+			return wrapProgressEvent(jsProgressEvent.jsNew(typ, pei[0].toJSObject()))
 		}
 	}
 	return nil

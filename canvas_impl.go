@@ -11,7 +11,7 @@ type canvasRenderingContext2DImpl struct {
 }
 
 func wrapCanvasRenderingContext2D(v Value) CanvasRenderingContext2D {
-	if v.Valid() {
+	if v.valid() {
 		return &canvasRenderingContext2DImpl{
 			canvasDrawingStylesImpl: newCanvasDrawingStylesImpl(v),
 			canvasPathMethodsImpl:   newCanvasPathMethodsImpl(v),
@@ -22,224 +22,224 @@ func wrapCanvasRenderingContext2D(v Value) CanvasRenderingContext2D {
 }
 
 func (p *canvasRenderingContext2DImpl) Canvas() HTMLCanvasElement {
-	return wrapHTMLCanvasElement(p.Get("canvas"))
+	return wrapHTMLCanvasElement(p.get("canvas"))
 }
 
 func (p *canvasRenderingContext2DImpl) Save() {
-	p.Call("save")
+	p.call("save")
 }
 
 func (p *canvasRenderingContext2DImpl) Restore() {
-	p.Call("restore")
+	p.call("restore")
 }
 
 func (p *canvasRenderingContext2DImpl) Scale(x float64, y float64) {
-	p.Call("scale", x, y)
+	p.call("scale", x, y)
 }
 
 func (p *canvasRenderingContext2DImpl) Rotate(angle float64) {
-	p.Call("rotate", angle)
+	p.call("rotate", angle)
 }
 
 func (p *canvasRenderingContext2DImpl) Translate(x float64, y float64) {
-	p.Call("translate", x, y)
+	p.call("translate", x, y)
 }
 
 func (p *canvasRenderingContext2DImpl) Transform(a float64, b float64, c float64, d float64, e float64, f float64) {
-	p.Call("transform", a, b, c, d, e, f)
+	p.call("transform", a, b, c, d, e, f)
 }
 
 func (p *canvasRenderingContext2DImpl) SetTransform(a float64, b float64, c float64, d float64, e float64, f float64) {
-	p.Call("setTransform", a, b, c, d, e, f)
+	p.call("setTransform", a, b, c, d, e, f)
 }
 
 func (p *canvasRenderingContext2DImpl) GlobalAlpha() float64 {
-	return p.Get("globalAlpha").Float()
+	return p.get("globalAlpha").toFloat64()
 }
 
 func (p *canvasRenderingContext2DImpl) SetGlobalAlpha(ga float64) {
-	p.Set("globalAlpha", ga)
+	p.set("globalAlpha", ga)
 }
 
 func (p *canvasRenderingContext2DImpl) GlobalCompositeOperation() string {
-	return p.Get("globalCompositeOperation").String()
+	return p.get("globalCompositeOperation").toString()
 }
 
 func (p *canvasRenderingContext2DImpl) SetGlobalCompositeOperation(gco string) {
-	p.Set("globalCompositeOperation", gco)
+	p.set("globalCompositeOperation", gco)
 }
 
 func (p *canvasRenderingContext2DImpl) StrokeStyle() interface{} {
-	return Wrap(p.Get("strokeStyle"))
+	return Wrap(p.get("strokeStyle"))
 }
 
 // attribute (DOMString or CanvasGradient or CanvasPattern) strokeStyle; // (default: "black")
 func (p *canvasRenderingContext2DImpl) SetStrokeStyle(style interface{}) {
 	switch x := style.(type) {
 	case string:
-		p.Set("strokeStyle", x)
+		p.set("strokeStyle", x)
 	case CanvasGradient, CanvasPattern:
-		p.Set("strokeStyle", JSValue(x))
+		p.set("strokeStyle", JSValue(x))
 	}
 }
 
 func (p *canvasRenderingContext2DImpl) FillStyle() interface{} {
-	return Wrap(p.Get("fillStyle"))
+	return Wrap(p.get("fillStyle"))
 }
 
 // attribute (DOMString or CanvasGradient or CanvasPattern) strokeStyle; // (default: "black")
 func (p *canvasRenderingContext2DImpl) SetFillStyle(style interface{}) {
 	switch x := style.(type) {
 	case string:
-		p.Set("fillStyle", x)
+		p.set("fillStyle", x)
 	case CanvasGradient, CanvasPattern:
-		p.Set("fillStyle", JSValue(x))
+		p.set("fillStyle", JSValue(x))
 	}
 }
 
 func (p *canvasRenderingContext2DImpl) CreateLinearGradient(x0 float64, y0 float64, x1 float64, y1 float64) CanvasGradient {
-	return wrapCanvasGradient(p.Call("createLinearGradient", x0, y0, x1, y1))
+	return wrapCanvasGradient(p.call("createLinearGradient", x0, y0, x1, y1))
 }
 
 func (p *canvasRenderingContext2DImpl) CreateRadialGradient(x0 float64, y0 float64, r0 float64, x1 float64, y1 float64, r1 float64) CanvasGradient {
-	return wrapCanvasGradient(p.Call("createRadialGradient", x0, y0, r0, x1, y1, r1))
+	return wrapCanvasGradient(p.call("createRadialGradient", x0, y0, r0, x1, y1, r1))
 }
 
 func (p *canvasRenderingContext2DImpl) CreatePattern(image CanvasImageSource, repetition string) {
-	p.Call("createPattern", JSValue(image), repetition)
+	p.call("createPattern", JSValue(image), repetition)
 }
 
 func (p *canvasRenderingContext2DImpl) ShadowOffsetX() float64 {
-	return p.Get("shadowOffsetX").Float()
+	return p.get("shadowOffsetX").toFloat64()
 }
 
 func (p *canvasRenderingContext2DImpl) SetShadowOffsetX(so float64) {
-	p.Set("shadowOffsetX", so)
+	p.set("shadowOffsetX", so)
 }
 
 func (p *canvasRenderingContext2DImpl) ShadowOffsetY() float64 {
-	return p.Get("shadowOffsetY").Float()
+	return p.get("shadowOffsetY").toFloat64()
 }
 
 func (p *canvasRenderingContext2DImpl) SetShadowOffsetY(so float64) {
-	p.Set("shadowOffsetY", so)
+	p.set("shadowOffsetY", so)
 }
 
 func (p *canvasRenderingContext2DImpl) ShadowBlur() float64 {
-	return p.Get("shadowBlur").Float()
+	return p.get("shadowBlur").toFloat64()
 }
 
 func (p *canvasRenderingContext2DImpl) SetShadowBlur(sb float64) {
-	p.Set("shadowBlur", sb)
+	p.set("shadowBlur", sb)
 }
 
 func (p *canvasRenderingContext2DImpl) ShadowColor() string {
-	return p.Get("shadowColor").String()
+	return p.get("shadowColor").toString()
 }
 
 func (p *canvasRenderingContext2DImpl) SetShadowColor(color string) {
-	p.Set("shadowColor", color)
+	p.set("shadowColor", color)
 }
 
 func (p *canvasRenderingContext2DImpl) ClearRect(x float64, y float64, w float64, h float64) {
-	p.Call("clearRect", x, y, w, h)
+	p.call("clearRect", x, y, w, h)
 }
 
 func (p *canvasRenderingContext2DImpl) FillRect(x float64, y float64, w float64, h float64) {
-	p.Call("fillRect", x, y, w, h)
+	p.call("fillRect", x, y, w, h)
 }
 
 func (p *canvasRenderingContext2DImpl) StrokeRect(x float64, y float64, w float64, h float64) {
-	p.Call("strokeRect", x, y, w, h)
+	p.call("strokeRect", x, y, w, h)
 }
 
 func (p *canvasRenderingContext2DImpl) BeginPath() {
-	p.Call("beginPath")
+	p.call("beginPath")
 }
 
 func (p *canvasRenderingContext2DImpl) Fill() {
-	p.Call("fill")
+	p.call("fill")
 }
 
 func (p *canvasRenderingContext2DImpl) Stroke() {
-	p.Call("stroke")
+	p.call("stroke")
 }
 
 func (p *canvasRenderingContext2DImpl) DrawFocusIfNeeded(elm Element) {
-	p.Call("drawFocusIfNeeded", JSValue(elm))
+	p.call("drawFocusIfNeeded", JSValue(elm))
 }
 
 func (p *canvasRenderingContext2DImpl) Clip() {
-	p.Call("clip")
+	p.call("clip")
 }
 
 func (p *canvasRenderingContext2DImpl) IsPointInPath(x float64, y float64) bool {
-	return p.Call("isPointInPath", x, y).Bool()
+	return p.call("isPointInPath", x, y).toBool()
 }
 
 func (p *canvasRenderingContext2DImpl) FillText(text string, x float64, y float64, maxWidth ...float64) {
 	switch len(maxWidth) {
 	case 0:
-		p.Call("fillText", text, x, y)
+		p.call("fillText", text, x, y)
 	default:
-		p.Call("fillText", text, x, y, maxWidth[0])
+		p.call("fillText", text, x, y, maxWidth[0])
 	}
 }
 
 func (p *canvasRenderingContext2DImpl) StrokeText(text string, x float64, y float64, maxWidth ...float64) {
 	switch len(maxWidth) {
 	case 0:
-		p.Call("strokeText", text, x, y)
+		p.call("strokeText", text, x, y)
 	default:
-		p.Call("strokeText", text, x, y, maxWidth[0])
+		p.call("strokeText", text, x, y, maxWidth[0])
 	}
 }
 
 func (p *canvasRenderingContext2DImpl) MeasureText(text string) TextMetrics {
-	return wrapTextMetrics(p.Call("measureText", text))
+	return wrapTextMetrics(p.call("measureText", text))
 }
 
 func (p *canvasRenderingContext2DImpl) DrawImage(image CanvasImageSource, args ...float64) {
 	switch len(args) {
 	case 2:
-		p.Call("drawImage", JSValue(image), args[0], args[1])
+		p.call("drawImage", JSValue(image), args[0], args[1])
 	case 4:
-		p.Call("drawImage", JSValue(image), args[0], args[1], args[2], args[3])
+		p.call("drawImage", JSValue(image), args[0], args[1], args[2], args[3])
 	case 8:
-		p.Call("drawImage", JSValue(image), args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7])
+		p.call("drawImage", JSValue(image), args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7])
 	}
 }
 
 func (p *canvasRenderingContext2DImpl) AddHitRegion(options HitRegionOptions) {
-	p.Call("addHitRegion", options.toJSObject())
+	p.call("addHitRegion", options.toJSObject())
 }
 
 func (p *canvasRenderingContext2DImpl) RemoveHitRegion(id string) {
-	p.Call("removeHitRegion", id)
+	p.call("removeHitRegion", id)
 }
 
 func (p *canvasRenderingContext2DImpl) ClearHitRegions() {
-	p.Call("clearHitRegions")
+	p.call("clearHitRegions")
 }
 
 func (p *canvasRenderingContext2DImpl) CreateImageData(sw float64, sh float64) ImageData {
-	return wrapImageData(p.Call("createImageData", sw, sh))
+	return wrapImageData(p.call("createImageData", sw, sh))
 }
 
 func (p *canvasRenderingContext2DImpl) CreateImageDataFromImageData(imageData ImageData) ImageData {
-	return wrapImageData(p.Call("createImageData", JSValue(imageData)))
+	return wrapImageData(p.call("createImageData", JSValue(imageData)))
 }
 
 func (p *canvasRenderingContext2DImpl) ImageData(sx float64, sy float64, sw float64, sh float64) ImageData {
-	return wrapImageData(p.Call("getImageData", sx, sy, sw, sh))
+	return wrapImageData(p.call("getImageData", sx, sy, sw, sh))
 }
 
 func (p *canvasRenderingContext2DImpl) PutImageData(imageData ImageData, dx float64, dy float64) {
-	p.Call("putImageData", JSValue(imageData), dx, dy)
+	p.call("putImageData", JSValue(imageData), dx, dy)
 }
 
 func (p *canvasRenderingContext2DImpl) PutImageDataDirty(imageData ImageData, dx float64, dy float64, dirtyX float64, dirtyY float64, dirtyWidth float64, dirtyHeight float64) {
-	p.Call("putImageData", JSValue(imageData), dx, dy, dirtyX, dirtyY, dirtyWidth, dirtyHeight)
+	p.call("putImageData", JSValue(imageData), dx, dy, dirtyX, dirtyY, dirtyWidth, dirtyHeight)
 }
 
 // -------------8<---------------------------------------
@@ -256,7 +256,7 @@ func wrapCanvasDrawingStyles(v Value) CanvasDrawingStyles {
 }
 
 func newCanvasDrawingStylesImpl(v Value) *canvasDrawingStylesImpl {
-	if v.Valid() {
+	if v.valid() {
 		return &canvasDrawingStylesImpl{
 			Value: v,
 		}
@@ -265,72 +265,72 @@ func newCanvasDrawingStylesImpl(v Value) *canvasDrawingStylesImpl {
 }
 
 func (p *canvasDrawingStylesImpl) LineWidth() float64 {
-	return p.Get("lineWidth").Float()
+	return p.get("lineWidth").toFloat64()
 }
 
 func (p *canvasDrawingStylesImpl) SetLineWidth(w float64) {
-	p.Set("lineWidth", w)
+	p.set("lineWidth", w)
 }
 
 func (p *canvasDrawingStylesImpl) LineCap() string {
-	return p.Get("lineCap").String()
+	return p.get("lineCap").toString()
 }
 
 func (p *canvasDrawingStylesImpl) SetLineCap(c string) {
-	p.Set("lineCap", c)
+	p.set("lineCap", c)
 }
 
 func (p *canvasDrawingStylesImpl) LineJoin() string {
-	return p.Get("lineJoin").String()
+	return p.get("lineJoin").toString()
 }
 
 func (p *canvasDrawingStylesImpl) SetLineJoin(j string) {
-	p.Set("lineJoin", j)
+	p.set("lineJoin", j)
 }
 
 func (p *canvasDrawingStylesImpl) MiterLimit() float64 {
-	return p.Get("miterLimit").Float()
+	return p.get("miterLimit").toFloat64()
 }
 
 func (p *canvasDrawingStylesImpl) SetMiterLimit(l float64) {
-	p.Set("miterLimit", l)
+	p.set("miterLimit", l)
 }
 
 func (p *canvasDrawingStylesImpl) LineDash() []float64 {
-	return floatSequenceToSlice(p.Call("getLineDash"))
+	return floatSequenceToSlice(p.call("getLineDash"))
 }
 
 func (p *canvasDrawingStylesImpl) SetLineDash(arg ...float64) {
 	// TODO check this
-	p.Call("setLineDash", sliceToJsArray(arg))
+	p.call("setLineDash", sliceToJsArray(arg))
 }
 
 func (p *canvasDrawingStylesImpl) LineDashOffset() float64 {
-	return p.Get("lineDashOffset").Float()
+	return p.get("lineDashOffset").toFloat64()
 }
 
 func (p *canvasDrawingStylesImpl) Font() string {
-	return p.Get("font").String()
+	return p.get("font").toString()
 }
 
 func (p *canvasDrawingStylesImpl) SetFont(font string) {
-	p.Set("font", font)
+	p.set("font", font)
 }
 
 func (p *canvasDrawingStylesImpl) TextAlign() TextAlign {
-	return TextAlign(p.Get("textAlign").String())
+	return TextAlign(p.get("textAlign").toString())
 }
 
 func (p *canvasDrawingStylesImpl) SetTextAlign(ta TextAlign) {
-	p.Set("textAlign", string(ta))
+	p.set("textAlign", string(ta))
 }
 
 func (p *canvasDrawingStylesImpl) TextBaseline() TextBaseline {
-	return TextBaseline(p.Get("textBaseline").String())
+	return TextBaseline(p.get("textBaseline").toString())
 }
 
 func (p *canvasDrawingStylesImpl) SetTextBaseline(tbl TextBaseline) {
-	p.Set("textBaseline", string(tbl))
+	p.set("textBaseline", string(tbl))
 }
 
 // -------------8<---------------------------------------
@@ -347,7 +347,7 @@ func wrapCanvasPathMethods(v Value) CanvasPathMethods {
 }
 
 func newCanvasPathMethodsImpl(v Value) *canvasPathMethodsImpl {
-	if v.Valid() {
+	if v.valid() {
 		return &canvasPathMethodsImpl{
 			Value: v,
 		}
@@ -356,39 +356,39 @@ func newCanvasPathMethodsImpl(v Value) *canvasPathMethodsImpl {
 }
 
 func (p *canvasPathMethodsImpl) ClosePath() {
-	p.Call("closePath")
+	p.call("closePath")
 }
 
 func (p *canvasPathMethodsImpl) MoveTo(x float64, y float64) {
-	p.Call("moveTo", x, y)
+	p.call("moveTo", x, y)
 }
 
 func (p *canvasPathMethodsImpl) LineTo(x float64, y float64) {
-	p.Call("lineTo", x, y)
+	p.call("lineTo", x, y)
 }
 
 func (p *canvasPathMethodsImpl) QuadraticCurveTo(cpx float64, cpy float64, x float64, y float64) {
-	p.Call("quadraticCurveTo", cpx, cpy, x, y)
+	p.call("quadraticCurveTo", cpx, cpy, x, y)
 }
 
 func (p *canvasPathMethodsImpl) BezierCurveTo(cp1x float64, cp1y float64, cp2x float64, cp2y float64, x float64, y float64) {
-	p.Call("bezierCurveTo", cp1x, cp1y, cp2x, cp2y, x, y)
+	p.call("bezierCurveTo", cp1x, cp1y, cp2x, cp2y, x, y)
 }
 
 func (p *canvasPathMethodsImpl) ArcTo(x1 float64, y1 float64, x2 float64, y2 float64, radius float64) {
-	p.Call("arcTo", x1, y1, x2, y2, radius)
+	p.call("arcTo", x1, y1, x2, y2, radius)
 }
 
 func (p *canvasPathMethodsImpl) Rect(x float64, y float64, w float64, h float64) {
-	p.Call("rect", x, y, w, h)
+	p.call("rect", x, y, w, h)
 }
 
 func (p *canvasPathMethodsImpl) Arc(x float64, y float64, radius float64, startAngle float64, endAngle float64, counterClockwise ...bool) {
 	switch len(counterClockwise) {
 	case 0:
-		p.Call("arc", x, y, radius, startAngle, endAngle)
+		p.call("arc", x, y, radius, startAngle, endAngle)
 	default:
-		p.Call("arc", x, y, radius, startAngle, endAngle, counterClockwise[0])
+		p.call("arc", x, y, radius, startAngle, endAngle, counterClockwise[0])
 	}
 }
 
@@ -399,7 +399,7 @@ type canvasGradientImpl struct {
 }
 
 func wrapCanvasGradient(v Value) CanvasGradient {
-	if v.Valid() {
+	if v.valid() {
 		return &canvasGradientImpl{
 			Value: v,
 		}
@@ -408,7 +408,7 @@ func wrapCanvasGradient(v Value) CanvasGradient {
 }
 
 func (p *canvasGradientImpl) AddColorStop(offset float64, color string) {
-	p.Call("addColorStop", offset, color)
+	p.call("addColorStop", offset, color)
 }
 
 // -------------8<---------------------------------------
@@ -418,7 +418,7 @@ type canvasPatternImpl struct {
 }
 
 func wrapCanvasPattern(v Value) CanvasPattern {
-	if v.Valid() {
+	if v.valid() {
 		return &canvasPatternImpl{
 			Value: v,
 		}
@@ -433,7 +433,7 @@ type textMetricsImpl struct {
 }
 
 func wrapTextMetrics(v Value) TextMetrics {
-	if v.Valid() {
+	if v.valid() {
 		return &textMetricsImpl{
 			Value: v,
 		}
@@ -442,7 +442,7 @@ func wrapTextMetrics(v Value) TextMetrics {
 }
 
 func (p *textMetricsImpl) Width() float64 {
-	return p.Get("width").Float()
+	return p.get("width").toFloat64()
 }
 
 // -------------8<---------------------------------------
@@ -452,7 +452,7 @@ type imageDataImpl struct {
 }
 
 func wrapImageData(v Value) ImageData {
-	if v.Valid() {
+	if v.valid() {
 		return &imageDataImpl{
 			Value: v,
 		}
@@ -461,11 +461,11 @@ func wrapImageData(v Value) ImageData {
 }
 
 func (p *imageDataImpl) Width() int {
-	return p.Get("width").Int()
+	return p.get("width").toInt()
 }
 
 func (p *imageDataImpl) Height() int {
-	return p.Get("height").Int()
+	return p.get("height").toInt()
 }
 
 func (p *imageDataImpl) Data() []byte {

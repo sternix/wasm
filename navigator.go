@@ -166,25 +166,25 @@ type ImageBitmapOptions struct {
 }
 
 func (p ImageBitmapOptions) toJSObject() Value {
-	o := jsObject.New()
+	o := jsObject.jsNew()
 
 	if p.ImageOrientation != "none" {
-		o.Set("imageOrientation", string(p.ImageOrientation))
+		o.set("imageOrientation", string(p.ImageOrientation))
 	}
 
 	if p.PremultiplyAlpha != "default" {
-		o.Set("premultiplyAlpha", string(p.PremultiplyAlpha))
+		o.set("premultiplyAlpha", string(p.PremultiplyAlpha))
 	}
 
 	if p.ColorSpaceConversion != "default" {
-		o.Set("colorSpaceConversion", string(p.ColorSpaceConversion))
+		o.set("colorSpaceConversion", string(p.ColorSpaceConversion))
 	}
 
-	o.Set("resizeWidth", p.ResizeWidth)
-	o.Set("resizeHeight", p.ResizeHeight)
+	o.set("resizeWidth", p.ResizeWidth)
+	o.set("resizeHeight", p.ResizeHeight)
 
 	if p.ResizeQuality != "low" {
-		o.Set("resizeQuality", string(p.ResizeQuality))
+		o.set("resizeQuality", string(p.ResizeQuality))
 	}
 
 	return o

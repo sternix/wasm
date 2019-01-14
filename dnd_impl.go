@@ -9,7 +9,7 @@ type dataTransferImpl struct {
 }
 
 func wrapDataTransfer(v Value) DataTransfer {
-	if v.Valid() {
+	if v.valid() {
 		return &dataTransferImpl{
 			Value: v,
 		}
@@ -18,52 +18,52 @@ func wrapDataTransfer(v Value) DataTransfer {
 }
 
 func (p *dataTransferImpl) DropEffect() string {
-	return p.Get("dropEffect").String()
+	return p.get("dropEffect").toString()
 }
 
 func (p *dataTransferImpl) SetDropEffect(effect string) {
-	p.Set("dropEffect", effect)
+	p.set("dropEffect", effect)
 }
 
 func (p *dataTransferImpl) EffectAllowed() string {
-	return p.Get("effectAllowed").String()
+	return p.get("effectAllowed").toString()
 }
 
 func (p *dataTransferImpl) SetEffectAllowed(param string) {
-	p.Set("effectAllowed", param)
+	p.set("effectAllowed", param)
 }
 
 func (p *dataTransferImpl) Items() DataTransferItemList {
-	return wrapDataTransferItemList(p.Get("items"))
+	return wrapDataTransferItemList(p.get("items"))
 }
 
 func (p *dataTransferImpl) SetDragImage(image Element, x int, y int) {
-	p.Call("setDragImage", JSValue(image), x, y)
+	p.call("setDragImage", JSValue(image), x, y)
 }
 
 func (p *dataTransferImpl) Types() []string {
-	return stringSequenceToSlice(p.Get("types"))
+	return stringSequenceToSlice(p.get("types"))
 }
 
 func (p *dataTransferImpl) Data(format string) string {
-	return p.Call("getData", format).String()
+	return p.call("getData", format).toString()
 }
 
 func (p *dataTransferImpl) SetData(format string, data string) {
-	p.Call("setData", format, data)
+	p.call("setData", format, data)
 }
 
 func (p *dataTransferImpl) ClearData(format ...string) {
 	switch len(format) {
 	case 0:
-		p.Call("clearData")
+		p.call("clearData")
 	default:
-		p.Call("clearData", format[0])
+		p.call("clearData", format[0])
 	}
 }
 
 func (p *dataTransferImpl) Files() []File {
-	return fileListToSlice(p.Get("files"))
+	return fileListToSlice(p.get("files"))
 }
 
 // -------------8<---------------------------------------
@@ -73,7 +73,7 @@ type dataTransferItemListImpl struct {
 }
 
 func wrapDataTransferItemList(v Value) DataTransferItemList {
-	if v.Valid() {
+	if v.valid() {
 		return &dataTransferItemListImpl{
 			Value: v,
 		}
@@ -82,27 +82,27 @@ func wrapDataTransferItemList(v Value) DataTransferItemList {
 }
 
 func (p *dataTransferItemListImpl) Length() int {
-	return p.Get("length").Int()
+	return p.get("length").toInt()
 }
 
 func (p *dataTransferItemListImpl) Index(index int) DataTransferItem {
-	return wrapDataTransferItem(p.Call("DataTransferItem", index))
+	return wrapDataTransferItem(p.call("DataTransferItem", index))
 }
 
 func (p *dataTransferItemListImpl) Add(data string, typ string) DataTransferItem {
-	return wrapDataTransferItem(p.Call("add", data, typ))
+	return wrapDataTransferItem(p.call("add", data, typ))
 }
 
 func (p *dataTransferItemListImpl) AddFile(data File) DataTransferItem {
-	return wrapDataTransferItem(p.Call("add", JSValue(data)))
+	return wrapDataTransferItem(p.call("add", JSValue(data)))
 }
 
 func (p *dataTransferItemListImpl) Remove(index int) {
-	p.Call("remove", index)
+	p.call("remove", index)
 }
 
 func (p *dataTransferItemListImpl) Clear() {
-	p.Call("clear")
+	p.call("clear")
 }
 
 // -------------8<---------------------------------------
@@ -112,7 +112,7 @@ type dataTransferItemImpl struct {
 }
 
 func wrapDataTransferItem(v Value) DataTransferItem {
-	if v.Valid() {
+	if v.valid() {
 		return &dataTransferItemImpl{
 			Value: v,
 		}
@@ -121,19 +121,19 @@ func wrapDataTransferItem(v Value) DataTransferItem {
 }
 
 func (p *dataTransferItemImpl) Kind() string {
-	return p.Get("kind").String()
+	return p.get("kind").toString()
 }
 
 func (p *dataTransferItemImpl) Type() string {
-	return p.Get("type").String()
+	return p.get("type").toString()
 }
 
 func (p *dataTransferItemImpl) AsString(cb FunctionStringCallback) {
-	p.Call("getAsString", cb.jsCallback())
+	p.call("getAsString", cb.jsCallback())
 }
 
 func (p *dataTransferItemImpl) AsFile() File {
-	return wrapFile(p.Call("getAsFile"))
+	return wrapFile(p.call("getAsFile"))
 }
 
 // -------------8<---------------------------------------
@@ -143,7 +143,7 @@ type dragEventImpl struct {
 }
 
 func wrapDragEvent(v Value) DragEvent {
-	if v.Valid() {
+	if v.valid() {
 		return &dragEventImpl{
 			mouseEventImpl: newMouseEventImpl(v),
 		}
@@ -152,18 +152,18 @@ func wrapDragEvent(v Value) DragEvent {
 }
 
 func (p *dragEventImpl) DataTransfer() DataTransfer {
-	return wrapDataTransfer(p.Get("dataTransfer"))
+	return wrapDataTransfer(p.get("dataTransfer"))
 }
 
 // -------------8<---------------------------------------
 
 func NewDragEvent(typ string, dei ...DragEventInit) DragEvent {
-	if jsDragEvent := jsGlobal.Get("DragEvent"); jsDragEvent.Valid() {
+	if jsDragEvent := jsGlobal.get("DragEvent"); jsDragEvent.valid() {
 		switch len(dei) {
 		case 0:
-			return wrapDragEvent(jsDragEvent.New(typ))
+			return wrapDragEvent(jsDragEvent.jsNew(typ))
 		default:
-			return wrapDragEvent(jsDragEvent.New(typ, dei[0].toJSObject()))
+			return wrapDragEvent(jsDragEvent.jsNew(typ, dei[0].toJSObject()))
 		}
 	}
 	return nil

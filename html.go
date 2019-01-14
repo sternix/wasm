@@ -57,8 +57,8 @@ type AssignedNodesOptions struct {
 
 func (p AssignedNodesOptions) toJSObject() Value {
 	if p.Flatten {
-		o := jsObject.New()
-		o.Set("flatten", p.Flatten)
+		o := jsObject.jsNew()
+		o.set("flatten", p.Flatten)
 		return o
 	}
 	return jsNull
@@ -72,7 +72,7 @@ type FocusOptions struct {
 }
 
 func (p FocusOptions) toJSObject() Value {
-	o := jsObject.New()
-	o.Set("preventScroll", p.PreventScroll)
+	o := jsObject.jsNew()
+	o.set("preventScroll", p.PreventScroll)
 	return o
 }

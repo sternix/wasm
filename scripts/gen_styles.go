@@ -30,7 +30,7 @@ type cssStyleHelperImpl struct {
 }
 
 func newCSSStyleHelperImpl(v *cssStyleDeclarationImpl) *cssStyleHelperImpl {
-	if v.Valid() {
+	if v.valid() {
 		return &cssStyleHelperImpl {
 			cssStyleDeclarationImpl: v,
 		}
@@ -70,7 +70,7 @@ func main() {
 
 	scanner := bufio.NewScanner(f)
 	for scanner.Scan() {
-		line := strings.Trim(scanner.Text()," ")
+		line := strings.Trim(scanner.Text(), " ")
 		s := style{
 			Name:   line,
 			UpName: toUpper(line),
@@ -101,7 +101,6 @@ func toUpper(s string) string {
 	strs := strings.Split(s, "-")
 	for i, str := range strs {
 		strs[i] = strings.Title(str)
-
 	}
 	return strings.Join(strs, "")
 }

@@ -226,14 +226,14 @@ type WebGLContextAttributes struct {
 }
 
 func (p WebGLContextAttributes) toJSObject() Value {
-	o := jsObject.New()
-	o.Set("alpha", p.Alpha)
-	o.Set("depth", p.Depth)
-	o.Set("stencil", p.Stencil)
-	o.Set("antialias", p.Antialias)
-	o.Set("premultipliedAlpha", p.PremultipliedAlpha)
-	o.Set("preserveDrawingBuffer", p.PreserveDrawingBuffer)
-	o.Set("powerPreference", p.PowerPreference)
-	o.Set("failIfMajorPerformanceCaveat", p.FailIfMajorPerformanceCaveat)
+	o := jsObject.jsNew()
+	o.set("alpha", p.Alpha)
+	o.set("depth", p.Depth)
+	o.set("stencil", p.Stencil)
+	o.set("antialias", p.Antialias)
+	o.set("premultipliedAlpha", p.PremultipliedAlpha)
+	o.set("preserveDrawingBuffer", p.PreserveDrawingBuffer)
+	o.set("powerPreference", p.PowerPreference)
+	o.set("failIfMajorPerformanceCaveat", p.FailIfMajorPerformanceCaveat)
 	return o
 }

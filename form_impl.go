@@ -22,7 +22,7 @@ func NewHTMLFormElement() HTMLFormElement {
 }
 
 func wrapHTMLFormElement(v Value) HTMLFormElement {
-	if v.Valid() {
+	if v.valid() {
 		return &htmlFormElementImpl{
 			htmlElementImpl: newHTMLElementImpl(v),
 		}
@@ -31,95 +31,95 @@ func wrapHTMLFormElement(v Value) HTMLFormElement {
 }
 
 func (p *htmlFormElementImpl) AcceptCharset() string {
-	return p.Get("acceptCharset").String()
+	return p.get("acceptCharset").toString()
 }
 
 func (p *htmlFormElementImpl) SetAcceptCharset(ch string) {
-	p.Set("acceptCharset", ch)
+	p.set("acceptCharset", ch)
 }
 
 func (p *htmlFormElementImpl) Action() string {
-	return p.Get("action").String()
+	return p.get("action").toString()
 }
 
 func (p *htmlFormElementImpl) SetAction(a string) {
-	p.Set("action", a)
+	p.set("action", a)
 }
 
 func (p *htmlFormElementImpl) Autocomplete() string {
-	return p.Get("autocomplete").String()
+	return p.get("autocomplete").toString()
 }
 
 func (p *htmlFormElementImpl) SetAutocomplete(ac string) {
-	p.Set("autocomplete", ac)
+	p.set("autocomplete", ac)
 }
 
 func (p *htmlFormElementImpl) Enctype() string {
-	return p.Get("enctype").String()
+	return p.get("enctype").toString()
 }
 
 func (p *htmlFormElementImpl) SetEnctype(et string) {
-	p.Set("enctype", et)
+	p.set("enctype", et)
 }
 
 func (p *htmlFormElementImpl) Encoding() string {
-	return p.Get("encoding").String()
+	return p.get("encoding").toString()
 }
 
 func (p *htmlFormElementImpl) SetEncoding(enc string) {
-	p.Set("encoding", enc)
+	p.set("encoding", enc)
 }
 
 func (p *htmlFormElementImpl) Method() string {
-	return p.Get("method").String()
+	return p.get("method").toString()
 }
 
 func (p *htmlFormElementImpl) SetMethod(m string) {
-	p.Set("method", m)
+	p.set("method", m)
 }
 
 func (p *htmlFormElementImpl) Name() string {
-	return p.Get("name").String()
+	return p.get("name").toString()
 }
 
 func (p *htmlFormElementImpl) SetName(name string) {
-	p.Set("name", name)
+	p.set("name", name)
 }
 
 func (p *htmlFormElementImpl) NoValidate() bool {
-	return p.Get("noValidate").Bool()
+	return p.get("noValidate").toBool()
 }
 
 func (p *htmlFormElementImpl) SetNoValidate(b bool) {
-	p.Set("noValidate", b)
+	p.set("noValidate", b)
 }
 
 func (p *htmlFormElementImpl) Target() string {
-	return p.Get("target").String()
+	return p.get("target").toString()
 }
 
 func (p *htmlFormElementImpl) SetTarget(t string) {
-	p.Set("target", t)
+	p.set("target", t)
 }
 
 func (p *htmlFormElementImpl) Elements() HTMLFormControlsCollection {
-	return wrapHTMLFormControlsCollection(p.Get("elements"))
+	return wrapHTMLFormControlsCollection(p.get("elements"))
 }
 
 func (p *htmlFormElementImpl) Submit() {
-	p.Call("submit")
+	p.call("submit")
 }
 
 func (p *htmlFormElementImpl) Reset() {
-	p.Call("reset")
+	p.call("reset")
 }
 
 func (p *htmlFormElementImpl) CheckValidity() bool {
-	return p.Call("checkValidity").Bool()
+	return p.call("checkValidity").toBool()
 }
 
 func (p *htmlFormElementImpl) ReportValidity() bool {
-	return p.Call("reportValidity").Bool()
+	return p.call("reportValidity").toBool()
 }
 
 // -------------8<---------------------------------------
@@ -129,7 +129,7 @@ type htmlFormControlsCollectionImpl struct {
 }
 
 func wrapHTMLFormControlsCollection(v Value) HTMLFormControlsCollection {
-	if v.Valid() {
+	if v.valid() {
 		return &htmlFormControlsCollectionImpl{
 			htmlCollectionImpl: newHTMLCollectionImpl(v),
 		}
@@ -139,7 +139,7 @@ func wrapHTMLFormControlsCollection(v Value) HTMLFormControlsCollection {
 
 //NOTE overriden namedbyItem
 func (p *htmlFormControlsCollectionImpl) ItemByName(item string) HTMLFormControl {
-	return wrapHTMLFormControl(p.Call("namedItem", item))
+	return wrapHTMLFormControl(p.call("namedItem", item))
 }
 
 // -------------8<---------------------------------------
@@ -149,7 +149,7 @@ type htmlFormControlImpl struct {
 }
 
 func wrapHTMLFormControl(v Value) HTMLFormControl {
-	if v.Valid() {
+	if v.valid() {
 		return &htmlFormControlImpl{
 			Value: v,
 		}
@@ -164,7 +164,7 @@ type radioNodeListImpl struct {
 }
 
 func wrapRadioNodeList(v Value) RadioNodeList {
-	if v.Valid() {
+	if v.valid() {
 		return &radioNodeListImpl{
 			nodeListImpl: newNodeListImpl(v),
 		}
@@ -173,11 +173,11 @@ func wrapRadioNodeList(v Value) RadioNodeList {
 }
 
 func (p *radioNodeListImpl) Value() string {
-	return p.Get("value").String()
+	return p.get("value").toString()
 }
 
 func (p *radioNodeListImpl) SetValue(value string) {
-	p.Set("value", value)
+	p.set("value", value)
 }
 
 // -------------8<---------------------------------------
@@ -196,7 +196,7 @@ func NewHTMLLabelElement() HTMLLabelElement {
 }
 
 func wrapHTMLLabelElement(v Value) HTMLLabelElement {
-	if v.Valid() {
+	if v.valid() {
 		return &htmlLabelElementImpl{
 			htmlElementImpl: newHTMLElementImpl(v),
 		}
@@ -205,19 +205,19 @@ func wrapHTMLLabelElement(v Value) HTMLLabelElement {
 }
 
 func (p *htmlLabelElementImpl) Form() HTMLFormElement {
-	return wrapHTMLFormElement(p.Get("form"))
+	return wrapHTMLFormElement(p.get("form"))
 }
 
 func (p *htmlLabelElementImpl) HtmlFor() string {
-	return p.Get("htmlFor").String()
+	return p.get("htmlFor").toString()
 }
 
 func (p *htmlLabelElementImpl) SetHtmlFor(hf string) {
-	p.Set("htmlFor", hf)
+	p.set("htmlFor", hf)
 }
 
 func (p *htmlLabelElementImpl) Control() HTMLElement {
-	return wrapHTMLElement(p.Get("control"))
+	return wrapHTMLElement(p.get("control"))
 }
 
 // -------------8<---------------------------------------
@@ -266,7 +266,7 @@ func NewHTMLInputElement(typ ...string) HTMLInputElement {
 }
 
 func wrapHTMLInputElement(v Value) HTMLInputElement {
-	if v.Valid() {
+	if v.valid() {
 		return &htmlInputElementImpl{
 			htmlElementImpl: newHTMLElementImpl(v),
 		}
@@ -275,382 +275,382 @@ func wrapHTMLInputElement(v Value) HTMLInputElement {
 }
 
 func (p *htmlInputElementImpl) Accept() string {
-	return p.Get("accept").String()
+	return p.get("accept").toString()
 }
 
 func (p *htmlInputElementImpl) SetAccept(a string) {
-	p.Set("accept", a)
+	p.set("accept", a)
 }
 
 func (p *htmlInputElementImpl) Alt() string {
-	return p.Get("alt").String()
+	return p.get("alt").toString()
 }
 
 func (p *htmlInputElementImpl) SetAlt(a string) {
-	p.Set("alt", a)
+	p.set("alt", a)
 }
 
 func (p *htmlInputElementImpl) Autocomplete() string {
-	return p.Get("autocomplete").String()
+	return p.get("autocomplete").toString()
 }
 
 func (p *htmlInputElementImpl) SetAutocomplete(ac string) {
-	p.Set("autocomplete", ac)
+	p.set("autocomplete", ac)
 }
 
 func (p *htmlInputElementImpl) Autofocus() bool {
-	return p.Get("autofocus").Bool()
+	return p.get("autofocus").toBool()
 }
 
 func (p *htmlInputElementImpl) SetAutofocus(af bool) {
-	p.Set("autofocus", af)
+	p.set("autofocus", af)
 }
 
 func (p *htmlInputElementImpl) DefaultChecked() bool {
-	return p.Get("defaultChecked").Bool()
+	return p.get("defaultChecked").toBool()
 }
 
 func (p *htmlInputElementImpl) SetDefaultChecked(dc bool) {
-	p.Set("defaultChecked", dc)
+	p.set("defaultChecked", dc)
 }
 
 func (p *htmlInputElementImpl) Checked() bool {
-	return p.Get("checked").Bool()
+	return p.get("checked").toBool()
 }
 
 func (p *htmlInputElementImpl) SetChecked(c bool) {
-	p.Set("checked", c)
+	p.set("checked", c)
 }
 
 func (p *htmlInputElementImpl) DirName() string {
-	return p.Get("dirName").String()
+	return p.get("dirName").toString()
 }
 
 func (p *htmlInputElementImpl) SetDirName(dn string) {
-	p.Set("dirName", dn)
+	p.set("dirName", dn)
 }
 
 func (p *htmlInputElementImpl) Disabled() bool {
-	return p.Get("disabled").Bool()
+	return p.get("disabled").toBool()
 }
 
 func (p *htmlInputElementImpl) SetDisabled(d bool) {
-	p.Set("disabled", d)
+	p.set("disabled", d)
 }
 
 func (p *htmlInputElementImpl) Form() HTMLFormElement {
-	return wrapHTMLFormElement(p.Get("form"))
+	return wrapHTMLFormElement(p.get("form"))
 }
 
 func (p *htmlInputElementImpl) Files() []File {
-	return fileListToSlice(p.Get("files"))
+	return fileListToSlice(p.get("files"))
 }
 
 func (p *htmlInputElementImpl) FormAction() string {
-	return p.Get("formAction").String()
+	return p.get("formAction").toString()
 }
 
 func (p *htmlInputElementImpl) SetFormAction(fa string) {
-	p.Set("formAction", fa)
+	p.set("formAction", fa)
 }
 
 func (p *htmlInputElementImpl) FormEnctype() string {
-	return p.Get("formEnctype").String()
+	return p.get("formEnctype").toString()
 }
 
 func (p *htmlInputElementImpl) SetFormEnctype(fe string) {
-	p.Set("formEnctype", fe)
+	p.set("formEnctype", fe)
 }
 
 func (p *htmlInputElementImpl) FormMethod() string {
-	return p.Get("formMethod").String()
+	return p.get("formMethod").toString()
 }
 
 func (p *htmlInputElementImpl) SetFormMethod(fm string) {
-	p.Set("formMethod", fm)
+	p.set("formMethod", fm)
 }
 
 func (p *htmlInputElementImpl) FormNoValidate() bool {
-	return p.Get("formNoValidate").Bool()
+	return p.get("formNoValidate").toBool()
 }
 
 func (p *htmlInputElementImpl) SetFormNoValidate(b bool) {
-	p.Set("formNoValidate", b)
+	p.set("formNoValidate", b)
 }
 
 func (p *htmlInputElementImpl) FormTarget() string {
-	return p.Get("formTarget").String()
+	return p.get("formTarget").toString()
 }
 
 func (p *htmlInputElementImpl) SetFormTarget(ft string) {
-	p.Set("formTarget", ft)
+	p.set("formTarget", ft)
 }
 
 func (p *htmlInputElementImpl) Height() int {
-	return p.Get("height").Int()
+	return p.get("height").toInt()
 }
 
 func (p *htmlInputElementImpl) SetHeight(h int) {
-	p.Set("height", h)
+	p.set("height", h)
 }
 
 func (p *htmlInputElementImpl) Indeterminate() bool {
-	return p.Get("indeterminate").Bool()
+	return p.get("indeterminate").toBool()
 }
 
 func (p *htmlInputElementImpl) SetIndeterminate(b bool) {
-	p.Set("indeterminate", b)
+	p.set("indeterminate", b)
 }
 
 func (p *htmlInputElementImpl) List() HTMLElement {
-	return wrapHTMLElement(p.Get("list"))
+	return wrapHTMLElement(p.get("list"))
 }
 
 func (p *htmlInputElementImpl) Max() string {
-	return p.Get("max").String()
+	return p.get("max").toString()
 }
 
 func (p *htmlInputElementImpl) SetMax(m string) {
-	p.Set("max", m)
+	p.set("max", m)
 }
 
 func (p *htmlInputElementImpl) MaxLength() int {
-	return p.Get("maxLength").Int()
+	return p.get("maxLength").toInt()
 }
 
 func (p *htmlInputElementImpl) SetMaxLength(m int) {
-	p.Set("maxLength", m)
+	p.set("maxLength", m)
 }
 
 func (p *htmlInputElementImpl) Min() string {
-	return p.Get("min").String()
+	return p.get("min").toString()
 }
 
 func (p *htmlInputElementImpl) SetMin(m string) {
-	p.Set("min", m)
+	p.set("min", m)
 }
 
 func (p *htmlInputElementImpl) MinLength() int {
-	return p.Get("minLength").Int()
+	return p.get("minLength").toInt()
 }
 
 func (p *htmlInputElementImpl) SetMinLength(m int) {
-	p.Set("minLength", m)
+	p.set("minLength", m)
 }
 
 func (p *htmlInputElementImpl) Multiple() bool {
-	return p.Get("multiple").Bool()
+	return p.get("multiple").toBool()
 }
 
 func (p *htmlInputElementImpl) SetMultiple(b bool) {
-	p.Set("multiple", b)
+	p.set("multiple", b)
 }
 
 func (p *htmlInputElementImpl) Name() string {
-	return p.Get("name").String()
+	return p.get("name").toString()
 }
 
 func (p *htmlInputElementImpl) SetName(name string) {
-	p.Set("name", name)
+	p.set("name", name)
 }
 
 func (p *htmlInputElementImpl) Pattern() string {
-	return p.Get("pattern").String()
+	return p.get("pattern").toString()
 }
 
 func (p *htmlInputElementImpl) SetPattern(pattern string) {
-	p.Set("pattern", pattern)
+	p.set("pattern", pattern)
 }
 
 func (p *htmlInputElementImpl) Placeholder() string {
-	return p.Get("placeholder").String()
+	return p.get("placeholder").toString()
 }
 
 func (p *htmlInputElementImpl) SetPlaceholder(ph string) {
-	p.Set("placeholder", ph)
+	p.set("placeholder", ph)
 }
 
 func (p *htmlInputElementImpl) ReadOnly() bool {
-	return p.Get("readOnly").Bool()
+	return p.get("readOnly").toBool()
 }
 
 func (p *htmlInputElementImpl) SetReadOnly(b bool) {
-	p.Set("readOnly", b)
+	p.set("readOnly", b)
 }
 
 func (p *htmlInputElementImpl) Required() bool {
-	return p.Get("_required").Bool()
+	return p.get("_required").toBool()
 }
 
 func (p *htmlInputElementImpl) SetRequired(b bool) {
-	p.Set("_required", b)
+	p.set("_required", b)
 }
 
 func (p *htmlInputElementImpl) Size() int {
-	return p.Get("size").Int()
+	return p.get("size").toInt()
 }
 
 func (p *htmlInputElementImpl) SetSize(s int) {
-	p.Set("size", s)
+	p.set("size", s)
 }
 
 func (p *htmlInputElementImpl) Src() string {
-	return p.Get("src").String()
+	return p.get("src").toString()
 }
 
 func (p *htmlInputElementImpl) SetSrc(src string) {
-	p.Set("src", src)
+	p.set("src", src)
 }
 
 func (p *htmlInputElementImpl) Step() string {
-	return p.Get("step").String()
+	return p.get("step").toString()
 }
 
 func (p *htmlInputElementImpl) SetStep(s string) {
-	p.Set("step", s)
+	p.set("step", s)
 }
 
 func (p *htmlInputElementImpl) Type() string {
-	return p.Get("type").String()
+	return p.get("type").toString()
 }
 
 func (p *htmlInputElementImpl) SetType(t string) {
-	p.Set("type", t)
+	p.set("type", t)
 }
 
 func (p *htmlInputElementImpl) DefaultValue() string {
-	return p.Get("defaultValue").String()
+	return p.get("defaultValue").toString()
 }
 
 func (p *htmlInputElementImpl) SetDefaultValue(dv string) {
-	p.Set("defaultValue", dv)
+	p.set("defaultValue", dv)
 }
 
 func (p *htmlInputElementImpl) Value() string {
-	return p.Get("value").String()
+	return p.get("value").toString()
 }
 
 func (p *htmlInputElementImpl) SetValue(value string) {
-	p.Set("value", value)
+	p.set("value", value)
 }
 
 func (p *htmlInputElementImpl) ValueAsDate() time.Time {
 	//TODO: test it
-	return jsDateToTime(p.Get("valueAsDate"))
+	return jsDateToTime(p.get("valueAsDate"))
 }
 
 func (p *htmlInputElementImpl) SetValueAsDate(t time.Time) {
 	// TODO: test it
-	d := jsDate.New()
-	d.Call("setTime", t.Unix())
-	p.Set("valueAsDate", d)
+	d := jsDate.jsNew()
+	d.call("setTime", t.Unix())
+	p.set("valueAsDate", d)
 }
 
 func (p *htmlInputElementImpl) ValueAsNumber() float64 {
-	return p.Get("valueAsNumber").Float()
+	return p.get("valueAsNumber").toFloat64()
 }
 
 func (p *htmlInputElementImpl) SetValueAsNumber(n float64) {
-	p.Set("valueAsNumber", n)
+	p.set("valueAsNumber", n)
 }
 
 func (p *htmlInputElementImpl) Width() int {
-	return p.Get("width").Int()
+	return p.get("width").toInt()
 }
 
 func (p *htmlInputElementImpl) SetWidth(w int) {
-	p.Set("width", w)
+	p.set("width", w)
 }
 
 func (p *htmlInputElementImpl) StepUp(n ...int) {
 	switch len(n) {
 	case 0:
-		p.Call("stepUp")
+		p.call("stepUp")
 	default:
-		p.Call("stepUp", n[0])
+		p.call("stepUp", n[0])
 	}
 }
 
 func (p *htmlInputElementImpl) StepDown(n ...int) {
 	switch len(n) {
 	case 0:
-		p.Call("stepDown")
+		p.call("stepDown")
 	default:
-		p.Call("stepDown", n[0])
+		p.call("stepDown", n[0])
 	}
 }
 
 func (p *htmlInputElementImpl) WillValidate() bool {
-	return p.Get("willValidate").Bool()
+	return p.get("willValidate").toBool()
 }
 
 func (p *htmlInputElementImpl) Validity() ValidityState {
-	return wrapValidityState(p.Get("validity"))
+	return wrapValidityState(p.get("validity"))
 }
 
 func (p *htmlInputElementImpl) ValidationMessage() string {
-	return p.Get("validationMessage").String()
+	return p.get("validationMessage").toString()
 }
 
 func (p *htmlInputElementImpl) CheckValidity() bool {
-	return p.Call("checkValidity").Bool()
+	return p.call("checkValidity").toBool()
 }
 
 func (p *htmlInputElementImpl) ReportValidity() bool {
-	return p.Call("reportValidity").Bool()
+	return p.call("reportValidity").toBool()
 }
 
 func (p *htmlInputElementImpl) SetCustomValidity(cv string) {
-	p.Call("setCustomValidity", cv)
+	p.call("setCustomValidity", cv)
 }
 
 func (p *htmlInputElementImpl) Labels() []Node {
-	return nodeListToSlice(p.Get("labels"))
+	return nodeListToSlice(p.get("labels"))
 }
 
 func (p *htmlInputElementImpl) Select() {
-	p.Call("select")
+	p.call("select")
 }
 
 func (p *htmlInputElementImpl) SelectionStart() int {
-	return p.Get("selectionStart").Int()
+	return p.get("selectionStart").toInt()
 }
 
 func (p *htmlInputElementImpl) SetSelectionStart(se int) {
-	p.Set("selectionStart", se)
+	p.set("selectionStart", se)
 }
 
 func (p *htmlInputElementImpl) SelectionEnd() int {
-	return p.Get("selectionEnd").Int()
+	return p.get("selectionEnd").toInt()
 }
 
 func (p *htmlInputElementImpl) SetSelectionEnd(se int) {
-	p.Set("selectionEnd", se)
+	p.set("selectionEnd", se)
 }
 
 func (p *htmlInputElementImpl) SelectionDirection() string {
-	return p.Get("selectionDirection").String()
+	return p.get("selectionDirection").toString()
 }
 
 func (p *htmlInputElementImpl) SetSelectionDirection(sd string) {
-	p.Set("selectionDirection", sd)
+	p.set("selectionDirection", sd)
 }
 
 func (p *htmlInputElementImpl) SetRangeText(r string, args ...interface{}) {
 	switch len(args) {
 	case 0:
-		p.Call("setRangeText", r)
+		p.call("setRangeText", r)
 	case 2:
 		if start, ok := args[0].(int); ok {
 			if end, ok := args[1].(int); ok {
-				p.Call("setRangeText", r, start, end)
+				p.call("setRangeText", r, start, end)
 			}
 		}
 	case 3:
 		if start, ok := args[0].(int); ok {
 			if end, ok := args[1].(int); ok {
 				if selectionMode, ok := args[2].(SelectionMode); ok {
-					p.Call("setRangeText", r, start, end, string(selectionMode))
+					p.call("setRangeText", r, start, end, string(selectionMode))
 				}
 			}
 		}
@@ -660,9 +660,9 @@ func (p *htmlInputElementImpl) SetRangeText(r string, args ...interface{}) {
 func (p *htmlInputElementImpl) SetSelectionRange(start int, end int, direction ...string) {
 	switch len(direction) {
 	case 0:
-		p.Call("setSelectionRange", start, end)
+		p.call("setSelectionRange", start, end)
 	default:
-		p.Call("setSelectionRange", start, end, direction[0])
+		p.call("setSelectionRange", start, end, direction[0])
 
 	}
 }
@@ -683,7 +683,7 @@ func NewHTMLButtonElement() HTMLButtonElement {
 }
 
 func wrapHTMLButtonElement(v Value) HTMLButtonElement {
-	if v.Valid() {
+	if v.valid() {
 		return &htmlButtonElementImpl{
 			htmlElementImpl: newHTMLElementImpl(v),
 		}
@@ -692,115 +692,115 @@ func wrapHTMLButtonElement(v Value) HTMLButtonElement {
 }
 
 func (p *htmlButtonElementImpl) Autofocus() bool {
-	return p.Get("autofocus").Bool()
+	return p.get("autofocus").toBool()
 }
 
 func (p *htmlButtonElementImpl) SetAutofocus(b bool) {
-	p.Set("autofocus", b)
+	p.set("autofocus", b)
 }
 
 func (p *htmlButtonElementImpl) Disabled() bool {
-	return p.Get("disabled").Bool()
+	return p.get("disabled").toBool()
 }
 
 func (p *htmlButtonElementImpl) SetDisabled(b bool) {
-	p.Set("disabled", b)
+	p.set("disabled", b)
 }
 
 func (p *htmlButtonElementImpl) Form() HTMLFormElement {
-	return wrapHTMLFormElement(p.Get("form"))
+	return wrapHTMLFormElement(p.get("form"))
 }
 
 func (p *htmlButtonElementImpl) FormAction() string {
-	return p.Get("formAction").String()
+	return p.get("formAction").toString()
 }
 
 func (p *htmlButtonElementImpl) SetFormAction(fa string) {
-	p.Set("formAction", fa)
+	p.set("formAction", fa)
 }
 
 func (p *htmlButtonElementImpl) FormEnctype() string {
-	return p.Get("formEnctype").String()
+	return p.get("formEnctype").toString()
 }
 
 func (p *htmlButtonElementImpl) SetFormEnctype(fe string) {
-	p.Set("formEnctype", fe)
+	p.set("formEnctype", fe)
 }
 
 func (p *htmlButtonElementImpl) FormMethod() string {
-	return p.Get("formMethod").String()
+	return p.get("formMethod").toString()
 }
 
 func (p *htmlButtonElementImpl) SetFormMethod(fm string) {
-	p.Set("formMethod", fm)
+	p.set("formMethod", fm)
 }
 
 func (p *htmlButtonElementImpl) FormNoValidate() bool {
-	return p.Get("formNoValidate").Bool()
+	return p.get("formNoValidate").toBool()
 }
 
 func (p *htmlButtonElementImpl) SetFormNoValidate(b bool) {
-	p.Set("formNoValidate", b)
+	p.set("formNoValidate", b)
 }
 
 func (p *htmlButtonElementImpl) FormTarget() string {
-	return p.Get("formTarget").String()
+	return p.get("formTarget").toString()
 }
 
 func (p *htmlButtonElementImpl) SetFormTarget(ft string) {
-	p.Set("formTarget", ft)
+	p.set("formTarget", ft)
 }
 
 func (p *htmlButtonElementImpl) Name() string {
-	return p.Get("name").String()
+	return p.get("name").toString()
 }
 
 func (p *htmlButtonElementImpl) SetName(name string) {
-	p.Set("name", name)
+	p.set("name", name)
 }
 
 func (p *htmlButtonElementImpl) Type() string {
-	return p.Get("type").String()
+	return p.get("type").toString()
 }
 
 func (p *htmlButtonElementImpl) SetType(t string) {
-	p.Set("type", t)
+	p.set("type", t)
 }
 
 func (p *htmlButtonElementImpl) Value() string {
-	return p.Get("value").String()
+	return p.get("value").toString()
 }
 
 func (p *htmlButtonElementImpl) SetValue(v string) {
-	p.Set("value", v)
+	p.set("value", v)
 }
 
 func (p *htmlButtonElementImpl) WillValidate() bool {
-	return p.Get("willValidate").Bool()
+	return p.get("willValidate").toBool()
 }
 
 func (p *htmlButtonElementImpl) Validity() ValidityState {
-	return wrapValidityState(p.Get("validity"))
+	return wrapValidityState(p.get("validity"))
 }
 
 func (p *htmlButtonElementImpl) ValidationMessage() string {
-	return p.Get("validationMessage").String()
+	return p.get("validationMessage").toString()
 }
 
 func (p *htmlButtonElementImpl) CheckValidity() bool {
-	return p.Call("checkValidity").Bool()
+	return p.call("checkValidity").toBool()
 }
 
 func (p *htmlButtonElementImpl) ReportValidity() bool {
-	return p.Call("reportValidity").Bool()
+	return p.call("reportValidity").toBool()
 }
 
 func (p *htmlButtonElementImpl) SetCustomValidity(e string) {
-	p.Call("setCustomValidity", e)
+	p.call("setCustomValidity", e)
 }
 
 func (p *htmlButtonElementImpl) Labels() []Node {
-	return nodeListToSlice(p.Get("labels"))
+	return nodeListToSlice(p.get("labels"))
 }
 
 // -------------8<---------------------------------------
@@ -819,7 +819,7 @@ func NewHTMLSelectElement() HTMLSelectElement {
 }
 
 func wrapHTMLSelectElement(v Value) HTMLSelectElement {
-	if v.Valid() {
+	if v.valid() {
 		return &htmlSelectElementImpl{
 			htmlElementImpl: newHTMLElementImpl(v),
 		}
@@ -828,105 +828,105 @@ func wrapHTMLSelectElement(v Value) HTMLSelectElement {
 }
 
 func (p *htmlSelectElementImpl) Autocomplete() string {
-	return p.Get("autocomplete").String()
+	return p.get("autocomplete").toString()
 }
 
 func (p *htmlSelectElementImpl) SetAutocomplete(ac string) {
-	p.Set("autocomplete", ac)
+	p.set("autocomplete", ac)
 }
 
 func (p *htmlSelectElementImpl) Autofocus() bool {
-	return p.Get("autofocus").Bool()
+	return p.get("autofocus").toBool()
 }
 
 func (p *htmlSelectElementImpl) SetAutofocus(af bool) {
-	p.Set("autofocus", af)
+	p.set("autofocus", af)
 }
 
 func (p *htmlSelectElementImpl) Disabled() bool {
-	return p.Get("disabled").Bool()
+	return p.get("disabled").toBool()
 }
 
 func (p *htmlSelectElementImpl) SetDisabled(b bool) {
-	p.Set("disabled", b)
+	p.set("disabled", b)
 }
 
 func (p *htmlSelectElementImpl) Form() HTMLFormElement {
-	return wrapHTMLFormElement(p.Get("form"))
+	return wrapHTMLFormElement(p.get("form"))
 }
 
 func (p *htmlSelectElementImpl) Multiple() bool {
-	return p.Get("multiple").Bool()
+	return p.get("multiple").toBool()
 }
 
 func (p *htmlSelectElementImpl) SetMultiple(m bool) {
-	p.Set("multiple", m)
+	p.set("multiple", m)
 }
 
 func (p *htmlSelectElementImpl) Name() string {
-	return p.Get("name").String()
+	return p.get("name").toString()
 }
 
 func (p *htmlSelectElementImpl) SetName(name string) {
-	p.Set("name", name)
+	p.set("name", name)
 }
 
 func (p *htmlSelectElementImpl) Required() bool {
-	return p.Get("_required").Bool()
+	return p.get("_required").toBool()
 }
 
 func (p *htmlSelectElementImpl) SetRequired(b bool) {
-	p.Set("_required", b)
+	p.set("_required", b)
 }
 
 func (p *htmlSelectElementImpl) Size() int {
-	return p.Get("size").Int()
+	return p.get("size").toInt()
 }
 
 func (p *htmlSelectElementImpl) SetSize(s int) {
-	p.Set("size", s)
+	p.set("size", s)
 }
 
 func (p *htmlSelectElementImpl) Type() string {
-	return p.Get("type").String()
+	return p.get("type").toString()
 }
 
 func (p *htmlSelectElementImpl) Options() HTMLOptionsCollection {
-	return wrapHTMLOptionsCollection(p.Get("options"))
+	return wrapHTMLOptionsCollection(p.get("options"))
 }
 
 func (p *htmlSelectElementImpl) Length() int {
-	return p.Get("length").Int()
+	return p.get("length").toInt()
 }
 
 func (p *htmlSelectElementImpl) SetLength(l int) {
-	p.Set("length", l)
+	p.set("length", l)
 }
 
 func (p *htmlSelectElementImpl) Item(index int) Element {
-	return wrapAsElement(p.Call("item", index))
+	return wrapAsElement(p.call("item", index))
 }
 
 func (p *htmlSelectElementImpl) NamedItem(name string) HTMLOptionElement {
-	return wrapHTMLOptionElement(p.Call("namedItem", name))
+	return wrapHTMLOptionElement(p.call("namedItem", name))
 }
 
 func (p *htmlSelectElementImpl) Add(element HTMLElement, before ...interface{}) {
 	switch len(before) {
 	case 0:
-		p.Call("add", JSValue(element))
+		p.call("add", JSValue(element))
 	default:
 		switch x := before[0].(type) {
 		case HTMLElement:
-			p.Call("add", JSValue(element), JSValue(x))
+			p.call("add", JSValue(element), JSValue(x))
 		case int:
-			p.Call("add", JSValue(element), x)
+			p.call("add", JSValue(element), x)
 		}
 	}
 }
 
 func (p *htmlSelectElementImpl) RemoveByIndex(index int) {
-	p.Call("remove", index)
+	p.call("remove", index)
 }
 
 func (p *htmlSelectElementImpl) SetByIndex(index int, option HTMLOptionElement) {
@@ -936,51 +936,51 @@ func (p *htmlSelectElementImpl) SetByIndex(index int, option HTMLOptionElement) 
 }
 
 func (p *htmlSelectElementImpl) SelectedOptions() []HTMLOptionElement {
-	return htmlCollectionToHTMLOptionElementSlice(p.Get("selectedOptions"))
+	return htmlCollectionToHTMLOptionElementSlice(p.get("selectedOptions"))
 }
 
 func (p *htmlSelectElementImpl) SelectedIndex() int {
-	return p.Get("selectedIndex").Int()
+	return p.get("selectedIndex").toInt()
 }
 
 func (p *htmlSelectElementImpl) SetSelectedIndex(index int) {
-	p.Set("selectedIndex", index)
+	p.set("selectedIndex", index)
 }
 
 func (p *htmlSelectElementImpl) Value() string {
-	return p.Get("value").String()
+	return p.get("value").toString()
 }
 
 func (p *htmlSelectElementImpl) SetValue(v string) {
-	p.Set("value", v)
+	p.set("value", v)
 }
 
 func (p *htmlSelectElementImpl) WillValidate() bool {
-	return p.Get("willValidate").Bool()
+	return p.get("willValidate").toBool()
 }
 
 func (p *htmlSelectElementImpl) Validity() ValidityState {
-	return wrapValidityState(p.Get("validity"))
+	return wrapValidityState(p.get("validity"))
 }
 
 func (p *htmlSelectElementImpl) ValidationMessage() string {
-	return p.Get("validationMessage").String()
+	return p.get("validationMessage").toString()
 }
 
 func (p *htmlSelectElementImpl) CheckValidity() bool {
-	return p.Call("checkValidity").Bool()
+	return p.call("checkValidity").toBool()
 }
 
 func (p *htmlSelectElementImpl) ReportValidity() bool {
-	return p.Call("reportValidity").Bool()
+	return p.call("reportValidity").toBool()
 }
 
 func (p *htmlSelectElementImpl) SetCustomValidity(e string) {
-	p.Call("setCustomValidity", e)
+	p.call("setCustomValidity", e)
 }
 
 func (p *htmlSelectElementImpl) Labels() []Node {
-	return nodeListToSlice(p.Get("labels"))
+	return nodeListToSlice(p.get("labels"))
 }
 
 // -------------8<---------------------------------------
@@ -990,7 +990,7 @@ type htmlOptionsCollectionImpl struct {
 }
 
 func wrapHTMLOptionsCollection(v Value) HTMLOptionsCollection {
-	if v.Valid() {
+	if v.valid() {
 		return &htmlOptionsCollectionImpl{
 			htmlCollectionImpl: newHTMLCollectionImpl(v),
 		}
@@ -999,39 +999,39 @@ func wrapHTMLOptionsCollection(v Value) HTMLOptionsCollection {
 }
 
 func (p *htmlOptionsCollectionImpl) Length() int {
-	return p.Get("length").Int()
+	return p.get("length").toInt()
 }
 
 /* TODO setter
 func (p *htmlOptionsCollectionImpl) Set(index int,option HTMLOptionElement) {
-	p.Call("")
+	p.call("")
 }
 */
 
 func (p *htmlOptionsCollectionImpl) Add(element HTMLElement, before ...interface{}) {
 	switch len(before) {
 	case 0:
-		p.Call("add", JSValue(element))
+		p.call("add", JSValue(element))
 	default:
 		switch x := before[0].(type) {
 		case HTMLElement:
-			p.Call("add", JSValue(element), JSValue(x))
+			p.call("add", JSValue(element), JSValue(x))
 		case int:
-			p.Call("add", JSValue(element), x)
+			p.call("add", JSValue(element), x)
 		}
 	}
 }
 
 func (p *htmlOptionsCollectionImpl) Remove(index int) {
-	p.Call("remove", index)
+	p.call("remove", index)
 }
 
 func (p *htmlOptionsCollectionImpl) SelectedIndex() int {
-	return p.Get("selectedIndex").Int()
+	return p.get("selectedIndex").toInt()
 }
 
 func (p *htmlOptionsCollectionImpl) SetSelectedIndex(i int) {
-	p.Set("selectedIndex", i)
+	p.set("selectedIndex", i)
 }
 
 // -------------8<---------------------------------------
@@ -1050,7 +1050,7 @@ func NewHTMLDataListElement() HTMLDataListElement {
 }
 
 func wrapHTMLDataListElement(v Value) HTMLDataListElement {
-	if v.Valid() {
+	if v.valid() {
 		return &htmlDataListElementImpl{
 			htmlElementImpl: newHTMLElementImpl(v),
 		}
@@ -1059,7 +1059,7 @@ func wrapHTMLDataListElement(v Value) HTMLDataListElement {
 }
 
 func (p *htmlDataListElementImpl) Options() []HTMLOptionElement {
-	return htmlCollectionToHTMLOptionElementSlice(p.Get("options"))
+	return htmlCollectionToHTMLOptionElementSlice(p.get("options"))
 }
 
 // -------------8<---------------------------------------
@@ -1078,7 +1078,7 @@ func NewHTMLOptGroupElement() HTMLOptGroupElement {
 }
 
 func wrapHTMLOptGroupElement(v Value) HTMLOptGroupElement {
-	if v.Valid() {
+	if v.valid() {
 		return &htmlOptGroupElementImpl{
 			htmlElementImpl: newHTMLElementImpl(v),
 		}
@@ -1087,19 +1087,19 @@ func wrapHTMLOptGroupElement(v Value) HTMLOptGroupElement {
 }
 
 func (p *htmlOptGroupElementImpl) Disabled() bool {
-	return p.Get("disabled").Bool()
+	return p.get("disabled").toBool()
 }
 
 func (p *htmlOptGroupElementImpl) SetDisabled(b bool) {
-	p.Set("disabled", b)
+	p.set("disabled", b)
 }
 
 func (p *htmlOptGroupElementImpl) Label() string {
-	return p.Get("label").String()
+	return p.get("label").toString()
 }
 
 func (p *htmlOptGroupElementImpl) SetLabel(lbl string) {
-	p.Set("label", lbl)
+	p.set("label", lbl)
 }
 
 // -------------8<---------------------------------------
@@ -1118,7 +1118,7 @@ func NewHTMLOptionElement() HTMLOptionElement {
 }
 
 func wrapHTMLOptionElement(v Value) HTMLOptionElement {
-	if v.Valid() {
+	if v.valid() {
 		return &htmlOptionElementImpl{
 			htmlElementImpl: newHTMLElementImpl(v),
 		}
@@ -1127,59 +1127,59 @@ func wrapHTMLOptionElement(v Value) HTMLOptionElement {
 }
 
 func (p *htmlOptionElementImpl) Disabled() bool {
-	return p.Get("disabled").Bool()
+	return p.get("disabled").toBool()
 }
 
 func (p *htmlOptionElementImpl) SetDisabled(b bool) {
-	p.Set("disabled", b)
+	p.set("disabled", b)
 }
 
 func (p *htmlOptionElementImpl) Form() HTMLFormElement {
-	return wrapHTMLFormElement(p.Get("form"))
+	return wrapHTMLFormElement(p.get("form"))
 }
 
 func (p *htmlOptionElementImpl) Label() string {
-	return p.Get("label").String()
+	return p.get("label").toString()
 }
 
 func (p *htmlOptionElementImpl) SetLabel(lbl string) {
-	p.Set("label", lbl)
+	p.set("label", lbl)
 }
 
 func (p *htmlOptionElementImpl) DefaultSelected() bool {
-	return p.Get("defaultSelected").Bool()
+	return p.get("defaultSelected").toBool()
 }
 
 func (p *htmlOptionElementImpl) SetDefaultSelected(b bool) {
-	p.Set("defaultSelected", b)
+	p.set("defaultSelected", b)
 }
 
 func (p *htmlOptionElementImpl) Selected() bool {
-	return p.Get("selected").Bool()
+	return p.get("selected").toBool()
 }
 
 func (p *htmlOptionElementImpl) SetSelected(b bool) {
-	p.Set("selected", b)
+	p.set("selected", b)
 }
 
 func (p *htmlOptionElementImpl) Value() string {
-	return p.Get("value").String()
+	return p.get("value").toString()
 }
 
 func (p *htmlOptionElementImpl) SetValue(v string) {
-	p.Set("value", v)
+	p.set("value", v)
 }
 
 func (p *htmlOptionElementImpl) Text() string {
-	return p.Get("text").String()
+	return p.get("text").toString()
 }
 
 func (p *htmlOptionElementImpl) SetText(t string) {
-	p.Set("text", t)
+	p.set("text", t)
 }
 
 func (p *htmlOptionElementImpl) Index() int {
-	return p.Get("index").Int()
+	return p.get("index").toInt()
 }
 
 // -------------8<---------------------------------------
@@ -1198,7 +1198,7 @@ func NewHTMLTextAreaElement() HTMLTextAreaElement {
 }
 
 func wrapHTMLTextAreaElement(v Value) HTMLTextAreaElement {
-	if v.Valid() {
+	if v.valid() {
 		return &htmlTextAreaElementImpl{
 			htmlElementImpl: newHTMLElementImpl(v),
 		}
@@ -1207,208 +1207,208 @@ func wrapHTMLTextAreaElement(v Value) HTMLTextAreaElement {
 }
 
 func (p *htmlTextAreaElementImpl) Autocomplete() string {
-	return p.Get("autocomplete").String()
+	return p.get("autocomplete").toString()
 }
 
 func (p *htmlTextAreaElementImpl) SetAutocomplete(ac string) {
-	p.Set("autocomplete", ac)
+	p.set("autocomplete", ac)
 }
 
 func (p *htmlTextAreaElementImpl) Autofocus() bool {
-	return p.Get("autofocus").Bool()
+	return p.get("autofocus").toBool()
 }
 
 func (p *htmlTextAreaElementImpl) SetAutofocus(b bool) {
-	p.Set("autofocus", b)
+	p.set("autofocus", b)
 }
 
 func (p *htmlTextAreaElementImpl) Cols() int {
-	return p.Get("cols").Int()
+	return p.get("cols").toInt()
 }
 
 func (p *htmlTextAreaElementImpl) SetCols(c int) {
-	p.Set("cols", c)
+	p.set("cols", c)
 }
 
 func (p *htmlTextAreaElementImpl) DirName() string {
-	return p.Get("dirName").String()
+	return p.get("dirName").toString()
 }
 
 func (p *htmlTextAreaElementImpl) SetDirName(dn string) {
-	p.Set("dirName", dn)
+	p.set("dirName", dn)
 }
 
 func (p *htmlTextAreaElementImpl) Disabled() bool {
-	return p.Get("disabled").Bool()
+	return p.get("disabled").toBool()
 }
 
 func (p *htmlTextAreaElementImpl) SetDisabled(b bool) {
-	p.Set("disabled", b)
+	p.set("disabled", b)
 }
 
 func (p *htmlTextAreaElementImpl) Form() HTMLFormElement {
-	return wrapHTMLFormElement(p.Get("form"))
+	return wrapHTMLFormElement(p.get("form"))
 }
 
 func (p *htmlTextAreaElementImpl) MaxLength() int {
-	return p.Get("maxLength").Int()
+	return p.get("maxLength").toInt()
 }
 
 func (p *htmlTextAreaElementImpl) SetMaxLength(m int) {
-	p.Set("maxLength", m)
+	p.set("maxLength", m)
 }
 
 func (p *htmlTextAreaElementImpl) MinLength() int {
-	return p.Get("minLength").Int()
+	return p.get("minLength").toInt()
 }
 
 func (p *htmlTextAreaElementImpl) SetMinLength(m int) {
-	p.Set("minLength", m)
+	p.set("minLength", m)
 }
 
 func (p *htmlTextAreaElementImpl) Name() string {
-	return p.Get("name").String()
+	return p.get("name").toString()
 }
 
 func (p *htmlTextAreaElementImpl) SetName(name string) {
-	p.Set("name", name)
+	p.set("name", name)
 }
 
 func (p *htmlTextAreaElementImpl) Placeholder() string {
-	return p.Get("placeholder").String()
+	return p.get("placeholder").toString()
 }
 
 func (p *htmlTextAreaElementImpl) SetPlaceholder(h string) {
-	p.Set("placeholder", h)
+	p.set("placeholder", h)
 }
 
 func (p *htmlTextAreaElementImpl) ReadOnly() bool {
-	return p.Get("readOnly").Bool()
+	return p.get("readOnly").toBool()
 }
 
 func (p *htmlTextAreaElementImpl) SetReadOnly(b bool) {
-	p.Set("readOnly", b)
+	p.set("readOnly", b)
 }
 
 func (p *htmlTextAreaElementImpl) Required() bool {
-	return p.Get("_required").Bool()
+	return p.get("_required").toBool()
 }
 
 func (p *htmlTextAreaElementImpl) SetRequired(b bool) {
-	p.Set("_required", b)
+	p.set("_required", b)
 }
 
 func (p *htmlTextAreaElementImpl) Rows() int {
-	return p.Get("rows").Int()
+	return p.get("rows").toInt()
 }
 
 func (p *htmlTextAreaElementImpl) SetRows(r int) {
-	p.Set("rows", r)
+	p.set("rows", r)
 }
 
 func (p *htmlTextAreaElementImpl) Wrap() string {
-	return p.Get("wrap").String()
+	return p.get("wrap").toString()
 }
 
 func (p *htmlTextAreaElementImpl) SetWrap(w string) {
-	p.Set("wrap", w)
+	p.set("wrap", w)
 }
 
 func (p *htmlTextAreaElementImpl) Type() string {
-	return p.Get("type").String()
+	return p.get("type").toString()
 }
 
 func (p *htmlTextAreaElementImpl) DefaultValue() string {
-	return p.Get("defaultValue").String()
+	return p.get("defaultValue").toString()
 }
 
 func (p *htmlTextAreaElementImpl) SetDefaultValue(dv string) {
-	p.Set("defaultValue", dv)
+	p.set("defaultValue", dv)
 }
 
 func (p *htmlTextAreaElementImpl) Value() string {
-	return p.Get("value").String()
+	return p.get("value").toString()
 }
 
 func (p *htmlTextAreaElementImpl) SetValue(v string) {
-	p.Set("value", v)
+	p.set("value", v)
 }
 
 func (p *htmlTextAreaElementImpl) TextLength() int {
-	return p.Get("textLength").Int()
+	return p.get("textLength").toInt()
 }
 
 func (p *htmlTextAreaElementImpl) WillValidate() bool {
-	return p.Get("willValidate").Bool()
+	return p.get("willValidate").toBool()
 }
 
 func (p *htmlTextAreaElementImpl) Validity() ValidityState {
-	return wrapValidityState(p.Get("validity"))
+	return wrapValidityState(p.get("validity"))
 }
 
 func (p *htmlTextAreaElementImpl) ValidationMessage() string {
-	return p.Get("validationMessage").String()
+	return p.get("validationMessage").toString()
 }
 
 func (p *htmlTextAreaElementImpl) CheckValidity() bool {
-	return p.Call("checkValidity").Bool()
+	return p.call("checkValidity").toBool()
 }
 
 func (p *htmlTextAreaElementImpl) ReportValidity() bool {
-	return p.Call("reportValidity").Bool()
+	return p.call("reportValidity").toBool()
 }
 
 func (p *htmlTextAreaElementImpl) SetCustomValidity(e string) {
-	p.Call("setCustomValidity", e)
+	p.call("setCustomValidity", e)
 }
 
 func (p *htmlTextAreaElementImpl) Labels() []Node {
-	return nodeListToSlice(p.Get("labels"))
+	return nodeListToSlice(p.get("labels"))
 }
 
 func (p *htmlTextAreaElementImpl) Select() {
-	p.Call("select")
+	p.call("select")
 }
 
 func (p *htmlTextAreaElementImpl) SelectionStart() int {
-	return p.Get("selectionStart").Int()
+	return p.get("selectionStart").toInt()
 }
 
 func (p *htmlTextAreaElementImpl) SetSelectionStart(ss int) {
-	p.Set("selectionStart", ss)
+	p.set("selectionStart", ss)
 }
 
 func (p *htmlTextAreaElementImpl) SelectionEnd() int {
-	return p.Get("selectionEnd").Int()
+	return p.get("selectionEnd").toInt()
 }
 
 func (p *htmlTextAreaElementImpl) SetSelectionEnd(se int) {
-	p.Set("selectionEnd", se)
+	p.set("selectionEnd", se)
 }
 
 func (p *htmlTextAreaElementImpl) SelectionDirection() string {
-	return p.Get("selectionDirection").String()
+	return p.get("selectionDirection").toString()
 }
 
 func (p *htmlTextAreaElementImpl) SetSelectionDirection(sd string) {
-	p.Set("selectionDirection", sd)
+	p.set("selectionDirection", sd)
 }
 
 func (p *htmlTextAreaElementImpl) SetRangeText(r string, args ...interface{}) {
 	switch len(args) {
 	case 0:
-		p.Call("setRangeText", r)
+		p.call("setRangeText", r)
 	case 2:
 		if start, ok := args[0].(int); ok {
 			if end, ok := args[1].(int); ok {
-				p.Call("setRangeText", r, start, end)
+				p.call("setRangeText", r, start, end)
 			}
 		}
 	case 3:
 		if start, ok := args[0].(int); ok {
 			if end, ok := args[1].(int); ok {
 				if selectionMode, ok := args[2].(SelectionMode); ok {
-					p.Call("setRangeText", r, start, end, string(selectionMode))
+					p.call("setRangeText", r, start, end, string(selectionMode))
 				}
 			}
 		}
@@ -1418,9 +1418,9 @@ func (p *htmlTextAreaElementImpl) SetRangeText(r string, args ...interface{}) {
 func (p *htmlTextAreaElementImpl) SetSelectionRange(start int, end int, direction ...string) {
 	switch len(direction) {
 	case 0:
-		p.Call("setSelectionRange", start, end)
+		p.call("setSelectionRange", start, end)
 	default:
-		p.Call("setSelectionRange", start, end, direction[0])
+		p.call("setSelectionRange", start, end, direction[0])
 	}
 }
 
@@ -1440,7 +1440,7 @@ func NewHTMLOutputElement() HTMLOutputElement {
 }
 
 func wrapHTMLOutputElement(v Value) HTMLOutputElement {
-	if v.Valid() {
+	if v.valid() {
 		return &htmlOutputElementImpl{
 			htmlElementImpl: newHTMLElementImpl(v),
 		}
@@ -1449,67 +1449,67 @@ func wrapHTMLOutputElement(v Value) HTMLOutputElement {
 }
 
 func (p *htmlOutputElementImpl) HtmlFor() DOMTokenList {
-	return wrapDOMTokenList(p.Get("htmlFor"))
+	return wrapDOMTokenList(p.get("htmlFor"))
 }
 
 func (p *htmlOutputElementImpl) Form() HTMLFormElement {
-	return wrapHTMLFormElement(p.Get("form"))
+	return wrapHTMLFormElement(p.get("form"))
 }
 
 func (p *htmlOutputElementImpl) Name() string {
-	return p.Get("name").String()
+	return p.get("name").toString()
 }
 
 func (p *htmlOutputElementImpl) SetName(name string) {
-	p.Set("name", name)
+	p.set("name", name)
 }
 
 func (p *htmlOutputElementImpl) Type() string {
-	return p.Get("type").String()
+	return p.get("type").toString()
 }
 
 func (p *htmlOutputElementImpl) DefaultValue() string {
-	return p.Get("defaultValue").String()
+	return p.get("defaultValue").toString()
 }
 
 func (p *htmlOutputElementImpl) SetDefaultValue(dv string) {
-	p.Set("defaultValue", dv)
+	p.set("defaultValue", dv)
 }
 
 func (p *htmlOutputElementImpl) Value() string {
-	return p.Get("value").String()
+	return p.get("value").toString()
 }
 
 func (p *htmlOutputElementImpl) SetValue(v string) {
-	p.Set("value", v)
+	p.set("value", v)
 }
 
 func (p *htmlOutputElementImpl) WillValidate() bool {
-	return p.Get("willValidate").Bool()
+	return p.get("willValidate").toBool()
 }
 
 func (p *htmlOutputElementImpl) Validity() ValidityState {
-	return wrapValidityState(p.Get("validity"))
+	return wrapValidityState(p.get("validity"))
 }
 
 func (p *htmlOutputElementImpl) ValidationMessage() string {
-	return p.Get("validationMessage").String()
+	return p.get("validationMessage").toString()
 }
 
 func (p *htmlOutputElementImpl) CheckValidity() bool {
-	return p.Call("checkValidity").Bool()
+	return p.call("checkValidity").toBool()
 }
 
 func (p *htmlOutputElementImpl) ReportValidity() bool {
-	return p.Call("reportValidity").Bool()
+	return p.call("reportValidity").toBool()
 }
 
 func (p *htmlOutputElementImpl) SetCustomValidity(e string) {
-	p.Call("setCustomValidity", e)
+	p.call("setCustomValidity", e)
 }
 
 func (p *htmlOutputElementImpl) Labels() []Node {
-	return nodeListToSlice(p.Get("labels"))
+	return nodeListToSlice(p.get("labels"))
 }
 
 // -------------8<---------------------------------------
@@ -1528,7 +1528,7 @@ func NewHTMLProgressElement() HTMLProgressElement {
 }
 
 func wrapHTMLProgressElement(v Value) HTMLProgressElement {
-	if v.Valid() {
+	if v.valid() {
 		return &htmlProgressElementImpl{
 			htmlElementImpl: newHTMLElementImpl(v),
 		}
@@ -1537,27 +1537,27 @@ func wrapHTMLProgressElement(v Value) HTMLProgressElement {
 }
 
 func (p *htmlProgressElementImpl) Value() float64 {
-	return p.Get("value").Float()
+	return p.get("value").toFloat64()
 }
 
 func (p *htmlProgressElementImpl) SetValue(v float64) {
-	p.Set("value", v)
+	p.set("value", v)
 }
 
 func (p *htmlProgressElementImpl) Max() float64 {
-	return p.Get("max").Float()
+	return p.get("max").toFloat64()
 }
 
 func (p *htmlProgressElementImpl) SetMax(m float64) {
-	p.Set("max", m)
+	p.set("max", m)
 }
 
 func (p *htmlProgressElementImpl) Position() float64 {
-	return p.Get("position").Float()
+	return p.get("position").toFloat64()
 }
 
 func (p *htmlProgressElementImpl) Labels() []Node {
-	return nodeListToSlice(p.Get("labels"))
+	return nodeListToSlice(p.get("labels"))
 }
 
 // -------------8<---------------------------------------
@@ -1576,7 +1576,7 @@ func NewHTMLMeterElement() HTMLMeterElement {
 }
 
 func wrapHTMLMeterElement(v Value) HTMLMeterElement {
-	if v.Valid() {
+	if v.valid() {
 		return &htmlMeterElementImpl{
 			htmlElementImpl: newHTMLElementImpl(v),
 		}
@@ -1585,55 +1585,55 @@ func wrapHTMLMeterElement(v Value) HTMLMeterElement {
 }
 
 func (p *htmlMeterElementImpl) Value() float64 {
-	return p.Get("value").Float()
+	return p.get("value").toFloat64()
 }
 
 func (p *htmlMeterElementImpl) SetValue(v float64) {
-	p.Set("value", v)
+	p.set("value", v)
 }
 
 func (p *htmlMeterElementImpl) Min() float64 {
-	return p.Get("min").Float()
+	return p.get("min").toFloat64()
 }
 
 func (p *htmlMeterElementImpl) SetMin(m float64) {
-	p.Set("min", m)
+	p.set("min", m)
 }
 
 func (p *htmlMeterElementImpl) Max() float64 {
-	return p.Get("max").Float()
+	return p.get("max").toFloat64()
 }
 
 func (p *htmlMeterElementImpl) SetMax(m float64) {
-	p.Set("max", m)
+	p.set("max", m)
 }
 
 func (p *htmlMeterElementImpl) Low() float64 {
-	return p.Get("low").Float()
+	return p.get("low").toFloat64()
 }
 
 func (p *htmlMeterElementImpl) SetLow(v float64) {
-	p.Set("low", v)
+	p.set("low", v)
 }
 
 func (p *htmlMeterElementImpl) High() float64 {
-	return p.Get("high").Float()
+	return p.get("high").toFloat64()
 }
 
 func (p *htmlMeterElementImpl) SetHigh(v float64) {
-	p.Set("high", v)
+	p.set("high", v)
 }
 
 func (p *htmlMeterElementImpl) Optimum() float64 {
-	return p.Get("optimum").Float()
+	return p.get("optimum").toFloat64()
 }
 
 func (p *htmlMeterElementImpl) SetOptimum(v float64) {
-	p.Set("optimum", v)
+	p.set("optimum", v)
 }
 
 func (p *htmlMeterElementImpl) Labels() []Node {
-	return nodeListToSlice(p.Get("labels"))
+	return nodeListToSlice(p.get("labels"))
 }
 
 // -------------8<---------------------------------------
@@ -1652,7 +1652,7 @@ func NewHTMLFieldSetElement() HTMLFieldSetElement {
 }
 
 func wrapHTMLFieldSetElement(v Value) HTMLFieldSetElement {
-	if v.Valid() {
+	if v.valid() {
 		return &htmlFieldSetElementImpl{
 			htmlElementImpl: newHTMLElementImpl(v),
 		}
@@ -1661,55 +1661,55 @@ func wrapHTMLFieldSetElement(v Value) HTMLFieldSetElement {
 }
 
 func (p *htmlFieldSetElementImpl) Disabled() bool {
-	return p.Get("disabled").Bool()
+	return p.get("disabled").toBool()
 }
 
 func (p *htmlFieldSetElementImpl) SetDisabled(b bool) {
-	p.Set("disabled", b)
+	p.set("disabled", b)
 }
 
 func (p *htmlFieldSetElementImpl) Form() HTMLFormElement {
-	return wrapHTMLFormElement(p.Get("form"))
+	return wrapHTMLFormElement(p.get("form"))
 }
 
 func (p *htmlFieldSetElementImpl) Name() string {
-	return p.Get("name").String()
+	return p.get("name").toString()
 }
 
 func (p *htmlFieldSetElementImpl) SetName(name string) {
-	p.Set("name", name)
+	p.set("name", name)
 }
 
 func (p *htmlFieldSetElementImpl) Type() string {
-	return p.Get("type").String()
+	return p.get("type").toString()
 }
 
 func (p *htmlFieldSetElementImpl) Elements() []HTMLElement {
-	return htmlCollectionToHTMLElementSlice(p.Get("elements"))
+	return htmlCollectionToHTMLElementSlice(p.get("elements"))
 }
 
 func (p *htmlFieldSetElementImpl) WillValidate() bool {
-	return p.Get("willValidate").Bool()
+	return p.get("willValidate").toBool()
 }
 
 func (p *htmlFieldSetElementImpl) Validity() ValidityState {
-	return wrapValidityState(p.Get("validity"))
+	return wrapValidityState(p.get("validity"))
 }
 
 func (p *htmlFieldSetElementImpl) ValidationMessage() string {
-	return p.Get("validationMessage").String()
+	return p.get("validationMessage").toString()
 }
 
 func (p *htmlFieldSetElementImpl) CheckValidity() bool {
-	return p.Call("checkValidity").Bool()
+	return p.call("checkValidity").toBool()
 }
 
 func (p *htmlFieldSetElementImpl) ReportValidity() bool {
-	return p.Call("reportValidity").Bool()
+	return p.call("reportValidity").toBool()
 }
 
 func (p *htmlFieldSetElementImpl) SetCustomValidity(e string) {
-	p.Call("setCustomValidity", e)
+	p.call("setCustomValidity", e)
 }
 
 // -------------8<---------------------------------------
@@ -1728,7 +1728,7 @@ func NewHTMLLegendElement() HTMLLegendElement {
 }
 
 func wrapHTMLLegendElement(v Value) HTMLLegendElement {
-	if v.Valid() {
+	if v.valid() {
 		return &htmlLegendElementImpl{
 			htmlElementImpl: newHTMLElementImpl(v),
 		}
@@ -1737,7 +1737,7 @@ func wrapHTMLLegendElement(v Value) HTMLLegendElement {
 }
 
 func (p *htmlLegendElementImpl) Form() HTMLFormElement {
-	return wrapHTMLFormElement(p.Get("form"))
+	return wrapHTMLFormElement(p.get("form"))
 }
 
 // -------------8<---------------------------------------

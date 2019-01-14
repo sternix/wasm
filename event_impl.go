@@ -10,96 +10,96 @@ import (
 // -------------8<---------------------------------------
 
 func NewEvent(typ string, ei ...EventInit) Event {
-	if jsEvent := jsGlobal.Get("Event"); jsEvent.Valid() {
+	if jsEvent := jsGlobal.get("Event"); jsEvent.valid() {
 		switch len(ei) {
 		case 0:
-			return wrapEvent(jsEvent.New(typ))
+			return wrapEvent(jsEvent.jsNew(typ))
 		default:
-			return wrapEvent(jsEvent.New(typ, ei[0].toJSObject()))
+			return wrapEvent(jsEvent.jsNew(typ, ei[0].toJSObject()))
 		}
 	}
 	return nil
 }
 
 func NewCustomEvent(typ string, cei ...CustomEventInit) CustomEvent {
-	if jsCustomEvent := jsGlobal.Get("CustomEvent"); jsCustomEvent.Valid() {
+	if jsCustomEvent := jsGlobal.get("CustomEvent"); jsCustomEvent.valid() {
 		switch len(cei) {
 		case 0:
-			return wrapCustomEvent(jsCustomEvent.New(typ))
+			return wrapCustomEvent(jsCustomEvent.jsNew(typ))
 		default:
-			return wrapCustomEvent(jsCustomEvent.New(typ, cei[0].toJSObject()))
+			return wrapCustomEvent(jsCustomEvent.jsNew(typ, cei[0].toJSObject()))
 		}
 	}
 	return nil
 }
 
 func NewFocusEvent(typ string, ini ...FocusEventInit) FocusEvent {
-	if jsFocusEvent := jsGlobal.Get("FocusEvent"); jsFocusEvent.Valid() {
+	if jsFocusEvent := jsGlobal.get("FocusEvent"); jsFocusEvent.valid() {
 		switch len(ini) {
 		case 0:
-			return wrapFocusEvent(jsFocusEvent.New(typ))
+			return wrapFocusEvent(jsFocusEvent.jsNew(typ))
 		default:
-			return wrapFocusEvent(jsFocusEvent.New(typ, ini[0].toJSObject()))
+			return wrapFocusEvent(jsFocusEvent.jsNew(typ, ini[0].toJSObject()))
 		}
 	}
 	return nil
 }
 
 func NewMouseEvent(typ string, ini ...MouseEventInit) MouseEvent {
-	if jsMouseEvent := jsGlobal.Get("MouseEvent"); jsMouseEvent.Valid() {
+	if jsMouseEvent := jsGlobal.get("MouseEvent"); jsMouseEvent.valid() {
 		switch len(ini) {
 		case 0:
-			return wrapMouseEvent(jsMouseEvent.New(typ))
+			return wrapMouseEvent(jsMouseEvent.jsNew(typ))
 		default:
-			return wrapMouseEvent(jsMouseEvent.New(typ, ini[0].toJSObject()))
+			return wrapMouseEvent(jsMouseEvent.jsNew(typ, ini[0].toJSObject()))
 		}
 	}
 	return nil
 }
 
 func NewWheelEvent(typ string, ini ...WheelEventInit) WheelEvent {
-	if jsWheelEvent := jsGlobal.Get("WheelEvent"); jsWheelEvent.Valid() {
+	if jsWheelEvent := jsGlobal.get("WheelEvent"); jsWheelEvent.valid() {
 		switch len(ini) {
 		case 0:
-			return wrapWheelEvent(jsWheelEvent.New(typ))
+			return wrapWheelEvent(jsWheelEvent.jsNew(typ))
 		default:
-			return wrapWheelEvent(jsWheelEvent.New(typ, ini[0].toJSObject()))
+			return wrapWheelEvent(jsWheelEvent.jsNew(typ, ini[0].toJSObject()))
 		}
 	}
 	return nil
 }
 
 func NewInputEvent(typ string, ini ...InputEventInit) InputEvent {
-	if jsInputEvent := jsGlobal.Get("InputEvent"); jsInputEvent.Valid() {
+	if jsInputEvent := jsGlobal.get("InputEvent"); jsInputEvent.valid() {
 		switch len(ini) {
 		case 0:
-			return wrapInputEvent(jsInputEvent.New(typ))
+			return wrapInputEvent(jsInputEvent.jsNew(typ))
 		default:
-			return wrapInputEvent(jsInputEvent.New(typ, ini[0].toJSObject()))
+			return wrapInputEvent(jsInputEvent.jsNew(typ, ini[0].toJSObject()))
 		}
 	}
 	return nil
 }
 
 func NewKeyboardEvent(typ string, ini ...KeyboardEventInit) KeyboardEvent {
-	if jsKeyboardEvent := jsGlobal.Get("KeyboardEvent"); jsKeyboardEvent.Valid() {
+	if jsKeyboardEvent := jsGlobal.get("KeyboardEvent"); jsKeyboardEvent.valid() {
 		switch len(ini) {
 		case 0:
-			return wrapKeyboardEvent(jsKeyboardEvent.New(typ))
+			return wrapKeyboardEvent(jsKeyboardEvent.jsNew(typ))
 		default:
-			return wrapKeyboardEvent(jsKeyboardEvent.New(typ, ini[0].toJSObject()))
+			return wrapKeyboardEvent(jsKeyboardEvent.jsNew(typ, ini[0].toJSObject()))
 		}
 	}
 	return nil
 }
 
 func NewErrorEvent(typ string, eei ...ErrorEventInit) ErrorEvent {
-	if jsErrorEvent := jsGlobal.Get("ErrorEvent"); jsErrorEvent.Valid() {
+	if jsErrorEvent := jsGlobal.get("ErrorEvent"); jsErrorEvent.valid() {
 		switch len(eei) {
 		case 0:
-			return wrapErrorEvent(jsErrorEvent.New(typ))
+			return wrapErrorEvent(jsErrorEvent.jsNew(typ))
 		default:
-			return wrapErrorEvent(jsErrorEvent.New(typ, eei[0].toJSObject()))
+			return wrapErrorEvent(jsErrorEvent.jsNew(typ, eei[0].toJSObject()))
 		}
 	}
 	return nil
@@ -134,7 +134,7 @@ func (p *eventHandlerImpl) Release() {
 }
 
 func (p *eventHandlerImpl) Remove() {
-	p.Call("removeEventListener", p.typ, p.jsCb)
+	p.call("removeEventListener", p.typ, p.jsCb)
 	p.Release()
 }
 
@@ -152,7 +152,7 @@ func wrapEventTarget(v Value) EventTarget {
 }
 
 func newEventTargetImpl(v Value) *eventTargetImpl {
-	if v.Valid() {
+	if v.valid() {
 		return &eventTargetImpl{
 			Value: v,
 		}
@@ -168,13 +168,13 @@ func (p *eventTargetImpl) On(event string, fn func(ev Event)) EventHandler {
 	}
 
 	eh.jsCb = FuncOf(eh.jsFunc)
-	p.Call("addEventListener", event, eh.jsCb)
+	p.call("addEventListener", event, eh.jsCb)
 
 	return eh
 }
 
 func (p *eventTargetImpl) DispatchEvent(e Event) bool {
-	return p.Call("dispatchEvent", JSValue(e)).Bool()
+	return p.call("dispatchEvent", JSValue(e)).toBool()
 }
 
 // -------------8<---------------------------------------
@@ -191,7 +191,7 @@ func wrapEvent(v Value) Event {
 }
 
 func newEventImpl(v Value) *eventImpl {
-	if v.Valid() {
+	if v.valid() {
 		return &eventImpl{
 			Value: v,
 		}
@@ -200,19 +200,19 @@ func newEventImpl(v Value) *eventImpl {
 }
 
 func (p *eventImpl) Type() string {
-	return p.Get("type").String()
+	return p.get("type").toString()
 }
 
 func (p *eventImpl) Target() EventTarget {
-	return wrapAsEventTarget(p.Get("target"))
+	return wrapAsEventTarget(p.get("target"))
 }
 
 func (p *eventImpl) CurrentTarget() EventTarget {
-	return wrapAsEventTarget(p.Get("currentTarget"))
+	return wrapAsEventTarget(p.get("currentTarget"))
 }
 
 func (p *eventImpl) ComposedPath() []EventTarget {
-	if s := p.Call("composedPath").ToSlice(); s != nil {
+	if s := p.call("composedPath").toSlice(); s != nil {
 		ret := make([]EventTarget, len(s))
 		for i, v := range s {
 			ret[i] = wrapAsEventTarget(v)
@@ -223,43 +223,43 @@ func (p *eventImpl) ComposedPath() []EventTarget {
 }
 
 func (p *eventImpl) EventPhase() EventPhase {
-	return EventPhase(p.Get("eventPhase").Int())
+	return EventPhase(p.get("eventPhase").toInt())
 }
 
 func (p *eventImpl) StopPropagation() {
-	p.Call("stopPropagation")
+	p.call("stopPropagation")
 }
 
 func (p *eventImpl) StopImmediatePropagation() {
-	p.Call("stopImmediatePropagation")
+	p.call("stopImmediatePropagation")
 }
 
 func (p *eventImpl) Bubbles() bool {
-	return p.Get("bubbles").Bool()
+	return p.get("bubbles").toBool()
 }
 
 func (p *eventImpl) Cancelable() bool {
-	return p.Get("cancelable").Bool()
+	return p.get("cancelable").toBool()
 }
 
 func (p *eventImpl) PreventDefault() {
-	p.Call("preventDefault")
+	p.call("preventDefault")
 }
 
 func (p *eventImpl) DefaultPrevented() bool {
-	return p.Get("defaultPrevented").Bool()
+	return p.get("defaultPrevented").toBool()
 }
 
 func (p *eventImpl) Composed() bool {
-	return p.Get("composed").Bool()
+	return p.get("composed").toBool()
 }
 
 func (p *eventImpl) IsTrusted() bool {
-	return p.Get("isTrusted").Bool()
+	return p.get("isTrusted").toBool()
 }
 
 func (p *eventImpl) TimeStamp() time.Time {
-	ms := int64(p.Get("timeStamp").Float())
+	ms := int64(p.get("timeStamp").toFloat64())
 	return time.Unix(0, ms*int64(time.Millisecond))
 }
 
@@ -270,7 +270,7 @@ type customEventImpl struct {
 }
 
 func wrapCustomEvent(v Value) CustomEvent {
-	if v.Valid() {
+	if v.valid() {
 		return &customEventImpl{
 			eventImpl: newEventImpl(v),
 		}
@@ -279,27 +279,27 @@ func wrapCustomEvent(v Value) CustomEvent {
 }
 
 func (p *customEventImpl) Detail() interface{} {
-	return Wrap(p.Get("detail"))
+	return Wrap(p.get("detail"))
 }
 
 func (p *customEventImpl) InitCustomEvent(typ string, args ...interface{}) {
 	switch len(args) {
 	case 0:
-		p.Call("initCustomEvent", typ)
+		p.call("initCustomEvent", typ)
 	case 1:
 		if bubbles, ok := args[0].(bool); ok {
-			p.Call("initCustomEvent", typ, bubbles)
+			p.call("initCustomEvent", typ, bubbles)
 		}
 	case 2:
 		if bubbles, ok := args[0].(bool); ok {
 			if cancelable, ok := args[1].(bool); ok {
-				p.Call("initCustomEvent", typ, bubbles, cancelable)
+				p.call("initCustomEvent", typ, bubbles, cancelable)
 			}
 		}
 	case 3:
 		if bubbles, ok := args[0].(bool); ok {
 			if cancelable, ok := args[1].(bool); ok {
-				p.Call("initCustomEvent", typ, bubbles, cancelable, args[2])
+				p.call("initCustomEvent", typ, bubbles, cancelable, args[2])
 			}
 		}
 	}
@@ -867,7 +867,7 @@ type windowOrWorkerGlobalScopeImpl struct {
 }
 
 func newWindowOrWorkerGlobalScopeImpl(v Value) *windowOrWorkerGlobalScopeImpl {
-	if v.Valid() {
+	if v.valid() {
 		return &windowOrWorkerGlobalScopeImpl{
 			Value: v,
 		}
@@ -876,35 +876,35 @@ func newWindowOrWorkerGlobalScopeImpl(v Value) *windowOrWorkerGlobalScopeImpl {
 }
 
 func (p *windowOrWorkerGlobalScopeImpl) Origin() string {
-	return p.Get("origin").String()
+	return p.get("origin").toString()
 }
 
 func (p *windowOrWorkerGlobalScopeImpl) Btoa(btoa string) string {
-	return p.Call("btoa", btoa).String()
+	return p.call("btoa", btoa).toString()
 }
 
 func (p *windowOrWorkerGlobalScopeImpl) Atob(atob string) string {
-	return p.Call("atob", atob).String()
+	return p.call("atob", atob).toString()
 }
 
 func (p *windowOrWorkerGlobalScopeImpl) SetTimeout(cb TimerCallback, delay int) int {
-	return p.Call("setTimeout", cb.jsCallback(), delay).Int()
+	return p.call("setTimeout", cb.jsCallback(), delay).toInt()
 }
 
 func (p *windowOrWorkerGlobalScopeImpl) ClearTimeout(handle int) {
-	p.Call("clearTimeout", handle)
+	p.call("clearTimeout", handle)
 }
 
 func (p *windowOrWorkerGlobalScopeImpl) SetInterval(cb TimerCallback, delay int) int {
-	return p.Call("setInterval", cb.jsCallback(), delay).Int()
+	return p.call("setInterval", cb.jsCallback(), delay).toInt()
 }
 
 func (p *windowOrWorkerGlobalScopeImpl) ClearInterval(handle int) {
-	p.Call("clearInterval", handle)
+	p.call("clearInterval", handle)
 }
 
 func (p *windowOrWorkerGlobalScopeImpl) QueueMicrotask(vfn VoidFunction) {
-	p.Call("queueMicrotask", vfn.jsCallback())
+	p.call("queueMicrotask", vfn.jsCallback())
 }
 
 func (p *windowOrWorkerGlobalScopeImpl) CreateImageBitmap(image ImageBitmapSource, options ...ImageBitmapOptions) func() (ImageBitmap, error) {
@@ -916,9 +916,9 @@ func (p *windowOrWorkerGlobalScopeImpl) CreateImageBitmap(image ImageBitmapSourc
 
 		switch len(options) {
 		case 0:
-			result, ok = await(p.Call("createImageBitmap", JSValue(image)))
+			result, ok = await(p.call("createImageBitmap", JSValue(image)))
 		default:
-			result, ok = await(p.Call("createImageBitmap", JSValue(image), options[0].toJSObject()))
+			result, ok = await(p.call("createImageBitmap", JSValue(image), options[0].toJSObject()))
 		}
 
 		if ok {
@@ -938,9 +938,9 @@ func (p *windowOrWorkerGlobalScopeImpl) CreateImageBitmapWithSize(image ImageBit
 
 		switch len(options) {
 		case 0:
-			result, ok = await(p.Call("createImageBitmap", JSValue(image), sx, sy, sw, sh))
+			result, ok = await(p.call("createImageBitmap", JSValue(image), sx, sy, sw, sh))
 		default:
-			result, ok = await(p.Call("createImageBitmap", JSValue(image), sx, sy, sw, sh, options[0].toJSObject()))
+			result, ok = await(p.call("createImageBitmap", JSValue(image), sx, sy, sw, sh, options[0].toJSObject()))
 		}
 
 		if ok {
@@ -952,7 +952,7 @@ func (p *windowOrWorkerGlobalScopeImpl) CreateImageBitmapWithSize(image ImageBit
 }
 
 func (p *windowOrWorkerGlobalScopeImpl) IndexedDB() IDBFactory {
-	return wrapIDBFactory(p.Get("indexedDB"))
+	return wrapIDBFactory(p.get("indexedDB"))
 }
 
 func (p *windowOrWorkerGlobalScopeImpl) Fetch(input RequestInfo, ri ...RequestInit) func() (Response, error) {
@@ -974,9 +974,9 @@ func (p *windowOrWorkerGlobalScopeImpl) Fetch(input RequestInfo, ri ...RequestIn
 
 		switch len(ri) {
 		case 0:
-			result, ok = await(p.Call("fetch", in))
+			result, ok = await(p.call("fetch", in))
 		default:
-			result, ok = await(p.Call("fetch", in, ri[0].toJSObject()))
+			result, ok = await(p.call("fetch", in, ri[0].toJSObject()))
 		}
 
 		if ok {
@@ -1106,7 +1106,7 @@ func wrapUIEvent(v Value) UIEvent {
 }
 
 func newUIEventImpl(v Value) *uiEventImpl {
-	if v.Valid() {
+	if v.valid() {
 		return &uiEventImpl{
 			eventImpl: newEventImpl(v),
 		}
@@ -1115,11 +1115,11 @@ func newUIEventImpl(v Value) *uiEventImpl {
 }
 
 func (p *uiEventImpl) View() Window {
-	return wrapWindow(p.Get("view"))
+	return wrapWindow(p.get("view"))
 }
 
 func (p *uiEventImpl) Detail() int {
-	return p.Get("detail").Int()
+	return p.get("detail").toInt()
 }
 
 // -------------8<---------------------------------------
@@ -1136,7 +1136,7 @@ func wrapMouseEvent(v Value) MouseEvent {
 }
 
 func newMouseEventImpl(v Value) *mouseEventImpl {
-	if v.Valid() {
+	if v.valid() {
 		return &mouseEventImpl{
 			uiEventImpl: newUIEventImpl(v),
 		}
@@ -1145,75 +1145,75 @@ func newMouseEventImpl(v Value) *mouseEventImpl {
 }
 
 func (p *mouseEventImpl) ScreenX() float64 {
-	return p.Get("screenX").Float()
+	return p.get("screenX").toFloat64()
 }
 
 func (p *mouseEventImpl) ScreenY() float64 {
-	return p.Get("screenY").Float()
+	return p.get("screenY").toFloat64()
 }
 
 func (p *mouseEventImpl) ClientX() float64 {
-	return p.Get("clientX").Float()
+	return p.get("clientX").toFloat64()
 }
 
 func (p *mouseEventImpl) ClientY() float64 {
-	return p.Get("clientY").Float()
+	return p.get("clientY").toFloat64()
 }
 
 func (p *mouseEventImpl) CtrlKey() bool {
-	return p.Get("ctrlKey").Bool()
+	return p.get("ctrlKey").toBool()
 }
 
 func (p *mouseEventImpl) ShiftKey() bool {
-	return p.Get("shiftKey").Bool()
+	return p.get("shiftKey").toBool()
 }
 
 func (p *mouseEventImpl) AltKey() bool {
-	return p.Get("altKey").Bool()
+	return p.get("altKey").toBool()
 }
 
 func (p *mouseEventImpl) MetaKey() bool {
-	return p.Get("metaKey").Bool()
+	return p.get("metaKey").toBool()
 }
 
 func (p *mouseEventImpl) Button() int {
-	return p.Get("button").Int()
+	return p.get("button").toInt()
 }
 
 func (p *mouseEventImpl) Buttons() int {
-	return int(p.Get("buttons").Int())
+	return int(p.get("buttons").toInt())
 }
 
 func (p *mouseEventImpl) RelatedTarget() EventTarget {
-	return wrapAsEventTarget(p.Get("relatedTarget"))
+	return wrapAsEventTarget(p.get("relatedTarget"))
 }
 
 func (p *mouseEventImpl) ModifierState(keyArg string) bool {
-	return p.Call("getModifierState", keyArg).Bool()
+	return p.call("getModifierState", keyArg).toBool()
 }
 
 func (p *mouseEventImpl) PageX() float64 {
-	return p.Get("pageX").Float()
+	return p.get("pageX").toFloat64()
 }
 
 func (p *mouseEventImpl) PageY() float64 {
-	return p.Get("pageY").Float()
+	return p.get("pageY").toFloat64()
 }
 
 func (p *mouseEventImpl) X() float64 {
-	return p.Get("x").Float()
+	return p.get("x").toFloat64()
 }
 
 func (p *mouseEventImpl) Y() float64 {
-	return p.Get("y").Float()
+	return p.get("y").toFloat64()
 }
 
 func (p *mouseEventImpl) OffsetX() float64 {
-	return p.Get("offsetX").Float()
+	return p.get("offsetX").toFloat64()
 }
 
 func (p *mouseEventImpl) OffsetY() float64 {
-	return p.Get("offsetY").Float()
+	return p.get("offsetY").toFloat64()
 }
 
 // -------------8<---------------------------------------
@@ -1223,7 +1223,7 @@ type focusEventImpl struct {
 }
 
 func wrapFocusEvent(v Value) FocusEvent {
-	if v.Valid() {
+	if v.valid() {
 		return &focusEventImpl{
 			uiEventImpl: newUIEventImpl(v),
 		}
@@ -1232,7 +1232,7 @@ func wrapFocusEvent(v Value) FocusEvent {
 }
 
 func (p *focusEventImpl) RelatedTarget() EventTarget {
-	return newEventTargetImpl(p.Get("relatedTarget"))
+	return newEventTargetImpl(p.get("relatedTarget"))
 }
 
 // -------------8<---------------------------------------
@@ -1242,7 +1242,7 @@ type wheelEventImpl struct {
 }
 
 func wrapWheelEvent(v Value) WheelEvent {
-	if v.Valid() {
+	if v.valid() {
 		return &wheelEventImpl{
 			mouseEventImpl: newMouseEventImpl(v),
 		}
@@ -1251,19 +1251,19 @@ func wrapWheelEvent(v Value) WheelEvent {
 }
 
 func (p *wheelEventImpl) DeltaX() float64 {
-	return p.Get("deltaX").Float()
+	return p.get("deltaX").toFloat64()
 }
 
 func (p *wheelEventImpl) DeltaY() float64 {
-	return p.Get("deltaY").Float()
+	return p.get("deltaY").toFloat64()
 }
 
 func (p *wheelEventImpl) DeltaZ() float64 {
-	return p.Get("deltaZ").Float()
+	return p.get("deltaZ").toFloat64()
 }
 
 func (p *wheelEventImpl) DeltaMode() WheelEventDeltaMode {
-	return WheelEventDeltaMode(p.Get("deltaMode").Int())
+	return WheelEventDeltaMode(p.get("deltaMode").toInt())
 }
 
 // -------------8<---------------------------------------
@@ -1273,7 +1273,7 @@ type inputEventImpl struct {
 }
 
 func wrapInputEvent(v Value) InputEvent {
-	if v.Valid() {
+	if v.valid() {
 		return &inputEventImpl{
 			uiEventImpl: newUIEventImpl(v),
 		}
@@ -1282,11 +1282,11 @@ func wrapInputEvent(v Value) InputEvent {
 }
 
 func (p *inputEventImpl) Data() string {
-	return p.Get("data").String()
+	return p.get("data").toString()
 }
 
 func (p *inputEventImpl) IsComposing() bool {
-	return p.Get("isComposing").Bool()
+	return p.get("isComposing").toBool()
 }
 
 // -------------8<---------------------------------------
@@ -1296,7 +1296,7 @@ type keyboardEventImpl struct {
 }
 
 func wrapKeyboardEvent(v Value) KeyboardEvent {
-	if v.Valid() {
+	if v.valid() {
 		return &keyboardEventImpl{
 			uiEventImpl: newUIEventImpl(v),
 		}
@@ -1305,43 +1305,43 @@ func wrapKeyboardEvent(v Value) KeyboardEvent {
 }
 
 func (p *keyboardEventImpl) Key() string {
-	return p.Get("key").String()
+	return p.get("key").toString()
 }
 
 func (p *keyboardEventImpl) Code() string {
-	return p.Get("code").String()
+	return p.get("code").toString()
 }
 
 func (p *keyboardEventImpl) Location() int {
-	return p.Get("location").Int()
+	return p.get("location").toInt()
 }
 
 func (p *keyboardEventImpl) CtrlKey() bool {
-	return p.Get("ctrlKey").Bool()
+	return p.get("ctrlKey").toBool()
 }
 
 func (p *keyboardEventImpl) ShiftKey() bool {
-	return p.Get("shiftKey").Bool()
+	return p.get("shiftKey").toBool()
 }
 
 func (p *keyboardEventImpl) AltKey() bool {
-	return p.Get("altKey").Bool()
+	return p.get("altKey").toBool()
 }
 
 func (p *keyboardEventImpl) MetaKey() bool {
-	return p.Get("metaKey").Bool()
+	return p.get("metaKey").toBool()
 }
 
 func (p *keyboardEventImpl) Repeat() bool {
-	return p.Get("repeat").Bool()
+	return p.get("repeat").toBool()
 }
 
 func (p *keyboardEventImpl) IsComposing() bool {
-	return p.Get("isComposing").Bool()
+	return p.get("isComposing").toBool()
 }
 
 func (p *keyboardEventImpl) ModifierState(keyArg string) bool {
-	return p.Call("getModifierState", keyArg).Bool()
+	return p.call("getModifierState", keyArg).toBool()
 }
 
 // -------------8<---------------------------------------
@@ -1351,7 +1351,7 @@ type compositionEventImpl struct {
 }
 
 func wrapCompositionEvent(v Value) CompositionEvent {
-	if v.Valid() {
+	if v.valid() {
 		return &compositionEventImpl{
 			uiEventImpl: newUIEventImpl(v),
 		}
@@ -1360,7 +1360,7 @@ func wrapCompositionEvent(v Value) CompositionEvent {
 }
 
 func (p *compositionEventImpl) Data() string {
-	return p.Get("data").String()
+	return p.get("data").toString()
 }
 
 // -------------8<---------------------------------------
@@ -1370,7 +1370,7 @@ type errorEventImpl struct {
 }
 
 func wrapErrorEvent(v Value) ErrorEvent {
-	if v.Valid() {
+	if v.valid() {
 		return &errorEventImpl{
 			eventImpl: newEventImpl(v),
 		}
@@ -1379,23 +1379,23 @@ func wrapErrorEvent(v Value) ErrorEvent {
 }
 
 func (p *errorEventImpl) Message() string {
-	return p.Get("message").String()
+	return p.get("message").toString()
 }
 
 func (p *errorEventImpl) Filename() string {
-	return p.Get("filename").String()
+	return p.get("filename").toString()
 }
 
 func (p *errorEventImpl) Lineno() int {
-	return p.Get("lineno").Int()
+	return p.get("lineno").toInt()
 }
 
 func (p *errorEventImpl) Colno() int {
-	return p.Get("colno").Int()
+	return p.get("colno").toInt()
 }
 
 func (p *errorEventImpl) Error() string {
-	return p.Get("error").String() // TODO: test this
+	return p.get("error").toString() // TODO: test this
 }
 
 // -------------8<---------------------------------------
@@ -1405,19 +1405,19 @@ type transitionEventImpl struct {
 }
 
 func NewTransitionEvent(typ string, tei ...TransitionEventInit) TransitionEvent {
-	if jsTe := jsGlobal.Get("TransitionEvent"); jsTe.Valid() {
+	if jsTe := jsGlobal.get("TransitionEvent"); jsTe.valid() {
 		switch len(tei) {
 		case 0:
-			return wrapTransitionEvent(jsTe.New(typ))
+			return wrapTransitionEvent(jsTe.jsNew(typ))
 		default:
-			return wrapTransitionEvent(jsTe.New(typ, tei[0].toJSObject()))
+			return wrapTransitionEvent(jsTe.jsNew(typ, tei[0].toJSObject()))
 		}
 	}
 	return nil
 }
 
 func wrapTransitionEvent(v Value) TransitionEvent {
-	if v.Valid() {
+	if v.valid() {
 		return &transitionEventImpl{
 			eventImpl: newEventImpl(v),
 		}
@@ -1426,15 +1426,15 @@ func wrapTransitionEvent(v Value) TransitionEvent {
 }
 
 func (p *transitionEventImpl) PropertyName() string {
-	return p.Get("propertyName").String()
+	return p.get("propertyName").toString()
 }
 
 func (p *transitionEventImpl) ElapsedTime() float64 {
-	return p.Get("elapsedTime").Float()
+	return p.get("elapsedTime").toFloat64()
 }
 
 func (p *transitionEventImpl) PseudoElement() string {
-	return p.Get("pseudoElement").String()
+	return p.get("pseudoElement").toString()
 }
 
 // -------------8<---------------------------------------
@@ -1444,19 +1444,19 @@ type pointerEventImpl struct {
 }
 
 func NewPointerEvent(typ string, pei ...PointerEventInit) PointerEvent {
-	if jsPe := jsGlobal.Get("PointerEvent"); jsPe.Valid() {
+	if jsPe := jsGlobal.get("PointerEvent"); jsPe.valid() {
 		switch len(pei) {
 		case 0:
-			return wrapPointerEvent(jsPe.New(typ))
+			return wrapPointerEvent(jsPe.jsNew(typ))
 		default:
-			return wrapPointerEvent(jsPe.New(typ, pei[0].toJSObject()))
+			return wrapPointerEvent(jsPe.jsNew(typ, pei[0].toJSObject()))
 		}
 	}
 	return nil
 }
 
 func wrapPointerEvent(v Value) PointerEvent {
-	if v.Valid() {
+	if v.valid() {
 		return &pointerEventImpl{
 			mouseEventImpl: newMouseEventImpl(v),
 		}
@@ -1465,41 +1465,41 @@ func wrapPointerEvent(v Value) PointerEvent {
 }
 
 func (p *pointerEventImpl) PointerId() int {
-	return p.Get("pointerId").Int()
+	return p.get("pointerId").toInt()
 }
 
 func (p *pointerEventImpl) Width() float64 {
-	return p.Get("width").Float()
+	return p.get("width").toFloat64()
 }
 
 func (p *pointerEventImpl) Height() float64 {
-	return p.Get("height").Float()
+	return p.get("height").toFloat64()
 }
 
 func (p *pointerEventImpl) Pressure() float64 {
-	return p.Get("pressure").Float()
+	return p.get("pressure").toFloat64()
 }
 
 func (p *pointerEventImpl) TangentialPressure() float64 {
-	return p.Get("tangentialPressure").Float()
+	return p.get("tangentialPressure").toFloat64()
 }
 
 func (p *pointerEventImpl) TiltX() int {
-	return p.Get("tiltX").Int()
+	return p.get("tiltX").toInt()
 }
 
 func (p *pointerEventImpl) TiltY() int {
-	return p.Get("tiltY").Int()
+	return p.get("tiltY").toInt()
 }
 
 func (p *pointerEventImpl) Twist() int {
-	return p.Get("twist").Int()
+	return p.get("twist").toInt()
 }
 
 func (p *pointerEventImpl) PointerType() string {
-	return p.Get("pointerType").String()
+	return p.get("pointerType").toString()
 }
 
 func (p *pointerEventImpl) IsPrimary() bool {
-	return p.Get("isPrimary").Bool()
+	return p.get("isPrimary").toBool()
 }

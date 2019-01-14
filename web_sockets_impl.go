@@ -9,26 +9,26 @@ import (
 // -------------8<---------------------------------------
 
 func NewWebSocket(url string, protocols ...string) WebSocket {
-	if jsWebSocket := jsGlobal.Get("WebSocket"); jsWebSocket.Valid() {
+	if jsWebSocket := jsGlobal.get("WebSocket"); jsWebSocket.valid() {
 		switch len(protocols) {
 		case 0:
-			return wrapWebSocket(jsWebSocket.New(url))
+			return wrapWebSocket(jsWebSocket.jsNew(url))
 		case 1:
-			return wrapWebSocket(jsWebSocket.New(url, protocols[0]))
+			return wrapWebSocket(jsWebSocket.jsNew(url, protocols[0]))
 		default:
-			return wrapWebSocket(jsWebSocket.New(url, sliceToJsArray(protocols)))
+			return wrapWebSocket(jsWebSocket.jsNew(url, sliceToJsArray(protocols)))
 		}
 	}
 	return nil
 }
 
 func NewCloseEvent(typ string, cei ...CloseEventInit) CloseEvent {
-	if jsCloseEvent := jsGlobal.Get("CloseEvent"); jsCloseEvent.Valid() {
+	if jsCloseEvent := jsGlobal.get("CloseEvent"); jsCloseEvent.valid() {
 		switch len(cei) {
 		case 0:
-			return wrapCloseEvent(jsCloseEvent.New(typ))
+			return wrapCloseEvent(jsCloseEvent.jsNew(typ))
 		default:
-			return wrapCloseEvent(jsCloseEvent.New(typ, cei[0].toJSObject()))
+			return wrapCloseEvent(jsCloseEvent.jsNew(typ, cei[0].toJSObject()))
 		}
 	}
 	return nil
@@ -41,7 +41,7 @@ type webSocketImpl struct {
 }
 
 func wrapWebSocket(v Value) WebSocket {
-	if v.Valid() {
+	if v.valid() {
 		return &webSocketImpl{
 			eventTargetImpl: newEventTargetImpl(v),
 		}
@@ -50,15 +50,15 @@ func wrapWebSocket(v Value) WebSocket {
 }
 
 func (p *webSocketImpl) URL() string {
-	return p.Get("url").String()
+	return p.get("url").toString()
 }
 
 func (p *webSocketImpl) ReadyState() WebSocketReadyState {
-	return WebSocketReadyState(p.Get("readyState").Int())
+	return WebSocketReadyState(p.get("readyState").toInt())
 }
 
 func (p *webSocketImpl) BufferedAmount() int {
-	return p.Get("bufferedAmount").Int()
+	return p.get("bufferedAmount").toInt()
 }
 
 func (p *webSocketImpl) OnOpen(fn func(Event)) EventHandler {
@@ -82,25 +82,25 @@ func (p *webSocketImpl) OnClose(fn func(CloseEvent)) EventHandler {
 }
 
 func (p *webSocketImpl) Extensions() string {
-	return p.Get("extensions").String()
+	return p.get("extensions").toString()
 }
 
 func (p *webSocketImpl) Protocol() string {
-	return p.Get("protocol").String()
+	return p.get("protocol").toString()
 }
 
 func (p *webSocketImpl) Close(args ...interface{}) {
 	switch len(args) {
 	case 0:
-		p.Call("close")
+		p.call("close")
 	case 1:
 		if code, ok := args[0].(int); ok {
-			p.Call("close", code)
+			p.call("close", code)
 		}
 	case 2:
 		if code, ok := args[0].(int); ok {
 			if reason, ok := args[1].(string); ok {
-				p.Call("close", code, reason)
+				p.call("close", code, reason)
 			}
 		}
 	}
@@ -115,24 +115,24 @@ func (p *webSocketImpl) OnMessage(fn func(MessageEvent)) EventHandler {
 }
 
 func (p *webSocketImpl) BinaryType() BinaryType {
-	return BinaryType(p.Get("binaryType").String())
+	return BinaryType(p.get("binaryType").toString())
 }
 
 func (p *webSocketImpl) SetBinaryType(bt BinaryType) {
-	p.Set("binaryType", bt)
+	p.set("binaryType", bt)
 }
 
 func (p *webSocketImpl) Send(typ interface{}) {
 	switch x := typ.(type) {
 	case string:
-		p.Call("send", x)
+		p.call("send", x)
 	case []byte:
 		ta := js.TypedArrayOf(x)
 		blob := NewBlob(ta)
-		p.Call("send", JSValue(blob))
+		p.call("send", JSValue(blob))
 		ta.Release()
 	case Blob, ArrayBuffer, ArrayBufferView:
-		p.Call("send", JSValue(x))
+		p.call("send", JSValue(x))
 	}
 }
 
@@ -143,7 +143,7 @@ type closeEventImpl struct {
 }
 
 func wrapCloseEvent(v Value) CloseEvent {
-	if v.Valid() {
+	if v.valid() {
 		return &closeEventImpl{
 			eventImpl: newEventImpl(v),
 		}
@@ -152,15 +152,15 @@ func wrapCloseEvent(v Value) CloseEvent {
 }
 
 func (p *closeEventImpl) WasClean() bool {
-	return p.Get("wasClean").Bool()
+	return p.get("wasClean").toBool()
 }
 
 func (p *closeEventImpl) Code() int {
-	return p.Get("code").Int()
+	return p.get("code").toInt()
 }
 
 func (p *closeEventImpl) Reason() string {
-	return p.Get("reason").String()
+	return p.get("reason").toString()
 }
 
 // -------------8<---------------------------------------

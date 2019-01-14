@@ -16,7 +16,7 @@ func wrapTextDecoderCommon(v Value) TextDecoderCommon {
 }
 
 func newTextDecoderCommonImpl(v Value) *textDecoderCommonImpl {
-	if v.Valid() {
+	if v.valid() {
 		return &textDecoderCommonImpl{
 			Value: v,
 		}
@@ -25,15 +25,15 @@ func newTextDecoderCommonImpl(v Value) *textDecoderCommonImpl {
 }
 
 func (p *textDecoderCommonImpl) Encoding() string {
-	return p.Get("encoding").String()
+	return p.get("encoding").toString()
 }
 
 func (p *textDecoderCommonImpl) Fatal() bool {
-	return p.Get("fatal").Bool()
+	return p.get("fatal").toBool()
 }
 
 func (p *textDecoderCommonImpl) IgnoreBOM() bool {
-	return p.Get("ignoreBOM").Bool()
+	return p.get("ignoreBOM").toBool()
 }
 
 // -------------8<---------------------------------------
@@ -43,7 +43,7 @@ type textDecoderImpl struct {
 }
 
 func wrapTextDecoder(v Value) TextDecoder {
-	if v.Valid() {
+	if v.valid() {
 		return &textDecoderImpl{
 			textDecoderCommonImpl: newTextDecoderCommonImpl(v),
 		}
@@ -55,17 +55,17 @@ func (p *textDecoderImpl) Decode(args ...interface{}) string {
 	switch len(args) {
 	case 1:
 		if input, ok := args[0].(BufferSource); ok {
-			return p.Call("decode", JSValue(input)).String()
+			return p.call("decode", JSValue(input)).toString()
 		}
 	case 2:
 		if input, ok := args[0].(BufferSource); ok {
 			if options, ok := args[1].(TextDecodeOptions); ok {
-				return p.Call("decode", JSValue(input), options.toJSObject()).String()
+				return p.call("decode", JSValue(input), options.toJSObject()).toString()
 			}
 		}
 	}
 
-	return p.Call("decode").String()
+	return p.call("decode").toString()
 }
 
 // -------------8<---------------------------------------
@@ -82,7 +82,7 @@ func wrapTextEncoderCommon(v Value) TextEncoderCommon {
 }
 
 func newTextEncoderCommonImpl(v Value) *textEncoderCommonImpl {
-	if v.Valid() {
+	if v.valid() {
 		return &textEncoderCommonImpl{
 			Value: v,
 		}
@@ -91,7 +91,7 @@ func newTextEncoderCommonImpl(v Value) *textEncoderCommonImpl {
 }
 
 func (p *textEncoderCommonImpl) Encoding() string {
-	return p.Get("encoding").String()
+	return p.get("encoding").toString()
 }
 
 // -------------8<---------------------------------------
@@ -101,7 +101,7 @@ type textEncoderImpl struct {
 }
 
 func wrapTextEncoder(v Value) TextEncoder {
-	if v.Valid() {
+	if v.valid() {
 		return &textEncoderImpl{
 			textEncoderCommonImpl: newTextEncoderCommonImpl(v),
 		}
@@ -111,10 +111,10 @@ func wrapTextEncoder(v Value) TextEncoder {
 
 func (p *textEncoderImpl) Encode(input ...string) []byte {
 	if len(input) > 0 {
-		return uint8ArrayToByteSlice(p.Call("encode", input[0]))
+		return uint8ArrayToByteSlice(p.call("encode", input[0]))
 	}
 
-	return uint8ArrayToByteSlice(p.Call("encode"))
+	return uint8ArrayToByteSlice(p.call("encode"))
 }
 
 // -------------8<---------------------------------------
@@ -131,7 +131,7 @@ func wrapGenericTransformStream(v Value) GenericTransformStream {
 }
 
 func newGenericTransformStreamImpl(v Value) *genericTransformStreamImpl {
-	if v.Valid() {
+	if v.valid() {
 		return &genericTransformStreamImpl{
 			Value: v,
 		}
@@ -140,11 +140,11 @@ func newGenericTransformStreamImpl(v Value) *genericTransformStreamImpl {
 }
 
 func (p *genericTransformStreamImpl) Readable() ReadableStream {
-	return wrapReadableStream(p.Get("readable"))
+	return wrapReadableStream(p.get("readable"))
 }
 
 func (p *genericTransformStreamImpl) Writable() WritableStream {
-	return wrapWritableStream(p.Get("writable"))
+	return wrapWritableStream(p.get("writable"))
 }
 
 // -------------8<---------------------------------------
@@ -155,7 +155,7 @@ type textDecoderStreamImpl struct {
 }
 
 func wrapTextDecoderStream(v Value) TextDecoderStream {
-	if v.Valid() {
+	if v.valid() {
 		return &textDecoderStreamImpl{
 			textDecoderCommonImpl:      newTextDecoderCommonImpl(v),
 			genericTransformStreamImpl: newGenericTransformStreamImpl(v),
@@ -172,7 +172,7 @@ type textEncoderStreamImpl struct {
 }
 
 func wrapTextEncoderStream(v Value) TextEncoderStream {
-	if v.Valid() {
+	if v.valid() {
 		return &textEncoderStreamImpl{
 			textEncoderCommonImpl:      newTextEncoderCommonImpl(v),
 			genericTransformStreamImpl: newGenericTransformStreamImpl(v),
@@ -184,45 +184,45 @@ func wrapTextEncoderStream(v Value) TextEncoderStream {
 // -------------8<---------------------------------------
 
 func NewTextDecoderStream(args ...interface{}) TextDecoderStream {
-	jsDecStream := jsGlobal.Get("TextDecoderStream")
+	jsDecStream := jsGlobal.get("TextDecoderStream")
 	switch len(args) {
 	case 1:
 		if label, ok := args[0].(string); ok {
-			return wrapTextDecoderStream(jsDecStream.New(label))
+			return wrapTextDecoderStream(jsDecStream.jsNew(label))
 		}
 	case 2:
 		if label, ok := args[0].(string); ok {
 			if options, ok := args[1].(TextDecoderOptions); ok {
-				return wrapTextDecoderStream(jsDecStream.New(label, options.toJSObject()))
+				return wrapTextDecoderStream(jsDecStream.jsNew(label, options.toJSObject()))
 			}
 		}
 	}
 
-	return wrapTextDecoderStream(jsDecStream.New())
+	return wrapTextDecoderStream(jsDecStream.jsNew())
 }
 
 func NewTextDecoder(args ...interface{}) TextDecoder {
-	jsTextDecoder := jsGlobal.Get("TextDecoder")
+	jsTextDecoder := jsGlobal.get("TextDecoder")
 	switch len(args) {
 	case 1:
 		if label, ok := args[0].(string); ok {
-			return wrapTextDecoder(jsTextDecoder.New(label))
+			return wrapTextDecoder(jsTextDecoder.jsNew(label))
 		}
 	case 2:
 		if label, ok := args[0].(string); ok {
 			if options, ok := args[1].(TextDecoderOptions); ok {
-				return wrapTextDecoder(jsTextDecoder.New(label, options.toJSObject()))
+				return wrapTextDecoder(jsTextDecoder.jsNew(label, options.toJSObject()))
 			}
 		}
 	}
 
-	return wrapTextDecoder(jsTextDecoder.New())
+	return wrapTextDecoder(jsTextDecoder.jsNew())
 }
 
 func NewTextEncoderStream() TextEncoderStream {
-	return wrapTextEncoderStream(jsGlobal.Get("TextEncoderStream").New())
+	return wrapTextEncoderStream(jsGlobal.get("TextEncoderStream").jsNew())
 }
 
 func NewTextEncoder() TextEncoder {
-	return wrapTextEncoder(jsGlobal.Get("TextEncoder").New())
+	return wrapTextEncoder(jsGlobal.get("TextEncoder").jsNew())
 }

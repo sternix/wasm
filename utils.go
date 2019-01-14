@@ -13,17 +13,17 @@ import (
 var (
 	errUnsupporttedType = errors.New("Unsupported Type")
 	errInvalidType      = errors.New("Invalid Type")
-	jsArray             = jsGlobal.Get("Array")
-	//jsObject            = jsGlobal.Get("Object")
-	//jsTypeFunc          = jsObject.Get("prototype").Get("toString")
-	//jsTypeFunc = jsGlobal.Get("Object").Get("prototype").Get("toString")
-	jsDate        = jsGlobal.Get("Date")
+	jsArray             = jsGlobal.get("Array")
+	//jsObject            = jsGlobal.get("Object")
+	//jsTypeFunc          = jsObject.get("prototype").get("toString")
+	//jsTypeFunc = jsGlobal.get("Object").get("prototype").get("toString")
+	jsDate        = jsGlobal.get("Date")
 	jsWindowProxy = jsGlobal
-	jsMessagePort = jsGlobal.Get("MessagePort")
-	jsUint8Array  = jsGlobal.Get("Uint8Array")
-	//jsUint8ClampedArray = jsGlobal.Get("Uint8ClampedArray")
-	//jsBufferSource      = jsGlobal.Get("BufferSource") --> typedef
-	jsJSON = jsGlobal.Get("JSON")
+	jsMessagePort = jsGlobal.get("MessagePort")
+	jsUint8Array  = jsGlobal.get("Uint8Array")
+	//jsUint8ClampedArray = jsGlobal.get("Uint8ClampedArray")
+	//jsBufferSource      = jsGlobal.get("BufferSource") --> typedef
+	jsJSON = jsGlobal.get("JSON")
 )
 
 // -------------8<---------------------------------------
@@ -31,58 +31,58 @@ var (
 func sliceToJsArray(slc interface{}) Value {
 	switch x := slc.(type) {
 	case []string:
-		arr := jsArray.New(len(x))
+		arr := jsArray.jsNew(len(x))
 		for i, s := range x {
-			arr.SetIndex(i, s)
+			arr.setIndex(i, s)
 		}
 		return arr
 	case []float64:
-		arr := jsArray.New(len(x))
+		arr := jsArray.jsNew(len(x))
 		for i, s := range x {
-			arr.SetIndex(i, s)
+			arr.setIndex(i, s)
 		}
 		return arr
 	case []int:
-		arr := jsArray.New(len(x))
+		arr := jsArray.jsNew(len(x))
 		for i, s := range x {
-			arr.SetIndex(i, s)
+			arr.setIndex(i, s)
 		}
 		return arr
 	case []uint:
-		arr := jsArray.New(len(x))
+		arr := jsArray.jsNew(len(x))
 		for i, s := range x {
-			arr.SetIndex(i, s)
+			arr.setIndex(i, s)
 		}
 		return arr
 	case []byte:
-		arr := jsArray.New(len(x))
+		arr := jsArray.jsNew(len(x))
 		for i, s := range x {
-			arr.SetIndex(i, s)
+			arr.setIndex(i, s)
 		}
 		return arr
 	case []Value:
-		arr := jsArray.New(len(x))
+		arr := jsArray.jsNew(len(x))
 		for i, s := range x {
-			arr.SetIndex(i, s)
+			arr.setIndex(i, s)
 		}
 		return arr
 	case []bool:
-		arr := jsArray.New(len(x))
+		arr := jsArray.jsNew(len(x))
 		for i, b := range x {
-			arr.SetIndex(i, b)
+			arr.setIndex(i, b)
 		}
 		return arr
 	case []Touch:
-		arr := jsArray.New(len(x))
+		arr := jsArray.jsNew(len(x))
 		for i, t := range x {
-			arr.SetIndex(i, JSValue(t))
+			arr.setIndex(i, JSValue(t))
 		}
 		return arr
 
 	case []MessagePort:
-		arr := jsArray.New(len(x))
+		arr := jsArray.jsNew(len(x))
 		for i, t := range x {
-			arr.SetIndex(i, JSValue(t))
+			arr.setIndex(i, JSValue(t))
 		}
 		return arr
 	default:
@@ -95,10 +95,10 @@ func sliceToJsArray(slc interface{}) Value {
 // -------------8<---------------------------------------
 
 func nodeListToSlice(v Value) []Node {
-	if v.Valid() && v.Length() > 0 {
-		ret := make([]Node, v.Length())
+	if v.valid() && v.length() > 0 {
+		ret := make([]Node, v.length())
 		for i := range ret {
-			ret[i] = wrapAsNode(v.Index(i))
+			ret[i] = wrapAsNode(v.index(i))
 		}
 		return ret
 	}
@@ -108,9 +108,9 @@ func nodeListToSlice(v Value) []Node {
 // -------------8<---------------------------------------
 
 func elementArrayToSlice(v Value) []Element {
-	ret := make([]Element, v.Length())
+	ret := make([]Element, v.length())
 	for i := range ret {
-		ret[i] = wrapAsElement(v.Index(i))
+		ret[i] = wrapAsElement(v.index(i))
 	}
 	return ret
 }
@@ -118,10 +118,10 @@ func elementArrayToSlice(v Value) []Element {
 // -------------8<---------------------------------------
 
 func domQuadArrayToSlice(v Value) []DOMQuad {
-	if v.Valid() && v.Length() > 0 {
-		ret := make([]DOMQuad, v.Length())
+	if v.valid() && v.length() > 0 {
+		ret := make([]DOMQuad, v.length())
 		for i := range ret {
-			ret[i] = wrapDOMQuad(v.Index(i))
+			ret[i] = wrapDOMQuad(v.index(i))
 		}
 		return ret
 	}
@@ -132,10 +132,10 @@ func domQuadArrayToSlice(v Value) []DOMQuad {
 // -------------8<---------------------------------------
 
 func stringSequenceToSlice(s Value) []string {
-	if s.Valid() && s.Length() > 0 {
-		ret := make([]string, s.Length())
+	if s.valid() && s.length() > 0 {
+		ret := make([]string, s.length())
 		for i := range ret {
-			ret[i] = s.Index(i).String()
+			ret[i] = s.index(i).toString()
 		}
 		return ret
 	}
@@ -145,10 +145,10 @@ func stringSequenceToSlice(s Value) []string {
 // -------------8<---------------------------------------
 
 func boolSequenceToSlice(s Value) []bool {
-	if s.Valid() && s.Length() > 0 {
-		ret := make([]bool, s.Length())
+	if s.valid() && s.length() > 0 {
+		ret := make([]bool, s.length())
 		for i := range ret {
-			ret[i] = s.Index(i).Bool()
+			ret[i] = s.index(i).toBool()
 		}
 		return ret
 	}
@@ -158,10 +158,10 @@ func boolSequenceToSlice(s Value) []bool {
 // -------------8<---------------------------------------
 
 func floatSequenceToSlice(s Value) []float64 {
-	if s.Valid() && s.Length() > 0 {
-		ret := make([]float64, s.Length())
+	if s.valid() && s.length() > 0 {
+		ret := make([]float64, s.length())
 		for i := range ret {
-			ret[i] = s.Index(i).Float()
+			ret[i] = s.index(i).toFloat64()
 		}
 		return ret
 	}
@@ -171,10 +171,10 @@ func floatSequenceToSlice(s Value) []float64 {
 // -------------8<---------------------------------------
 
 func mutationRecordSequenceToSlice(v Value) []MutationRecord {
-	if v.Valid() && v.Length() > 0 {
-		ret := make([]MutationRecord, v.Length())
+	if v.valid() && v.length() > 0 {
+		ret := make([]MutationRecord, v.length())
 		for i := range ret {
-			ret[i] = wrapMutationRecord(v.Index(i))
+			ret[i] = wrapMutationRecord(v.index(i))
 		}
 		return ret
 	}
@@ -184,9 +184,9 @@ func mutationRecordSequenceToSlice(v Value) []MutationRecord {
 // -------------8<---------------------------------------
 
 func fileListToSlice(v Value) []File {
-	ret := make([]File, v.Length())
+	ret := make([]File, v.length())
 	for i := range ret {
-		ret[i] = wrapFile(v.Index(i))
+		ret[i] = wrapFile(v.index(i))
 	}
 	return ret
 }
@@ -194,11 +194,11 @@ func fileListToSlice(v Value) []File {
 // -------------8<---------------------------------------
 
 func keys(v Value) []string {
-	if v.Valid() {
-		a := jsObject.Call("keys", v)
-		ret := make([]string, a.Length())
+	if v.valid() {
+		a := jsObject.call("keys", v)
+		ret := make([]string, a.length())
 		for i := range ret {
-			ret[i] = a.Index(i).String()
+			ret[i] = a.index(i).toString()
 		}
 		return ret
 	}
@@ -211,7 +211,7 @@ func domStringMapToMap(v Value) map[string]string {
 	m := make(map[string]string)
 
 	for _, key := range keys(v) {
-		m[key] = v.Get(key).String()
+		m[key] = v.get(key).toString()
 	}
 
 	return m
@@ -221,7 +221,7 @@ func domStringMapToMap(v Value) map[string]string {
 
 // expects v is js Date object
 func jsDateToTime(v Value) time.Time {
-	ms := int64(v.Call("getTime").Float()) * int64(time.Millisecond)
+	ms := int64(v.call("getTime").toFloat64()) * int64(time.Millisecond)
 	return time.Unix(0, ms)
 }
 
@@ -235,10 +235,10 @@ func domTimeStampToTime(ts int) time.Time {
 // -------------8<---------------------------------------
 
 func domStringListToSlice(dsl Value) []string {
-	if dsl.Valid() && dsl.Length() > 0 {
-		ret := make([]string, dsl.Length())
+	if dsl.valid() && dsl.length() > 0 {
+		ret := make([]string, dsl.length())
 		for i := range ret {
-			ret[i] = dsl.Call("item").String()
+			ret[i] = dsl.call("item").toString()
 		}
 
 		return ret
@@ -249,10 +249,10 @@ func domStringListToSlice(dsl Value) []string {
 // -------------8<---------------------------------------
 
 func touchListToSlice(v Value) []Touch {
-	if v.Valid() && v.Length() > 0 {
-		ret := make([]Touch, v.Length())
+	if v.valid() && v.length() > 0 {
+		ret := make([]Touch, v.length())
 		for i := range ret {
-			ret[i] = wrapTouch(v.Index(i))
+			ret[i] = wrapTouch(v.index(i))
 		}
 		return ret
 	}
@@ -262,10 +262,10 @@ func touchListToSlice(v Value) []Touch {
 // -------------8<---------------------------------------
 
 func toFloat32Slice(v Value) []float32 {
-	if v.Valid() && v.Length() > 0 {
-		ret := make([]float32, v.Length())
+	if v.valid() && v.length() > 0 {
+		ret := make([]float32, v.length())
 		for i := range ret {
-			ret[i] = float32(v.Index(i).Float())
+			ret[i] = float32(v.index(i).toFloat64())
 		}
 		return ret
 	}
@@ -275,10 +275,10 @@ func toFloat32Slice(v Value) []float32 {
 // -------------8<---------------------------------------
 
 func toFloat64Slice(v Value) []float64 {
-	if v.Valid() && v.Length() > 0 {
-		ret := make([]float64, v.Length())
+	if v.valid() && v.length() > 0 {
+		ret := make([]float64, v.length())
 		for i := range ret {
-			ret[i] = v.Index(i).Float()
+			ret[i] = v.index(i).toFloat64()
 		}
 
 		return ret
@@ -332,8 +332,8 @@ func htmlCollectionToHTMLOptionElementSlice(v Value) []HTMLOptionElement {
 // -------------8<---------------------------------------
 
 func uint8ArrayToByteSlice(v Value) []byte {
-	jsa := jsUint8Array.New(v)
-	ret := make([]byte, jsa.Get("byteLength").Int())
+	jsa := jsUint8Array.jsNew(v)
+	ret := make([]byte, jsa.get("byteLength").toInt())
 	ta := js.TypedArrayOf(ret)
 	ta.Call("set", jsa)
 	ta.Release()

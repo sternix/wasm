@@ -110,7 +110,7 @@ type frameRequestCallbackImpl struct {
 }
 
 func (p *frameRequestCallbackImpl) jsFunc(this Value, args []Value) interface{} {
-	p.fn(p, args[0].Float())
+	p.fn(p, args[0].toFloat64())
 	return nil
 }
 
@@ -231,7 +231,7 @@ type functionStringCallbackImpl struct {
 
 func (p *functionStringCallbackImpl) jsFunc(this Value, args []Value) interface{} {
 	if len(args) == 1 {
-		p.fn(args[0].String())
+		p.fn(args[0].toString())
 	}
 	return nil
 }

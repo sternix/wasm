@@ -5,41 +5,41 @@ package wasm
 // -------------8<---------------------------------------
 
 func CreateObjectURL(source interface{}) (string, error) {
-	jsURL := jsGlobal.Get("URL")
+	jsURL := jsGlobal.get("URL")
 
 	switch x := source.(type) {
 	case File, Blob, MediaSource:
-		return jsURL.Call("createObjectURL", JSValue(x)).String(), nil
+		return jsURL.call("createObjectURL", JSValue(x)).toString(), nil
 	default:
 		return "", errInvalidType
 	}
 }
 
 func RevokeObjectURL(objectURL string) {
-	jsGlobal.Get("URL").Call("revokeObjectURL", objectURL)
+	jsGlobal.get("URL").call("revokeObjectURL", objectURL)
 }
 
 // -------------8<---------------------------------------
 
 func NewURL(url string, base ...string) URL {
-	if jsURL := jsGlobal.Get("URL"); jsURL.Valid() {
+	if jsURL := jsGlobal.get("URL"); jsURL.valid() {
 		switch len(base) {
 		case 0:
-			return wrapURL(jsURL.New(url))
+			return wrapURL(jsURL.jsNew(url))
 		default:
-			return wrapURL(jsURL.New(url, base[0]))
+			return wrapURL(jsURL.jsNew(url, base[0]))
 		}
 	}
 	return nil
 }
 
 func NewURLSearchParams(args ...string) URLSearchParams {
-	if jsURLSearchParams := jsGlobal.Get("URLSearchParams"); jsURLSearchParams.Valid() {
+	if jsURLSearchParams := jsGlobal.get("URLSearchParams"); jsURLSearchParams.valid() {
 		switch len(args) {
 		case 0:
-			return wrapURLSearchParams(jsURLSearchParams.New())
+			return wrapURLSearchParams(jsURLSearchParams.jsNew())
 		default:
-			return wrapURLSearchParams(jsURLSearchParams.New(args[0]))
+			return wrapURLSearchParams(jsURLSearchParams.jsNew(args[0]))
 		}
 	}
 	return nil
@@ -52,7 +52,7 @@ type urlImpl struct {
 }
 
 func wrapURL(v Value) URL {
-	if v.Valid() {
+	if v.valid() {
 		return &urlImpl{
 			Value: v,
 		}
@@ -61,95 +61,95 @@ func wrapURL(v Value) URL {
 }
 
 func (p *urlImpl) Href() string {
-	return p.Get("href").String()
+	return p.get("href").toString()
 }
 
 func (p *urlImpl) SetHref(href string) {
-	p.Set("href", href)
+	p.set("href", href)
 }
 
 func (p *urlImpl) Origin() string {
-	return p.Get("origin").String()
+	return p.get("origin").toString()
 }
 
 func (p *urlImpl) Protocol() string {
-	return p.Get("protocol").String()
+	return p.get("protocol").toString()
 }
 
 func (p *urlImpl) SetProtocol(protocol string) {
-	p.Set("protocol", protocol)
+	p.set("protocol", protocol)
 }
 
 func (p *urlImpl) Username() string {
-	return p.Get("username").String()
+	return p.get("username").toString()
 }
 
 func (p *urlImpl) SetUsername(userName string) {
-	p.Set("username", userName)
+	p.set("username", userName)
 }
 
 func (p *urlImpl) Password() string {
-	return p.Get("password").String()
+	return p.get("password").toString()
 }
 
 func (p *urlImpl) SetPassword(password string) {
-	p.Set("password", password)
+	p.set("password", password)
 }
 
 func (p *urlImpl) Host() string {
-	return p.Get("host").String()
+	return p.get("host").toString()
 }
 
 func (p *urlImpl) SetHost(host string) {
-	p.Set("host", host)
+	p.set("host", host)
 }
 
 func (p *urlImpl) Hostname() string {
-	return p.Get("hostname").String()
+	return p.get("hostname").toString()
 }
 
 func (p *urlImpl) SetHostname(hostname string) {
-	p.Set("hostname", hostname)
+	p.set("hostname", hostname)
 }
 
 func (p *urlImpl) Port() string {
-	return p.Get("port").String()
+	return p.get("port").toString()
 }
 
 func (p *urlImpl) SetPort(port string) {
-	p.Set("port", port)
+	p.set("port", port)
 }
 
 func (p *urlImpl) Pathname() string {
-	return p.Get("pathname").String()
+	return p.get("pathname").toString()
 }
 
 func (p *urlImpl) SetPathname(pathname string) {
-	p.Set("pathname", pathname)
+	p.set("pathname", pathname)
 }
 
 func (p *urlImpl) Search() string {
-	return p.Get("search").String()
+	return p.get("search").toString()
 }
 
 func (p *urlImpl) SetSearch(search string) {
-	p.Set("search", search)
+	p.set("search", search)
 }
 
 func (p *urlImpl) SearchParams() URLSearchParams {
-	return wrapURLSearchParams(p.Get("searchParams"))
+	return wrapURLSearchParams(p.get("searchParams"))
 }
 
 func (p *urlImpl) Hash() string {
-	return p.Get("hash").String()
+	return p.get("hash").toString()
 }
 
 func (p *urlImpl) SetHash(hash string) {
-	p.Set("hash", hash)
+	p.set("hash", hash)
 }
 
 func (p *urlImpl) ToJSON() string {
-	return p.Call("toJSON").String()
+	return p.call("toJSON").toString()
 }
 
 // -------------8<---------------------------------------
@@ -159,7 +159,7 @@ type urlSearchParamsImpl struct {
 }
 
 func wrapURLSearchParams(v Value) URLSearchParams {
-	if v.Valid() {
+	if v.valid() {
 		return &urlSearchParamsImpl{
 			Value: v,
 		}
@@ -168,35 +168,35 @@ func wrapURLSearchParams(v Value) URLSearchParams {
 }
 
 func (p *urlSearchParamsImpl) Append(name string, value string) {
-	p.Call("append", name, value)
+	p.call("append", name, value)
 }
 
 func (p *urlSearchParamsImpl) Delete(name string) {
-	p.Call("delete", name)
+	p.call("delete", name)
 }
 
 func (p *urlSearchParamsImpl) Get(name string) string {
-	return p.Call("get", name).String()
+	return p.call("get", name).toString()
 }
 
 func (p *urlSearchParamsImpl) All(name string) []string {
-	return stringSequenceToSlice(p.Call("getAll", name))
+	return stringSequenceToSlice(p.call("getAll", name))
 }
 
 func (p *urlSearchParamsImpl) Has(name string) bool {
-	return p.Call("has", name).Bool()
+	return p.call("has", name).toBool()
 }
 
 func (p *urlSearchParamsImpl) Set(name string, value string) {
-	p.Call("set", name, value)
+	p.call("set", name, value)
 }
 
 func (p *urlSearchParamsImpl) Sort() {
-	p.Call("sort")
+	p.call("sort")
 }
 
 func (p *urlSearchParamsImpl) String() string {
-	return p.Call("toString").String()
+	return p.call("toString").toString()
 }
 
 // -------------8<---------------------------------------

@@ -9,7 +9,7 @@ type clipboardImpl struct {
 }
 
 func wrapClipboard(v Value) Clipboard {
-	if v.Valid() {
+	if v.valid() {
 		return &clipboardImpl{
 			eventTargetImpl: newEventTargetImpl(v),
 		}
@@ -19,7 +19,7 @@ func wrapClipboard(v Value) Clipboard {
 
 func (p *clipboardImpl) Read() func() (DataTransfer, error) {
 	return func() (DataTransfer, error) {
-		result, ok := await(p.Call("read"))
+		result, ok := await(p.call("read"))
 		if ok {
 			return wrapDataTransfer(result), nil
 		}
@@ -29,9 +29,9 @@ func (p *clipboardImpl) Read() func() (DataTransfer, error) {
 
 func (p *clipboardImpl) ReadText() func() (string, bool) {
 	return func() (string, bool) {
-		result, ok := await(p.Call("readText"))
+		result, ok := await(p.call("readText"))
 		if ok {
-			return result.String(), true
+			return result.toString(), true
 		}
 		return "", false
 	}
@@ -39,14 +39,14 @@ func (p *clipboardImpl) ReadText() func() (string, bool) {
 
 func (p *clipboardImpl) Write(data DataTransfer) func() bool {
 	return func() bool {
-		_, ok := await(p.Call("write", JSValue(data)))
+		_, ok := await(p.call("write", JSValue(data)))
 		return ok
 	}
 }
 
 func (p *clipboardImpl) WriteText(data string) func() bool {
 	return func() bool {
-		_, ok := await(p.Call("writeText", data))
+		_, ok := await(p.call("writeText", data))
 		return ok
 	}
 }
@@ -58,7 +58,7 @@ type clipboardEventImpl struct {
 }
 
 func wrapClipboardEvent(v Value) ClipboardEvent {
-	if v.Valid() {
+	if v.valid() {
 		return &clipboardEventImpl{
 			eventImpl: newEventImpl(v),
 		}
@@ -67,18 +67,18 @@ func wrapClipboardEvent(v Value) ClipboardEvent {
 }
 
 func (p *clipboardEventImpl) ClipboardData() DataTransfer {
-	return wrapDataTransfer(p.Get("clipboardData"))
+	return wrapDataTransfer(p.get("clipboardData"))
 }
 
 // -------------8<---------------------------------------
 
 func NewClipboardEvent(typ string, eventInitDict ...ClipboardEventInit) ClipboardEvent {
-	if jsClipboardEvent := jsGlobal.Get("ClipboardEvent"); jsClipboardEvent.Valid() {
+	if jsClipboardEvent := jsGlobal.get("ClipboardEvent"); jsClipboardEvent.valid() {
 		switch len(eventInitDict) {
 		case 0:
-			return wrapClipboardEvent(jsClipboardEvent.New(typ))
+			return wrapClipboardEvent(jsClipboardEvent.jsNew(typ))
 		default:
-			return wrapClipboardEvent(jsClipboardEvent.New(typ, eventInitDict[0].toJSObject()))
+			return wrapClipboardEvent(jsClipboardEvent.jsNew(typ, eventInitDict[0].toJSObject()))
 		}
 	}
 	return nil

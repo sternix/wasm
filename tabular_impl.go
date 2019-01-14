@@ -18,7 +18,7 @@ func NewHTMLTableElement() HTMLTableElement {
 }
 
 func wrapHTMLTableElement(v Value) HTMLTableElement {
-	if v.Valid() {
+	if v.valid() {
 		return &htmlTableElementImpl{
 			htmlElementImpl: newHTMLElementImpl(v),
 		}
@@ -27,55 +27,55 @@ func wrapHTMLTableElement(v Value) HTMLTableElement {
 }
 
 func (p *htmlTableElementImpl) Caption() HTMLTableCaptionElement {
-	return wrapHTMLTableCaptionElement(p.Get("caption"))
+	return wrapHTMLTableCaptionElement(p.get("caption"))
 }
 
 func (p *htmlTableElementImpl) SetCaption(caption HTMLTableCaptionElement) {
-	p.Set("caption", JSValue(caption))
+	p.set("caption", JSValue(caption))
 }
 
 func (p *htmlTableElementImpl) CreateCaption() HTMLTableCaptionElement {
-	return wrapHTMLTableCaptionElement(p.Call("createCaption"))
+	return wrapHTMLTableCaptionElement(p.call("createCaption"))
 }
 
 func (p *htmlTableElementImpl) DeleteCaption() {
-	p.Call("deleteCaption")
+	p.call("deleteCaption")
 }
 
 func (p *htmlTableElementImpl) THead() HTMLTableSectionElement {
-	return wrapHTMLTableSectionElement(p.Get("tHead"))
+	return wrapHTMLTableSectionElement(p.get("tHead"))
 }
 
 func (p *htmlTableElementImpl) SetTHead(section HTMLTableSectionElement) {
-	p.Set("tHead", JSValue(section))
+	p.set("tHead", JSValue(section))
 }
 
 func (p *htmlTableElementImpl) CreateTHead() HTMLTableSectionElement {
-	return wrapHTMLTableSectionElement(p.Call("createTHead"))
+	return wrapHTMLTableSectionElement(p.call("createTHead"))
 }
 
 func (p *htmlTableElementImpl) DeleteTHead() {
-	p.Call("deleteTHead")
+	p.call("deleteTHead")
 }
 
 func (p *htmlTableElementImpl) TFoot() HTMLTableSectionElement {
-	return wrapHTMLTableSectionElement(p.Get("tFoot"))
+	return wrapHTMLTableSectionElement(p.get("tFoot"))
 }
 
 func (p *htmlTableElementImpl) SetTFoot(section HTMLTableSectionElement) {
-	p.Set("tFoot", JSValue(section))
+	p.set("tFoot", JSValue(section))
 }
 
 func (p *htmlTableElementImpl) CreateTFoot() HTMLTableSectionElement {
-	return wrapHTMLTableSectionElement(p.Call("createTFoot"))
+	return wrapHTMLTableSectionElement(p.call("createTFoot"))
 }
 
 func (p *htmlTableElementImpl) DeleteTFoot() {
-	p.Call("deleteTFoot")
+	p.call("deleteTFoot")
 }
 
 func (p *htmlTableElementImpl) TBodies() []HTMLTableSectionElement {
-	if bodies := wrapHTMLCollection(p.Get("tBodies")); bodies != nil && bodies.Length() > 0 {
+	if bodies := wrapHTMLCollection(p.get("tBodies")); bodies != nil && bodies.Length() > 0 {
 		var ret []HTMLTableSectionElement
 		for i := 0; i < bodies.Length(); i++ {
 			if r, ok := bodies.Item(i).(HTMLTableSectionElement); ok {
@@ -89,11 +89,11 @@ func (p *htmlTableElementImpl) TBodies() []HTMLTableSectionElement {
 }
 
 func (p *htmlTableElementImpl) CreateTBody() HTMLTableSectionElement {
-	return wrapHTMLTableSectionElement(p.Call("createTBody"))
+	return wrapHTMLTableSectionElement(p.call("createTBody"))
 }
 
 func (p *htmlTableElementImpl) Rows() []HTMLTableRowElement {
-	if rows := wrapHTMLCollection(p.Get("rows")); rows != nil && rows.Length() > 0 {
+	if rows := wrapHTMLCollection(p.get("rows")); rows != nil && rows.Length() > 0 {
 		var ret []HTMLTableRowElement
 		for i := 0; i < rows.Length(); i++ {
 			if r, ok := rows.Item(i).(HTMLTableRowElement); ok {
@@ -108,15 +108,15 @@ func (p *htmlTableElementImpl) Rows() []HTMLTableRowElement {
 func (p *htmlTableElementImpl) InsertRow(index ...int) HTMLTableRowElement {
 	switch len(index) {
 	case 0:
-		return wrapHTMLTableRowElement(p.Call("insertRow"))
+		return wrapHTMLTableRowElement(p.call("insertRow"))
 	default:
-		return wrapHTMLTableRowElement(p.Call("insertRow", index[0]))
+		return wrapHTMLTableRowElement(p.call("insertRow", index[0]))
 	}
 
 }
 
 func (p *htmlTableElementImpl) DeleteRow(index int) {
-	p.Call("deleteRow", index)
+	p.call("deleteRow", index)
 }
 
 // -------------8<---------------------------------------
@@ -126,7 +126,7 @@ type htmlTableCaptionElementImpl struct {
 }
 
 func wrapHTMLTableCaptionElement(v Value) HTMLTableCaptionElement {
-	if v.Valid() {
+	if v.valid() {
 		return &htmlTableCaptionElementImpl{
 			htmlElementImpl: newHTMLElementImpl(v),
 		}
@@ -141,7 +141,7 @@ type htmlTableSectionElementImpl struct {
 }
 
 func wrapHTMLTableSectionElement(v Value) HTMLTableSectionElement {
-	if v.Valid() {
+	if v.valid() {
 		return &htmlTableSectionElementImpl{
 			htmlElementImpl: newHTMLElementImpl(v),
 		}
@@ -150,7 +150,7 @@ func wrapHTMLTableSectionElement(v Value) HTMLTableSectionElement {
 }
 
 func (p *htmlTableSectionElementImpl) Rows() []HTMLTableRowElement {
-	if rows := wrapHTMLCollection(p.Get("rows")); rows != nil && rows.Length() > 0 {
+	if rows := wrapHTMLCollection(p.get("rows")); rows != nil && rows.Length() > 0 {
 		var ret []HTMLTableRowElement
 		for i := 0; i < rows.Length(); i++ {
 			if r, ok := rows.Item(i).(HTMLTableRowElement); ok {
@@ -165,14 +165,14 @@ func (p *htmlTableSectionElementImpl) Rows() []HTMLTableRowElement {
 func (p *htmlTableSectionElementImpl) InsertRow(index ...int) HTMLTableRowElement {
 	switch len(index) {
 	case 0:
-		return wrapHTMLTableRowElement(p.Call("insertRow"))
+		return wrapHTMLTableRowElement(p.call("insertRow"))
 	default:
-		return wrapHTMLTableRowElement(p.Call("insertRow", index[0]))
+		return wrapHTMLTableRowElement(p.call("insertRow", index[0]))
 	}
 }
 
 func (p *htmlTableSectionElementImpl) DeleteRow(index int) {
-	p.Call("deleteRow", index)
+	p.call("deleteRow", index)
 }
 
 // -------------8<---------------------------------------
@@ -182,7 +182,7 @@ type htmlTableRowElementImpl struct {
 }
 
 func wrapHTMLTableRowElement(v Value) HTMLTableRowElement {
-	if v.Valid() {
+	if v.valid() {
 		return &htmlTableRowElementImpl{
 			htmlElementImpl: newHTMLElementImpl(v),
 		}
@@ -191,15 +191,15 @@ func wrapHTMLTableRowElement(v Value) HTMLTableRowElement {
 }
 
 func (p *htmlTableRowElementImpl) RowIndex() int {
-	return p.Get("rowIndex").Int()
+	return p.get("rowIndex").toInt()
 }
 
 func (p *htmlTableRowElementImpl) SectionRowIndex() int {
-	return p.Get("sectionRowIndex").Int()
+	return p.get("sectionRowIndex").toInt()
 }
 
 func (p *htmlTableRowElementImpl) Cells() []HTMLTableCellElement {
-	if cells := wrapHTMLCollection(p.Get("cells")); cells != nil && cells.Length() > 0 {
+	if cells := wrapHTMLCollection(p.get("cells")); cells != nil && cells.Length() > 0 {
 		var ret []HTMLTableCellElement
 		for i := 0; i < cells.Length(); i++ {
 			if c, ok := cells.Item(i).(HTMLTableCellElement); ok {
@@ -215,14 +215,14 @@ func (p *htmlTableRowElementImpl) Cells() []HTMLTableCellElement {
 func (p *htmlTableRowElementImpl) InsertCell(index ...int) HTMLTableCellElement {
 	switch len(index) {
 	case 0:
-		return wrapHTMLTableCellElement(p.Call("insertCell"))
+		return wrapHTMLTableCellElement(p.call("insertCell"))
 	default:
-		return wrapHTMLTableCellElement(p.Call("insertCell", index[0]))
+		return wrapHTMLTableCellElement(p.call("insertCell", index[0]))
 	}
 }
 
 func (p *htmlTableRowElementImpl) DeleteCell(index int) {
-	p.Call("deleteCell", index)
+	p.call("deleteCell", index)
 }
 
 // -------------8<---------------------------------------
@@ -250,7 +250,7 @@ func NewHTMLTableColGroupElement() HTMLTableColElement {
 }
 
 func wrapHTMLTableColElement(v Value) HTMLTableColElement {
-	if v.Valid() {
+	if v.valid() {
 		return &htmlTableColElementImpl{
 			htmlElementImpl: newHTMLElementImpl(v),
 		}
@@ -259,11 +259,11 @@ func wrapHTMLTableColElement(v Value) HTMLTableColElement {
 }
 
 func (p *htmlTableColElementImpl) Span() int {
-	return p.Get("span").Int()
+	return p.get("span").toInt()
 }
 
 func (p *htmlTableColElementImpl) SetSpan(span int) {
-	p.Set("span", span)
+	p.set("span", span)
 }
 
 // -------------8<---------------------------------------
@@ -280,7 +280,7 @@ func wrapHTMLTableCellElement(v Value) HTMLTableCellElement {
 }
 
 func newHTMLTableCellElementImpl(v Value) *htmlTableCellElementImpl {
-	if v.Valid() {
+	if v.valid() {
 		return &htmlTableCellElementImpl{
 			htmlElementImpl: newHTMLElementImpl(v),
 		}
@@ -289,27 +289,27 @@ func newHTMLTableCellElementImpl(v Value) *htmlTableCellElementImpl {
 }
 
 func (p *htmlTableCellElementImpl) ColSpan() int {
-	return p.Get("colSpan").Int()
+	return p.get("colSpan").toInt()
 }
 
 func (p *htmlTableCellElementImpl) SetColSpan(colspan int) {
-	p.Set("colSpan", colspan)
+	p.set("colSpan", colspan)
 }
 
 func (p *htmlTableCellElementImpl) RowSpan() int {
-	return p.Get("rowSpan").Int()
+	return p.get("rowSpan").toInt()
 }
 
 func (p *htmlTableCellElementImpl) SetRowSpan(rowspan int) {
-	p.Set("rowSpan", rowspan)
+	p.set("rowSpan", rowspan)
 }
 
 func (p *htmlTableCellElementImpl) Headers() DOMTokenList {
-	return wrapDOMTokenList(p.Get("headers"))
+	return wrapDOMTokenList(p.get("headers"))
 }
 
 func (p *htmlTableCellElementImpl) CellIndex() int {
-	return p.Get("cellIndex").Int()
+	return p.get("cellIndex").toInt()
 }
 
 // -------------8<---------------------------------------
@@ -319,7 +319,7 @@ type htmlTableDataCellElementImpl struct {
 }
 
 func wrapHTMLTableDataCellElement(v Value) HTMLTableDataCellElement {
-	if v.Valid() {
+	if v.valid() {
 		return &htmlTableDataCellElementImpl{
 			htmlTableCellElementImpl: newHTMLTableCellElementImpl(v),
 		}
@@ -343,7 +343,7 @@ func NewHTMLTableHeaderCellElement() HTMLTableHeaderCellElement {
 }
 
 func wrapHTMLTableHeaderCellElement(v Value) HTMLTableHeaderCellElement {
-	if v.Valid() {
+	if v.valid() {
 		return &htmlTableHeaderCellElementImpl{
 			htmlTableCellElementImpl: newHTMLTableCellElementImpl(v),
 		}
@@ -352,19 +352,19 @@ func wrapHTMLTableHeaderCellElement(v Value) HTMLTableHeaderCellElement {
 }
 
 func (p *htmlTableHeaderCellElementImpl) Scope() string {
-	return p.Get("scope").String()
+	return p.get("scope").toString()
 }
 
 func (p *htmlTableHeaderCellElementImpl) SetScope(scope string) {
-	p.Set("scope", scope)
+	p.set("scope", scope)
 }
 
 func (p *htmlTableHeaderCellElementImpl) Abbr() string {
-	return p.Get("abbr").String()
+	return p.get("abbr").toString()
 }
 
 func (p *htmlTableHeaderCellElementImpl) SetAbbr(abbr string) {
-	p.Set("abbr", abbr)
+	p.set("abbr", abbr)
 }
 
 // -------------8<---------------------------------------

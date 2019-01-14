@@ -15,7 +15,7 @@ type navigatorImpl struct {
 }
 
 func wrapNavigator(v Value) Navigator {
-	if v.Valid() {
+	if v.valid() {
 		return &navigatorImpl{
 			navigatorIDImpl:                 newNavigatorIDImpl(v),
 			navigatorLanguageImpl:           newNavigatorLanguageImpl(v),
@@ -30,15 +30,15 @@ func wrapNavigator(v Value) Navigator {
 }
 
 func (p *navigatorImpl) Geolocation() Geolocation {
-	return wrapGeolocation(p.Get("geolocation"))
+	return wrapGeolocation(p.get("geolocation"))
 }
 
 func (p *navigatorImpl) Clipboard() Clipboard {
-	return wrapClipboard(p.Get("clipboard"))
+	return wrapClipboard(p.get("clipboard"))
 }
 
 func (p *navigatorImpl) MaxTouchPoints() int {
-	return p.Get("maxTouchPoints").Int()
+	return p.get("maxTouchPoints").toInt()
 }
 
 // -------------8<---------------------------------------
@@ -50,7 +50,7 @@ type navigatorIDImpl struct {
 }
 
 func newNavigatorIDImpl(v Value) *navigatorIDImpl {
-	if v.Valid() {
+	if v.valid() {
 		return &navigatorIDImpl{
 			Value: v,
 		}
@@ -59,27 +59,27 @@ func newNavigatorIDImpl(v Value) *navigatorIDImpl {
 }
 
 func (p *navigatorIDImpl) AppCodeName() string {
-	return p.Get("appCodeName").String()
+	return p.get("appCodeName").toString()
 }
 
 func (p *navigatorIDImpl) AppName() string {
-	return p.Get("appName").String()
+	return p.get("appName").toString()
 }
 
 func (p *navigatorIDImpl) AppVersion() string {
-	return p.Get("appVersion").String()
+	return p.get("appVersion").toString()
 }
 
 func (p *navigatorIDImpl) Platform() string {
-	return p.Get("platform").String()
+	return p.get("platform").toString()
 }
 
 func (p *navigatorIDImpl) Product() string {
-	return p.Get("product").String()
+	return p.get("product").toString()
 }
 
 func (p *navigatorIDImpl) UserAgent() string {
-	return p.Get("userAgent").String()
+	return p.get("userAgent").toString()
 }
 
 // -------------8<---------------------------------------
@@ -91,7 +91,7 @@ type navigatorLanguageImpl struct {
 }
 
 func newNavigatorLanguageImpl(v Value) *navigatorLanguageImpl {
-	if v.Valid() {
+	if v.valid() {
 		return &navigatorLanguageImpl{
 			Value: v,
 		}
@@ -100,14 +100,14 @@ func newNavigatorLanguageImpl(v Value) *navigatorLanguageImpl {
 }
 
 func (p *navigatorLanguageImpl) Language() string {
-	return p.Get("language").String()
+	return p.get("language").toString()
 }
 
 func (p *navigatorLanguageImpl) Languages() []string {
-	if s := p.Get("languages").ToSlice(); s != nil {
+	if s := p.get("languages").toSlice(); s != nil {
 		ret := make([]string, len(s))
 		for i, v := range s {
-			ret[i] = v.String()
+			ret[i] = v.toString()
 		}
 		return ret
 	}
@@ -124,7 +124,7 @@ type navigatorContentUtilsImpl struct {
 }
 
 func newNavigatorContentUtilsImpl(v Value) *navigatorContentUtilsImpl {
-	if v.Valid() {
+	if v.valid() {
 		return &navigatorContentUtilsImpl{
 			Value: v,
 		}
@@ -133,27 +133,27 @@ func newNavigatorContentUtilsImpl(v Value) *navigatorContentUtilsImpl {
 }
 
 func (p *navigatorContentUtilsImpl) RegisterProtocolHandler(scheme string, url string, title string) {
-	p.Call("registerProtocolHandler", scheme, url, title)
+	p.call("registerProtocolHandler", scheme, url, title)
 }
 
 func (p *navigatorContentUtilsImpl) RegisterContentHandler(mimeType string, url string, title string) {
-	p.Call("registerContentHandler", mimeType, url, title)
+	p.call("registerContentHandler", mimeType, url, title)
 }
 
 func (p *navigatorContentUtilsImpl) IsProtocolHandlerRegistered(scheme string, url string) string {
-	return p.Call("isProtocolHandlerRegistered", scheme, url).String()
+	return p.call("isProtocolHandlerRegistered", scheme, url).toString()
 }
 
 func (p *navigatorContentUtilsImpl) IsContentHandlerRegistered(mimeType string, url string) string {
-	return p.Call("isContentHandlerRegistered", mimeType, url).String()
+	return p.call("isContentHandlerRegistered", mimeType, url).toString()
 }
 
 func (p *navigatorContentUtilsImpl) UnregisterProtocolHandler(scheme string, url string) {
-	p.Call("unregisterProtocolHandler", scheme, url)
+	p.call("unregisterProtocolHandler", scheme, url)
 }
 
 func (p *navigatorContentUtilsImpl) UnregisterContentHandler(mimeType string, url string) {
-	p.Call("unregisterContentHandler", mimeType, url)
+	p.call("unregisterContentHandler", mimeType, url)
 }
 
 // -------------8<---------------------------------------
@@ -165,7 +165,7 @@ type navigatorCookiesImpl struct {
 }
 
 func newNavigatorCookiesImpl(v Value) *navigatorCookiesImpl {
-	if v.Valid() {
+	if v.valid() {
 		return &navigatorCookiesImpl{
 			Value: v,
 		}
@@ -174,7 +174,7 @@ func newNavigatorCookiesImpl(v Value) *navigatorCookiesImpl {
 }
 
 func (p *navigatorCookiesImpl) CookieEnabled() bool {
-	return p.Get("cookieEnabled").Bool()
+	return p.get("cookieEnabled").toBool()
 }
 
 // -------------8<---------------------------------------
@@ -184,7 +184,7 @@ type imageBitmapImpl struct {
 }
 
 func wrapImageBitmap(v Value) ImageBitmap {
-	if v.Valid() {
+	if v.valid() {
 		return &imageBitmapImpl{
 			Value: v,
 		}
@@ -193,15 +193,15 @@ func wrapImageBitmap(v Value) ImageBitmap {
 }
 
 func (p *imageBitmapImpl) Width() int {
-	return p.Get("width").Int()
+	return p.get("width").toInt()
 }
 
 func (p *imageBitmapImpl) Height() int {
-	return p.Get("height").Int()
+	return p.get("height").toInt()
 }
 
 func (p *imageBitmapImpl) Close() {
-	p.Call("close")
+	p.call("close")
 }
 
 // -------------8<---------------------------------------

@@ -762,22 +762,22 @@ type MediaTrackCapabilities struct {
 }
 
 func (p MediaTrackCapabilities) toJSObject() Value {
-	o := jsObject.New()
-	o.Set("width", p.Width.toJSObject())
-	o.Set("height", p.Heigth.toJSObject())
-	o.Set("aspectRatio", p.AspectRatio.toJSObject())
-	o.Set("frameRate", p.FrameRate.toJSObject())
-	o.Set("facingMode", sliceToJsArray(p.FacingMode))
-	o.Set("volume", p.Volume.toJSObject())
-	o.Set("sampleRate", p.SampleRate.toJSObject())
-	o.Set("sampleSize", p.SampleSize.toJSObject())
-	o.Set("echoCancellation", sliceToJsArray(p.EchoCancellation))
-	o.Set("autoGainControl", sliceToJsArray(p.AutoGainControl))
-	o.Set("noiseSuppression", sliceToJsArray(p.NoiseSuppression))
-	o.Set("latency", p.Latency.toJSObject())
-	o.Set("channelCount", p.ChannelCount.toJSObject())
-	o.Set("deviceId", p.DeviceId)
-	o.Set("groupId", p.GroupId)
+	o := jsObject.jsNew()
+	o.set("width", p.Width.toJSObject())
+	o.set("height", p.Heigth.toJSObject())
+	o.set("aspectRatio", p.AspectRatio.toJSObject())
+	o.set("frameRate", p.FrameRate.toJSObject())
+	o.set("facingMode", sliceToJsArray(p.FacingMode))
+	o.set("volume", p.Volume.toJSObject())
+	o.set("sampleRate", p.SampleRate.toJSObject())
+	o.set("sampleSize", p.SampleSize.toJSObject())
+	o.set("echoCancellation", sliceToJsArray(p.EchoCancellation))
+	o.set("autoGainControl", sliceToJsArray(p.AutoGainControl))
+	o.set("noiseSuppression", sliceToJsArray(p.NoiseSuppression))
+	o.set("latency", p.Latency.toJSObject())
+	o.set("channelCount", p.ChannelCount.toJSObject())
+	o.set("deviceId", p.DeviceId)
+	o.set("groupId", p.GroupId)
 	return o
 }
 
@@ -803,22 +803,22 @@ type MediaTrackConstraintSet struct {
 }
 
 func (p MediaTrackConstraintSet) toJSObject() Value {
-	o := jsObject.New()
-	o.Set("width", p.Width.toJSObject())
-	o.Set("height", p.Height.toJSObject())
-	o.Set("aspectRatio", p.AspectRatio.toJSObject())
-	o.Set("frameRate", p.FrameRate.toJSObject())
-	o.Set("facingMode", p.FacingMode.toJSObject())
-	o.Set("volume", p.Volume.toJSObject())
-	o.Set("sampleRate", p.SampleRate.toJSObject())
-	o.Set("sampleSize", p.SampleSize.toJSObject())
-	o.Set("echoCancellation", p.EchoCancellation.toJSObject())
-	o.Set("autoGainControl", p.AutoGainControl.toJSObject())
-	o.Set("noiseSuppression", p.NoiseSuppression.toJSObject())
-	o.Set("latency", p.Latency.toJSObject())
-	o.Set("channelCount", p.ChannelCount.toJSObject())
-	o.Set("deviceId", p.DeviceId.toJSObject())
-	o.Set("groupId", p.GroupId.toJSObject())
+	o := jsObject.jsNew()
+	o.set("width", p.Width.toJSObject())
+	o.set("height", p.Height.toJSObject())
+	o.set("aspectRatio", p.AspectRatio.toJSObject())
+	o.set("frameRate", p.FrameRate.toJSObject())
+	o.set("facingMode", p.FacingMode.toJSObject())
+	o.set("volume", p.Volume.toJSObject())
+	o.set("sampleRate", p.SampleRate.toJSObject())
+	o.set("sampleSize", p.SampleSize.toJSObject())
+	o.set("echoCancellation", p.EchoCancellation.toJSObject())
+	o.set("autoGainControl", p.AutoGainControl.toJSObject())
+	o.set("noiseSuppression", p.NoiseSuppression.toJSObject())
+	o.set("latency", p.Latency.toJSObject())
+	o.set("channelCount", p.ChannelCount.toJSObject())
+	o.set("deviceId", p.DeviceId.toJSObject())
+	o.set("groupId", p.GroupId.toJSObject())
 	return o
 }
 
@@ -844,22 +844,22 @@ type MediaTrackSettings struct {
 }
 
 func (p MediaTrackSettings) toJSObject() Value {
-	o := jsObject.New()
-	o.Set("width", p.Width)
-	o.Set("height", p.Height)
-	o.Set("aspectRatio", p.AspectRatio)
-	o.Set("frameRate", p.FrameRate)
-	o.Set("facingMode", p.FacingMode)
-	o.Set("volume", p.Volume)
-	o.Set("sampleRate", p.SampleRate)
-	o.Set("sampleSize", p.SampleSize)
-	o.Set("echoCancellation", p.EchoCancellation)
-	o.Set("autoGainControl", p.AutoGainControl)
-	o.Set("noiseSuppression", p.NoiseSuppression)
-	o.Set("latency", p.Latency)
-	o.Set("channelCount", p.ChannelCount)
-	o.Set("deviceId", p.DeviceId)
-	o.Set("groupId", p.GroupId)
+	o := jsObject.jsNew()
+	o.set("width", p.Width)
+	o.set("height", p.Height)
+	o.set("aspectRatio", p.AspectRatio)
+	o.set("frameRate", p.FrameRate)
+	o.set("facingMode", p.FacingMode)
+	o.set("volume", p.Volume)
+	o.set("sampleRate", p.SampleRate)
+	o.set("sampleSize", p.SampleSize)
+	o.set("echoCancellation", p.EchoCancellation)
+	o.set("autoGainControl", p.AutoGainControl)
+	o.set("noiseSuppression", p.NoiseSuppression)
+	o.set("latency", p.Latency)
+	o.set("channelCount", p.ChannelCount)
+	o.set("deviceId", p.DeviceId)
+	o.set("groupId", p.GroupId)
 	return o
 }
 
@@ -872,9 +872,9 @@ type LongRange struct {
 }
 
 func (p LongRange) toJSObject() Value {
-	o := jsObject.New()
-	o.Set("max", p.Max)
-	o.Set("min", p.Min)
+	o := jsObject.jsNew()
+	o.set("max", p.Max)
+	o.set("min", p.Min)
 	return o
 }
 
@@ -887,9 +887,9 @@ type DoubleRange struct {
 }
 
 func (p DoubleRange) toJSObject() Value {
-	o := jsObject.New()
-	o.Set("max", p.Max)
-	o.Set("min", p.Min)
+	o := jsObject.jsNew()
+	o.set("max", p.Max)
+	o.set("min", p.Min)
 	return o
 }
 
@@ -905,8 +905,8 @@ type ConstrainLongRange struct {
 
 func (p ConstrainLongRange) toJSObject() Value {
 	o := p.LongRange.toJSObject()
-	o.Set("exact", p.Exact)
-	o.Set("ideal", p.Ideal)
+	o.set("exact", p.Exact)
+	o.set("ideal", p.Ideal)
 	return o
 }
 
@@ -927,8 +927,8 @@ type ConstrainDoubleRange struct {
 
 func (p ConstrainDoubleRange) toJSObject() Value {
 	o := p.DoubleRange.toJSObject()
-	o.Set("exact", p.Exact)
-	o.Set("ideal", p.Ideal)
+	o.set("exact", p.Exact)
+	o.set("ideal", p.Ideal)
 	return o
 }
 
@@ -949,9 +949,9 @@ type ConstrainDOMStringParameters struct {
 }
 
 func (p ConstrainDOMStringParameters) toJSObject() Value {
-	o := jsObject.New()
-	o.Set("exact", p.Exact)
-	o.Set("ideal", p.Ideal)
+	o := jsObject.jsNew()
+	o.set("exact", p.Exact)
+	o.set("ideal", p.Ideal)
 	return o
 }
 
@@ -972,9 +972,9 @@ type ConstrainBooleanParameters struct {
 }
 
 func (p ConstrainBooleanParameters) toJSObject() Value {
-	o := jsObject.New()
-	o.Set("exact", p.Exact)
-	o.Set("ideal", p.Ideal)
+	o := jsObject.jsNew()
+	o.set("exact", p.Exact)
+	o.set("ideal", p.Ideal)
 	return o
 }
 

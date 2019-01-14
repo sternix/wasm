@@ -51,21 +51,21 @@ type (
 // -------------8<---------------------------------------
 
 func NewArrayBuffer(length int) ArrayBuffer {
-	if jsArrayBuffer := jsGlobal.Get("ArrayBuffer"); jsArrayBuffer.Valid() {
-		return wrapArrayBuffer(jsArrayBuffer.New(length))
+	if jsArrayBuffer := jsGlobal.get("ArrayBuffer"); jsArrayBuffer.valid() {
+		return wrapArrayBuffer(jsArrayBuffer.jsNew(length))
 	}
 	return nil
 }
 
 func NewDataView(buf ArrayBuffer, args ...int) DataView {
-	if jsDataView := jsGlobal.Get("DataView"); jsDataView.Valid() {
+	if jsDataView := jsGlobal.get("DataView"); jsDataView.valid() {
 		switch len(args) {
 		case 0:
-			return wrapDataView(jsDataView.New(JSValue(buf)))
+			return wrapDataView(jsDataView.jsNew(JSValue(buf)))
 		case 1:
-			return wrapDataView(jsDataView.New(JSValue(buf), args[0]))
+			return wrapDataView(jsDataView.jsNew(JSValue(buf), args[0]))
 		default:
-			return wrapDataView(jsDataView.New(JSValue(buf), args[0], args[1]))
+			return wrapDataView(jsDataView.jsNew(JSValue(buf), args[0], args[1]))
 		}
 	}
 	return nil
@@ -78,7 +78,7 @@ type arrayBufferViewImpl struct {
 }
 
 func wrapArrayBufferView(v Value) ArrayBufferView {
-	if v.Valid() {
+	if v.valid() {
 		return &arrayBufferViewImpl{
 			Value: v,
 		}
@@ -93,7 +93,7 @@ type arrayBufferImpl struct {
 }
 
 func wrapArrayBuffer(v Value) ArrayBuffer {
-	if v.Valid() {
+	if v.valid() {
 		return &arrayBufferImpl{
 			Value: v,
 		}
@@ -102,12 +102,12 @@ func wrapArrayBuffer(v Value) ArrayBuffer {
 }
 
 func (p *arrayBufferImpl) ByteLength() int {
-	return p.Get("byteLength").Int()
+	return p.get("byteLength").toInt()
 }
 
 func (p *arrayBufferImpl) IsView(arg interface{}) bool {
 	if v := JSValue(arg); v != jsNull {
-		return p.Call("isView", v).Bool()
+		return p.call("isView", v).toBool()
 	}
 
 	return false
@@ -116,9 +116,9 @@ func (p *arrayBufferImpl) IsView(arg interface{}) bool {
 func (p *arrayBufferImpl) Slice(begin int, end ...int) ArrayBuffer {
 	switch len(end) {
 	case 0:
-		return wrapArrayBuffer(p.Call("slice", begin))
+		return wrapArrayBuffer(p.call("slice", begin))
 	default:
-		return wrapArrayBuffer(p.Call("slice", begin, end[0]))
+		return wrapArrayBuffer(p.call("slice", begin, end[0]))
 	}
 }
 
@@ -133,7 +133,7 @@ type dataViewImpl struct {
 }
 
 func wrapDataView(v Value) DataView {
-	if v.Valid() {
+	if v.valid() {
 		return &dataViewImpl{
 			Value: v,
 		}
@@ -142,79 +142,79 @@ func wrapDataView(v Value) DataView {
 }
 
 func (p *dataViewImpl) Buffer() ArrayBuffer {
-	return wrapArrayBuffer(p.Get("buffer"))
+	return wrapArrayBuffer(p.get("buffer"))
 }
 
 func (p *dataViewImpl) ByteLength() int {
-	return p.Get("byteLength").Int()
+	return p.get("byteLength").toInt()
 }
 
 func (p *dataViewImpl) ByteOffset() int {
-	return p.Get("byteOffset").Int()
+	return p.get("byteOffset").toInt()
 }
 
 func (p *dataViewImpl) Int8() int8 {
-	return int8(p.Call("getInt8").Int())
+	return int8(p.call("getInt8").toInt())
 }
 
 func (p *dataViewImpl) Uint8() uint8 {
-	return uint8(p.Call("getUint8").Int())
+	return uint8(p.call("getUint8").toInt())
 }
 
 func (p *dataViewImpl) Int16() int16 {
-	return int16(p.Call("getInt16").Int())
+	return int16(p.call("getInt16").toInt())
 }
 
 func (p *dataViewImpl) Uint16() uint16 {
-	return uint16(p.Call("getUint16").Int())
+	return uint16(p.call("getUint16").toInt())
 }
 
 func (p *dataViewImpl) Int32() int32 {
-	return int32(p.Call("getInt32").Int())
+	return int32(p.call("getInt32").toInt())
 }
 
 func (p *dataViewImpl) Uint32() uint32 {
-	return uint32(p.Call("getUint32").Int())
+	return uint32(p.call("getUint32").toInt())
 }
 
 func (p *dataViewImpl) Float32() float32 {
-	return float32(p.Call("getFloat32").Float())
+	return float32(p.call("getFloat32").toFloat64())
 }
 
 func (p *dataViewImpl) Float64() float64 {
-	return p.Call("getFloat64").Float()
+	return p.call("getFloat64").toFloat64()
 }
 
 func (p *dataViewImpl) SetInt8(v int8) {
-	p.Call("setInt8", v)
+	p.call("setInt8", v)
 }
 
 func (p *dataViewImpl) SetUint8(v uint8) {
-	p.Call("setUint8", v)
+	p.call("setUint8", v)
 }
 
 func (p *dataViewImpl) SetInt16(v int16) {
-	p.Call("setInt16", v)
+	p.call("setInt16", v)
 }
 
 func (p *dataViewImpl) SetUint16(v uint16) {
-	p.Call("setUint16", v)
+	p.call("setUint16", v)
 }
 
 func (p *dataViewImpl) SetInt32(v int32) {
-	p.Call("setInt32", v)
+	p.call("setInt32", v)
 }
 
 func (p *dataViewImpl) SetUint32(v uint32) {
-	p.Call("setUint32", v)
+	p.call("setUint32", v)
 }
 
 func (p *dataViewImpl) SetFloat32(v float32) {
-	p.Call("setFloat32", v)
+	p.call("setFloat32", v)
 }
 
 func (p *dataViewImpl) SetFloat64(v float64) {
-	p.Call("setFloat64", v)
+	p.call("setFloat64", v)
 }
 
 // -------------8<---------------------------------------
@@ -224,7 +224,7 @@ type bufferSourceImpl struct {
 }
 
 func wrapBufferSource(v Value) BufferSource {
-	if v.Valid() {
+	if v.valid() {
 		return &bufferSourceImpl{
 			Value: v,
 		}

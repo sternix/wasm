@@ -181,7 +181,7 @@ type PopStateEventInit struct {
 
 func (p PopStateEventInit) toJSObject() Value {
 	o := p.EventInit.toJSObject()
-	o.Set("state", p.State)
+	o.set("state", p.State)
 	return o
 }
 
@@ -197,8 +197,8 @@ type HashChangeEventInit struct {
 
 func (p HashChangeEventInit) toJSObject() Value {
 	o := p.EventInit.toJSObject()
-	o.Set("oldURL", p.OldUrl)
-	o.Set("newURL", p.NewURL)
+	o.set("oldURL", p.OldUrl)
+	o.set("newURL", p.NewURL)
 	return o
 }
 
@@ -213,7 +213,7 @@ type PageTransitionEventInit struct {
 
 func (p PageTransitionEventInit) toJSObject() Value {
 	o := p.EventInit.toJSObject()
-	o.Set("persisted", p.Persisted)
+	o.set("persisted", p.Persisted)
 	return o
 }
 

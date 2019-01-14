@@ -20,7 +20,7 @@ func wrapWebGLObject(v Value) WebGLObject {
 }
 
 func newWebGLObjectImpl(v Value) *webGLObjectImpl {
-	if v.Valid() {
+	if v.valid() {
 		return &webGLObjectImpl{
 			Value: v,
 		}
@@ -35,7 +35,7 @@ type webGLBufferImpl struct {
 }
 
 func wrapWebGLBuffer(v Value) WebGLBuffer {
-	if v.Valid() {
+	if v.valid() {
 		return &webGLBufferImpl{
 			webGLObjectImpl: newWebGLObjectImpl(v),
 		}
@@ -50,7 +50,7 @@ type webGLFramebufferImpl struct {
 }
 
 func wrapWebGLFramebuffer(v Value) WebGLFramebuffer {
-	if v.Valid() {
+	if v.valid() {
 		return &webGLFramebufferImpl{
 			webGLObjectImpl: newWebGLObjectImpl(v),
 		}
@@ -65,7 +65,7 @@ type webGLProgramImpl struct {
 }
 
 func wrapWebGLProgram(v Value) WebGLProgram {
-	if v.Valid() {
+	if v.valid() {
 		return &webGLProgramImpl{
 			webGLObjectImpl: newWebGLObjectImpl(v),
 		}
@@ -80,7 +80,7 @@ type webGLRenderbufferImpl struct {
 }
 
 func wrapWebGLRenderbuffer(v Value) WebGLRenderbuffer {
-	if v.Valid() {
+	if v.valid() {
 		return &webGLRenderbufferImpl{
 			webGLObjectImpl: newWebGLObjectImpl(v),
 		}
@@ -95,7 +95,7 @@ type webGLShaderImpl struct {
 }
 
 func wrapWebGLShader(v Value) WebGLShader {
-	if v.Valid() {
+	if v.valid() {
 		return &webGLShaderImpl{
 			webGLObjectImpl: newWebGLObjectImpl(v),
 		}
@@ -110,7 +110,7 @@ type webGLTextureImpl struct {
 }
 
 func wrapWebGLTexture(v Value) WebGLTexture {
-	if v.Valid() {
+	if v.valid() {
 		return &webGLTextureImpl{
 			webGLObjectImpl: newWebGLObjectImpl(v),
 		}
@@ -125,7 +125,7 @@ type webGLUniformLocationImpl struct {
 }
 
 func wrapWebGLUniformLocation(v Value) WebGLUniformLocation {
-	if v.Valid() {
+	if v.valid() {
 		return &webGLUniformLocationImpl{
 			Value: v,
 		}
@@ -140,7 +140,7 @@ type webGLActiveInfoImpl struct {
 }
 
 func wrapWebGLActiveInfo(v Value) WebGLActiveInfo {
-	if v.Valid() {
+	if v.valid() {
 		return &webGLActiveInfoImpl{
 			Value: v,
 		}
@@ -149,15 +149,15 @@ func wrapWebGLActiveInfo(v Value) WebGLActiveInfo {
 }
 
 func (p *webGLActiveInfoImpl) Size() int {
-	return p.Get("size").Int()
+	return p.get("size").toInt()
 }
 
 func (p *webGLActiveInfoImpl) Type() GLenum {
-	return GLenum(p.Get("type").Int())
+	return GLenum(p.get("type").toInt())
 }
 
 func (p *webGLActiveInfoImpl) Name() string {
-	return p.Get("name").String()
+	return p.get("name").toString()
 }
 
 // -------------8<---------------------------------------
@@ -167,7 +167,7 @@ type webGLShaderPrecisionFormatImpl struct {
 }
 
 func wrapWebGLShaderPrecisionFormat(v Value) WebGLShaderPrecisionFormat {
-	if v.Valid() {
+	if v.valid() {
 		return &webGLShaderPrecisionFormatImpl{
 			Value: v,
 		}
@@ -176,30 +176,30 @@ func wrapWebGLShaderPrecisionFormat(v Value) WebGLShaderPrecisionFormat {
 }
 
 func (p *webGLShaderPrecisionFormatImpl) RangeMin() int {
-	return p.Get("rangeMin").Int()
+	return p.get("rangeMin").toInt()
 }
 
 func (p *webGLShaderPrecisionFormatImpl) RangeMax() int {
-	return p.Get("rangeMax").Int()
+	return p.get("rangeMax").toInt()
 }
 
 func (p *webGLShaderPrecisionFormatImpl) Precision() int {
-	return p.Get("precision").Int()
+	return p.get("precision").toInt()
 }
 
 // -------------8<---------------------------------------
 
 func wrapWebGLContextAttributes(v Value) WebGLContextAttributes {
-	if v.Valid() {
+	if v.valid() {
 		return WebGLContextAttributes{
-			Alpha:                        v.Get("alpha").Bool(),
-			Depth:                        v.Get("depth").Bool(),
-			Stencil:                      v.Get("stencil").Bool(),
-			Antialias:                    v.Get("antialias").Bool(),
-			PremultipliedAlpha:           v.Get("premultipliedAlpha").Bool(),
-			PreserveDrawingBuffer:        v.Get("preserveDrawingBuffer").Bool(),
-			PowerPreference:              WebGLPowerPreference(v.Get("powerPreference").String()),
-			FailIfMajorPerformanceCaveat: v.Get("failIfMajorPerformanceCaveat").Bool(),
+			Alpha:                        v.get("alpha").toBool(),
+			Depth:                        v.get("depth").toBool(),
+			Stencil:                      v.get("stencil").toBool(),
+			Antialias:                    v.get("antialias").toBool(),
+			PremultipliedAlpha:           v.get("premultipliedAlpha").toBool(),
+			PreserveDrawingBuffer:        v.get("preserveDrawingBuffer").toBool(),
+			PowerPreference:              WebGLPowerPreference(v.get("powerPreference").toString()),
+			FailIfMajorPerformanceCaveat: v.get("failIfMajorPerformanceCaveat").toBool(),
 		}
 	}
 	return WebGLContextAttributes{}
@@ -212,7 +212,7 @@ type texImageSourceImpl struct {
 }
 
 func wrapTexImageSource(v Value) TexImageSource {
-	if v.Valid() {
+	if v.valid() {
 		return &texImageSourceImpl{
 			Value: v,
 		}
@@ -229,7 +229,7 @@ type webGLRenderingContextBaseImpl struct {
 }
 
 func newWebGLRenderingContextBaseImpl(v Value) *webGLRenderingContextBaseImpl {
-	if v.Valid() {
+	if v.valid() {
 		return &webGLRenderingContextBaseImpl{
 			Value: v,
 		}
@@ -238,43 +238,43 @@ func newWebGLRenderingContextBaseImpl(v Value) *webGLRenderingContextBaseImpl {
 }
 
 func (p *webGLRenderingContextBaseImpl) Canvas() HTMLCanvasElement {
-	return wrapHTMLCanvasElement(p.Get("canvas"))
+	return wrapHTMLCanvasElement(p.get("canvas"))
 }
 
 func (p *webGLRenderingContextBaseImpl) DrawingBufferWidth() int {
-	return p.Get("drawingBufferWidth").Int()
+	return p.get("drawingBufferWidth").toInt()
 }
 
 func (p *webGLRenderingContextBaseImpl) drawingBufferHeight() int {
-	return p.Get("drawingBufferHeight").Int()
+	return p.get("drawingBufferHeight").toInt()
 }
 
 func (p *webGLRenderingContextBaseImpl) GetContextAttributes() WebGLContextAttributes {
-	return wrapWebGLContextAttributes(p.Call("getContextAttributes"))
+	return wrapWebGLContextAttributes(p.call("getContextAttributes"))
 }
 
 func (p *webGLRenderingContextBaseImpl) IsContextLost() bool {
-	return p.Call("isContextLost").Bool()
+	return p.call("isContextLost").toBool()
 }
 
 func (p *webGLRenderingContextBaseImpl) GetSupportedExtensions() []string {
-	return stringSequenceToSlice(p.Call("getSupportedExtensions"))
+	return stringSequenceToSlice(p.call("getSupportedExtensions"))
 }
 
 func (p *webGLRenderingContextBaseImpl) GetExtension(string) interface{} {
-	return Wrap(p.Call("getExtension"))
+	return Wrap(p.call("getExtension"))
 }
 
 func (p *webGLRenderingContextBaseImpl) ActiveTexture(texture GLenum) {
-	p.Call("activeTexture", uint(texture))
+	p.call("activeTexture", uint(texture))
 }
 
 func (p *webGLRenderingContextBaseImpl) AttachShader(program WebGLProgram, shader WebGLShader) {
-	p.Call("attachShader", JSValue(program), JSValue(shader))
+	p.call("attachShader", JSValue(program), JSValue(shader))
 }
 
 func (p *webGLRenderingContextBaseImpl) BindAttribLocation(program WebGLProgram, index int, name string) {
-	p.Call("bindAttribLocation", JSValue(program), index, name)
+	p.call("bindAttribLocation", JSValue(program), index, name)
 }
 
 func (p *webGLRenderingContextBaseImpl) BindBuffer(target GLenum, buffer WebGLBuffer) {
@@ -285,227 +285,227 @@ func (p *webGLRenderingContextBaseImpl) BindBuffer(target GLenum, buffer WebGLBu
 		b = jsNull
 	}
 
-	p.Call("bindBuffer", uint(target), b)
+	p.call("bindBuffer", uint(target), b)
 }
 
 func (p *webGLRenderingContextBaseImpl) BindFramebuffer(target GLenum, framebuffer WebGLFramebuffer) {
 	if framebuffer != nil {
-		p.Call("bindFramebuffer", uint(target), JSValue(framebuffer))
+		p.call("bindFramebuffer", uint(target), JSValue(framebuffer))
 	} else {
-		p.Call("bindFramebuffer", uint(target), js.Null())
+		p.call("bindFramebuffer", uint(target), js.Null())
 	}
 }
 
 func (p *webGLRenderingContextBaseImpl) BindRenderbuffer(target GLenum, renderbuffer WebGLRenderbuffer) {
-	p.Call("bindRenderbuffer", uint(target), JSValue(renderbuffer))
+	p.call("bindRenderbuffer", uint(target), JSValue(renderbuffer))
 }
 
 func (p *webGLRenderingContextBaseImpl) BindTexture(target GLenum, texture WebGLTexture) {
-	p.Call("bindTexture", uint(target), JSValue(texture))
+	p.call("bindTexture", uint(target), JSValue(texture))
 }
 
 func (p *webGLRenderingContextBaseImpl) BlendColor(red, green, blue, alpha float32) {
-	p.Call("blendColor", red, green, blue, alpha)
+	p.call("blendColor", red, green, blue, alpha)
 }
 
 func (p *webGLRenderingContextBaseImpl) BlendEquation(mode GLenum) {
-	p.Call("blendEquation", uint(mode))
+	p.call("blendEquation", uint(mode))
 }
 
 func (p *webGLRenderingContextBaseImpl) BlendEquationSeparate(modeRGB GLenum, modeAlpha GLenum) {
-	p.Call("blendEquationSeparate", uint(modeRGB), uint(modeAlpha))
+	p.call("blendEquationSeparate", uint(modeRGB), uint(modeAlpha))
 }
 
 func (p *webGLRenderingContextBaseImpl) BlendFunc(sfactor GLenum, dfactor GLenum) {
-	p.Call("blendFunc", uint(sfactor), uint(dfactor))
+	p.call("blendFunc", uint(sfactor), uint(dfactor))
 }
 
 func (p *webGLRenderingContextBaseImpl) BlendFuncSeparate(srcRGB, dstRGB, srcAlpha, dstAlpha GLenum) {
-	p.Call("blendFuncSeparate", uint(srcRGB), uint(dstRGB), uint(srcAlpha), uint(dstAlpha))
+	p.call("blendFuncSeparate", uint(srcRGB), uint(dstRGB), uint(srcAlpha), uint(dstAlpha))
 }
 
 func (p *webGLRenderingContextBaseImpl) BufferData(target GLenum, size int, usage GLenum) {
-	p.Call("bufferData", uint(target), size, uint(usage))
+	p.call("bufferData", uint(target), size, uint(usage))
 }
 
 func (p *webGLRenderingContextBaseImpl) BufferDataSource(target GLenum, data BufferSource, usage GLenum) {
-	p.Call("bufferData", uint(target), JSValue(data), uint(usage))
+	p.call("bufferData", uint(target), JSValue(data), uint(usage))
 }
 
 func (p *webGLRenderingContextBaseImpl) BufferSubData(target GLenum, offset int, data BufferSource) {
-	p.Call("bufferSubData", uint(target), offset, JSValue(data))
+	p.call("bufferSubData", uint(target), offset, JSValue(data))
 }
 
 func (p *webGLRenderingContextBaseImpl) CheckFramebufferStatus(target GLenum) GLenum {
-	return GLenum(p.Call("checkFramebufferStatus", uint(target)).Int())
+	return GLenum(p.call("checkFramebufferStatus", uint(target)).toInt())
 }
 
 func (p *webGLRenderingContextBaseImpl) Clear(mask GLenum) {
-	p.Call("clear", uint(mask))
+	p.call("clear", uint(mask))
 }
 
 func (p *webGLRenderingContextBaseImpl) ClearColor(red, green, blue, alpha float32) {
-	p.Call("clearColor", red, green, blue, alpha)
+	p.call("clearColor", red, green, blue, alpha)
 }
 
 func (p *webGLRenderingContextBaseImpl) ClearDepth(depth float32) {
-	p.Call("clearDepth", depth)
+	p.call("clearDepth", depth)
 }
 
 func (p *webGLRenderingContextBaseImpl) ClearStencil(s int) {
-	p.Call("clearStencil", s)
+	p.call("clearStencil", s)
 }
 
 func (p *webGLRenderingContextBaseImpl) ColorMask(red, green, blue, alpha bool) {
-	p.Call("colorMask", red, green, blue, alpha)
+	p.call("colorMask", red, green, blue, alpha)
 }
 
 func (p *webGLRenderingContextBaseImpl) CompileShader(shader WebGLShader) {
-	p.Call("compileShader", JSValue(shader))
+	p.call("compileShader", JSValue(shader))
 }
 
 func (p *webGLRenderingContextBaseImpl) CompressedTexImage2D(target GLenum, level int, internalFormat GLenum, width int, height int, border int, data ArrayBufferView) {
-	p.Call("compressedTexImage2D", uint(target), level, uint(internalFormat), width, height, border, JSValue(data))
+	p.call("compressedTexImage2D", uint(target), level, uint(internalFormat), width, height, border, JSValue(data))
 }
 
 func (p *webGLRenderingContextBaseImpl) CompressedTexSubImage2D(target GLenum, level int, xoffset int, yoffset int, width int, height int, format GLenum, data ArrayBufferView) {
-	p.Call("compressedTexSubImage2D", uint(target), level, xoffset, yoffset, width, height, uint(format), JSValue(data))
+	p.call("compressedTexSubImage2D", uint(target), level, xoffset, yoffset, width, height, uint(format), JSValue(data))
 }
 
 func (p *webGLRenderingContextBaseImpl) CopyTexImage2D(target GLenum, level int, internalFormat GLenum, x int, y int, width int, height int, border int) {
-	p.Call("copyTexImage2D", uint(target), level, uint(internalFormat), x, y, width, height, border)
+	p.call("copyTexImage2D", uint(target), level, uint(internalFormat), x, y, width, height, border)
 }
 
 func (p *webGLRenderingContextBaseImpl) CopyTexSubImage2D(target GLenum, level int, xoffset int, yoffset int, x int, y int, width int, height int) {
-	p.Call("copyTexSubImage2D", uint(target), level, xoffset, yoffset, x, y, width, height)
+	p.call("copyTexSubImage2D", uint(target), level, xoffset, yoffset, x, y, width, height)
 }
 
 func (p *webGLRenderingContextBaseImpl) CreateBuffer() WebGLBuffer {
-	return wrapWebGLBuffer(p.Call("createBuffer"))
+	return wrapWebGLBuffer(p.call("createBuffer"))
 }
 
 func (p *webGLRenderingContextBaseImpl) CreateFramebuffer() WebGLFramebuffer {
-	return wrapWebGLFramebuffer(p.Call("createFramebuffer"))
+	return wrapWebGLFramebuffer(p.call("createFramebuffer"))
 }
 
 func (p *webGLRenderingContextBaseImpl) CreateProgram() WebGLProgram {
-	return wrapWebGLProgram(p.Call("createProgram"))
+	return wrapWebGLProgram(p.call("createProgram"))
 }
 
 func (p *webGLRenderingContextBaseImpl) CreateRenderbuffer() WebGLRenderbuffer {
-	return wrapWebGLRenderbuffer(p.Call("createRenderbuffer"))
+	return wrapWebGLRenderbuffer(p.call("createRenderbuffer"))
 }
 
 func (p *webGLRenderingContextBaseImpl) CreateShader(typ GLenum) WebGLShader {
-	return wrapWebGLShader(p.Call("createShader", uint(typ)))
+	return wrapWebGLShader(p.call("createShader", uint(typ)))
 }
 
 func (p *webGLRenderingContextBaseImpl) CreateTexture() WebGLTexture {
-	return wrapWebGLTexture(p.Call("createTexture"))
+	return wrapWebGLTexture(p.call("createTexture"))
 }
 
 func (p *webGLRenderingContextBaseImpl) CullFace(mode GLenum) {
-	p.Call("cullFace", uint(mode))
+	p.call("cullFace", uint(mode))
 }
 
 func (p *webGLRenderingContextBaseImpl) DeleteBuffer(buffer WebGLBuffer) {
-	p.Call("deleteBuffer", JSValue(buffer))
+	p.call("deleteBuffer", JSValue(buffer))
 }
 
 func (p *webGLRenderingContextBaseImpl) DeleteFramebuffer(frameBuffer WebGLFramebuffer) {
-	p.Call("deleteFramebuffer", JSValue(frameBuffer))
+	p.call("deleteFramebuffer", JSValue(frameBuffer))
 }
 
 func (p *webGLRenderingContextBaseImpl) DeleteProgram(program WebGLProgram) {
-	p.Call("deleteProgram", JSValue(program))
+	p.call("deleteProgram", JSValue(program))
 }
 
 func (p *webGLRenderingContextBaseImpl) DeleteRenderbuffer(renderbuffer WebGLRenderbuffer) {
-	p.Call("deleteRenderbuffer", JSValue(renderbuffer))
+	p.call("deleteRenderbuffer", JSValue(renderbuffer))
 }
 
 func (p *webGLRenderingContextBaseImpl) DeleteShader(shader WebGLShader) {
-	p.Call("deleteShader", JSValue(shader))
+	p.call("deleteShader", JSValue(shader))
 }
 
 func (p *webGLRenderingContextBaseImpl) DeleteTexture(texture WebGLTexture) {
-	p.Call("deleteTexture", JSValue(texture))
+	p.call("deleteTexture", JSValue(texture))
 }
 
 func (p *webGLRenderingContextBaseImpl) DepthFunc(fn GLenum) {
-	p.Call("depthFunc", uint(fn))
+	p.call("depthFunc", uint(fn))
 }
 
 func (p *webGLRenderingContextBaseImpl) DepthMask(flag bool) {
-	p.Call("depthMask", flag)
+	p.call("depthMask", flag)
 }
 
 func (p *webGLRenderingContextBaseImpl) DepthRange(zNear, zFar float32) {
-	p.Call("depthRange", zNear, zFar)
+	p.call("depthRange", zNear, zFar)
 }
 
 func (p *webGLRenderingContextBaseImpl) DetachShader(program WebGLProgram, shader WebGLShader) {
-	p.Call("detachShader", JSValue(program), JSValue(shader))
+	p.call("detachShader", JSValue(program), JSValue(shader))
 }
 
 func (p *webGLRenderingContextBaseImpl) Disable(c GLenum) {
-	p.Call("disable", uint(c))
+	p.call("disable", uint(c))
 }
 
 func (p *webGLRenderingContextBaseImpl) DisableVertexAttribArray(index uint) {
-	p.Call("disableVertexAttribArray", index)
+	p.call("disableVertexAttribArray", index)
 }
 
 func (p *webGLRenderingContextBaseImpl) DrawArrays(mode GLenum, first int, count int) {
-	p.Call("drawArrays", uint(mode), first, count)
+	p.call("drawArrays", uint(mode), first, count)
 }
 
 func (p *webGLRenderingContextBaseImpl) DrawElements(mode GLenum, count int, typ GLenum, offset int) {
-	p.Call("drawElements", uint(mode), count, uint(typ), offset)
+	p.call("drawElements", uint(mode), count, uint(typ), offset)
 }
 
 func (p *webGLRenderingContextBaseImpl) Enable(c GLenum) {
-	p.Call("enable", uint(c))
+	p.call("enable", uint(c))
 }
 
 func (p *webGLRenderingContextBaseImpl) EnableVertexAttribArray(index uint) {
-	p.Call("enableVertexAttribArray", index)
+	p.call("enableVertexAttribArray", index)
 }
 
 func (p *webGLRenderingContextBaseImpl) Finish() {
-	p.Call("finish")
+	p.call("finish")
 }
 
 func (p *webGLRenderingContextBaseImpl) Flush() {
-	p.Call("flush")
+	p.call("flush")
 }
 
 func (p *webGLRenderingContextBaseImpl) FramebufferRenderbuffer(target GLenum, attachment GLenum, renderbuffertarget GLenum, renderbuffer WebGLRenderbuffer) {
-	p.Call("framebufferRenderbuffer", uint(target), uint(attachment), uint(renderbuffertarget), JSValue(renderbuffer))
+	p.call("framebufferRenderbuffer", uint(target), uint(attachment), uint(renderbuffertarget), JSValue(renderbuffer))
 }
 
 func (p *webGLRenderingContextBaseImpl) FramebufferTexture2D(target GLenum, attachment GLenum, textarget GLenum, texture WebGLTexture, level int) {
-	p.Call("framebufferTexture2D", uint(target), uint(attachment), uint(textarget), JSValue(texture), level)
+	p.call("framebufferTexture2D", uint(target), uint(attachment), uint(textarget), JSValue(texture), level)
 }
 
 func (p *webGLRenderingContextBaseImpl) FrontFace(mode GLenum) {
-	p.Call("frontFace", uint(mode))
+	p.call("frontFace", uint(mode))
 }
 
 func (p *webGLRenderingContextBaseImpl) GenerateMipmap(target GLenum) {
-	p.Call("generateMipmap", uint(target))
+	p.call("generateMipmap", uint(target))
 }
 
 func (p *webGLRenderingContextBaseImpl) GetActiveAttrib(program WebGLProgram, index uint) WebGLActiveInfo {
-	return wrapWebGLActiveInfo(p.Call("getActiveAttrib", JSValue(program), index))
+	return wrapWebGLActiveInfo(p.call("getActiveAttrib", JSValue(program), index))
 }
 
 func (p *webGLRenderingContextBaseImpl) GetActiveUniform(program WebGLProgram, index uint) WebGLActiveInfo {
-	return wrapWebGLActiveInfo(p.Call("getActiveUniform", JSValue(program), index))
+	return wrapWebGLActiveInfo(p.call("getActiveUniform", JSValue(program), index))
 }
 
 func (p *webGLRenderingContextBaseImpl) GetAttachedShaders(program WebGLProgram) []WebGLShader {
-	if s := p.Call("getAttachedShaders", JSValue(program)).ToSlice(); s != nil {
+	if s := p.call("getAttachedShaders", JSValue(program)).toSlice(); s != nil {
 		ret := make([]WebGLShader, len(s))
 		for i, v := range s {
 			ret[i] = wrapWebGLShader(v)
@@ -516,345 +516,345 @@ func (p *webGLRenderingContextBaseImpl) GetAttachedShaders(program WebGLProgram)
 }
 
 func (p *webGLRenderingContextBaseImpl) GetAttribLocation(program WebGLProgram, name string) int {
-	return p.Call("getAttribLocation", JSValue(program), name).Int()
+	return p.call("getAttribLocation", JSValue(program), name).toInt()
 }
 
 func (p *webGLRenderingContextBaseImpl) GetBufferParameter(target GLenum, pname GLenum) interface{} {
-	return Wrap(p.Call("getBufferParameter", uint(target), uint(pname)))
+	return Wrap(p.call("getBufferParameter", uint(target), uint(pname)))
 }
 
 func (p *webGLRenderingContextBaseImpl) GetParameter(pname GLenum) interface{} {
-	return Wrap(p.Call("getParameter", uint(pname)))
+	return Wrap(p.call("getParameter", uint(pname)))
 }
 
 func (p *webGLRenderingContextBaseImpl) GetError() GLenum {
-	return GLenum(p.Call("getError").Int())
+	return GLenum(p.call("getError").toInt())
 }
 
 func (p *webGLRenderingContextBaseImpl) GetFramebufferAttachmentParameter(target, attachment, pname GLenum) {
-	p.Call("getFramebufferAttachmentParameter", uint(target), uint(attachment), uint(pname))
+	p.call("getFramebufferAttachmentParameter", uint(target), uint(attachment), uint(pname))
 }
 
 func (p *webGLRenderingContextBaseImpl) GetProgramParameter(program WebGLProgram, pname GLenum) interface{} {
-	return Wrap(p.Call("getProgramParameter", JSValue(program), uint(pname)))
+	return Wrap(p.call("getProgramParameter", JSValue(program), uint(pname)))
 }
 
 func (p *webGLRenderingContextBaseImpl) GetProgramInfoLog(program WebGLProgram) string {
-	return p.Call("getProgramInfoLog", JSValue(program)).String()
+	return p.call("getProgramInfoLog", JSValue(program)).toString()
 }
 
 func (p *webGLRenderingContextBaseImpl) GetRenderbufferParameter(target GLenum, pname GLenum) interface{} {
-	return Wrap(p.Call("getRenderbufferParameter", uint(target), uint(pname)))
+	return Wrap(p.call("getRenderbufferParameter", uint(target), uint(pname)))
 }
 
 func (p *webGLRenderingContextBaseImpl) GetShaderParameter(shader WebGLShader, pname GLenum) interface{} {
-	return Wrap(p.Call("getShaderParameter", JSValue(shader), uint(pname)))
+	return Wrap(p.call("getShaderParameter", JSValue(shader), uint(pname)))
 }
 
 func (p *webGLRenderingContextBaseImpl) GetShaderPrecisionFormat(shaderType GLenum, precisiontype GLenum) WebGLShaderPrecisionFormat {
-	return wrapWebGLShaderPrecisionFormat(p.Call("getShaderPrecisionFormat", uint(shaderType), uint(precisiontype)))
+	return wrapWebGLShaderPrecisionFormat(p.call("getShaderPrecisionFormat", uint(shaderType), uint(precisiontype)))
 }
 
 func (p *webGLRenderingContextBaseImpl) GetShaderInfoLog(shader WebGLShader) string {
-	return p.Call("getShaderInfoLog", JSValue(shader)).String()
+	return p.call("getShaderInfoLog", JSValue(shader)).toString()
 }
 
 func (p *webGLRenderingContextBaseImpl) GetShaderSource(shader WebGLShader) string {
-	return p.Call("getShaderSource", JSValue(shader)).String()
+	return p.call("getShaderSource", JSValue(shader)).toString()
 }
 
 func (p *webGLRenderingContextBaseImpl) GetTexParameter(target GLenum, pname GLenum) interface{} {
-	return Wrap(p.Call("getTexParameter", uint(target), uint(pname)))
+	return Wrap(p.call("getTexParameter", uint(target), uint(pname)))
 }
 
 func (p *webGLRenderingContextBaseImpl) GetUniform(program WebGLProgram, location WebGLUniformLocation) interface{} {
-	return Wrap(p.Call("getUniform", JSValue(program), JSValue(location)))
+	return Wrap(p.call("getUniform", JSValue(program), JSValue(location)))
 }
 
 func (p *webGLRenderingContextBaseImpl) GetUniformLocation(program WebGLProgram, name string) WebGLUniformLocation {
-	return wrapWebGLUniformLocation(p.Call("getUniformLocation", JSValue(program), name))
+	return wrapWebGLUniformLocation(p.call("getUniformLocation", JSValue(program), name))
 }
 
 func (p *webGLRenderingContextBaseImpl) GetVertexAttrib(index uint, pname GLenum) interface{} {
-	return Wrap(p.Call("getVertexAttrib", index, uint(pname)))
+	return Wrap(p.call("getVertexAttrib", index, uint(pname)))
 }
 
 func (p *webGLRenderingContextBaseImpl) GetVertexAttribOffset(index uint, pname GLenum) int {
-	return p.Call("getVertexAttribOffset", index, uint(pname)).Int()
+	return p.call("getVertexAttribOffset", index, uint(pname)).toInt()
 }
 
 func (p *webGLRenderingContextBaseImpl) Hint(target GLenum, mode GLenum) {
-	p.Call("hint", uint(target), uint(mode))
+	p.call("hint", uint(target), uint(mode))
 }
 
 func (p *webGLRenderingContextBaseImpl) IsBuffer(buffer WebGLBuffer) bool {
-	return p.Call("isBuffer", JSValue(buffer)).Bool()
+	return p.call("isBuffer", JSValue(buffer)).toBool()
 }
 
 func (p *webGLRenderingContextBaseImpl) IsEnabled(c GLenum) bool {
-	return p.Call("isEnabled", uint(c)).Bool()
+	return p.call("isEnabled", uint(c)).toBool()
 }
 
 func (p *webGLRenderingContextBaseImpl) IsFramebuffer(buffer WebGLFramebuffer) bool {
-	return p.Call("isFramebuffer", JSValue(buffer)).Bool()
+	return p.call("isFramebuffer", JSValue(buffer)).toBool()
 }
 
 func (p *webGLRenderingContextBaseImpl) IsProgram(program WebGLProgram) bool {
-	return p.Call("isProgram", JSValue(program)).Bool()
+	return p.call("isProgram", JSValue(program)).toBool()
 }
 
 func (p *webGLRenderingContextBaseImpl) IsRenderbuffer(buffer WebGLRenderbuffer) bool {
-	return p.Call("isRenderbuffer", JSValue(buffer)).Bool()
+	return p.call("isRenderbuffer", JSValue(buffer)).toBool()
 }
 
 func (p *webGLRenderingContextBaseImpl) IsShader(shader WebGLShader) bool {
-	return p.Call("isShader", JSValue(shader)).Bool()
+	return p.call("isShader", JSValue(shader)).toBool()
 }
 
 func (p *webGLRenderingContextBaseImpl) IsTexture(texture WebGLTexture) bool {
-	return p.Call("isTexture", JSValue(texture)).Bool()
+	return p.call("isTexture", JSValue(texture)).toBool()
 }
 
 func (p *webGLRenderingContextBaseImpl) LineWidth(width float32) {
-	p.Call("lineWidth", width)
+	p.call("lineWidth", width)
 }
 
 func (p *webGLRenderingContextBaseImpl) LinkProgram(program WebGLProgram) {
-	p.Call("linkProgram", JSValue(program))
+	p.call("linkProgram", JSValue(program))
 }
 
 func (p *webGLRenderingContextBaseImpl) PixelStorei(pname GLenum, param int) {
-	p.Call("pixelStorei", uint(pname), param)
+	p.call("pixelStorei", uint(pname), param)
 }
 
 func (p *webGLRenderingContextBaseImpl) PolygonOffset(factor float32, units float32) {
-	p.Call("polygonOffset", factor, units)
+	p.call("polygonOffset", factor, units)
 }
 
 func (p *webGLRenderingContextBaseImpl) ReadPixels(x int, y int, width int, height int, format GLenum, typ GLenum, pixels ArrayBufferView) {
-	p.Call("readPixels", x, y, width, height, uint(format), uint(typ), JSValue(pixels))
+	p.call("readPixels", x, y, width, height, uint(format), uint(typ), JSValue(pixels))
 }
 
 func (p *webGLRenderingContextBaseImpl) RenderbufferStorage(target GLenum, format GLenum, width int, height int) {
-	p.Call("renderbufferStorage", uint(target), uint(format), width, height)
+	p.call("renderbufferStorage", uint(target), uint(format), width, height)
 }
 
 func (p *webGLRenderingContextBaseImpl) SampleCoverage(value float32, invert bool) {
-	p.Call("sampleCoverage", value, invert)
+	p.call("sampleCoverage", value, invert)
 }
 
 func (p *webGLRenderingContextBaseImpl) Scissor(x int, y int, width int, height int) {
-	p.Call("scissor", x, y, width, height)
+	p.call("scissor", x, y, width, height)
 }
 
 func (p *webGLRenderingContextBaseImpl) ShaderSource(shader WebGLShader, source string) {
-	p.Call("shaderSource", JSValue(shader), source)
+	p.call("shaderSource", JSValue(shader), source)
 }
 
 func (p *webGLRenderingContextBaseImpl) StencilFunc(fn GLenum, ref int, mask uint) {
-	p.Call("stencilFunc", uint(fn), ref, mask)
+	p.call("stencilFunc", uint(fn), ref, mask)
 }
 
 func (p *webGLRenderingContextBaseImpl) StencilFuncSeparate(face GLenum, fn GLenum, ref int, mask uint) {
-	p.Call("stencilFuncSeparate", uint(face), uint(fn), ref, mask)
+	p.call("stencilFuncSeparate", uint(face), uint(fn), ref, mask)
 }
 
 func (p *webGLRenderingContextBaseImpl) StencilMask(mask uint) {
-	p.Call("stencilMask", mask)
+	p.call("stencilMask", mask)
 }
 
 func (p *webGLRenderingContextBaseImpl) StencilMaskSeparate(face GLenum, mask uint) {
-	p.Call("stencilMaskSeparate", uint(face), mask)
+	p.call("stencilMaskSeparate", uint(face), mask)
 }
 
 func (p *webGLRenderingContextBaseImpl) StencilOp(fail, zfail, zpass GLenum) {
-	p.Call("stencilOp", uint(fail), uint(zfail), uint(zpass))
+	p.call("stencilOp", uint(fail), uint(zfail), uint(zpass))
 }
 
 func (p *webGLRenderingContextBaseImpl) StencilOpSeparate(face, fail, zfail, zpass GLenum) {
-	p.Call("stencilOpSeparate", face, fail, zfail, zpass)
+	p.call("stencilOpSeparate", face, fail, zfail, zpass)
 }
 
 func (p *webGLRenderingContextBaseImpl) TexImage2DBuffer(target GLenum, level int, internalFormat int, width int, height int, border int, format GLenum, typ GLenum, pixels ArrayBufferView) {
 	if pixels != nil {
-		p.Call("texImage2D", uint(target), level, internalFormat, width, height, border, uint(format), uint(typ), JSValue(pixels))
+		p.call("texImage2D", uint(target), level, internalFormat, width, height, border, uint(format), uint(typ), JSValue(pixels))
 	} else {
-		p.Call("texImage2D", uint(target), level, internalFormat, width, height, border, uint(format), uint(typ), nil)
+		p.call("texImage2D", uint(target), level, internalFormat, width, height, border, uint(format), uint(typ), nil)
 	}
 }
 
 func (p *webGLRenderingContextBaseImpl) TexImage2DSource(target GLenum, level int, internalFormat int, format GLenum, typ GLenum, source TexImageSource) {
-	p.Call("texImage2D", uint(target), level, internalFormat, uint(format), uint(typ), JSValue(source))
+	p.call("texImage2D", uint(target), level, internalFormat, uint(format), uint(typ), JSValue(source))
 }
 
 func (p *webGLRenderingContextBaseImpl) TexParameterf(target GLenum, pname GLenum, param float32) {
-	p.Call("texParameterf", uint(target), uint(pname), param)
+	p.call("texParameterf", uint(target), uint(pname), param)
 }
 
 func (p *webGLRenderingContextBaseImpl) TexParameteri(target GLenum, pname GLenum, param int) {
-	p.Call("texParameteri", uint(target), uint(pname), param)
+	p.call("texParameteri", uint(target), uint(pname), param)
 }
 
 func (p *webGLRenderingContextBaseImpl) TexSubImage2DBuffer(target GLenum, level int, xoffset int, yoffset int, width int, height int, format GLenum, typ GLenum, pixels ArrayBufferView) {
-	p.Call("texSubImage2D", uint(target), level, xoffset, yoffset, width, height, uint(format), uint(typ), JSValue(pixels))
+	p.call("texSubImage2D", uint(target), level, xoffset, yoffset, width, height, uint(format), uint(typ), JSValue(pixels))
 }
 
 func (p *webGLRenderingContextBaseImpl) TexSubImage2DSource(target GLenum, level int, xoffset int, yoffset int, format GLenum, typ GLenum, source TexImageSource) {
-	p.Call("texSubImage2D", uint(target), level, xoffset, yoffset, uint(format), uint(typ), JSValue(source))
+	p.call("texSubImage2D", uint(target), level, xoffset, yoffset, uint(format), uint(typ), JSValue(source))
 }
 
 func (p *webGLRenderingContextBaseImpl) Uniform1f(location WebGLUniformLocation, x float32) {
-	p.Call("uniform1f", JSValue(location), x)
+	p.call("uniform1f", JSValue(location), x)
 }
 
 func (p *webGLRenderingContextBaseImpl) Uniform2f(location WebGLUniformLocation, x float32, y float32) {
-	p.Call("uniform2f", JSValue(location), x, y)
+	p.call("uniform2f", JSValue(location), x, y)
 }
 
 func (p *webGLRenderingContextBaseImpl) Uniform3f(location WebGLUniformLocation, x float32, y float32, z float32) {
-	p.Call("uniform3f", JSValue(location), x, y, z)
+	p.call("uniform3f", JSValue(location), x, y, z)
 }
 
 func (p *webGLRenderingContextBaseImpl) Uniform4f(location WebGLUniformLocation, x float32, y float32, z float32, w float32) {
-	p.Call("uniform4f", JSValue(location), x, y, z, w)
+	p.call("uniform4f", JSValue(location), x, y, z, w)
 }
 
 func (p *webGLRenderingContextBaseImpl) Uniform1i(location WebGLUniformLocation, x int) {
-	p.Call("uniform1i", JSValue(location), x)
+	p.call("uniform1i", JSValue(location), x)
 }
 
 func (p *webGLRenderingContextBaseImpl) Uniform2i(location WebGLUniformLocation, x int, y int) {
-	p.Call("uniform2i", JSValue(location), x, y)
+	p.call("uniform2i", JSValue(location), x, y)
 }
 
 func (p *webGLRenderingContextBaseImpl) Uniform3i(location WebGLUniformLocation, x int, y int, z int) {
-	p.Call("uniform3i", JSValue(location), x, y, z)
+	p.call("uniform3i", JSValue(location), x, y, z)
 }
 
 func (p *webGLRenderingContextBaseImpl) Uniform4i(location WebGLUniformLocation, x int, y int, z int, w int) {
-	p.Call("uniform4i", JSValue(location), x, y, z, w)
+	p.call("uniform4i", JSValue(location), x, y, z, w)
 }
 
 func (p *webGLRenderingContextBaseImpl) Uniform1fv(location WebGLUniformLocation, v []float32) {
 	ta := js.TypedArrayOf(v)
-	p.Call("uniform1fv", JSValue(location), ta)
+	p.call("uniform1fv", JSValue(location), ta)
 	ta.Release()
 }
 
 func (p *webGLRenderingContextBaseImpl) Uniform2fv(location WebGLUniformLocation, v []float32) {
 	ta := js.TypedArrayOf(v)
-	p.Call("uniform2fv", JSValue(location), ta)
+	p.call("uniform2fv", JSValue(location), ta)
 	ta.Release()
 }
 
 func (p *webGLRenderingContextBaseImpl) Uniform3fv(location WebGLUniformLocation, v []float32) {
 	ta := js.TypedArrayOf(v)
-	p.Call("uniform3fv", JSValue(location), ta)
+	p.call("uniform3fv", JSValue(location), ta)
 	ta.Release()
 }
 
 func (p *webGLRenderingContextBaseImpl) Uniform4fv(location WebGLUniformLocation, v []float32) {
 	ta := js.TypedArrayOf(v)
-	p.Call("uniform4fv", JSValue(location), ta)
+	p.call("uniform4fv", JSValue(location), ta)
 	ta.Release()
 }
 
 func (p *webGLRenderingContextBaseImpl) Uniform1iv(location WebGLUniformLocation, v []int) {
 	ta := js.TypedArrayOf(v)
-	p.Call("uniform1iv", JSValue(location), ta)
+	p.call("uniform1iv", JSValue(location), ta)
 	ta.Release()
 }
 
 func (p *webGLRenderingContextBaseImpl) Uniform2iv(location WebGLUniformLocation, v []int) {
 	ta := js.TypedArrayOf(v)
-	p.Call("uniform2iv", JSValue(location), ta)
+	p.call("uniform2iv", JSValue(location), ta)
 	ta.Release()
 }
 
 func (p *webGLRenderingContextBaseImpl) Uniform3iv(location WebGLUniformLocation, v []int) {
 	ta := js.TypedArrayOf(v)
-	p.Call("uniform3iv", JSValue(location), ta)
+	p.call("uniform3iv", JSValue(location), ta)
 	ta.Release()
 }
 
 func (p *webGLRenderingContextBaseImpl) Uniform4iv(location WebGLUniformLocation, v []int) {
 	ta := js.TypedArrayOf(v)
-	p.Call("uniform4iv", JSValue(location), ta)
+	p.call("uniform4iv", JSValue(location), ta)
 	ta.Release()
 }
 
 func (p *webGLRenderingContextBaseImpl) UniformMatrix2fv(location WebGLUniformLocation, transpose bool, v []float32) {
 	ta := js.TypedArrayOf(v)
-	p.Call("uniformMatrix2fv", JSValue(location), transpose, ta)
+	p.call("uniformMatrix2fv", JSValue(location), transpose, ta)
 	ta.Release()
 }
 
 func (p *webGLRenderingContextBaseImpl) UniformMatrix3fv(location WebGLUniformLocation, transpose bool, v []float32) {
 	ta := js.TypedArrayOf(v)
-	p.Call("uniformMatrix3fv", JSValue(location), transpose, ta)
+	p.call("uniformMatrix3fv", JSValue(location), transpose, ta)
 	ta.Release()
 }
 
 func (p *webGLRenderingContextBaseImpl) UniformMatrix4fv(location WebGLUniformLocation, transpose bool, v []float32) {
 	ta := js.TypedArrayOf(v)
-	p.Call("uniformMatrix4fv", JSValue(location), transpose, ta)
+	p.call("uniformMatrix4fv", JSValue(location), transpose, ta)
 	ta.Release()
 }
 
 func (p *webGLRenderingContextBaseImpl) UseProgram(program WebGLProgram) {
-	p.Call("useProgram", JSValue(program))
+	p.call("useProgram", JSValue(program))
 }
 
 func (p *webGLRenderingContextBaseImpl) ValidateProgram(program WebGLProgram) {
-	p.Call("validateProgram", JSValue(program))
+	p.call("validateProgram", JSValue(program))
 }
 
 func (p *webGLRenderingContextBaseImpl) VertexAttrib1f(index uint, x float32) {
-	p.Call("vertexAttrib1f", index, x)
+	p.call("vertexAttrib1f", index, x)
 }
 
 func (p *webGLRenderingContextBaseImpl) VertexAttrib2f(index uint, x, y float32) {
-	p.Call("vertexAttrib2f", index, x, y)
+	p.call("vertexAttrib2f", index, x, y)
 }
 
 func (p *webGLRenderingContextBaseImpl) VertexAttrib3f(index uint, x, y, z float32) {
-	p.Call("vertexAttrib3f", index, x, y, z)
+	p.call("vertexAttrib3f", index, x, y, z)
 }
 
 func (p *webGLRenderingContextBaseImpl) VertexAttrib4f(index uint, x, y, z, w float32) {
-	p.Call("vertexAttrib4f", index, x, y, z, w)
+	p.call("vertexAttrib4f", index, x, y, z, w)
 }
 
 func (p *webGLRenderingContextBaseImpl) VertexAttrib1fv(index uint, values []float32) {
 	ta := js.TypedArrayOf(values)
-	p.Call("vertexAttrib1fv", index, ta)
+	p.call("vertexAttrib1fv", index, ta)
 	ta.Release()
 }
 
 func (p *webGLRenderingContextBaseImpl) VertexAttrib2fv(index uint, values []float32) {
 	ta := js.TypedArrayOf(values)
-	p.Call("vertexAttrib2fv", index, ta)
+	p.call("vertexAttrib2fv", index, ta)
 	ta.Release()
 }
 
 func (p *webGLRenderingContextBaseImpl) VertexAttrib3fv(index uint, values []float32) {
 	ta := js.TypedArrayOf(values)
-	p.Call("vertexAttrib3fv", index, ta)
+	p.call("vertexAttrib3fv", index, ta)
 	ta.Release()
 }
 
 func (p *webGLRenderingContextBaseImpl) VertexAttrib4fv(index uint, values []float32) {
 	ta := js.TypedArrayOf(values)
-	p.Call("vertexAttrib4fv", index, ta)
+	p.call("vertexAttrib4fv", index, ta)
 	ta.Release()
 }
 
 func (p *webGLRenderingContextBaseImpl) VertexAttribPointer(index uint, size int, typ GLenum, normalized bool, stride int, offset int) {
-	p.Call("vertexAttribPointer", index, size, uint(typ), normalized, stride, offset)
+	p.call("vertexAttribPointer", index, size, uint(typ), normalized, stride, offset)
 }
 
 func (p *webGLRenderingContextBaseImpl) Viewport(x, y, width, height int) {
-	p.Call("viewport", x, y, width, height)
+	p.call("viewport", x, y, width, height)
 }
 
 // -------------8<---------------------------------------
@@ -864,7 +864,7 @@ type webGLRenderingContextImpl struct {
 }
 
 func wrapWebGLRenderingContext(v Value) WebGLRenderingContext {
-	if v.Valid() {
+	if v.valid() {
 		return &webGLRenderingContextImpl{
 			webGLRenderingContextBaseImpl: newWebGLRenderingContextBaseImpl(v),
 		}

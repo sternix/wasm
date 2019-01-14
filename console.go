@@ -41,7 +41,7 @@ type consoleImpl struct {
 }
 
 func wrapConsole(v Value) Console {
-	if v.Valid() {
+	if v.valid() {
 		return &consoleImpl{
 			Value: v,
 		}
@@ -52,10 +52,10 @@ func wrapConsole(v Value) Console {
 func (p *consoleImpl) Assert(args ...interface{}) {
 	switch len(args) {
 	case 0:
-		p.Call("assert")
+		p.call("assert")
 	case 1:
 		if condition, ok := args[0].(bool); ok {
-			p.Call("assert", condition)
+			p.call("assert", condition)
 		}
 	default: // more than 1
 		// TODO: WRONG
@@ -65,107 +65,107 @@ func (p *consoleImpl) Assert(args ...interface{}) {
 				params = append(params, args[i])
 			}
 
-			p.Call("assert", condition, params)
+			p.call("assert", condition, params)
 		}
 	}
 }
 
 func (p *consoleImpl) Clear() {
-	p.Call("clear")
+	p.call("clear")
 }
 
 func (p *consoleImpl) Debug(data ...interface{}) {
-	p.Call("debug", data...)
+	p.call("debug", data...)
 }
 
 func (p *consoleImpl) Error(data ...interface{}) {
-	p.Call("error", data...)
+	p.call("error", data...)
 }
 
 func (p *consoleImpl) Info(data ...interface{}) {
-	p.Call("info", data...)
+	p.call("info", data...)
 }
 
 func (p *consoleImpl) Log(data ...interface{}) {
-	p.Call("log", data...)
+	p.call("log", data...)
 }
 
 func (p *consoleImpl) Table(tabularData interface{}, properties ...[]string) {
 	switch len(properties) {
 	case 0:
-		p.Call("table", tabularData)
+		p.call("table", tabularData)
 	default:
-		p.Call("table", tabularData, sliceToJsArray(properties[0]))
+		p.call("table", tabularData, sliceToJsArray(properties[0]))
 	}
 }
 
 func (p *consoleImpl) Trace(data ...interface{}) {
-	p.Call("trace", data...)
+	p.call("trace", data...)
 }
 
 func (p *consoleImpl) Warn(data ...interface{}) {
-	p.Call("warn", data...)
+	p.call("warn", data...)
 }
 
 func (p *consoleImpl) Dir(item interface{}, options ...interface{}) {
 	switch len(options) {
 	case 0:
-		p.Call("dir", item)
+		p.call("dir", item)
 	default:
-		p.Call("dir", item, options[0])
+		p.call("dir", item, options[0])
 	}
 }
 
 func (p *consoleImpl) Dirxml(data ...interface{}) {
-	p.Call("dirxml", data...)
+	p.call("dirxml", data...)
 }
 
 func (p *consoleImpl) Count(label ...string) {
 	switch len(label) {
 	case 0:
-		p.Call("count")
+		p.call("count")
 	default:
-		p.Call("count", label[0])
+		p.call("count", label[0])
 	}
 }
 
 func (p *consoleImpl) CountReset(label ...string) {
 	switch len(label) {
 	case 0:
-		p.Call("countReset")
+		p.call("countReset")
 	default:
-		p.Call("countReset", label[0])
+		p.call("countReset", label[0])
 	}
 }
 
 func (p *consoleImpl) Group(data ...interface{}) {
-	p.Call("group", data...)
+	p.call("group", data...)
 }
 
 func (p *consoleImpl) GroupCollapsed(data ...interface{}) {
-	p.Call("groupCollapsed", data...)
+	p.call("groupCollapsed", data...)
 }
 
 func (p *consoleImpl) GroupEnd() {
-	p.Call("groupEnd")
+	p.call("groupEnd")
 }
 
 func (p *consoleImpl) Time(label ...string) {
 	switch len(label) {
 	case 0:
-		p.Call("time")
+		p.call("time")
 	case 1:
-		p.Call("time", label[0])
+		p.call("time", label[0])
 	}
 }
 
 func (p *consoleImpl) TimeLog(args ...interface{}) {
 	switch len(args) {
 	case 0:
-		p.Call("timeLog")
+		p.call("timeLog")
 	case 1:
 		if label, ok := args[0].(string); ok {
-			p.Call("timeLog", label)
+			p.call("timeLog", label)
 		}
 	default:
 		//TODO WRONG
@@ -174,7 +174,7 @@ func (p *consoleImpl) TimeLog(args ...interface{}) {
 			for i := 1; i < len(args); i++ {
 				params = append(params, args[i])
 			}
-			p.Call("timeLog", label, params)
+			p.call("timeLog", label, params)
 		}
 	}
 }
@@ -182,8 +182,8 @@ func (p *consoleImpl) TimeLog(args ...interface{}) {
 func (p *consoleImpl) TimeEnd(label ...string) {
 	switch len(label) {
 	case 0:
-		p.Call("timeEnd")
+		p.call("timeEnd")
 	default:
-		p.Call("timeEnd", label[0])
+		p.call("timeEnd", label[0])
 	}
 }

@@ -86,8 +86,8 @@ type BlobPropertyBag struct {
 }
 
 func (p BlobPropertyBag) toJSObject() Value {
-	o := jsObject.New()
-	o.Set("type", p.Type)
+	o := jsObject.jsNew()
+	o.set("type", p.Type)
 	return o
 }
 
@@ -102,7 +102,7 @@ type FilePropertyBag struct {
 
 func (p FilePropertyBag) toJSObject() Value {
 	o := p.BlobPropertyBag.toJSObject()
-	o.Set("lastModified", p.LastModified)
+	o.set("lastModified", p.LastModified)
 	return o
 }
 
@@ -119,8 +119,8 @@ type ProgressEventInit struct {
 
 func (p ProgressEventInit) toJSObject() Value {
 	o := p.EventInit.toJSObject()
-	o.Set("lengthComputable", p.LengthComputable)
-	o.Set("loaded", p.Loaded)
-	o.Set("total", p.Total)
+	o.set("lengthComputable", p.LengthComputable)
+	o.set("loaded", p.Loaded)
+	o.set("total", p.Total)
 	return o
 }

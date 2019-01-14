@@ -13,7 +13,7 @@ type geolocationImpl struct {
 }
 
 func wrapGeolocation(v Value) Geolocation {
-	if v.Valid() {
+	if v.valid() {
 		return &geolocationImpl{
 			Value: v,
 		}
@@ -24,15 +24,15 @@ func wrapGeolocation(v Value) Geolocation {
 func (p *geolocationImpl) CurrentPosition(cb PositionCallback, args ...interface{}) {
 	switch len(args) {
 	case 0:
-		p.Call("getCurrentPosition", cb.jsCallback())
+		p.call("getCurrentPosition", cb.jsCallback())
 	case 1:
 		if peCb, ok := args[0].(PositionErrorCallback); ok {
-			p.Call("getCurrentPosition", cb.jsCallback(), peCb.jsCallback())
+			p.call("getCurrentPosition", cb.jsCallback(), peCb.jsCallback())
 		}
 	case 2:
 		if peCb, ok := args[0].(PositionErrorCallback); ok {
 			if po, ok := args[1].(PositionOptions); ok {
-				p.Call("getCurrentPosition", cb.jsCallback(), peCb.jsCallback(), po.toJSObject())
+				p.call("getCurrentPosition", cb.jsCallback(), peCb.jsCallback(), po.toJSObject())
 			}
 		}
 	}
@@ -42,21 +42,21 @@ func (p *geolocationImpl) WatchPosition(cb PositionCallback, args ...interface{}
 	switch len(args) {
 	case 1:
 		if peCb, ok := args[0].(PositionErrorCallback); ok {
-			return p.Call("watchPosition", cb.jsCallback(), peCb.jsCallback()).Int()
+			return p.call("watchPosition", cb.jsCallback(), peCb.jsCallback()).toInt()
 		}
 	case 2:
 		if peCb, ok := args[0].(PositionErrorCallback); ok {
 			if po, ok := args[1].(PositionOptions); ok {
-				return p.Call("watchPosition", cb.jsCallback(), peCb.jsCallback(), po.toJSObject()).Int()
+				return p.call("watchPosition", cb.jsCallback(), peCb.jsCallback(), po.toJSObject()).toInt()
 			}
 		}
 	}
 
-	return p.Call("watchPosition", cb.jsCallback()).Int()
+	return p.call("watchPosition", cb.jsCallback()).toInt()
 }
 
 func (p *geolocationImpl) ClearWatch(watchId int) {
-	p.Call("clearWatch", watchId)
+	p.call("clearWatch", watchId)
 }
 
 // -------------8<---------------------------------------
@@ -66,7 +66,7 @@ type positionImpl struct {
 }
 
 func wrapPosition(v Value) Position {
-	if v.Valid() {
+	if v.valid() {
 		return &positionImpl{
 			Value: v,
 		}
@@ -75,11 +75,11 @@ func wrapPosition(v Value) Position {
 }
 
 func (p *positionImpl) Coords() Coordinates {
-	return wrapCoordinates(p.Get("coords"))
+	return wrapCoordinates(p.get("coords"))
 }
 
 func (p *positionImpl) Timestamp() time.Time {
-	return domTimeStampToTime(p.Get("timestamp").Int())
+	return domTimeStampToTime(p.get("timestamp").toInt())
 }
 
 // -------------8<---------------------------------------
@@ -89,7 +89,7 @@ type coordinatesImpl struct {
 }
 
 func wrapCoordinates(v Value) Coordinates {
-	if v.Valid() {
+	if v.valid() {
 		return &coordinatesImpl{
 			Value: v,
 		}
@@ -98,31 +98,31 @@ func wrapCoordinates(v Value) Coordinates {
 }
 
 func (p *coordinatesImpl) Latitude() float64 {
-	return p.Get("latitude").Float()
+	return p.get("latitude").toFloat64()
 }
 
 func (p *coordinatesImpl) Longitude() float64 {
-	return p.Get("longitude").Float()
+	return p.get("longitude").toFloat64()
 }
 
 func (p *coordinatesImpl) Altitude() float64 {
-	return p.Get("altitude").Float()
+	return p.get("altitude").toFloat64()
 }
 
 func (p *coordinatesImpl) Accuracy() float64 {
-	return p.Get("accuracy").Float()
+	return p.get("accuracy").toFloat64()
 }
 
 func (p *coordinatesImpl) AltitudeAccuracy() float64 {
-	return p.Get("altitudeAccuracy").Float()
+	return p.get("altitudeAccuracy").toFloat64()
 }
 
 func (p *coordinatesImpl) Heading() float64 {
-	return p.Get("heading").Float()
+	return p.get("heading").toFloat64()
 }
 
 func (p *coordinatesImpl) Speed() float64 {
-	return p.Get("speed").Float()
+	return p.get("speed").toFloat64()
 }
 
 // -------------8<---------------------------------------
@@ -132,7 +132,7 @@ type positionErrorImpl struct {
 }
 
 func wrapPositionError(v Value) PositionError {
-	if v.Valid() {
+	if v.valid() {
 		return &positionErrorImpl{
 			Value: v,
 		}
@@ -141,11 +141,11 @@ func wrapPositionError(v Value) PositionError {
 }
 
 func (p *positionErrorImpl) Code() PositionErrorCode {
-	return PositionErrorCode(p.Get("code").Int())
+	return PositionErrorCode(p.get("code").toInt())
 }
 
 func (p *positionErrorImpl) Message() string {
-	return p.Get("message").String()
+	return p.get("message").toString()
 }
 
 // -------------8<---------------------------------------

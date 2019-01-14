@@ -9,7 +9,7 @@ import (
 
 var (
 	jsObject    = Value{js.Global().Get("Object")}
-	jsTypeFunc  = jsObject.Get("prototype").Get("toString")
+	jsTypeFunc  = jsObject.get("prototype").get("toString")
 	jsGlobal    = Value{js.Global()}
 	jsNull      = Value{js.Null()}
 	jsUndefined = Value{js.Undefined()}
@@ -27,107 +27,117 @@ const (
 )
 
 type Value struct {
-	js.Value
+	jsValue js.Value
 }
 
-func (p Value) Valid() bool {
+func (p Value) valid() bool {
 	if p == jsNull || p == jsUndefined {
 		return false
 	}
 	return true
 }
 
-func (p Value) Bool() bool {
-	if p.Valid() {
-		return p.Value.Bool()
+func (p Value) toBool() bool {
+	if p.valid() {
+		return p.jsValue.Bool()
 	}
 	return false
 }
 
-func (p Value) String() string {
-	if p.Valid() {
-		return p.Value.String()
+func (p Value) toString() string {
+	if p.valid() {
+		return p.jsValue.String()
 	}
 	return ""
 }
 
-func (p Value) Float() float64 {
-	if p.Valid() {
-		return p.Value.Float()
+func (p Value) toFloat64() float64 {
+	if p.valid() {
+		return p.jsValue.Float()
 	}
 	return 0.0
 }
 
-func (p Value) Int() int {
-	return int(p.Float())
+func (p Value) toInt() int {
+	return int(p.toFloat64())
 }
 
-func (p Value) Uint16() uint16 {
-	return uint16(p.Float())
+func (p Value) toUint16() uint16 {
+	return uint16(p.toFloat64())
 }
 
-func (p Value) Uint() uint {
-	return uint(p.Float())
+func (p Value) toUint() uint {
+	return uint(p.toFloat64())
 }
 
-func (p Value) Float32() float32 {
-	return float32(p.Value.Float())
+func (p Value) toFloat32() float32 {
+	return float32(p.toFloat64())
 }
 
-func (v Value) InstanceOf(t Value) bool {
-	return v.Value.InstanceOf(t.Value)
+func (v Value) instanceOf(t Value) bool {
+	return v.jsValue.InstanceOf(t.jsValue)
 }
 
 func (p Value) JSValue() js.Value {
-	return p.Value
+	return p.jsValue
 }
 
-func (p Value) JSType() string {
-	if p.Value.Type() == js.TypeObject {
-		str := jsTypeFunc.Call("call", p.Value).String()
+func (p Value) jsType() string {
+	if p.jsValue.Type() == TypeObject {
+		str := jsTypeFunc.call("call", p.jsValue).toString()
 		return str[8 : len(str)-1]
 	}
 
-	return p.Value.Type().String()
+	return p.jsValue.Type().String()
 }
 
-func (p Value) Get(property string) Value {
+func (p Value) get(property string) Value {
 	return Value{
-		p.Value.Get(property),
+		p.jsValue.Get(property),
 	}
 }
 
-func (p Value) Call(m string, args ...interface{}) Value {
+func (p Value) set(property string, x interface{}) {
+	p.jsValue.Set(property, x)
+}
+
+func (p Value) setIndex(i int, x interface{}) {
+	p.jsValue.SetIndex(i, x)
+}
+
+func (p Value) length() int {
+	return p.jsValue.Length()
+}
+
+func (p Value) call(m string, args ...interface{}) Value {
 	return Value{
-		p.Value.Call(m, args...),
+		p.jsValue.Call(m, args...),
 	}
 }
 
-func (p Value) Invoke(args ...interface{}) Value {
+func (p Value) invoke(args ...interface{}) Value {
 	return Value{
-		p.Value.Invoke(args...),
+		p.jsValue.Invoke(args...),
 	}
 }
 
-func (p Value) New(args ...interface{}) Value {
+func (p Value) jsNew(args ...interface{}) Value {
 	return Value{
-		p.Value.New(args...),
+		p.jsValue.New(args...),
 	}
 }
 
-func (p Value) Index(i int) Value {
+func (p Value) index(i int) Value {
 	return Value{
-		p.Value.Index(i),
+		p.jsValue.Index(i),
 	}
 }
 
-// -------------8<---------------------------------------
-
-func (p Value) ToSlice() []Value {
-	if p.Valid() {
-		slc := make([]Value, p.Length())
+func (p Value) toSlice() []Value {
+	if p.valid() {
+		slc := make([]Value, p.length())
 		for i := range slc {
-			slc[i] = p.Index(i)
+			slc[i] = p.index(i)
 		}
 		return slc
 	}
@@ -139,7 +149,7 @@ func (p Value) ToSlice() []Value {
 // taken from https://go-review.googlesource.com/c/go/+/150917/
 // modified as standalone func
 func await(v Value) (result Value, ok bool) {
-	if v.Value.Type() != TypeObject || v.Get("then").Type() != TypeFunction {
+	if v.jsValue.Type() != TypeObject || v.get("then").jsValue.Type() != TypeFunction {
 		return v, true
 
 	}
@@ -162,7 +172,7 @@ func await(v Value) (result Value, ok bool) {
 	})
 	defer onReject.Release()
 
-	v.Call("then", onResolve, onReject)
+	v.call("then", onResolve, onReject)
 	<-done
 	return
 }
@@ -185,12 +195,10 @@ func Equal(x interface{}, y interface{}) bool {
 // it excepts Value is embedded in struct
 func JSValue(o interface{}) Value {
 	if o != nil {
-		// is typed array
 		if ta, ok := o.(js.Wrapper); ok {
 			return Value{ta.JSValue()}
 		}
 
-		// embedded Value
 		if v, ok := reflect.ValueOf(o).Elem().FieldByName("Value").Interface().(Value); ok {
 			return v
 		}

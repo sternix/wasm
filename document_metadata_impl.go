@@ -18,7 +18,7 @@ func NewHTMLHtmlElement() HTMLHtmlElement {
 }
 
 func wrapHTMLHtmlElement(v Value) HTMLHtmlElement {
-	if v.Valid() {
+	if v.valid() {
 		return &htmlHtmlElementImpl{
 			htmlElementImpl: newHTMLElementImpl(v),
 		}
@@ -42,7 +42,7 @@ func NewHTMLHeadElement() HTMLHeadElement {
 }
 
 func wrapHTMLHeadElement(v Value) HTMLHeadElement {
-	if v.Valid() {
+	if v.valid() {
 		return &htmlHeadElementImpl{
 			htmlElementImpl: newHTMLElementImpl(v),
 		}
@@ -66,7 +66,7 @@ func NewHTMLTitleElement() HTMLTitleElement {
 }
 
 func wrapHTMLTitleElement(v Value) HTMLTitleElement {
-	if v.Valid() {
+	if v.valid() {
 		return &htmlTitleElementImpl{
 			htmlElementImpl: newHTMLElementImpl(v),
 		}
@@ -75,11 +75,11 @@ func wrapHTMLTitleElement(v Value) HTMLTitleElement {
 }
 
 func (p *htmlTitleElementImpl) Text() string {
-	return p.Get("text").String()
+	return p.get("text").toString()
 }
 
 func (p *htmlTitleElementImpl) SetText(text string) {
-	p.Set("text", text)
+	p.set("text", text)
 }
 
 // -------------8<---------------------------------------
@@ -98,7 +98,7 @@ func NewHTMLBaseElement() HTMLBaseElement {
 }
 
 func wrapHTMLBaseElement(v Value) HTMLBaseElement {
-	if v.Valid() {
+	if v.valid() {
 		return &htmlBaseElementImpl{
 			htmlElementImpl: newHTMLElementImpl(v),
 		}
@@ -107,19 +107,19 @@ func wrapHTMLBaseElement(v Value) HTMLBaseElement {
 }
 
 func (p *htmlBaseElementImpl) Href() string {
-	return p.Get("href").String()
+	return p.get("href").toString()
 }
 
 func (p *htmlBaseElementImpl) SetHref(href string) {
-	p.Set("href", href)
+	p.set("href", href)
 }
 
 func (p *htmlBaseElementImpl) Target() string {
-	return p.Get("target").String()
+	return p.get("target").toString()
 }
 
 func (p *htmlBaseElementImpl) SetTarget(target string) {
-	p.Set("target", target)
+	p.set("target", target)
 }
 
 // -------------8<---------------------------------------
@@ -140,7 +140,7 @@ func NewHTMLLinkElement() HTMLLinkElement {
 }
 
 func wrapHTMLLinkElement(v Value) HTMLLinkElement {
-	if v.Valid() {
+	if v.valid() {
 		return &htmlLinkElementImpl{
 			linkStyleImpl:   newLinkStyleImpl(v),
 			htmlElementImpl: newHTMLElementImpl(v),
@@ -151,83 +151,83 @@ func wrapHTMLLinkElement(v Value) HTMLLinkElement {
 }
 
 func (p *htmlLinkElementImpl) Href() string {
-	return p.Get("href").String()
+	return p.get("href").toString()
 }
 
 func (p *htmlLinkElementImpl) SetHref(href string) {
-	p.Set("href", href)
+	p.set("href", href)
 }
 
 func (p *htmlLinkElementImpl) CrossOrigin() string {
-	return p.Get("crossOrigin").String()
+	return p.get("crossOrigin").toString()
 }
 
 func (p *htmlLinkElementImpl) SetCrossOrigin(crossOrigin string) {
-	p.Set("crossOrigin", crossOrigin)
+	p.set("crossOrigin", crossOrigin)
 }
 
 func (p *htmlLinkElementImpl) Rel() string {
-	return p.Get("rel").String()
+	return p.get("rel").toString()
 }
 
 func (p *htmlLinkElementImpl) SetRel(rel string) {
-	p.Set("rel", rel)
+	p.set("rel", rel)
 }
 
 func (p *htmlLinkElementImpl) Rev() string {
-	return p.Get("rev").String()
+	return p.get("rev").toString()
 }
 
 func (p *htmlLinkElementImpl) SetRev(rev string) {
-	p.Set("rev", rev)
+	p.set("rev", rev)
 }
 
 func (p *htmlLinkElementImpl) RelList() DOMTokenList {
-	return wrapDOMTokenList(p.Get("relList"))
+	return wrapDOMTokenList(p.get("relList"))
 }
 
 func (p *htmlLinkElementImpl) Media() string {
-	return p.Get("media").String()
+	return p.get("media").toString()
 }
 
 func (p *htmlLinkElementImpl) SetMedia(media string) {
-	p.Set("media", media)
+	p.set("media", media)
 }
 
 func (p *htmlLinkElementImpl) Nonce() string {
-	return p.Get("nonce").String()
+	return p.get("nonce").toString()
 }
 
 func (p *htmlLinkElementImpl) SetNonce(nonce string) {
-	p.Set("nonce", nonce)
+	p.set("nonce", nonce)
 }
 
 func (p *htmlLinkElementImpl) HrefLang() string {
-	return p.Get("hreflang").String()
+	return p.get("hreflang").toString()
 }
 
 func (p *htmlLinkElementImpl) SetHrefLang(hreflang string) {
-	p.Set("hreflang", hreflang)
+	p.set("hreflang", hreflang)
 }
 
 func (p *htmlLinkElementImpl) Type() string {
-	return p.Get("type").String()
+	return p.get("type").toString()
 }
 
 func (p *htmlLinkElementImpl) SetType(typ string) {
-	p.Set("type", typ)
+	p.set("type", typ)
 }
 
 func (p *htmlLinkElementImpl) Sizes() DOMTokenList {
-	return wrapDOMTokenList(p.Get("sizes"))
+	return wrapDOMTokenList(p.get("sizes"))
 }
 
 func (p *htmlLinkElementImpl) ReferrerPolicy() string {
-	return p.Get("referrerPolicy").String()
+	return p.get("referrerPolicy").toString()
 }
 
 func (p *htmlLinkElementImpl) SetReferrerPolicy(referrerPolicy string) {
-	p.Set("referrerPolicy", referrerPolicy)
+	p.set("referrerPolicy", referrerPolicy)
 }
 
 // -------------8<---------------------------------------
@@ -246,7 +246,7 @@ func NewHTMLMetaElement() HTMLMetaElement {
 }
 
 func wrapHTMLMetaElement(v Value) HTMLMetaElement {
-	if v.Valid() {
+	if v.valid() {
 		return &htmlMetaElementImpl{
 			htmlElementImpl: newHTMLElementImpl(v),
 		}
@@ -255,27 +255,27 @@ func wrapHTMLMetaElement(v Value) HTMLMetaElement {
 }
 
 func (p *htmlMetaElementImpl) Name() string {
-	return p.Get("name").String()
+	return p.get("name").toString()
 }
 
 func (p *htmlMetaElementImpl) SetName(name string) {
-	p.Set("name", name)
+	p.set("name", name)
 }
 
 func (p *htmlMetaElementImpl) HTTPEquiv() string {
-	return p.Get("httpEquiv").String()
+	return p.get("httpEquiv").toString()
 }
 
 func (p *htmlMetaElementImpl) SetHTTPEquiv(httpEquiv string) {
-	p.Set("httpEquiv", httpEquiv)
+	p.set("httpEquiv", httpEquiv)
 }
 
 func (p *htmlMetaElementImpl) Content() string {
-	return p.Get("content").String()
+	return p.get("content").toString()
 }
 
 func (p *htmlMetaElementImpl) SetContent(content string) {
-	p.Set("content", content)
+	p.set("content", content)
 }
 
 // -------------8<---------------------------------------
@@ -296,7 +296,7 @@ func NewHTMLStyleElement() HTMLStyleElement {
 }
 
 func wrapHTMLStyleElement(v Value) HTMLStyleElement {
-	if v.Valid() {
+	if v.valid() {
 		return &htmlStyleElementImpl{
 			htmlElementImpl: newHTMLElementImpl(v),
 			linkStyleImpl:   newLinkStyleImpl(v),
@@ -307,27 +307,27 @@ func wrapHTMLStyleElement(v Value) HTMLStyleElement {
 }
 
 func (p *htmlStyleElementImpl) Media() string {
-	return p.Get("media").String()
+	return p.get("media").toString()
 }
 
 func (p *htmlStyleElementImpl) SetMedia(media string) {
-	p.Set("media", media)
+	p.set("media", media)
 }
 
 func (p *htmlStyleElementImpl) Nonce() string {
-	return p.Get("nonce").String()
+	return p.get("nonce").toString()
 }
 
 func (p *htmlStyleElementImpl) SetNonce(nonce string) {
-	p.Set("nonce", nonce)
+	p.set("nonce", nonce)
 }
 
 func (p *htmlStyleElementImpl) Type() string {
-	return p.Get("type").String()
+	return p.get("type").toString()
 }
 
 func (p *htmlStyleElementImpl) SetType(typ string) {
-	p.Set("type", typ)
+	p.set("type", typ)
 }
 
 // -------------8<---------------------------------------

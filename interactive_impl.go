@@ -9,7 +9,7 @@ type htmlDetailsElementImpl struct {
 }
 
 func wrapHTMLDetailsElement(v Value) HTMLDetailsElement {
-	if v.Valid() {
+	if v.valid() {
 		return &htmlDetailsElementImpl{
 			htmlElementImpl: newHTMLElementImpl(v),
 		}
@@ -18,11 +18,11 @@ func wrapHTMLDetailsElement(v Value) HTMLDetailsElement {
 }
 
 func (p *htmlDetailsElementImpl) Open() bool {
-	return p.Get("open").Bool()
+	return p.get("open").toBool()
 }
 
 func (p *htmlDetailsElementImpl) SetOpen(b bool) {
-	p.Set("open", b)
+	p.set("open", b)
 }
 
 // -------------8<---------------------------------------
@@ -32,7 +32,7 @@ type htmlDialogElementImpl struct {
 }
 
 func wrapHTMLDialogElement(v Value) HTMLDialogElement {
-	if v.Valid() {
+	if v.valid() {
 		return &htmlDialogElementImpl{
 			htmlElementImpl: newHTMLElementImpl(v),
 		}
@@ -41,29 +41,29 @@ func wrapHTMLDialogElement(v Value) HTMLDialogElement {
 }
 
 func (p *htmlDialogElementImpl) Open() bool {
-	return p.Get("open").Bool()
+	return p.get("open").toBool()
 }
 
 func (p *htmlDialogElementImpl) SetOpen(b bool) {
-	p.Set("open", b)
+	p.set("open", b)
 }
 
 func (p *htmlDialogElementImpl) ReturnValue() string {
-	return p.Get("returnValue").String()
+	return p.get("returnValue").toString()
 }
 
 func (p *htmlDialogElementImpl) SetReturnValue(returnValue string) {
-	p.Set("returnValue", returnValue)
+	p.set("returnValue", returnValue)
 }
 
 func (p *htmlDialogElementImpl) Show(anchor ...interface{}) {
 	if len(anchor) > 0 {
 		switch x := anchor[0].(type) {
 		case MouseEvent, Element:
-			p.Call("show", JSValue(x))
+			p.call("show", JSValue(x))
 		}
 	} else {
-		p.Call("show")
+		p.call("show")
 	}
 }
 
@@ -71,21 +71,21 @@ func (p *htmlDialogElementImpl) ShowModal(anchor ...interface{}) {
 	if len(anchor) > 0 {
 		switch x := anchor[0].(type) {
 		case MouseEvent:
-			p.Call("showModal", JSValue(x))
+			p.call("showModal", JSValue(x))
 		case Element:
-			p.Call("showModal", JSValue(x))
+			p.call("showModal", JSValue(x))
 		}
 	} else {
-		p.Call("showModal")
+		p.call("showModal")
 	}
 }
 
 func (p *htmlDialogElementImpl) Close(returnValue ...string) {
 	switch len(returnValue) {
 	case 0:
-		p.Call("close")
+		p.call("close")
 	default:
-		p.Call("close", returnValue[0])
+		p.call("close", returnValue[0])
 	}
 }
 

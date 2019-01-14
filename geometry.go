@@ -122,11 +122,11 @@ type DOMPointInit struct {
 }
 
 func (p DOMPointInit) toJSObject() Value {
-	o := jsObject.New()
-	o.Set("x", p.X)
-	o.Set("y", p.Y)
-	o.Set("z", p.Z)
-	o.Set("w", p.W)
+	o := jsObject.jsNew()
+	o.set("x", p.X)
+	o.set("y", p.Y)
+	o.set("z", p.Z)
+	o.set("w", p.W)
 	return o
 }
 
@@ -141,11 +141,11 @@ type DOMRectInit struct {
 }
 
 func (p DOMRectInit) toJSObject() Value {
-	o := jsObject.New()
-	o.Set("x", p.X)
-	o.Set("y", p.Y)
-	o.Set("width", p.Width)
-	o.Set("height", p.Height)
+	o := jsObject.jsNew()
+	o.set("x", p.X)
+	o.set("y", p.Y)
+	o.set("width", p.Width)
+	o.set("height", p.Height)
 	return o
 }
 
@@ -161,10 +161,10 @@ type DOMQuadInit struct {
 }
 
 func (p DOMQuadInit) toJSObject() Value {
-	o := jsObject.New()
-	o.Set("p1", p.P1.toJSObject())
-	o.Set("p2", p.P2.toJSObject())
-	o.Set("p3", p.P3.toJSObject())
-	o.Set("p4", p.P4.toJSObject())
+	o := jsObject.jsNew()
+	o.set("p1", p.P1.toJSObject())
+	o.set("p2", p.P2.toJSObject())
+	o.set("p3", p.P3.toJSObject())
+	o.set("p4", p.P4.toJSObject())
 	return o
 }

@@ -122,9 +122,9 @@ type HitRegionOptions struct {
 }
 
 func (p HitRegionOptions) toJSObject() Value {
-	o := jsObject.New()
-	o.Set("id", p.Id)
-	o.Set("control", JSValue(p.Control))
+	o := jsObject.jsNew()
+	o.set("id", p.Id)
+	o.set("control", JSValue(p.Control))
 	return o
 }
 

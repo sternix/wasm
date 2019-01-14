@@ -57,7 +57,7 @@ type nonElementParentNodeImpl struct {
 }
 
 func newNonElementParentNodeImpl(v Value) *nonElementParentNodeImpl {
-	if v.Valid() {
+	if v.valid() {
 		return &nonElementParentNodeImpl{
 			Value: v,
 		}
@@ -66,11 +66,11 @@ func newNonElementParentNodeImpl(v Value) *nonElementParentNodeImpl {
 }
 
 func (p *nonElementParentNodeImpl) ElementById(id string) Element {
-	return wrapAsElement(p.Call("getElementById", id))
+	return wrapAsElement(p.call("getElementById", id))
 }
 
 func (p *nonElementParentNodeImpl) HTMLElementById(id string) HTMLElement {
-	return wrapAsHTMLElement(p.Call("getElementById", id))
+	return wrapAsHTMLElement(p.call("getElementById", id))
 }
 
 // -------------8<---------------------------------------
@@ -82,7 +82,7 @@ type nonDocumentTypeChildNodeImpl struct {
 }
 
 func newNonDocumentTypeChildNodeImpl(v Value) *nonDocumentTypeChildNodeImpl {
-	if v.Valid() {
+	if v.valid() {
 		return &nonDocumentTypeChildNodeImpl{
 			Value: v,
 		}
@@ -91,11 +91,11 @@ func newNonDocumentTypeChildNodeImpl(v Value) *nonDocumentTypeChildNodeImpl {
 }
 
 func (p *nonDocumentTypeChildNodeImpl) PreviousElementSibling() Element {
-	return wrapAsElement(p.Get("previousElementSibling"))
+	return wrapAsElement(p.get("previousElementSibling"))
 }
 
 func (p *nonDocumentTypeChildNodeImpl) NextElementSibling() Element {
-	return wrapAsElement(p.Get("nextElementSibling"))
+	return wrapAsElement(p.get("nextElementSibling"))
 }
 
 // -------------8<---------------------------------------
@@ -112,7 +112,7 @@ func wrapChildNode(v Value) ChildNode {
 }
 
 func newChildNodeImpl(v Value) *childNodeImpl {
-	if v.Valid() {
+	if v.valid() {
 		return &childNodeImpl{
 			Value: v,
 		}
@@ -131,7 +131,7 @@ func (p *childNodeImpl) Before(nodes ...interface{}) {
 		}
 	}
 	if len(params) > 0 {
-		p.Call("before", params...)
+		p.call("before", params...)
 	}
 }
 
@@ -147,7 +147,7 @@ func (p *childNodeImpl) After(nodes ...interface{}) {
 	}
 
 	if len(params) > 0 {
-		p.Call("after", params...)
+		p.call("after", params...)
 	}
 }
 
@@ -163,12 +163,12 @@ func (p *childNodeImpl) ReplaceWith(nodes ...interface{}) {
 	}
 
 	if len(params) > 0 {
-		p.Call("replaceWith", params...)
+		p.call("replaceWith", params...)
 	}
 }
 
 func (p *childNodeImpl) Remove() {
-	p.Call("remove")
+	p.call("remove")
 }
 
 // -------------8<---------------------------------------
@@ -180,7 +180,7 @@ type documentOrShadowRootImpl struct {
 }
 
 func newDocumentOrShadowRootImpl(v Value) *documentOrShadowRootImpl {
-	if v.Valid() {
+	if v.valid() {
 		return &documentOrShadowRootImpl{
 			Value: v,
 		}
@@ -189,11 +189,11 @@ func newDocumentOrShadowRootImpl(v Value) *documentOrShadowRootImpl {
 }
 
 func (p *documentOrShadowRootImpl) FullscreenElement() Element {
-	return wrapAsElement(p.Get("fullscreenElement"))
+	return wrapAsElement(p.get("fullscreenElement"))
 }
 
 func (p *documentOrShadowRootImpl) StyleSheets() []CSSStyleSheet {
-	if list := wrapStyleSheetList(p.Get("styleSheets")); list != nil && list.Length() > 0 {
+	if list := wrapStyleSheetList(p.get("styleSheets")); list != nil && list.Length() > 0 {
 		ret := make([]CSSStyleSheet, list.Length())
 		for i := 0; i < list.Length(); i++ {
 			ret[i] = list.Item(i)
@@ -219,7 +219,7 @@ func wrapSlotable(v Value) Slotable {
 */
 
 func newSlotableImpl(v Value) *slotableImpl {
-	if v.Valid() {
+	if v.valid() {
 		return &slotableImpl{
 			Value: v,
 		}
@@ -228,7 +228,7 @@ func newSlotableImpl(v Value) *slotableImpl {
 }
 
 func (p *slotableImpl) AssignedSlot() HTMLSlotElement {
-	return wrapHTMLSlotElement(p.Get("assignedSlot"))
+	return wrapHTMLSlotElement(p.get("assignedSlot"))
 }
 
 // -------------8<---------------------------------------
@@ -240,7 +240,7 @@ type parentNodeImpl struct {
 }
 
 func newParentNodeImpl(v Value) *parentNodeImpl {
-	if v.Valid() {
+	if v.valid() {
 		return &parentNodeImpl{
 			Value: v,
 		}
@@ -249,19 +249,19 @@ func newParentNodeImpl(v Value) *parentNodeImpl {
 }
 
 func (p *parentNodeImpl) Children() []Element {
-	return htmlCollectionToElementSlice(p.Get("children"))
+	return htmlCollectionToElementSlice(p.get("children"))
 }
 
 func (p *parentNodeImpl) FirstElementChild() Element {
-	return wrapAsElement(p.Get("firstElementChild"))
+	return wrapAsElement(p.get("firstElementChild"))
 }
 
 func (p *parentNodeImpl) LastElementChild() Element {
-	return wrapAsElement(p.Get("lastElementChild"))
+	return wrapAsElement(p.get("lastElementChild"))
 }
 
 func (p *parentNodeImpl) ChildElementCount() int {
-	return p.Get("childElementCount").Int()
+	return p.get("childElementCount").toInt()
 }
 
 func (p *parentNodeImpl) Prepend(nodes ...interface{}) {
@@ -276,7 +276,7 @@ func (p *parentNodeImpl) Prepend(nodes ...interface{}) {
 	}
 
 	if len(params) > 0 {
-		p.Call("prepend", params...)
+		p.call("prepend", params...)
 	}
 }
 
@@ -291,16 +291,16 @@ func (p *parentNodeImpl) Append(nodes ...interface{}) {
 		}
 	}
 	if len(params) > 0 {
-		p.Call("append", params...)
+		p.call("append", params...)
 	}
 }
 
 func (p *parentNodeImpl) QuerySelector(selectors string) Element {
-	return wrapAsElement(p.Call("querySelector", selectors))
+	return wrapAsElement(p.call("querySelector", selectors))
 }
 
 func (p *parentNodeImpl) QuerySelectorAll(selectors string) []Node {
-	return nodeListToSlice(p.Call("querySelectorAll", selectors))
+	return nodeListToSlice(p.call("querySelectorAll", selectors))
 }
 
 // -------------8<---------------------------------------
@@ -310,8 +310,8 @@ type FullscreenOptions struct {
 }
 
 func (p FullscreenOptions) toJSObject() Value {
-	o := jsObject.New()
-	o.Set("navigationUI", string(p.NavigationUI))
+	o := jsObject.jsNew()
+	o.set("navigationUI", string(p.NavigationUI))
 	return o
 }
 

@@ -13,8 +13,8 @@ type PermissionDescriptor struct {
 }
 
 func (p PermissionDescriptor) toJSObject() Value {
-	o := jsObject.New()
-	o.Set("name", string(p.Name))
+	o := jsObject.jsNew()
+	o.set("name", string(p.Name))
 	return o
 }
 

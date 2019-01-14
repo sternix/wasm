@@ -9,7 +9,7 @@ type messageChannelImpl struct {
 }
 
 func wrapMessageChannel(v Value) MessageChannel {
-	if v.Valid() {
+	if v.valid() {
 		return &messageChannelImpl{
 			Value: v,
 		}
@@ -18,11 +18,11 @@ func wrapMessageChannel(v Value) MessageChannel {
 }
 
 func (p *messageChannelImpl) Port1() MessagePort {
-	return wrapMessagePort(p.Get("port1"))
+	return wrapMessagePort(p.get("port1"))
 }
 
 func (p *messageChannelImpl) Port2() MessagePort {
-	return wrapMessagePort(p.Get("port2"))
+	return wrapMessagePort(p.get("port2"))
 }
 
 // -------------8<---------------------------------------
@@ -32,7 +32,7 @@ type messagePortImpl struct {
 }
 
 func wrapMessagePort(v Value) MessagePort {
-	if v.Valid() {
+	if v.valid() {
 		return &messagePortImpl{
 			eventTargetImpl: newEventTargetImpl(v),
 		}
@@ -43,15 +43,15 @@ func wrapMessagePort(v Value) MessagePort {
 // TODO optional sequence<object> transfer = [] omitted
 func (p *messagePortImpl) PostMessage(message interface{}) {
 	//XXX: panicable
-	p.Call("postMessage", message)
+	p.call("postMessage", message)
 }
 
 func (p *messagePortImpl) Start() {
-	p.Call("start")
+	p.call("start")
 }
 
 func (p *messagePortImpl) Close() {
-	p.Call("close")
+	p.call("close")
 }
 
 func (p *messagePortImpl) OnMessage(fn func(MessageEvent)) EventHandler {
@@ -73,7 +73,7 @@ type broadcastChannelImpl struct {
 }
 
 func wrapBroadcastChannel(v Value) BroadcastChannel {
-	if v.Valid() {
+	if v.valid() {
 		return &broadcastChannelImpl{
 			eventTargetImpl: newEventTargetImpl(v),
 		}
@@ -82,15 +82,15 @@ func wrapBroadcastChannel(v Value) BroadcastChannel {
 }
 
 func (p *broadcastChannelImpl) Name() string {
-	return p.Get("name").String()
+	return p.get("name").toString()
 }
 
 func (p *broadcastChannelImpl) PostMessage(message interface{}) {
-	p.Call("postMessage", message)
+	p.call("postMessage", message)
 }
 
 func (p *broadcastChannelImpl) Close() {
-	p.Call("close")
+	p.call("close")
 }
 
 func (p *broadcastChannelImpl) OnMessage(fn func(MessageEvent)) EventHandler {
@@ -112,7 +112,7 @@ type messageEventImpl struct {
 }
 
 func wrapMessageEvent(v Value) MessageEvent {
-	if v.Valid() {
+	if v.valid() {
 		return &messageEventImpl{
 			eventImpl: newEventImpl(v),
 		}
@@ -121,22 +121,22 @@ func wrapMessageEvent(v Value) MessageEvent {
 }
 
 func (p *messageEventImpl) Data() interface{} {
-	return Wrap(p.Get("data"))
+	return Wrap(p.get("data"))
 }
 
 func (p *messageEventImpl) Origin() string {
-	return p.Get("origin").String()
+	return p.get("origin").toString()
 }
 
 func (p *messageEventImpl) LastEventId() string {
-	return p.Get("lastEventId").String()
+	return p.get("lastEventId").toString()
 }
 
 func (p *messageEventImpl) Source() MessageEventSource {
-	if v := p.Get("source"); v.Valid() {
-		if v.InstanceOf(jsWindowProxy) {
+	if v := p.get("source"); v.valid() {
+		if v.instanceOf(jsWindowProxy) {
 			return wrapWindowProxy(v)
-		} else if v.InstanceOf(jsMessagePort) {
+		} else if v.instanceOf(jsMessagePort) {
 			return wrapMessagePort(v)
 		} /* TODO: ServiceWorker  else if v.InstanceOf(jsServiceWorker) {
 			return wrapServiceWorker(v)
@@ -146,7 +146,7 @@ func (p *messageEventImpl) Source() MessageEventSource {
 }
 
 func (p *messageEventImpl) Ports() []MessagePort {
-	if ports := p.Get("ports").ToSlice(); ports != nil {
+	if ports := p.get("ports").toSlice(); ports != nil {
 		var ret []MessagePort
 		for _, port := range ports {
 			ret = append(ret, wrapMessagePort(port))
@@ -159,28 +159,28 @@ func (p *messageEventImpl) Ports() []MessagePort {
 func (p *messageEventImpl) InitMessageEvent(typ string, args ...interface{}) {
 	switch len(args) {
 	case 0:
-		p.Call("initMessageEvent", typ)
+		p.call("initMessageEvent", typ)
 	case 1:
 		if bubbles, ok := args[0].(bool); ok {
-			p.Call("initMessageEvent", typ, bubbles)
+			p.call("initMessageEvent", typ, bubbles)
 		}
 	case 2:
 		if bubbles, ok := args[0].(bool); ok {
 			if cancelable, ok := args[1].(bool); ok {
-				p.Call("initMessageEvent", typ, bubbles, cancelable)
+				p.call("initMessageEvent", typ, bubbles, cancelable)
 			}
 		}
 	case 3:
 		if bubbles, ok := args[0].(bool); ok {
 			if cancelable, ok := args[1].(bool); ok {
-				p.Call("initMessageEvent", typ, bubbles, cancelable, args[2])
+				p.call("initMessageEvent", typ, bubbles, cancelable, args[2])
 			}
 		}
 	case 4:
 		if bubbles, ok := args[0].(bool); ok {
 			if cancelable, ok := args[1].(bool); ok {
 				if origin, ok := args[3].(string); ok {
-					p.Call("initMessageEvent", typ, bubbles, cancelable, args[2], origin)
+					p.call("initMessageEvent", typ, bubbles, cancelable, args[2], origin)
 				}
 			}
 		}
@@ -189,7 +189,7 @@ func (p *messageEventImpl) InitMessageEvent(typ string, args ...interface{}) {
 			if cancelable, ok := args[1].(bool); ok {
 				if origin, ok := args[3].(string); ok {
 					if lastEventId, ok := args[4].(string); ok {
-						p.Call("initMessageEvent", typ, bubbles, cancelable, args[2], origin, lastEventId)
+						p.call("initMessageEvent", typ, bubbles, cancelable, args[2], origin, lastEventId)
 					}
 				}
 			}
@@ -200,7 +200,7 @@ func (p *messageEventImpl) InitMessageEvent(typ string, args ...interface{}) {
 				if origin, ok := args[3].(string); ok {
 					if lastEventId, ok := args[4].(string); ok {
 						if source, ok := args[5].(MessageEventSource); ok {
-							p.Call("initMessageEvent", typ, bubbles, cancelable, args[2], origin, lastEventId, JSValue(source))
+							p.call("initMessageEvent", typ, bubbles, cancelable, args[2], origin, lastEventId, JSValue(source))
 						}
 					}
 				}
@@ -216,7 +216,7 @@ type messageEventSourceImpl struct {
 }
 
 func wrapMessageEventSource(v Value) MessageEventSource {
-	if v.Valid() {
+	if v.valid() {
 		return &messageEventSourceImpl{
 			Value: v,
 		}
@@ -227,15 +227,15 @@ func wrapMessageEventSource(v Value) MessageEventSource {
 // -------------8<---------------------------------------
 
 func NewBroadcastChannel(name string) BroadcastChannel {
-	if jsBroadcastChannel := jsGlobal.Get("BroadcastChannel"); jsBroadcastChannel.Valid() {
-		return wrapBroadcastChannel(jsBroadcastChannel.New(name))
+	if jsBroadcastChannel := jsGlobal.get("BroadcastChannel"); jsBroadcastChannel.valid() {
+		return wrapBroadcastChannel(jsBroadcastChannel.jsNew(name))
 	}
 	return nil
 }
 
 func NewMessageChannel() MessageChannel {
-	if jsMessageChannel := jsGlobal.Get("MessageChannel"); jsMessageChannel.Valid() {
-		return wrapMessageChannel(jsMessageChannel.New())
+	if jsMessageChannel := jsGlobal.get("MessageChannel"); jsMessageChannel.valid() {
+		return wrapMessageChannel(jsMessageChannel.jsNew())
 	}
 	return nil
 }

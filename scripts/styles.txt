@@ -143,7 +143,7 @@ flex-flow
 flex-grow 
 flex-shrink 
 flex-wrap 
-css-float 
+float 
 flood-color 
 flood-opacity 
 flow-from 

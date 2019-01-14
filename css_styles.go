@@ -297,8 +297,8 @@ type cssStyleHelper interface {
 	SetFlexShrink(string)
 	FlexWrap() string
 	SetFlexWrap(string)
-	CssFloat() string
-	SetCssFloat(string)
+	Float() string
+	SetFloat(string)
 	FloodColor() string
 	SetFloodColor(string)
 	FloodOpacity() string
@@ -878,7 +878,7 @@ type cssStyleHelperImpl struct {
 }
 
 func newCSSStyleHelperImpl(v *cssStyleDeclarationImpl) *cssStyleHelperImpl {
-	if v.Valid() {
+	if v.valid() {
 		return &cssStyleHelperImpl{
 			cssStyleDeclarationImpl: v,
 		}
@@ -2046,12 +2046,12 @@ func (p *cssStyleHelperImpl) SetFlexWrap(s string) {
 	p.SetProperty("flex-wrap", s)
 }
 
-func (p *cssStyleHelperImpl) CssFloat() string {
-	return p.PropertyValue("css-float")
+func (p *cssStyleHelperImpl) Float() string {
+	return p.PropertyValue("float")
 }
 
-func (p *cssStyleHelperImpl) SetCssFloat(s string) {
-	p.SetProperty("css-float", s)
+func (p *cssStyleHelperImpl) SetFloat(s string) {
+	p.SetProperty("float", s)
 }
 
 func (p *cssStyleHelperImpl) FloodColor() string {

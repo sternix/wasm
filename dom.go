@@ -616,8 +616,8 @@ type ElementCreationOptions struct {
 }
 
 func (p ElementCreationOptions) toJSObject() Value {
-	o := jsObject.New()
-	o.Set("is", p.Is)
+	o := jsObject.jsNew()
+	o.set("is", p.Is)
 	return o
 }
 
@@ -629,8 +629,8 @@ type RootNodeOptions struct {
 }
 
 func (p RootNodeOptions) toJSObject() Value {
-	o := jsObject.New()
-	o.Set("composed", p.Composed)
+	o := jsObject.jsNew()
+	o.set("composed", p.Composed)
 	return o
 }
 
@@ -642,8 +642,8 @@ type ShadowRootInit struct {
 }
 
 func (p ShadowRootInit) toJSObject() Value {
-	o := jsObject.New()
-	o.Set("mode", p.Mode)
+	o := jsObject.jsNew()
+	o.set("mode", p.Mode)
 	return o
 }
 
@@ -661,14 +661,14 @@ type MutationObserverInit struct {
 }
 
 func (p MutationObserverInit) toJSObject() Value {
-	o := jsObject.New()
-	o.Set("childList", p.ChildList)
-	o.Set("attributes", p.Attributes)
-	o.Set("characterData", p.CharacterData)
-	o.Set("subtree", p.SubTree)
-	o.Set("attributeOldValue", p.AttributeOldValue)
-	o.Set("characterDataOldValue", p.CharacterDataOldValue)
-	o.Set("attributeFilter", sliceToJsArray(p.AttributeFilter))
+	o := jsObject.jsNew()
+	o.set("childList", p.ChildList)
+	o.set("attributes", p.Attributes)
+	o.set("characterData", p.CharacterData)
+	o.set("subtree", p.SubTree)
+	o.set("attributeOldValue", p.AttributeOldValue)
+	o.set("characterDataOldValue", p.CharacterDataOldValue)
+	o.set("attributeFilter", sliceToJsArray(p.AttributeFilter))
 	return o
 }
 

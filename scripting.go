@@ -55,7 +55,7 @@ type CanvasRenderingContext2DSettings struct {
 }
 
 func (p CanvasRenderingContext2DSettings) toJSObject() Value {
-	o := jsObject.New()
-	o.Set("alpha", p.Alpha)
+	o := jsObject.jsNew()
+	o.set("alpha", p.Alpha)
 	return o
 }

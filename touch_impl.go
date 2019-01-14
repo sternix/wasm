@@ -9,7 +9,7 @@ type touchImpl struct {
 }
 
 func wrapTouch(v Value) Touch {
-	if v.Valid() {
+	if v.valid() {
 		return &touchImpl{
 			Value: v,
 		}
@@ -18,63 +18,63 @@ func wrapTouch(v Value) Touch {
 }
 
 func (p *touchImpl) Identifier() int {
-	return p.Get("identifier").Int()
+	return p.get("identifier").toInt()
 }
 
 func (p *touchImpl) Target() EventTarget {
-	return newEventTargetImpl(p.Get("target"))
+	return newEventTargetImpl(p.get("target"))
 }
 
 func (p *touchImpl) ScreenX() float64 {
-	return p.Get("screenX").Float()
+	return p.get("screenX").toFloat64()
 }
 
 func (p *touchImpl) ScreenY() float64 {
-	return p.Get("screenY").Float()
+	return p.get("screenY").toFloat64()
 }
 
 func (p *touchImpl) ClientX() float64 {
-	return p.Get("clientX").Float()
+	return p.get("clientX").toFloat64()
 }
 
 func (p *touchImpl) ClientY() float64 {
-	return p.Get("clientY").Float()
+	return p.get("clientY").toFloat64()
 }
 
 func (p *touchImpl) PageX() float64 {
-	return p.Get("pageX").Float()
+	return p.get("pageX").toFloat64()
 }
 
 func (p *touchImpl) PageY() float64 {
-	return p.Get("pageY").Float()
+	return p.get("pageY").toFloat64()
 }
 
 func (p *touchImpl) RadiusX() float64 {
-	return p.Get("radiusX").Float()
+	return p.get("radiusX").toFloat64()
 }
 
 func (p *touchImpl) RadiusY() float64 {
-	return p.Get("radiusY").Float()
+	return p.get("radiusY").toFloat64()
 }
 
 func (p *touchImpl) RotationAngle() float64 {
-	return p.Get("rotationAngle").Float()
+	return p.get("rotationAngle").toFloat64()
 }
 
 func (p *touchImpl) Force() float64 {
-	return p.Get("force").Float()
+	return p.get("force").toFloat64()
 }
 
 func (p *touchImpl) AltitudeAngle() float64 {
-	return p.Get("altitudeAngle").Float()
+	return p.get("altitudeAngle").toFloat64()
 }
 
 func (p *touchImpl) AzimuthAngle() float64 {
-	return p.Get("azimuthAngle").Float()
+	return p.get("azimuthAngle").toFloat64()
 }
 
 func (p *touchImpl) TouchType() TouchType {
-	return TouchType(p.Get("touchType").String())
+	return TouchType(p.get("touchType").toString())
 }
 
 // -------------8<---------------------------------------
@@ -84,7 +84,7 @@ type touchEventImpl struct {
 }
 
 func wrapTouchEvent(v Value) TouchEvent {
-	if v.Valid() {
+	if v.valid() {
 		return &touchEventImpl{
 			uiEventImpl: newUIEventImpl(v),
 		}
@@ -93,49 +93,49 @@ func wrapTouchEvent(v Value) TouchEvent {
 }
 
 func (p *touchEventImpl) Touches() []Touch {
-	return touchListToSlice(p.Get("touches"))
+	return touchListToSlice(p.get("touches"))
 }
 
 func (p *touchEventImpl) TargetTouches() []Touch {
-	return touchListToSlice(p.Get("targetTouches"))
+	return touchListToSlice(p.get("targetTouches"))
 }
 
 func (p *touchEventImpl) ChangedTouches() []Touch {
-	return touchListToSlice(p.Get("changedTouches"))
+	return touchListToSlice(p.get("changedTouches"))
 }
 
 func (p *touchEventImpl) AltKey() bool {
-	return p.Get("altKey").Bool()
+	return p.get("altKey").toBool()
 }
 
 func (p *touchEventImpl) MetaKey() bool {
-	return p.Get("metaKey").Bool()
+	return p.get("metaKey").toBool()
 }
 
 func (p *touchEventImpl) CtrlKey() bool {
-	return p.Get("ctrlKey").Bool()
+	return p.get("ctrlKey").toBool()
 }
 
 func (p *touchEventImpl) ShiftKey() bool {
-	return p.Get("shiftKey").Bool()
+	return p.get("shiftKey").toBool()
 }
 
 // -------------8<---------------------------------------
 
 func NewTouch(ti TouchInit) Touch {
-	if jsTouch := jsGlobal.Get("Touch"); jsTouch.Valid() {
-		return wrapTouch(jsTouch.New(ti.toJSObject()))
+	if jsTouch := jsGlobal.get("Touch"); jsTouch.valid() {
+		return wrapTouch(jsTouch.jsNew(ti.toJSObject()))
 	}
 	return nil
 }
 
 func NewTouchEvent(typ string, tei ...TouchEventInit) TouchEvent {
-	if jsTouchEvent := jsGlobal.Get("TouchEvent"); jsTouchEvent.Valid() {
+	if jsTouchEvent := jsGlobal.get("TouchEvent"); jsTouchEvent.valid() {
 		switch len(tei) {
 		case 0:
-			return wrapTouchEvent(jsTouchEvent.New(typ))
+			return wrapTouchEvent(jsTouchEvent.jsNew(typ))
 		default:
-			return wrapTouchEvent(jsTouchEvent.New(typ, tei[0].toJSObject()))
+			return wrapTouchEvent(jsTouchEvent.jsNew(typ, tei[0].toJSObject()))
 		}
 	}
 	return nil

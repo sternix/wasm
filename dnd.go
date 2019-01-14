@@ -55,6 +55,6 @@ type DragEventInit struct {
 
 func (p DragEventInit) toJSObject() Value {
 	o := p.MouseEventInit.toJSObject()
-	o.Set("dataTransfer", JSValue(p.DataTransfer))
+	o.set("dataTransfer", JSValue(p.DataTransfer))
 	return o
 }

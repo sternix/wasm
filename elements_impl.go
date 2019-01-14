@@ -9,46 +9,46 @@ import (
 // -------------8<---------------------------------------
 
 func NewAudio(src ...string) HTMLAudioElement {
-	if jsHTMLAudioElement := jsGlobal.Get("HTMLAudioElement"); jsHTMLAudioElement.Valid() {
+	if jsHTMLAudioElement := jsGlobal.get("HTMLAudioElement"); jsHTMLAudioElement.valid() {
 		switch len(src) {
 		case 0:
-			return wrapHTMLAudioElement(jsHTMLAudioElement.New())
+			return wrapHTMLAudioElement(jsHTMLAudioElement.jsNew())
 		default:
-			return wrapHTMLAudioElement(jsHTMLAudioElement.New(src[0]))
+			return wrapHTMLAudioElement(jsHTMLAudioElement.jsNew(src[0]))
 		}
 	}
 	return nil
 }
 
 func NewImage(args ...uint) HTMLImageElement {
-	if jsHTMLImageElement := jsGlobal.Get("HTMLImageElement"); jsHTMLImageElement.Valid() {
+	if jsHTMLImageElement := jsGlobal.get("HTMLImageElement"); jsHTMLImageElement.valid() {
 		switch len(args) {
 		case 0:
-			return wrapHTMLImageElement(jsHTMLImageElement.New())
+			return wrapHTMLImageElement(jsHTMLImageElement.jsNew())
 		case 1:
-			return wrapHTMLImageElement(jsHTMLImageElement.New(args[0]))
+			return wrapHTMLImageElement(jsHTMLImageElement.jsNew(args[0]))
 		default:
-			return wrapHTMLImageElement(jsHTMLImageElement.New(args[0], args[1]))
+			return wrapHTMLImageElement(jsHTMLImageElement.jsNew(args[0], args[1]))
 		}
 	}
 	return nil
 }
 
 func NewMediaStream(args ...interface{}) MediaStream {
-	if jsMediaStream := jsGlobal.Get("MediaStream"); jsMediaStream.Valid() {
+	if jsMediaStream := jsGlobal.get("MediaStream"); jsMediaStream.valid() {
 		switch len(args) {
 		case 0:
-			return wrapMediaStream(jsMediaStream.New())
+			return wrapMediaStream(jsMediaStream.jsNew())
 		default:
 			switch x := args[0].(type) {
 			case MediaStream:
-				return wrapMediaStream(jsMediaStream.New(JSValue(x)))
+				return wrapMediaStream(jsMediaStream.jsNew(JSValue(x)))
 			case []MediaStreamTrack:
 				var s []Value
 				for _, m := range x {
 					s = append(s, JSValue(m))
 				}
-				return wrapMediaStream(jsMediaStream.New(sliceToJsArray(s)))
+				return wrapMediaStream(jsMediaStream.jsNew(sliceToJsArray(s)))
 			}
 		}
 	}
@@ -74,7 +74,7 @@ func NewHTMLBodyElement() HTMLBodyElement {
 }
 
 func wrapHTMLBodyElement(v Value) HTMLBodyElement {
-	if v.Valid() {
+	if v.valid() {
 		hbi := &htmlBodyElementImpl{
 			htmlElementImpl: newHTMLElementImpl(v),
 			Value:           v,
@@ -114,7 +114,7 @@ func NewHTMLHeadingElement(rank int) HTMLHeadingElement {
 }
 
 func wrapHTMLHeadingElement(v Value) HTMLHeadingElement {
-	if v.Valid() {
+	if v.valid() {
 		return &htmlHeadingElementImpl{
 			htmlElementImpl: newHTMLElementImpl(v),
 		}
@@ -138,7 +138,7 @@ func NewHTMLParagraphElement() HTMLParagraphElement {
 }
 
 func wrapHTMLParagraphElement(v Value) HTMLParagraphElement {
-	if v.Valid() {
+	if v.valid() {
 		return &htmlParagraphElementImpl{
 			htmlElementImpl: newHTMLElementImpl(v),
 		}
@@ -162,7 +162,7 @@ func NewHTMLHRElement() HTMLHRElement {
 }
 
 func wrapHTMLHRElement(v Value) HTMLHRElement {
-	if v.Valid() {
+	if v.valid() {
 		return &htmlHRElementImpl{
 			htmlElementImpl: newHTMLElementImpl(v),
 		}
@@ -186,7 +186,7 @@ func NewHTMLPreElement() HTMLPreElement {
 }
 
 func wrapHTMLPreElement(v Value) HTMLPreElement {
-	if v.Valid() {
+	if v.valid() {
 		return &htmlPreElementImpl{
 			htmlElementImpl: newHTMLElementImpl(v),
 		}
@@ -216,7 +216,7 @@ func NewHTMLQuoteElement(block ...bool) HTMLQuoteElement {
 }
 
 func wrapHTMLQuoteElement(v Value) HTMLQuoteElement {
-	if v.Valid() {
+	if v.valid() {
 		return &htmlQuoteElementImpl{
 			htmlElementImpl: newHTMLElementImpl(v),
 		}
@@ -225,11 +225,11 @@ func wrapHTMLQuoteElement(v Value) HTMLQuoteElement {
 }
 
 func (p *htmlQuoteElementImpl) Cite() string {
-	return p.Get("cite").String()
+	return p.get("cite").toString()
 }
 
 func (p *htmlQuoteElementImpl) SetCite(cite string) {
-	p.Set("cite", cite)
+	p.set("cite", cite)
 }
 
 // -------------8<---------------------------------------
@@ -248,7 +248,7 @@ func NewHTMLOListElement() HTMLOListElement {
 }
 
 func wrapHTMLOListElement(v Value) HTMLOListElement {
-	if v.Valid() {
+	if v.valid() {
 		return &htmlOListElementImpl{
 			htmlElementImpl: newHTMLElementImpl(v),
 		}
@@ -257,27 +257,27 @@ func wrapHTMLOListElement(v Value) HTMLOListElement {
 }
 
 func (p *htmlOListElementImpl) Reversed() bool {
-	return p.Get("reversed").Bool()
+	return p.get("reversed").toBool()
 }
 
 func (p *htmlOListElementImpl) SetReversed(r bool) {
-	p.Set("reversed", r)
+	p.set("reversed", r)
 }
 
 func (p *htmlOListElementImpl) Start() int {
-	return p.Get("start").Int()
+	return p.get("start").toInt()
 }
 
 func (p *htmlOListElementImpl) SetStart(s int) {
-	p.Set("start", s)
+	p.set("start", s)
 }
 
 func (p *htmlOListElementImpl) Type() string {
-	return p.Get("type").String()
+	return p.get("type").toString()
 }
 
 func (p *htmlOListElementImpl) SetType(t string) {
-	p.Set("type", t)
+	p.set("type", t)
 }
 
 // -------------8<---------------------------------------
@@ -296,7 +296,7 @@ func NewHTMLUListElement() HTMLUListElement {
 }
 
 func wrapHTMLUListElement(v Value) HTMLUListElement {
-	if v.Valid() {
+	if v.valid() {
 		return &htmlUListElementImpl{
 			htmlElementImpl: newHTMLElementImpl(v),
 		}
@@ -320,7 +320,7 @@ func NewHTMLLIElement() HTMLLIElement {
 }
 
 func wrapHTMLLIElement(v Value) HTMLLIElement {
-	if v.Valid() {
+	if v.valid() {
 		return &htmlLIElementImpl{
 			htmlElementImpl: newHTMLElementImpl(v),
 		}
@@ -329,11 +329,11 @@ func wrapHTMLLIElement(v Value) HTMLLIElement {
 }
 
 func (p *htmlLIElementImpl) Value() int {
-	return p.Get("value").Int()
+	return p.get("value").toInt()
 }
 
 func (p *htmlLIElementImpl) SetValue(v int) {
-	p.Set("value", v)
+	p.set("value", v)
 }
 
 // -------------8<---------------------------------------
@@ -352,7 +352,7 @@ func NewHTMLDListElement() HTMLDListElement {
 }
 
 func wrapHTMLDListElement(v Value) HTMLDListElement {
-	if v.Valid() {
+	if v.valid() {
 		return &htmlDListElementImpl{
 			htmlElementImpl: newHTMLElementImpl(v),
 		}
@@ -376,7 +376,7 @@ func NewHTMLDivElement() HTMLDivElement {
 }
 
 func wrapHTMLDivElement(v Value) HTMLDivElement {
-	if v.Valid() {
+	if v.valid() {
 		return &htmlDivElementImpl{
 			htmlElementImpl: newHTMLElementImpl(v),
 		}
@@ -402,7 +402,7 @@ func NewHTMLAnchorElement() HTMLAnchorElement {
 }
 
 func wrapHTMLAnchorElement(v Value) HTMLAnchorElement {
-	if v.Valid() {
+	if v.valid() {
 		return &htmlAnchorElementImpl{
 			htmlElementImpl:               newHTMLElementImpl(v),
 			htmlHyperlinkElementUtilsImpl: newHTMLHyperlinkElementUtilsImpl(v),
@@ -413,71 +413,71 @@ func wrapHTMLAnchorElement(v Value) HTMLAnchorElement {
 }
 
 func (p *htmlAnchorElementImpl) Target() string {
-	return p.Get("target").String()
+	return p.get("target").toString()
 }
 
 func (p *htmlAnchorElementImpl) SetTarget(t string) {
-	p.Set("target", t)
+	p.set("target", t)
 }
 
 func (p *htmlAnchorElementImpl) Download() string {
-	return p.Get("download").String()
+	return p.get("download").toString()
 }
 
 func (p *htmlAnchorElementImpl) SetDownload(d string) {
-	p.Set("download", d)
+	p.set("download", d)
 }
 
 func (p *htmlAnchorElementImpl) Rel() string {
-	return p.Get("rel").String()
+	return p.get("rel").toString()
 }
 
 func (p *htmlAnchorElementImpl) SetRel(r string) {
-	p.Set("rel", r)
+	p.set("rel", r)
 }
 
 func (p *htmlAnchorElementImpl) Rev() string {
-	return p.Get("rev").String()
+	return p.get("rev").toString()
 }
 
 func (p *htmlAnchorElementImpl) SetRev(r string) {
-	p.Set("rev", r)
+	p.set("rev", r)
 }
 
 func (p *htmlAnchorElementImpl) RelList() DOMTokenList {
-	return wrapDOMTokenList(p.Get("relList"))
+	return wrapDOMTokenList(p.get("relList"))
 }
 
 func (p *htmlAnchorElementImpl) HrefLang() string {
-	return p.Get("hreflang").String()
+	return p.get("hreflang").toString()
 }
 
 func (p *htmlAnchorElementImpl) SetHrefLang(l string) {
-	p.Set("hreflang", l)
+	p.set("hreflang", l)
 }
 
 func (p *htmlAnchorElementImpl) Type() string {
-	return p.Get("type").String()
+	return p.get("type").toString()
 }
 
 func (p *htmlAnchorElementImpl) SetType(t string) {
-	p.Set("type", t)
+	p.set("type", t)
 }
 
 func (p *htmlAnchorElementImpl) Text() string {
-	return p.Get("text").String()
+	return p.get("text").toString()
 }
 
 func (p *htmlAnchorElementImpl) SetText(text string) {
-	p.Set("text", text)
+	p.set("text", text)
 }
 
 func (p *htmlAnchorElementImpl) ReferrerPolicy() string {
-	return p.Get("referrerPolicy").String()
+	return p.get("referrerPolicy").toString()
 }
 
 func (p *htmlAnchorElementImpl) SetReferrerPolicy(policy string) {
-	p.Set("referrerPolicy", policy)
+	p.set("referrerPolicy", policy)
 }
 
 // -------------8<---------------------------------------
@@ -494,7 +494,7 @@ func wrapHTMLHyperlinkElementUtils(v Value) HTMLHyperlinkElementUtils {
 }
 
 func newHTMLHyperlinkElementUtilsImpl(v Value) *htmlHyperlinkElementUtilsImpl {
-	if v.Valid() {
+	if v.valid() {
 		return &htmlHyperlinkElementUtilsImpl{
 			Value: v,
 		}
@@ -503,87 +503,87 @@ func newHTMLHyperlinkElementUtilsImpl(v Value) *htmlHyperlinkElementUtilsImpl {
 }
 
 func (p *htmlHyperlinkElementUtilsImpl) Href() string {
-	return p.Get("href").String()
+	return p.get("href").toString()
 }
 
 func (p *htmlHyperlinkElementUtilsImpl) SetHref(href string) {
-	p.Set("href", href)
+	p.set("href", href)
 }
 
 func (p *htmlHyperlinkElementUtilsImpl) Origin() string {
-	return p.Get("origin").String()
+	return p.get("origin").toString()
 }
 
 func (p *htmlHyperlinkElementUtilsImpl) Protocol() string {
-	return p.Get("protocol").String()
+	return p.get("protocol").toString()
 }
 
 func (p *htmlHyperlinkElementUtilsImpl) SetProtocol(protocol string) {
-	p.Set("protocol", protocol)
+	p.set("protocol", protocol)
 }
 
 func (p *htmlHyperlinkElementUtilsImpl) Username() string {
-	return p.Get("username").String()
+	return p.get("username").toString()
 }
 
 func (p *htmlHyperlinkElementUtilsImpl) SetUsername(username string) {
-	p.Set("username", username)
+	p.set("username", username)
 }
 
 func (p *htmlHyperlinkElementUtilsImpl) Password() string {
-	return p.Get("password").String()
+	return p.get("password").toString()
 }
 
 func (p *htmlHyperlinkElementUtilsImpl) SetPassword(password string) {
-	p.Set("password", password)
+	p.set("password", password)
 }
 
 func (p *htmlHyperlinkElementUtilsImpl) Host() string {
-	return p.Get("host").String()
+	return p.get("host").toString()
 }
 
 func (p *htmlHyperlinkElementUtilsImpl) SetHost(host string) {
-	p.Set("host", host)
+	p.set("host", host)
 }
 
 func (p *htmlHyperlinkElementUtilsImpl) Hostname() string {
-	return p.Get("hostname").String()
+	return p.get("hostname").toString()
 }
 
 func (p *htmlHyperlinkElementUtilsImpl) SetHostname(hostname string) {
-	p.Set("hostname", hostname)
+	p.set("hostname", hostname)
 }
 
 func (p *htmlHyperlinkElementUtilsImpl) Port() string {
-	return p.Get("port").String()
+	return p.get("port").toString()
 }
 
 func (p *htmlHyperlinkElementUtilsImpl) SetPort(port string) {
-	p.Set("port", port)
+	p.set("port", port)
 }
 
 func (p *htmlHyperlinkElementUtilsImpl) Pathname() string {
-	return p.Get("pathname").String()
+	return p.get("pathname").toString()
 }
 
 func (p *htmlHyperlinkElementUtilsImpl) SetPathname(pathname string) {
-	p.Set("pathname", pathname)
+	p.set("pathname", pathname)
 }
 
 func (p *htmlHyperlinkElementUtilsImpl) Search() string {
-	return p.Get("search").String()
+	return p.get("search").toString()
 }
 
 func (p *htmlHyperlinkElementUtilsImpl) SetSearch(search string) {
-	p.Set("search", search)
+	p.set("search", search)
 }
 
 func (p *htmlHyperlinkElementUtilsImpl) Hash() string {
-	return p.Get("hash").String()
+	return p.get("hash").toString()
 }
 
 func (p *htmlHyperlinkElementUtilsImpl) SetHash(hash string) {
-	p.Set("hash", hash)
+	p.set("hash", hash)
 }
 
 // -------------8<---------------------------------------
@@ -602,7 +602,7 @@ func NewHTMLDataElement() HTMLDataElement {
 }
 
 func wrapHTMLDataElement(v Value) HTMLDataElement {
-	if v.Valid() {
+	if v.valid() {
 		return &htmlDataElementImpl{
 			htmlElementImpl: newHTMLElementImpl(v),
 		}
@@ -611,11 +611,11 @@ func wrapHTMLDataElement(v Value) HTMLDataElement {
 }
 
 func (p *htmlDataElementImpl) Value() string {
-	return p.Get("value").String()
+	return p.get("value").toString()
 }
 
 func (p *htmlDataElementImpl) SetValue(value string) {
-	p.Set("value", value)
+	p.set("value", value)
 }
 
 // -------------8<---------------------------------------
@@ -634,7 +634,7 @@ func NewHTMLTimeElement() HTMLTimeElement {
 }
 
 func wrapHTMLTimeElement(v Value) HTMLTimeElement {
-	if v.Valid() {
+	if v.valid() {
 		return &htmlTimeElementImpl{
 			htmlElementImpl: newHTMLElementImpl(v),
 		}
@@ -643,11 +643,11 @@ func wrapHTMLTimeElement(v Value) HTMLTimeElement {
 }
 
 func (p *htmlTimeElementImpl) DateTime() string {
-	return p.Get("dateTime").String()
+	return p.get("dateTime").toString()
 }
 
 func (p *htmlTimeElementImpl) SetDateTime(dt string) {
-	p.Set("dateTime", dt)
+	p.set("dateTime", dt)
 }
 
 // -------------8<---------------------------------------
@@ -666,7 +666,7 @@ func NewHTMLSpanElement() HTMLSpanElement {
 }
 
 func wrapHTMLSpanElement(v Value) HTMLSpanElement {
-	if v.Valid() {
+	if v.valid() {
 		return &htmlSpanElementImpl{
 			htmlElementImpl: newHTMLElementImpl(v),
 		}
@@ -690,7 +690,7 @@ func NewHTMLBRElement() HTMLBRElement {
 }
 
 func wrapHTMLBRElement(v Value) HTMLBRElement {
-	if v.Valid() {
+	if v.valid() {
 		return &htmlBRElementImpl{
 			htmlElementImpl: newHTMLElementImpl(v),
 		}
@@ -723,7 +723,7 @@ func NewHTMLInsElement() HTMLModElement {
 }
 
 func wrapHTMLModElement(v Value) HTMLModElement {
-	if v.Valid() {
+	if v.valid() {
 		return &htmlModElementImpl{
 			htmlElementImpl: newHTMLElementImpl(v),
 		}
@@ -732,19 +732,19 @@ func wrapHTMLModElement(v Value) HTMLModElement {
 }
 
 func (p *htmlModElementImpl) Cite() string {
-	return p.Get("cite").String()
+	return p.get("cite").toString()
 }
 
 func (p *htmlModElementImpl) SetCite(cite string) {
-	p.Set("cite", cite)
+	p.set("cite", cite)
 }
 
 func (p *htmlModElementImpl) DateTime() string {
-	return p.Get("dateTime").String()
+	return p.get("dateTime").toString()
 }
 
 func (p *htmlModElementImpl) SetDateTime(dt string) {
-	p.Set("dateTime", dt)
+	p.set("dateTime", dt)
 }
 
 // -------------8<---------------------------------------
@@ -763,7 +763,7 @@ func NewHTMLPictureElement() HTMLPictureElement {
 }
 
 func wrapHTMLPictureElement(v Value) HTMLPictureElement {
-	if v.Valid() {
+	if v.valid() {
 		return &htmlPictureElementImpl{
 			htmlElementImpl: newHTMLElementImpl(v),
 		}
@@ -787,7 +787,7 @@ func NewHTMLSourceElement() HTMLSourceElement {
 }
 
 func wrapHTMLSourceElement(v Value) HTMLSourceElement {
-	if v.Valid() {
+	if v.valid() {
 		return &htmlSourceElementImpl{
 			htmlElementImpl: newHTMLElementImpl(v),
 		}
@@ -796,43 +796,43 @@ func wrapHTMLSourceElement(v Value) HTMLSourceElement {
 }
 
 func (p *htmlSourceElementImpl) Src() string {
-	return p.Get("src").String()
+	return p.get("src").toString()
 }
 
 func (p *htmlSourceElementImpl) SetSrc(src string) {
-	p.Set("src", src)
+	p.set("src", src)
 }
 
 func (p *htmlSourceElementImpl) Type() string {
-	return p.Get("type").String()
+	return p.get("type").toString()
 }
 
 func (p *htmlSourceElementImpl) SetType(t string) {
-	p.Set("type", t)
+	p.set("type", t)
 }
 
 func (p *htmlSourceElementImpl) SrcSet() string {
-	return p.Get("srcset").String()
+	return p.get("srcset").toString()
 }
 
 func (p *htmlSourceElementImpl) SetSrcSet(srcset string) {
-	p.Set("srcset", srcset)
+	p.set("srcset", srcset)
 }
 
 func (p *htmlSourceElementImpl) Sizes() string {
-	return p.Get("sizes").String()
+	return p.get("sizes").toString()
 }
 
 func (p *htmlSourceElementImpl) SetSizes(sizes string) {
-	p.Set("sizes", sizes)
+	p.set("sizes", sizes)
 }
 
 func (p *htmlSourceElementImpl) Media() string {
-	return p.Get("media").String()
+	return p.get("media").toString()
 }
 
 func (p *htmlSourceElementImpl) SetMedia(media string) {
-	p.Set("media", media)
+	p.set("media", media)
 }
 
 // -------------8<---------------------------------------
@@ -851,7 +851,7 @@ func NewHTMLImageElement() HTMLImageElement {
 }
 
 func wrapHTMLImageElement(v Value) HTMLImageElement {
-	if v.Valid() {
+	if v.valid() {
 		return &htmlImageElementImpl{
 			htmlElementImpl: newHTMLElementImpl(v),
 		}
@@ -860,115 +860,115 @@ func wrapHTMLImageElement(v Value) HTMLImageElement {
 }
 
 func (p *htmlImageElementImpl) Alt() string {
-	return p.Get("alt").String()
+	return p.get("alt").toString()
 }
 
 func (p *htmlImageElementImpl) SetAlt(alt string) {
-	p.Set("alt", alt)
+	p.set("alt", alt)
 }
 
 func (p *htmlImageElementImpl) Src() string {
-	return p.Get("src").String()
+	return p.get("src").toString()
 }
 
 func (p *htmlImageElementImpl) SetSrc(src string) {
-	p.Set("src", src)
+	p.set("src", src)
 }
 
 func (p *htmlImageElementImpl) SrcSet() string {
-	return p.Get("srcset").String()
+	return p.get("srcset").toString()
 }
 
 func (p *htmlImageElementImpl) SetSrcSet(srcset string) {
-	p.Set("srcset", srcset)
+	p.set("srcset", srcset)
 }
 
 func (p *htmlImageElementImpl) Sizes() string {
-	return p.Get("sizes").String()
+	return p.get("sizes").toString()
 }
 
 func (p *htmlImageElementImpl) SetSizes(sizes string) {
-	p.Set("sizes", sizes)
+	p.set("sizes", sizes)
 }
 
 func (p *htmlImageElementImpl) CrossOrigin() string {
-	return p.Get("crossOrigin").String()
+	return p.get("crossOrigin").toString()
 }
 
 func (p *htmlImageElementImpl) SetCrossOrigin(co string) {
-	p.Set("crossOrigin", co)
+	p.set("crossOrigin", co)
 }
 
 func (p *htmlImageElementImpl) UseMap() string {
-	return p.Get("useMap").String()
+	return p.get("useMap").toString()
 }
 
 func (p *htmlImageElementImpl) SetUseMap(um string) {
-	p.Set("useMap", um)
+	p.set("useMap", um)
 }
 
 func (p *htmlImageElementImpl) LongDesc() string {
-	return p.Get("longDesc").String()
+	return p.get("longDesc").toString()
 }
 
 func (p *htmlImageElementImpl) SetLongDesc(ld string) {
-	p.Set("longDesc", ld)
+	p.set("longDesc", ld)
 }
 
 func (p *htmlImageElementImpl) IsMap() bool {
-	return p.Get("isMap").Bool()
+	return p.get("isMap").toBool()
 }
 
 func (p *htmlImageElementImpl) SetIsMap(b bool) {
-	p.Set("isMap", b)
+	p.set("isMap", b)
 }
 
 func (p *htmlImageElementImpl) Width() int {
-	return p.Get("width").Int()
+	return p.get("width").toInt()
 }
 
 func (p *htmlImageElementImpl) SetWidth(w int) {
-	p.Set("width", w)
+	p.set("width", w)
 }
 
 func (p *htmlImageElementImpl) Height() int {
-	return p.Get("height").Int()
+	return p.get("height").toInt()
 }
 
 func (p *htmlImageElementImpl) SetHeight(h int) {
-	p.Set("height", h)
+	p.set("height", h)
 }
 
 func (p *htmlImageElementImpl) NaturalWidth() int {
-	return p.Get("naturalWidth").Int()
+	return p.get("naturalWidth").toInt()
 }
 
 func (p *htmlImageElementImpl) NaturalHeight() int {
-	return p.Get("naturalHeight").Int()
+	return p.get("naturalHeight").toInt()
 }
 
 func (p *htmlImageElementImpl) Complete() bool {
-	return p.Get("complete").Bool()
+	return p.get("complete").toBool()
 }
 
 func (p *htmlImageElementImpl) CurrentSrc() string {
-	return p.Get("currentSrc").String()
+	return p.get("currentSrc").toString()
 }
 
 func (p *htmlImageElementImpl) ReferrerPolicy() string {
-	return p.Get("referrerPolicy").String()
+	return p.get("referrerPolicy").toString()
 }
 
 func (p *htmlImageElementImpl) SetReferrerPolicy(policy string) {
-	p.Set("referrerPolicy", policy)
+	p.set("referrerPolicy", policy)
 }
 
 func (p *htmlImageElementImpl) X() int {
-	return p.Get("x").Int()
+	return p.get("x").toInt()
 }
 
 func (p *htmlImageElementImpl) Y() int {
-	return p.Get("y").Int()
+	return p.get("y").toInt()
 }
 
 // -------------8<---------------------------------------
@@ -987,7 +987,7 @@ func NewHTMLIFrameElement() HTMLIFrameElement {
 }
 
 func wrapHTMLIFrameElement(v Value) HTMLIFrameElement {
-	if v.Valid() {
+	if v.valid() {
 		return &htmlIFrameElementImpl{
 			htmlElementImpl: newHTMLElementImpl(v),
 		}
@@ -996,79 +996,79 @@ func wrapHTMLIFrameElement(v Value) HTMLIFrameElement {
 }
 
 func (p *htmlIFrameElementImpl) Src() string {
-	return p.Get("src").String()
+	return p.get("src").toString()
 }
 
 func (p *htmlIFrameElementImpl) SetSrc(src string) {
-	p.Set("src", src)
+	p.set("src", src)
 }
 
 func (p *htmlIFrameElementImpl) SrcDoc() string {
-	return p.Get("srcdoc").String()
+	return p.get("srcdoc").toString()
 }
 
 func (p *htmlIFrameElementImpl) SetSrcDoc(srcDoc string) {
-	p.Set("srcdoc", srcDoc)
+	p.set("srcdoc", srcDoc)
 }
 
 func (p *htmlIFrameElementImpl) Name() string {
-	return p.Get("name").String()
+	return p.get("name").toString()
 }
 
 func (p *htmlIFrameElementImpl) SetName(name string) {
-	p.Set("name", name)
+	p.set("name", name)
 }
 
 func (p *htmlIFrameElementImpl) Sandbox() DOMTokenList {
-	return wrapDOMTokenList(p.Get("sandbox"))
+	return wrapDOMTokenList(p.get("sandbox"))
 }
 
 func (p *htmlIFrameElementImpl) AllowFullScreen() bool {
-	return p.Get("allowFullscreen").Bool()
+	return p.get("allowFullscreen").toBool()
 }
 
 func (p *htmlIFrameElementImpl) SetAllowFullScreen(b bool) {
-	p.Set("allowFullscreen", b)
+	p.set("allowFullscreen", b)
 }
 
 func (p *htmlIFrameElementImpl) AllowPaymentRequest() bool {
-	return p.Get("allowPaymentRequest").Bool()
+	return p.get("allowPaymentRequest").toBool()
 }
 
 func (p *htmlIFrameElementImpl) SetAllowPaymentRequest(b bool) {
-	p.Set("allowPaymentRequest", b)
+	p.set("allowPaymentRequest", b)
 }
 
 func (p *htmlIFrameElementImpl) Width() string {
-	return p.Get("width").String()
+	return p.get("width").toString()
 }
 
 func (p *htmlIFrameElementImpl) SetWidth(w string) {
-	p.Set("width", w)
+	p.set("width", w)
 }
 
 func (p *htmlIFrameElementImpl) Height() string {
-	return p.Get("height").String()
+	return p.get("height").toString()
 }
 
 func (p *htmlIFrameElementImpl) SetHeight(h string) {
-	p.Set("height", h)
+	p.set("height", h)
 }
 
 func (p *htmlIFrameElementImpl) ReferrerPolicy() string {
-	return p.Get("referrerPolicy").String()
+	return p.get("referrerPolicy").toString()
 }
 
 func (p *htmlIFrameElementImpl) SetReferrerPolicy(policy string) {
-	p.Set("referrerPolicy", policy)
+	p.set("referrerPolicy", policy)
 }
 
 func (p *htmlIFrameElementImpl) ContentDocument() Document {
-	return wrapDocument(p.Get("contentDocument"))
+	return wrapDocument(p.get("contentDocument"))
 }
 
 func (p *htmlIFrameElementImpl) ContentWindow() WindowProxy {
-	return wrapWindowProxy(p.Get("contentWindow"))
+	return wrapWindowProxy(p.get("contentWindow"))
 }
 
 // -------------8<---------------------------------------
@@ -1087,7 +1087,7 @@ func NewHTMLEmbedElement() HTMLEmbedElement {
 }
 
 func wrapHTMLEmbedElement(v Value) HTMLEmbedElement {
-	if v.Valid() {
+	if v.valid() {
 		return &htmlEmbedElementImpl{
 			htmlElementImpl: newHTMLElementImpl(v),
 		}
@@ -1096,35 +1096,35 @@ func wrapHTMLEmbedElement(v Value) HTMLEmbedElement {
 }
 
 func (p *htmlEmbedElementImpl) Src() string {
-	return p.Get("src").String()
+	return p.get("src").toString()
 }
 
 func (p *htmlEmbedElementImpl) SetSrc(src string) {
-	p.Set("src", src)
+	p.set("src", src)
 }
 
 func (p *htmlEmbedElementImpl) Type() string {
-	return p.Get("type").String()
+	return p.get("type").toString()
 }
 
 func (p *htmlEmbedElementImpl) SetType(t string) {
-	p.Set("type", t)
+	p.set("type", t)
 }
 
 func (p *htmlEmbedElementImpl) Width() string {
-	return p.Get("width").String()
+	return p.get("width").toString()
 }
 
 func (p *htmlEmbedElementImpl) SetWidth(w string) {
-	p.Set("width", w)
+	p.set("width", w)
 }
 
 func (p *htmlEmbedElementImpl) Height() string {
-	return p.Get("height").String()
+	return p.get("height").toString()
 }
 
 func (p *htmlEmbedElementImpl) SetHeight(h string) {
-	p.Set("height", h)
+	p.set("height", h)
 }
 
 // -------------8<---------------------------------------
@@ -1143,7 +1143,7 @@ func NewHTMLObjectElement() HTMLObjectElement {
 }
 
 func wrapHTMLObjectElement(v Value) HTMLObjectElement {
-	if v.Valid() {
+	if v.valid() {
 		return &htmlObjectElementImpl{
 			htmlElementImpl: newHTMLElementImpl(v),
 		}
@@ -1152,87 +1152,87 @@ func wrapHTMLObjectElement(v Value) HTMLObjectElement {
 }
 
 func (p *htmlObjectElementImpl) Data() string {
-	return p.Get("data").String()
+	return p.get("data").toString()
 }
 
 func (p *htmlObjectElementImpl) SetData(d string) {
-	p.Set("data", d)
+	p.set("data", d)
 }
 
 func (p *htmlObjectElementImpl) Type() string {
-	return p.Get("type").String()
+	return p.get("type").toString()
 }
 
 func (p *htmlObjectElementImpl) SetType(t string) {
-	p.Set("type", t)
+	p.set("type", t)
 }
 
 func (p *htmlObjectElementImpl) TypeMustMatch() bool {
-	return p.Get("typeMustMatch").Bool()
+	return p.get("typeMustMatch").toBool()
 }
 
 func (p *htmlObjectElementImpl) SetTypeMustMatch(b bool) {
-	p.Set("typeMustMatch", b)
+	p.set("typeMustMatch", b)
 }
 
 func (p *htmlObjectElementImpl) Name() string {
-	return p.Get("name").String()
+	return p.get("name").toString()
 }
 
 func (p *htmlObjectElementImpl) SetName(name string) {
-	p.Set("name", name)
+	p.set("name", name)
 }
 
 func (p *htmlObjectElementImpl) Form() HTMLFormElement {
-	return wrapHTMLFormElement(p.Get("form"))
+	return wrapHTMLFormElement(p.get("form"))
 }
 
 func (p *htmlObjectElementImpl) Width() string {
-	return p.Get("width").String()
+	return p.get("width").toString()
 }
 
 func (p *htmlObjectElementImpl) SetWidth(w string) {
-	p.Set("width", w)
+	p.set("width", w)
 }
 
 func (p *htmlObjectElementImpl) Height() string {
-	return p.Get("height").String()
+	return p.get("height").toString()
 }
 
 func (p *htmlObjectElementImpl) SetHeight(h string) {
-	p.Set("height", h)
+	p.set("height", h)
 }
 
 func (p *htmlObjectElementImpl) ContentDocument() Document {
-	return wrapDocument(p.Get("contentDocument"))
+	return wrapDocument(p.get("contentDocument"))
 }
 
 func (p *htmlObjectElementImpl) ContentWindow() WindowProxy {
-	return wrapWindowProxy(p.Get("contentWindow"))
+	return wrapWindowProxy(p.get("contentWindow"))
 }
 
 func (p *htmlObjectElementImpl) WillValidate() bool {
-	return p.Get("willValidate").Bool()
+	return p.get("willValidate").toBool()
 }
 
 func (p *htmlObjectElementImpl) Validity() ValidityState {
-	return wrapValidityState(p.Get("validity"))
+	return wrapValidityState(p.get("validity"))
 }
 
 func (p *htmlObjectElementImpl) ValidationMessage() string {
-	return p.Get("validationMessage").String()
+	return p.get("validationMessage").toString()
 }
 
 func (p *htmlObjectElementImpl) CheckValidity() bool {
-	return p.Call("checkValidity").Bool()
+	return p.call("checkValidity").toBool()
 }
 
 func (p *htmlObjectElementImpl) ReportValidity() bool {
-	return p.Call("reportValidity").Bool()
+	return p.call("reportValidity").toBool()
 }
 
 func (p *htmlObjectElementImpl) SetCustomValidity(e string) {
-	p.Call("setCustomValidity", e)
+	p.call("setCustomValidity", e)
 }
 
 // -------------8<---------------------------------------
@@ -1242,7 +1242,7 @@ type validityStateImpl struct {
 }
 
 func wrapValidityState(v Value) ValidityState {
-	if v.Valid() {
+	if v.valid() {
 		return &validityStateImpl{
 			htmlElementImpl: newHTMLElementImpl(v),
 		}
@@ -1251,47 +1251,47 @@ func wrapValidityState(v Value) ValidityState {
 }
 
 func (p *validityStateImpl) ValueMissing() bool {
-	return p.Get("valueMissing").Bool()
+	return p.get("valueMissing").toBool()
 }
 
 func (p *validityStateImpl) TypeMismatch() bool {
-	return p.Get("typeMismatch").Bool()
+	return p.get("typeMismatch").toBool()
 }
 
 func (p *validityStateImpl) PatternMismatch() bool {
-	return p.Get("patternMismatch").Bool()
+	return p.get("patternMismatch").toBool()
 }
 
 func (p *validityStateImpl) TooLong() bool {
-	return p.Get("tooLong").Bool()
+	return p.get("tooLong").toBool()
 }
 
 func (p *validityStateImpl) TooShort() bool {
-	return p.Get("tooShort").Bool()
+	return p.get("tooShort").toBool()
 }
 
 func (p *validityStateImpl) RangeUnderflow() bool {
-	return p.Get("rangeUnderflow").Bool()
+	return p.get("rangeUnderflow").toBool()
 }
 
 func (p *validityStateImpl) RangeOverflow() bool {
-	return p.Get("rangeOverflow").Bool()
+	return p.get("rangeOverflow").toBool()
 }
 
 func (p *validityStateImpl) StepMismatch() bool {
-	return p.Get("stepMismatch").Bool()
+	return p.get("stepMismatch").toBool()
 }
 
 func (p *validityStateImpl) BadInput() bool {
-	return p.Get("badInput").Bool()
+	return p.get("badInput").toBool()
 }
 
 func (p *validityStateImpl) CustomError() bool {
-	return p.Get("customError").Bool()
+	return p.get("customError").toBool()
 }
 
 func (p *validityStateImpl) Valid() bool {
-	return p.Get("valid").Bool()
+	return p.get("valid").toBool()
 }
 
 // -------------8<---------------------------------------
@@ -1312,7 +1312,7 @@ func NewHTMLParamElement(name string, value string) HTMLParamElement {
 }
 
 func wrapHTMLParamElement(v Value) HTMLParamElement {
-	if v.Valid() {
+	if v.valid() {
 		return &htmlParamElementImpl{
 			htmlElementImpl: newHTMLElementImpl(v),
 		}
@@ -1321,19 +1321,19 @@ func wrapHTMLParamElement(v Value) HTMLParamElement {
 }
 
 func (p *htmlParamElementImpl) Name() string {
-	return p.Get("name").String()
+	return p.get("name").toString()
 }
 
 func (p *htmlParamElementImpl) SetName(name string) {
-	p.Set("name", name)
+	p.set("name", name)
 }
 
 func (p *htmlParamElementImpl) Value() string {
-	return p.Get("value").String()
+	return p.get("value").toString()
 }
 
 func (p *htmlParamElementImpl) SetValue(value string) {
-	p.Set("value", value)
+	p.set("value", value)
 }
 
 // -------------8<---------------------------------------
@@ -1352,7 +1352,7 @@ func NewHTMLVideoElement() HTMLVideoElement {
 }
 
 func wrapHTMLVideoElement(v Value) HTMLVideoElement {
-	if v.Valid() {
+	if v.valid() {
 		return &htmlVideoElementImpl{
 			htmlMediaElementImpl: newHTMLMediaElementImpl(v),
 		}
@@ -1361,35 +1361,35 @@ func wrapHTMLVideoElement(v Value) HTMLVideoElement {
 }
 
 func (p *htmlVideoElementImpl) Width() int {
-	return p.Get("width").Int()
+	return p.get("width").toInt()
 }
 
 func (p *htmlVideoElementImpl) SetWidth(w int) {
-	p.Set("width", w)
+	p.set("width", w)
 }
 
 func (p *htmlVideoElementImpl) Height() int {
-	return p.Get("height").Int()
+	return p.get("height").toInt()
 }
 
 func (p *htmlVideoElementImpl) SetHeight(h int) {
-	p.Set("height", h)
+	p.set("height", h)
 }
 
 func (p *htmlVideoElementImpl) VideoWidth() int {
-	return p.Get("videoWidth").Int()
+	return p.get("videoWidth").toInt()
 }
 
 func (p *htmlVideoElementImpl) VideoHeight() int {
-	return p.Get("videoHeight").Int()
+	return p.get("videoHeight").toInt()
 }
 
 func (p *htmlVideoElementImpl) Poster() string {
-	return p.Get("poster").String()
+	return p.get("poster").toString()
 }
 
 func (p *htmlVideoElementImpl) SetPoster(poster string) {
-	p.Set("poster", poster)
+	p.set("poster", poster)
 }
 
 // -------------8<---------------------------------------
@@ -1408,7 +1408,7 @@ func NewHTMLAudioElement() HTMLAudioElement {
 }
 
 func wrapHTMLAudioElement(v Value) HTMLAudioElement {
-	if v.Valid() {
+	if v.valid() {
 		return &htmlAudioElementImpl{
 			htmlMediaElementImpl: newHTMLMediaElementImpl(v),
 		}
@@ -1432,7 +1432,7 @@ func NewHTMLTrackElement() HTMLTrackElement {
 }
 
 func wrapHTMLTrackElement(v Value) HTMLTrackElement {
-	if v.Valid() {
+	if v.valid() {
 		return &htmlTrackElementImpl{
 			htmlElementImpl: newHTMLElementImpl(v),
 		}
@@ -1441,51 +1441,51 @@ func wrapHTMLTrackElement(v Value) HTMLTrackElement {
 }
 
 func (p *htmlTrackElementImpl) Kind() string {
-	return p.Get("kind").String()
+	return p.get("kind").toString()
 }
 
 func (p *htmlTrackElementImpl) SetKind(k string) {
-	p.Set("kind", k)
+	p.set("kind", k)
 }
 
 func (p *htmlTrackElementImpl) Src() string {
-	return p.Get("src").String()
+	return p.get("src").toString()
 }
 
 func (p *htmlTrackElementImpl) SetSrc(src string) {
-	p.Set("src", src)
+	p.set("src", src)
 }
 
 func (p *htmlTrackElementImpl) SrcLang() string {
-	return p.Get("srclang").String()
+	return p.get("srclang").toString()
 }
 
 func (p *htmlTrackElementImpl) SetSrcLang(sl string) {
-	p.Set("srclang", sl)
+	p.set("srclang", sl)
 }
 
 func (p *htmlTrackElementImpl) Label() string {
-	return p.Get("label").String()
+	return p.get("label").toString()
 }
 
 func (p *htmlTrackElementImpl) SetLabel(lbl string) {
-	p.Set("label", lbl)
+	p.set("label", lbl)
 }
 
 func (p *htmlTrackElementImpl) Default() bool {
-	return p.Get("default").Bool()
+	return p.get("default").toBool()
 }
 
 func (p *htmlTrackElementImpl) SetDefault(b bool) {
-	p.Set("default", b)
+	p.set("default", b)
 }
 
 func (p *htmlTrackElementImpl) ReadyState() HTMLTrackElementReadyState {
-	return HTMLTrackElementReadyState(p.Get("readyState").Int())
+	return HTMLTrackElementReadyState(p.get("readyState").toInt())
 }
 
 func (p *htmlTrackElementImpl) Track() TextTrack {
-	return wrapTextTrack(p.Get("track"))
+	return wrapTextTrack(p.get("track"))
 }
 
 // -------------8<---------------------------------------
@@ -1495,7 +1495,7 @@ type textTrackImpl struct {
 }
 
 func wrapTextTrack(v Value) TextTrack {
-	if v.Valid() {
+	if v.valid() {
 		return &textTrackImpl{
 			eventTargetImpl: newEventTargetImpl(v),
 		}
@@ -1504,47 +1504,47 @@ func wrapTextTrack(v Value) TextTrack {
 }
 
 func (p *textTrackImpl) Kind() TextTrackKind {
-	return TextTrackKind(p.Get("kind").String())
+	return TextTrackKind(p.get("kind").toString())
 }
 
 func (p *textTrackImpl) Label() string {
-	return p.Get("label").String()
+	return p.get("label").toString()
 }
 
 func (p *textTrackImpl) Language() string {
-	return p.Get("language").String()
+	return p.get("language").toString()
 }
 
 func (p *textTrackImpl) Id() string {
-	return p.Get("id").String()
+	return p.get("id").toString()
 }
 
 func (p *textTrackImpl) InBandMetadataTrackDispatchType() string {
-	return p.Get("inBandMetadataTrackDispatchType").String()
+	return p.get("inBandMetadataTrackDispatchType").toString()
 }
 
 func (p *textTrackImpl) Mode() TextTrackMode {
-	return TextTrackMode(p.Get("mode").String())
+	return TextTrackMode(p.get("mode").toString())
 }
 
 func (p *textTrackImpl) SetMode(mode TextTrackMode) {
-	p.Set("mode", string(mode))
+	p.set("mode", string(mode))
 }
 
 func (p *textTrackImpl) Cues() TextTrackCueList {
-	return wrapTextTrackCueList(p.Get("cues"))
+	return wrapTextTrackCueList(p.get("cues"))
 }
 
 func (p *textTrackImpl) ActiveCues() TextTrackCueList {
-	return wrapTextTrackCueList(p.Get("activeCues"))
+	return wrapTextTrackCueList(p.get("activeCues"))
 }
 
 func (p *textTrackImpl) AddCue(cue TextTrackCue) {
-	p.Call("addCue", JSValue(cue))
+	p.call("addCue", JSValue(cue))
 }
 
 func (p *textTrackImpl) RemoveCue(cue TextTrackCue) {
-	p.Call("removeCue", JSValue(cue))
+	p.call("removeCue", JSValue(cue))
 }
 
 func (p *textTrackImpl) OnCueChange(fn func(Event)) EventHandler {
@@ -1558,7 +1558,7 @@ type textTrackCueListImpl struct {
 }
 
 func wrapTextTrackCueList(v Value) TextTrackCueList {
-	if v.Valid() {
+	if v.valid() {
 		return &textTrackCueListImpl{
 			Value: v,
 		}
@@ -1567,15 +1567,15 @@ func wrapTextTrackCueList(v Value) TextTrackCueList {
 }
 
 func (p *textTrackCueListImpl) Length() int {
-	return p.Get("length").Int()
+	return p.get("length").toInt()
 }
 
 func (p *textTrackCueListImpl) Item(index int) TextTrackCue {
-	return wrapTextTrackCue(p.Call("item", index))
+	return wrapTextTrackCue(p.call("item", index))
 }
 
 func (p *textTrackCueListImpl) CueById(id string) TextTrackCue {
-	return wrapTextTrackCue(p.Call("getCueById", id))
+	return wrapTextTrackCue(p.call("getCueById", id))
 }
 
 // -------------8<---------------------------------------
@@ -1585,7 +1585,7 @@ type textTrackCueImpl struct {
 }
 
 func wrapTextTrackCue(v Value) TextTrackCue {
-	if v.Valid() {
+	if v.valid() {
 		return &textTrackCueImpl{
 			eventTargetImpl: newEventTargetImpl(v),
 		}
@@ -1594,39 +1594,39 @@ func wrapTextTrackCue(v Value) TextTrackCue {
 }
 
 func (p *textTrackCueImpl) Track() TextTrack {
-	return wrapTextTrack(p.Get("track"))
+	return wrapTextTrack(p.get("track"))
 }
 
 func (p *textTrackCueImpl) Id() string {
-	return p.Get("id").String()
+	return p.get("id").toString()
 }
 
 func (p *textTrackCueImpl) SetId(id string) {
-	p.Set("id", id)
+	p.set("id", id)
 }
 
 func (p *textTrackCueImpl) StartTime() float64 {
-	return p.Get("startTime").Float()
+	return p.get("startTime").toFloat64()
 }
 
 func (p *textTrackCueImpl) SetStartTime(st float64) {
-	p.Set("startTime", st)
+	p.set("startTime", st)
 }
 
 func (p *textTrackCueImpl) EndTime() float64 {
-	return p.Get("endTime").Float()
+	return p.get("endTime").toFloat64()
 }
 
 func (p *textTrackCueImpl) SetEndTime(et float64) {
-	p.Set("endTime", et)
+	p.set("endTime", et)
 }
 
 func (p *textTrackCueImpl) PauseOnExit() bool {
-	return p.Get("pauseOnExit").Bool()
+	return p.get("pauseOnExit").toBool()
 }
 
 func (p *textTrackCueImpl) SetPauseOnExit(poe bool) {
-	p.Set("pauseOnExit", poe)
+	p.set("pauseOnExit", poe)
 }
 
 func (p *textTrackCueImpl) OnEnter(fn func(Event)) EventHandler {
@@ -1653,7 +1653,7 @@ func NewHTMLMapElement() HTMLMapElement {
 }
 
 func wrapHTMLMapElement(v Value) HTMLMapElement {
-	if v.Valid() {
+	if v.valid() {
 		return &htmlMapElementImpl{
 			htmlElementImpl: newHTMLElementImpl(v),
 		}
@@ -1662,15 +1662,15 @@ func wrapHTMLMapElement(v Value) HTMLMapElement {
 }
 
 func (p *htmlMapElementImpl) Name() string {
-	return p.Get("name").String()
+	return p.get("name").toString()
 }
 
 func (p *htmlMapElementImpl) SetName(name string) {
-	p.Set("name", name)
+	p.set("name", name)
 }
 
 func (p *htmlMapElementImpl) Areas() []HTMLAreaElement {
-	if c := wrapHTMLCollection(p.Get("areas")); c != nil && c.Length() > 0 {
+	if c := wrapHTMLCollection(p.get("areas")); c != nil && c.Length() > 0 {
 		var ret []HTMLAreaElement
 		for i := 0; i < c.Length(); i++ {
 			if el, ok := c.Item(i).(HTMLAreaElement); ok {
@@ -1684,7 +1684,7 @@ func (p *htmlMapElementImpl) Areas() []HTMLAreaElement {
 
 // <img> and <object> Elements
 func (p *htmlMapElementImpl) Images() []HTMLElement {
-	return htmlCollectionToHTMLElementSlice(p.Get("images"))
+	return htmlCollectionToHTMLElementSlice(p.get("images"))
 }
 
 // -------------8<---------------------------------------
@@ -1705,7 +1705,7 @@ func NewHTMLAreaElement() HTMLAreaElement {
 }
 
 func wrapHTMLAreaElement(v Value) HTMLAreaElement {
-	if v.Valid() {
+	if v.valid() {
 		return &htmlAreaElementImpl{
 			htmlElementImpl:               newHTMLElementImpl(v),
 			htmlHyperlinkElementUtilsImpl: newHTMLHyperlinkElementUtilsImpl(v),
@@ -1716,79 +1716,79 @@ func wrapHTMLAreaElement(v Value) HTMLAreaElement {
 }
 
 func (p *htmlAreaElementImpl) Alt() string {
-	return p.Get("alt").String()
+	return p.get("alt").toString()
 }
 
 func (p *htmlAreaElementImpl) SetAlt(alt string) {
-	p.Set("alt", alt)
+	p.set("alt", alt)
 }
 
 func (p *htmlAreaElementImpl) Coords() string {
-	return p.Get("coords").String()
+	return p.get("coords").toString()
 }
 
 func (p *htmlAreaElementImpl) SetCoords(coords string) {
-	p.Set("coords", coords)
+	p.set("coords", coords)
 }
 
 func (p *htmlAreaElementImpl) Shape() string {
-	return p.Get("shape").String()
+	return p.get("shape").toString()
 }
 
 func (p *htmlAreaElementImpl) SetShape(shape string) {
-	p.Set("shape", shape)
+	p.set("shape", shape)
 }
 
 func (p *htmlAreaElementImpl) Target() string {
-	return p.Get("target").String()
+	return p.get("target").toString()
 }
 
 func (p *htmlAreaElementImpl) SetTarget(target string) {
-	p.Set("target", target)
+	p.set("target", target)
 }
 
 func (p *htmlAreaElementImpl) Download() string {
-	return p.Get("download").String()
+	return p.get("download").toString()
 }
 
 func (p *htmlAreaElementImpl) SetDownload(download string) {
-	p.Set("download", download)
+	p.set("download", download)
 }
 
 func (p *htmlAreaElementImpl) Rel() string {
-	return p.Get("rel").String()
+	return p.get("rel").toString()
 }
 
 func (p *htmlAreaElementImpl) SetRel(rel string) {
-	p.Set("rel", rel)
+	p.set("rel", rel)
 }
 
 func (p *htmlAreaElementImpl) RelList() DOMTokenList {
-	return wrapDOMTokenList(p.Get("relList"))
+	return wrapDOMTokenList(p.get("relList"))
 }
 
 func (p *htmlAreaElementImpl) HrefLang() string {
-	return p.Get("hreflang").String()
+	return p.get("hreflang").toString()
 }
 
 func (p *htmlAreaElementImpl) SetHrefLang(hl string) {
-	p.Set("hreflang", hl)
+	p.set("hreflang", hl)
 }
 
 func (p *htmlAreaElementImpl) Type() string {
-	return p.Get("type").String()
+	return p.get("type").toString()
 }
 
 func (p *htmlAreaElementImpl) SetType(typ string) {
-	p.Set("type", typ)
+	p.set("type", typ)
 }
 
 func (p *htmlAreaElementImpl) ReferrerPolicy() string {
-	return p.Get("referrerPolicy").String()
+	return p.get("referrerPolicy").toString()
 }
 
 func (p *htmlAreaElementImpl) SetReferrerPolicy(policy string) {
-	p.Set("referrerPolicy", policy)
+	p.set("referrerPolicy", policy)
 }
 
 // -------------8<---------------------------------------
@@ -1805,7 +1805,7 @@ func wrapHTMLMediaElement(v Value) HTMLMediaElement {
 }
 
 func newHTMLMediaElementImpl(v Value) *htmlMediaElementImpl {
-	if v.Valid() {
+	if v.valid() {
 		return &htmlMediaElementImpl{
 			htmlElementImpl: newHTMLElementImpl(v),
 		}
@@ -1814,197 +1814,197 @@ func newHTMLMediaElementImpl(v Value) *htmlMediaElementImpl {
 }
 
 func (p *htmlMediaElementImpl) Error() MediaError {
-	return wrapMediaError(p.Get("error"))
+	return wrapMediaError(p.get("error"))
 }
 
 func (p *htmlMediaElementImpl) Src() string {
-	return p.Get("src").String()
+	return p.get("src").toString()
 }
 
 func (p *htmlMediaElementImpl) SetSrc(src string) {
-	p.Set("src", src)
+	p.set("src", src)
 }
 
 func (p *htmlMediaElementImpl) SrcObject() MediaProvider {
-	return wrapMediaProvider(p.Get("srcObject"))
+	return wrapMediaProvider(p.get("srcObject"))
 }
 
 func (p *htmlMediaElementImpl) SetSrcObject(provider MediaProvider) {
-	p.Set("srcObject", JSValue(provider))
+	p.set("srcObject", JSValue(provider))
 }
 
 func (p *htmlMediaElementImpl) CurrentSrc() string {
-	return p.Get("currentSrc").String()
+	return p.get("currentSrc").toString()
 }
 
 func (p *htmlMediaElementImpl) CrossOrigin() string {
-	return p.Get("crossOrigin").String()
+	return p.get("crossOrigin").toString()
 }
 
 func (p *htmlMediaElementImpl) SetCrossOrigin(co string) {
-	p.Set("crossOrigin", co)
+	p.set("crossOrigin", co)
 }
 
 func (p *htmlMediaElementImpl) NetworkState() MediaNetworkState {
-	return MediaNetworkState(p.Get("networkState").Int())
+	return MediaNetworkState(p.get("networkState").toInt())
 }
 
 func (p *htmlMediaElementImpl) Preload() string {
-	return p.Get("preload").String()
+	return p.get("preload").toString()
 }
 
 func (p *htmlMediaElementImpl) SetPreload(preload string) {
-	p.Set("preload", preload)
+	p.set("preload", preload)
 }
 
 func (p *htmlMediaElementImpl) Buffered() TimeRanges {
-	return wrapTimeRanges(p.Get("buffered"))
+	return wrapTimeRanges(p.get("buffered"))
 }
 
 func (p *htmlMediaElementImpl) Load() {
-	p.Call("load")
+	p.call("load")
 }
 
 func (p *htmlMediaElementImpl) CanPlayType(typ string) CanPlayTypeResult {
-	return CanPlayTypeResult(p.Call("canPlayType", typ).String())
+	return CanPlayTypeResult(p.call("canPlayType", typ).toString())
 }
 
 func (p *htmlMediaElementImpl) ReadyState() MediaReadyState {
-	return MediaReadyState(p.Get("readyState").Int())
+	return MediaReadyState(p.get("readyState").toInt())
 }
 
 func (p *htmlMediaElementImpl) Seeking() bool {
-	return p.Get("seeking").Bool()
+	return p.get("seeking").toBool()
 }
 
 func (p *htmlMediaElementImpl) CurrentTime() float64 {
-	return p.Get("currentTime").Float()
+	return p.get("currentTime").toFloat64()
 }
 
 func (p *htmlMediaElementImpl) SetCurrentTime(ct float64) {
-	p.Set("currentTime", ct)
+	p.set("currentTime", ct)
 }
 
 func (p *htmlMediaElementImpl) FastSeek(fs float64) {
-	p.Call("fastSeek", fs)
+	p.call("fastSeek", fs)
 }
 
 func (p *htmlMediaElementImpl) Duration() float64 {
-	return p.Get("duration").Float()
+	return p.get("duration").toFloat64()
 }
 
 func (p *htmlMediaElementImpl) StartDate() time.Time {
-	return jsDateToTime(p.Call("getStartDate"))
+	return jsDateToTime(p.call("getStartDate"))
 }
 
 func (p *htmlMediaElementImpl) Paused() bool {
-	return p.Get("paused").Bool()
+	return p.get("paused").toBool()
 }
 
 func (p *htmlMediaElementImpl) DefaultPlaybackRate() float64 {
-	return p.Get("defaultPlaybackRate").Float()
+	return p.get("defaultPlaybackRate").toFloat64()
 }
 
 func (p *htmlMediaElementImpl) SetDefaultPlaybackRate(rate float64) {
-	p.Set("defaultPlaybackRate", rate)
+	p.set("defaultPlaybackRate", rate)
 }
 
 func (p *htmlMediaElementImpl) PlaybackRate() float64 {
-	return p.Get("playbackRate").Float()
+	return p.get("playbackRate").toFloat64()
 }
 
 func (p *htmlMediaElementImpl) SetPlaybackRate(rate float64) {
-	p.Set("playbackRate", rate)
+	p.set("playbackRate", rate)
 }
 
 func (p *htmlMediaElementImpl) Played() TimeRanges {
-	return wrapTimeRanges(p.Get("played"))
+	return wrapTimeRanges(p.get("played"))
 }
 
 func (p *htmlMediaElementImpl) Seekable() TimeRanges {
-	return wrapTimeRanges(p.Get("seekable"))
+	return wrapTimeRanges(p.get("seekable"))
 }
 
 func (p *htmlMediaElementImpl) Ended() bool {
-	return p.Get("ended").Bool()
+	return p.get("ended").toBool()
 }
 
 func (p *htmlMediaElementImpl) AutoPlay() bool {
-	return p.Get("autoplay").Bool()
+	return p.get("autoplay").toBool()
 }
 
 func (p *htmlMediaElementImpl) SetAutoPlay(b bool) {
-	p.Set("autoplay", b)
+	p.set("autoplay", b)
 }
 
 func (p *htmlMediaElementImpl) Loop() bool {
-	return p.Get("loop").Bool()
+	return p.get("loop").toBool()
 }
 
 func (p *htmlMediaElementImpl) SetLoop(b bool) {
-	p.Set("loop", b)
+	p.set("loop", b)
 }
 
 func (p *htmlMediaElementImpl) Play() {
-	p.Call("play")
+	p.call("play")
 }
 
 func (p *htmlMediaElementImpl) Pause() {
-	p.Call("pause")
+	p.call("pause")
 }
 
 func (p *htmlMediaElementImpl) Controls() bool {
-	return p.Get("controls").Bool()
+	return p.get("controls").toBool()
 }
 
 func (p *htmlMediaElementImpl) SetControls(b bool) {
-	p.Set("controls", b)
+	p.set("controls", b)
 }
 
 func (p *htmlMediaElementImpl) Volume() bool {
-	return p.Get("volume").Bool()
+	return p.get("volume").toBool()
 }
 
 func (p *htmlMediaElementImpl) SetVolume(b bool) {
-	p.Set("volume", b)
+	p.set("volume", b)
 }
 
 func (p *htmlMediaElementImpl) Muted() bool {
-	return p.Get("muted").Bool()
+	return p.get("muted").toBool()
 }
 
 func (p *htmlMediaElementImpl) SetMuted(b bool) {
-	p.Set("muted", b)
+	p.set("muted", b)
 }
 
 func (p *htmlMediaElementImpl) DefaultMuted() bool {
-	return p.Get("defaultMuted").Bool()
+	return p.get("defaultMuted").toBool()
 }
 
 func (p *htmlMediaElementImpl) SetDefaultMuted(b bool) {
-	p.Set("defaultMuted", b)
+	p.set("defaultMuted", b)
 }
 
 func (p *htmlMediaElementImpl) AudioTracks() AudioTrackList {
-	return wrapAudioTrackList(p.Get("audioTracks"))
+	return wrapAudioTrackList(p.get("audioTracks"))
 }
 
 func (p *htmlMediaElementImpl) VideoTracks() VideoTrackList {
-	return wrapVideoTrackList(p.Get("videoTracks"))
+	return wrapVideoTrackList(p.get("videoTracks"))
 }
 
 func (p *htmlMediaElementImpl) TextTracks() TextTrackList {
-	return wrapTextTrackList(p.Get("textTracks"))
+	return wrapTextTrackList(p.get("textTracks"))
 }
 
 func (p *htmlMediaElementImpl) AddTextTrack(kind TextTrackKind, args ...string) TextTrack {
 	switch len(args) {
 	case 0:
-		return wrapTextTrack(p.Call("addTextTrack", string(kind)))
+		return wrapTextTrack(p.call("addTextTrack", string(kind)))
 	case 1:
-		return wrapTextTrack(p.Call("addTextTrack", string(kind), args[0]))
+		return wrapTextTrack(p.call("addTextTrack", string(kind), args[0]))
 	default:
-		return wrapTextTrack(p.Call("addTextTrack", string(kind), args[0], args[1]))
+		return wrapTextTrack(p.call("addTextTrack", string(kind), args[0], args[1]))
 	}
 }
 
@@ -2015,7 +2015,7 @@ type audioTrackListImpl struct {
 }
 
 func wrapAudioTrackList(v Value) AudioTrackList {
-	if v.Valid() {
+	if v.valid() {
 		return &audioTrackListImpl{
 			eventTargetImpl: newEventTargetImpl(v),
 		}
@@ -2024,15 +2024,15 @@ func wrapAudioTrackList(v Value) AudioTrackList {
 }
 
 func (p *audioTrackListImpl) Length() int {
-	return p.Get("length").Int()
+	return p.get("length").toInt()
 }
 
 func (p *audioTrackListImpl) Item(index int) AudioTrack {
-	return wrapAudioTrack(p.Call("item", index))
+	return wrapAudioTrack(p.call("item", index))
 }
 
 func (p *audioTrackListImpl) TrackById(id string) AudioTrack {
-	return wrapAudioTrack(p.Call("getTrackById", id))
+	return wrapAudioTrack(p.call("getTrackById", id))
 }
 
 func (p *audioTrackListImpl) OnChange(fn func(Event)) EventHandler {
@@ -2054,7 +2054,7 @@ type audioTrackImpl struct {
 }
 
 func wrapAudioTrack(v Value) AudioTrack {
-	if v.Valid() {
+	if v.valid() {
 		return &audioTrackImpl{
 			Value: v,
 		}
@@ -2063,27 +2063,27 @@ func wrapAudioTrack(v Value) AudioTrack {
 }
 
 func (p *audioTrackImpl) Id() string {
-	return p.Get("id").String()
+	return p.get("id").toString()
 }
 
 func (p *audioTrackImpl) Kind() string {
-	return p.Get("kind").String()
+	return p.get("kind").toString()
 }
 
 func (p *audioTrackImpl) Label() string {
-	return p.Get("label").String()
+	return p.get("label").toString()
 }
 
 func (p *audioTrackImpl) Language() string {
-	return p.Get("language").String()
+	return p.get("language").toString()
 }
 
 func (p *audioTrackImpl) Enabled() bool {
-	return p.Get("enabled").Bool()
+	return p.get("enabled").toBool()
 }
 
 func (p *audioTrackImpl) SetEnabled(b bool) {
-	p.Set("enabled", b)
+	p.set("enabled", b)
 }
 
 // -------------8<---------------------------------------
@@ -2093,7 +2093,7 @@ type videoTrackListImpl struct {
 }
 
 func wrapVideoTrackList(v Value) VideoTrackList {
-	if v.Valid() {
+	if v.valid() {
 		return &videoTrackListImpl{
 			eventTargetImpl: newEventTargetImpl(v),
 		}
@@ -2102,19 +2102,19 @@ func wrapVideoTrackList(v Value) VideoTrackList {
 }
 
 func (p *videoTrackListImpl) Length() int {
-	return p.Get("length").Int()
+	return p.get("length").toInt()
 }
 
 func (p *videoTrackListImpl) Item(index int) VideoTrack {
-	return wrapVideoTrack(p.Call("item", index))
+	return wrapVideoTrack(p.call("item", index))
 }
 
 func (p *videoTrackListImpl) TrackById(id string) VideoTrack {
-	return wrapVideoTrack(p.Call("getTrackById", id))
+	return wrapVideoTrack(p.call("getTrackById", id))
 }
 
 func (p *videoTrackListImpl) SelectedIndex() int {
-	return p.Get("selectedIndex").Int()
+	return p.get("selectedIndex").toInt()
 }
 
 func (p *videoTrackListImpl) OnChange(fn func(Event)) EventHandler {
@@ -2136,7 +2136,7 @@ type videoTrackImpl struct {
 }
 
 func wrapVideoTrack(v Value) VideoTrack {
-	if v.Valid() {
+	if v.valid() {
 		return &videoTrackImpl{
 			Value: v,
 		}
@@ -2145,27 +2145,27 @@ func wrapVideoTrack(v Value) VideoTrack {
 }
 
 func (p *videoTrackImpl) Id() string {
-	return p.Get("id").String()
+	return p.get("id").toString()
 }
 
 func (p *videoTrackImpl) Kind() string {
-	return p.Get("kind").String()
+	return p.get("kind").toString()
 }
 
 func (p *videoTrackImpl) Label() string {
-	return p.Get("label").String()
+	return p.get("label").toString()
 }
 
 func (p *videoTrackImpl) Language() string {
-	return p.Get("language").String()
+	return p.get("language").toString()
 }
 
 func (p *videoTrackImpl) Selected() bool {
-	return p.Get("selected").Bool()
+	return p.get("selected").toBool()
 }
 
 func (p *videoTrackImpl) SetSelected(b bool) {
-	p.Set("selected", b)
+	p.set("selected", b)
 }
 
 // -------------8<---------------------------------------
@@ -2175,7 +2175,7 @@ type textTrackListImpl struct {
 }
 
 func wrapTextTrackList(v Value) TextTrackList {
-	if v.Valid() {
+	if v.valid() {
 		return &textTrackListImpl{
 			eventTargetImpl: newEventTargetImpl(v),
 		}
@@ -2184,15 +2184,15 @@ func wrapTextTrackList(v Value) TextTrackList {
 }
 
 func (p *textTrackListImpl) Length() int {
-	return p.Get("length").Int()
+	return p.get("length").toInt()
 }
 
 func (p *textTrackListImpl) Item(index int) TextTrack {
-	return wrapTextTrack(p.Call("item", index))
+	return wrapTextTrack(p.call("item", index))
 }
 
 func (p *textTrackListImpl) TrackById(id string) TextTrack {
-	return wrapTextTrack(p.Call("getTrackById", id))
+	return wrapTextTrack(p.call("getTrackById", id))
 }
 
 func (p *textTrackListImpl) OnChange(fn func(Event)) EventHandler {
@@ -2214,7 +2214,7 @@ type timeRangesImpl struct {
 }
 
 func wrapTimeRanges(v Value) TimeRanges {
-	if v.Valid() {
+	if v.valid() {
 		return &timeRangesImpl{
 			Value: v,
 		}
@@ -2223,15 +2223,15 @@ func wrapTimeRanges(v Value) TimeRanges {
 }
 
 func (p *timeRangesImpl) Length() int {
-	return p.Get("length").Int()
+	return p.get("length").toInt()
 }
 
 func (p *timeRangesImpl) Start(index int) float64 {
-	return p.Call("start", index).Float()
+	return p.call("start", index).toFloat64()
 }
 
 func (p *timeRangesImpl) End(index int) float64 {
-	return p.Call("end", index).Float()
+	return p.call("end", index).toFloat64()
 }
 
 // -------------8<---------------------------------------
@@ -2241,7 +2241,7 @@ type mediaErrorImpl struct {
 }
 
 func wrapMediaError(v Value) MediaError {
-	if v.Valid() {
+	if v.valid() {
 		return &mediaErrorImpl{
 			Value: v,
 		}
@@ -2250,7 +2250,7 @@ func wrapMediaError(v Value) MediaError {
 }
 
 func (p *mediaErrorImpl) Code() MediaErrorCode {
-	return MediaErrorCode(p.Get("code").Int())
+	return MediaErrorCode(p.get("code").toInt())
 }
 
 // -------------8<---------------------------------------
@@ -2260,7 +2260,7 @@ type mediaProviderImpl struct {
 }
 
 func wrapMediaProvider(v Value) MediaProvider {
-	if v.Valid() {
+	if v.valid() {
 		return &mediaProviderImpl{
 			Value: v,
 		}
@@ -2275,7 +2275,7 @@ type mediaStreamImpl struct {
 }
 
 func wrapMediaStream(v Value) MediaStream {
-	if v.Valid() {
+	if v.valid() {
 		return &mediaStreamImpl{
 			eventTargetImpl: newEventTargetImpl(v),
 		}
@@ -2284,11 +2284,11 @@ func wrapMediaStream(v Value) MediaStream {
 }
 
 func (p *mediaStreamImpl) Id() string {
-	return p.Get("id").String()
+	return p.get("id").toString()
 }
 
 func (p *mediaStreamImpl) AudioTracks() []MediaStreamTrack {
-	if s := p.Call("getAudioTracks").ToSlice(); s != nil {
+	if s := p.call("getAudioTracks").toSlice(); s != nil {
 		ret := make([]MediaStreamTrack, len(s))
 		for i, v := range s {
 			ret[i] = wrapMediaStreamTrack(v)
@@ -2299,7 +2299,7 @@ func (p *mediaStreamImpl) AudioTracks() []MediaStreamTrack {
 }
 
 func (p *mediaStreamImpl) VideoTracks() []MediaStreamTrack {
-	if s := p.Call("getVideoTracks").ToSlice(); s != nil {
+	if s := p.call("getVideoTracks").toSlice(); s != nil {
 		ret := make([]MediaStreamTrack, len(s))
 		for i, v := range s {
 			ret[i] = wrapMediaStreamTrack(v)
@@ -2310,7 +2310,7 @@ func (p *mediaStreamImpl) VideoTracks() []MediaStreamTrack {
 }
 
 func (p *mediaStreamImpl) Tracks() []MediaStreamTrack {
-	if s := p.Call("getTracks").ToSlice(); s != nil {
+	if s := p.call("getTracks").toSlice(); s != nil {
 		ret := make([]MediaStreamTrack, len(s))
 		for i, v := range s {
 			ret[i] = wrapMediaStreamTrack(v)
@@ -2321,23 +2321,23 @@ func (p *mediaStreamImpl) Tracks() []MediaStreamTrack {
 }
 
 func (p *mediaStreamImpl) TrackById(id string) MediaStreamTrack {
-	return wrapMediaStreamTrack(p.Call("getTrackById", id))
+	return wrapMediaStreamTrack(p.call("getTrackById", id))
 }
 
 func (p *mediaStreamImpl) AddTrack(track MediaStreamTrack) {
-	p.Call("addTrack", JSValue(track))
+	p.call("addTrack", JSValue(track))
 }
 
 func (p *mediaStreamImpl) RemoveTrack(track MediaStreamTrack) {
-	p.Call("removeTrack", JSValue(track))
+	p.call("removeTrack", JSValue(track))
 }
 
 func (p *mediaStreamImpl) Clone() MediaStream {
-	return wrapMediaStream(p.Call("clone"))
+	return wrapMediaStream(p.call("clone"))
 }
 
 func (p *mediaStreamImpl) Active() bool {
-	return p.Get("active").Bool()
+	return p.get("active").toBool()
 }
 
 func (p *mediaStreamImpl) OnAddTrack(fn func(Event)) EventHandler {
@@ -2355,7 +2355,7 @@ type mediaStreamTrackImpl struct {
 }
 
 func wrapMediaStreamTrack(v Value) MediaStreamTrack {
-	if v.Valid() {
+	if v.valid() {
 		return &mediaStreamTrackImpl{
 			eventTargetImpl: newEventTargetImpl(v),
 		}
@@ -2364,27 +2364,27 @@ func wrapMediaStreamTrack(v Value) MediaStreamTrack {
 }
 
 func (p *mediaStreamTrackImpl) Kind() string {
-	return p.Get("kind").String()
+	return p.get("kind").toString()
 }
 
 func (p *mediaStreamTrackImpl) Id() string {
-	return p.Get("id").String()
+	return p.get("id").toString()
 }
 
 func (p *mediaStreamTrackImpl) Label() string {
-	return p.Get("label").String()
+	return p.get("label").toString()
 }
 
 func (p *mediaStreamTrackImpl) Enabled() bool {
-	return p.Get("enabled").Bool()
+	return p.get("enabled").toBool()
 }
 
 func (p *mediaStreamTrackImpl) SetEnabled(b bool) {
-	p.Set("enabled", b)
+	p.set("enabled", b)
 }
 
 func (p *mediaStreamTrackImpl) Muted() bool {
-	return p.Get("muted").Bool()
+	return p.get("muted").toBool()
 }
 
 func (p *mediaStreamTrackImpl) OnMute(fn func(Event)) EventHandler {
@@ -2396,7 +2396,7 @@ func (p *mediaStreamTrackImpl) OnUnMute(fn func(Event)) EventHandler {
 }
 
 func (p *mediaStreamTrackImpl) ReadyState() MediaStreamTrackState {
-	return MediaStreamTrackState(p.Get("readyState").String())
+	return MediaStreamTrackState(p.get("readyState").toString())
 }
 
 func (p *mediaStreamTrackImpl) OnEnded(fn func(Event)) EventHandler {
@@ -2404,58 +2404,58 @@ func (p *mediaStreamTrackImpl) OnEnded(fn func(Event)) EventHandler {
 }
 
 func (p *mediaStreamTrackImpl) Clone() MediaStreamTrack {
-	return wrapMediaStreamTrack(p.Call("clone"))
+	return wrapMediaStreamTrack(p.call("clone"))
 }
 
 func (p *mediaStreamTrackImpl) Stop() {
-	p.Call("stop")
+	p.call("stop")
 }
 
 func (p *mediaStreamTrackImpl) Capabilities() MediaTrackCapabilities {
-	if v := p.Call("getCapabilities"); v.Valid() {
+	if v := p.call("getCapabilities"); v.valid() {
 		return MediaTrackCapabilities{
-			Width:            wrapLongRange(v.Get("width")),
-			Heigth:           wrapLongRange(v.Get("height")),
-			AspectRatio:      wrapDoubleRange(v.Get("aspectRatio")),
-			FrameRate:        wrapDoubleRange(v.Get("frameRate")),
-			FacingMode:       stringSequenceToSlice(v.Get("facingMode")),
-			Volume:           wrapDoubleRange(v.Get("volume")),
-			SampleRate:       wrapLongRange(v.Get("sampleRate")),
-			SampleSize:       wrapLongRange(v.Get("sampleSize")),
-			EchoCancellation: boolSequenceToSlice(v.Get("echoCancellation")),
-			AutoGainControl:  boolSequenceToSlice(v.Get("autoGainControl")),
-			NoiseSuppression: boolSequenceToSlice(v.Get("noiseSuppression")),
-			Latency:          wrapDoubleRange(v.Get("latency")),
-			ChannelCount:     wrapLongRange(v.Get("channelCount")),
-			DeviceId:         v.Get("deviceId").String(),
-			GroupId:          v.Get("groupId").String(),
+			Width:            wrapLongRange(v.get("width")),
+			Heigth:           wrapLongRange(v.get("height")),
+			AspectRatio:      wrapDoubleRange(v.get("aspectRatio")),
+			FrameRate:        wrapDoubleRange(v.get("frameRate")),
+			FacingMode:       stringSequenceToSlice(v.get("facingMode")),
+			Volume:           wrapDoubleRange(v.get("volume")),
+			SampleRate:       wrapLongRange(v.get("sampleRate")),
+			SampleSize:       wrapLongRange(v.get("sampleSize")),
+			EchoCancellation: boolSequenceToSlice(v.get("echoCancellation")),
+			AutoGainControl:  boolSequenceToSlice(v.get("autoGainControl")),
+			NoiseSuppression: boolSequenceToSlice(v.get("noiseSuppression")),
+			Latency:          wrapDoubleRange(v.get("latency")),
+			ChannelCount:     wrapLongRange(v.get("channelCount")),
+			DeviceId:         v.get("deviceId").toString(),
+			GroupId:          v.get("groupId").toString(),
 		}
 	}
 	return MediaTrackCapabilities{}
 }
 
 func (p *mediaStreamTrackImpl) Constraints() MediaTrackConstraints {
-	return wrapMediaTrackConstraints(p.Call("getConstraints"))
+	return wrapMediaTrackConstraints(p.call("getConstraints"))
 }
 
 func (p *mediaStreamTrackImpl) Settings() MediaTrackSettings {
-	if v := p.Call("getSettings"); v.Valid() {
+	if v := p.call("getSettings"); v.valid() {
 		return MediaTrackSettings{
-			Width:            v.Get("width").Int(),
-			Height:           v.Get("height").Int(),
-			AspectRatio:      v.Get("aspectRatio").Float(),
-			FrameRate:        v.Get("frameRate").Float(),
-			FacingMode:       v.Get("facingMode").String(),
-			Volume:           v.Get("volume").Float(),
-			SampleRate:       v.Get("sampleRate").Int(),
-			SampleSize:       v.Get("sampleSize").Int(),
-			EchoCancellation: v.Get("echoCancellation").Bool(),
-			AutoGainControl:  v.Get("autoGainControl").Bool(),
-			NoiseSuppression: v.Get("noiseSuppression").Bool(),
-			Latency:          v.Get("latency").Float(),
-			ChannelCount:     v.Get("channelCount").Int(),
-			DeviceId:         v.Get("deviceId").String(),
-			GroupId:          v.Get("groupId").String(),
+			Width:            v.get("width").toInt(),
+			Height:           v.get("height").toInt(),
+			AspectRatio:      v.get("aspectRatio").toFloat64(),
+			FrameRate:        v.get("frameRate").toFloat64(),
+			FacingMode:       v.get("facingMode").toString(),
+			Volume:           v.get("volume").toFloat64(),
+			SampleRate:       v.get("sampleRate").toInt(),
+			SampleSize:       v.get("sampleSize").toInt(),
+			EchoCancellation: v.get("echoCancellation").toBool(),
+			AutoGainControl:  v.get("autoGainControl").toBool(),
+			NoiseSuppression: v.get("noiseSuppression").toBool(),
+			Latency:          v.get("latency").toFloat64(),
+			ChannelCount:     v.get("channelCount").toInt(),
+			DeviceId:         v.get("deviceId").toString(),
+			GroupId:          v.get("groupId").toString(),
 		}
 	}
 	return MediaTrackSettings{}
@@ -2470,9 +2470,9 @@ func (p *mediaStreamTrackImpl) ApplyConstraints(constraints ...MediaTrackConstra
 
 		switch len(constraints) {
 		case 0:
-			res, ok = await(p.Call("applyConstraints"))
+			res, ok = await(p.call("applyConstraints"))
 		default:
-			res, ok = await(p.Call("applyConstraints", constraints[0].toJSObject()))
+			res, ok = await(p.call("applyConstraints", constraints[0].toJSObject()))
 		}
 
 		if ok {
@@ -2489,33 +2489,33 @@ func (p *mediaStreamTrackImpl) OnOverConstrained(fn func(Event)) EventHandler {
 // -------------8<---------------------------------------
 
 func wrapMediaTrackConstraintSet(v Value) MediaTrackConstraintSet {
-	if v.Valid() {
+	if v.valid() {
 		return MediaTrackConstraintSet{
-			Width:            wrapConstrainLong(v.Get("width")),
-			Height:           wrapConstrainLong(v.Get("height")),
-			AspectRatio:      wrapConstrainDouble(v.Get("aspectRatio")),
-			FrameRate:        wrapConstrainDouble(v.Get("frameRate")),
-			FacingMode:       wrapConstrainDOMString(v.Get("facingMode")),
-			Volume:           wrapConstrainDouble(v.Get("volume")),
-			SampleRate:       wrapConstrainLong(v.Get("sampleRate")),
-			SampleSize:       wrapConstrainLong(v.Get("sampleSize")),
-			EchoCancellation: wrapConstrainBoolean(v.Get("echoCancellation")),
-			AutoGainControl:  wrapConstrainBoolean(v.Get("autoGainControl")),
-			NoiseSuppression: wrapConstrainBoolean(v.Get("noiseSuppression")),
-			Latency:          wrapConstrainDouble(v.Get("latency")),
-			ChannelCount:     wrapConstrainLong(v.Get("channelCount")),
-			DeviceId:         wrapConstrainDOMString(v.Get("deviceId")),
-			GroupId:          wrapConstrainDOMString(v.Get("groupId")),
+			Width:            wrapConstrainLong(v.get("width")),
+			Height:           wrapConstrainLong(v.get("height")),
+			AspectRatio:      wrapConstrainDouble(v.get("aspectRatio")),
+			FrameRate:        wrapConstrainDouble(v.get("frameRate")),
+			FacingMode:       wrapConstrainDOMString(v.get("facingMode")),
+			Volume:           wrapConstrainDouble(v.get("volume")),
+			SampleRate:       wrapConstrainLong(v.get("sampleRate")),
+			SampleSize:       wrapConstrainLong(v.get("sampleSize")),
+			EchoCancellation: wrapConstrainBoolean(v.get("echoCancellation")),
+			AutoGainControl:  wrapConstrainBoolean(v.get("autoGainControl")),
+			NoiseSuppression: wrapConstrainBoolean(v.get("noiseSuppression")),
+			Latency:          wrapConstrainDouble(v.get("latency")),
+			ChannelCount:     wrapConstrainLong(v.get("channelCount")),
+			DeviceId:         wrapConstrainDOMString(v.get("deviceId")),
+			GroupId:          wrapConstrainDOMString(v.get("groupId")),
 		}
 	}
 	return MediaTrackConstraintSet{}
 }
 
 func mediaTrackConstraintsSequenceToSlice(v Value) []MediaTrackConstraintSet {
-	if v.Valid() {
-		ret := make([]MediaTrackConstraintSet, v.Length())
+	if v.valid() {
+		ret := make([]MediaTrackConstraintSet, v.length())
 		for i := range ret {
-			ret[i] = wrapMediaTrackConstraintSet(v.Index(i))
+			ret[i] = wrapMediaTrackConstraintSet(v.index(i))
 		}
 		return ret
 	}
@@ -2523,10 +2523,10 @@ func mediaTrackConstraintsSequenceToSlice(v Value) []MediaTrackConstraintSet {
 }
 
 func wrapMediaTrackConstraints(v Value) MediaTrackConstraints {
-	if v.Valid() {
+	if v.valid() {
 		return MediaTrackConstraints{
 			MediaTrackConstraintSet: wrapMediaTrackConstraintSet(v),
-			Advanced:                mediaTrackConstraintsSequenceToSlice(v.Get("advanced")),
+			Advanced:                mediaTrackConstraintsSequenceToSlice(v.get("advanced")),
 		}
 	}
 	return MediaTrackConstraints{}
@@ -2535,10 +2535,10 @@ func wrapMediaTrackConstraints(v Value) MediaTrackConstraints {
 // -------------8<---------------------------------------
 
 func wrapLongRange(v Value) LongRange {
-	if v.Valid() {
+	if v.valid() {
 		return LongRange{
-			Max: v.Get("max").Int(),
-			Min: v.Get("min").Int(),
+			Max: v.get("max").toInt(),
+			Min: v.get("min").toInt(),
 		}
 	}
 	return LongRange{}
@@ -2547,10 +2547,10 @@ func wrapLongRange(v Value) LongRange {
 // -------------8<---------------------------------------
 
 func wrapDoubleRange(v Value) DoubleRange {
-	if v.Valid() {
+	if v.valid() {
 		return DoubleRange{
-			Max: v.Get("max").Float(),
-			Min: v.Get("min").Float(),
+			Max: v.get("max").toFloat64(),
+			Min: v.get("min").toFloat64(),
 		}
 	}
 	return DoubleRange{}
@@ -2559,11 +2559,11 @@ func wrapDoubleRange(v Value) DoubleRange {
 // -------------8<---------------------------------------
 
 func wrapConstrainLong(v Value) ConstrainLong {
-	if v.Valid() {
+	if v.valid() {
 		return ConstrainLong{
 			LongRange: wrapLongRange(v),
-			Exact:     v.Get("exact").Int(),
-			Ideal:     v.Get("ideal").Int(),
+			Exact:     v.get("exact").toInt(),
+			Ideal:     v.get("ideal").toInt(),
 		}
 	}
 	return ConstrainLong{}
@@ -2572,11 +2572,11 @@ func wrapConstrainLong(v Value) ConstrainLong {
 // -------------8<---------------------------------------
 
 func wrapConstrainDouble(v Value) ConstrainDouble {
-	if v.Valid() {
+	if v.valid() {
 		return ConstrainDouble{
 			DoubleRange: wrapDoubleRange(v),
-			Exact:       v.Get("exact").Float(),
-			Ideal:       v.Get("ideal").Float(),
+			Exact:       v.get("exact").toFloat64(),
+			Ideal:       v.get("ideal").toFloat64(),
 		}
 	}
 	return ConstrainDouble{}
@@ -2585,10 +2585,10 @@ func wrapConstrainDouble(v Value) ConstrainDouble {
 // -------------8<---------------------------------------
 
 func wrapConstrainBoolean(v Value) ConstrainBoolean {
-	if v.Valid() {
+	if v.valid() {
 		return ConstrainBoolean{
-			Exact: v.Get("exact").Bool(),
-			Ideal: v.Get("ideal").Bool(),
+			Exact: v.get("exact").toBool(),
+			Ideal: v.get("ideal").toBool(),
 		}
 	}
 	return ConstrainBoolean{}
@@ -2597,10 +2597,10 @@ func wrapConstrainBoolean(v Value) ConstrainBoolean {
 // -------------8<---------------------------------------
 
 func wrapConstrainDOMString(v Value) ConstrainDOMString {
-	if v.Valid() {
+	if v.valid() {
 		return ConstrainDOMString{
-			Exact: v.Get("exact").String(),
-			Ideal: v.Get("ideal").String(),
+			Exact: v.get("exact").toString(),
+			Ideal: v.get("ideal").toString(),
 		}
 	}
 	return ConstrainDOMString{}
@@ -2613,7 +2613,7 @@ type sourceBufferImpl struct {
 }
 
 func wrapSourceBuffer(v Value) SourceBuffer {
-	if v.Valid() {
+	if v.valid() {
 		return &sourceBufferImpl{
 			eventTargetImpl: newEventTargetImpl(v),
 		}
@@ -2622,55 +2622,55 @@ func wrapSourceBuffer(v Value) SourceBuffer {
 }
 
 func (p *sourceBufferImpl) Mode() AppendMode {
-	return AppendMode(p.Get("mode").String())
+	return AppendMode(p.get("mode").toString())
 }
 
 func (p *sourceBufferImpl) SetMode(mode AppendMode) {
-	p.Set("mode", string(mode))
+	p.set("mode", string(mode))
 }
 
 func (p *sourceBufferImpl) Updating() bool {
-	return p.Get("updating").Bool()
+	return p.get("updating").toBool()
 }
 
 func (p *sourceBufferImpl) Buffered() TimeRanges {
-	return wrapTimeRanges(p.Get("buffered"))
+	return wrapTimeRanges(p.get("buffered"))
 }
 
 func (p *sourceBufferImpl) TimestampOffset() float64 {
-	return p.Get("timestampOffset").Float()
+	return p.get("timestampOffset").toFloat64()
 }
 
 func (p *sourceBufferImpl) SetTimestampOffset(t float64) {
-	p.Set("timestampOffset", t)
+	p.set("timestampOffset", t)
 }
 
 func (p *sourceBufferImpl) AudioTracks() AudioTrackList {
-	return wrapAudioTrackList(p.Get("audioTracks"))
+	return wrapAudioTrackList(p.get("audioTracks"))
 }
 
 func (p *sourceBufferImpl) VideoTracks() VideoTrackList {
-	return wrapVideoTrackList(p.Get("videoTracks"))
+	return wrapVideoTrackList(p.get("videoTracks"))
 }
 
 func (p *sourceBufferImpl) TextTracks() TextTrackList {
-	return wrapTextTrackList(p.Get("textTracks"))
+	return wrapTextTrackList(p.get("textTracks"))
 }
 
 func (p *sourceBufferImpl) AppendWindowStart() float64 {
-	return p.Get("appendWindowStart").Float()
+	return p.get("appendWindowStart").toFloat64()
 }
 
 func (p *sourceBufferImpl) SetAppendWindowStart(ws float64) {
-	p.Set("appendWindowStart", ws)
+	p.set("appendWindowStart", ws)
 }
 
 func (p *sourceBufferImpl) AppendWindowEnd() float64 {
-	return p.Get("appendWindowEnd").Float()
+	return p.get("appendWindowEnd").toFloat64()
 }
 
 func (p *sourceBufferImpl) SetAppendWindowEnd(we float64) {
-	p.Set("appendWindowEnd", we)
+	p.set("appendWindowEnd", we)
 }
 
 func (p *sourceBufferImpl) OnUpdatestart(fn func(Event)) EventHandler {
@@ -2694,15 +2694,15 @@ func (p *sourceBufferImpl) OnAbort(fn func(Event)) EventHandler {
 }
 
 func (p *sourceBufferImpl) AppendBuffer(buffer BufferSource) {
-	p.Call("appendBuffer", JSValue(buffer))
+	p.call("appendBuffer", JSValue(buffer))
 }
 
 func (p *sourceBufferImpl) Abort() {
-	p.Call("abort")
+	p.call("abort")
 }
 
 func (p *sourceBufferImpl) Remove(start float64, end float64) {
-	p.Call("remove", start, end)
+	p.call("remove", start, end)
 }
 
 // -------------8<---------------------------------------
@@ -2712,7 +2712,7 @@ type mediaSourceImpl struct {
 }
 
 func wrapMediaSource(v Value) MediaSource {
-	if v.Valid() {
+	if v.valid() {
 		return &mediaSourceImpl{
 			eventTargetImpl: newEventTargetImpl(v),
 		}
@@ -2721,23 +2721,23 @@ func wrapMediaSource(v Value) MediaSource {
 }
 
 func (p *mediaSourceImpl) SourceBuffers() SourceBufferList {
-	return wrapSourceBufferList(p.Get("sourceBuffers"))
+	return wrapSourceBufferList(p.get("sourceBuffers"))
 }
 
 func (p *mediaSourceImpl) ActiveSourceBuffers() SourceBufferList {
-	return wrapSourceBufferList(p.Get("activeSourceBuffers"))
+	return wrapSourceBufferList(p.get("activeSourceBuffers"))
 }
 
 func (p *mediaSourceImpl) ReadyState() ReadyState {
-	return ReadyState(p.Get("readyState").String())
+	return ReadyState(p.get("readyState").toString())
 }
 
 func (p *mediaSourceImpl) Duration() float64 {
-	return p.Get("duration").Float()
+	return p.get("duration").toFloat64()
 }
 
 func (p *mediaSourceImpl) SetDuration(d float64) {
-	p.Set("duration", d)
+	p.set("duration", d)
 }
 
 func (p *mediaSourceImpl) OnSourceOpen(fn func(Event)) EventHandler {
@@ -2753,32 +2753,32 @@ func (p *mediaSourceImpl) OnSourceClose(fn func(Event)) EventHandler {
 }
 
 func (p *mediaSourceImpl) AddSourceBuffer(typ string) SourceBuffer {
-	return wrapSourceBuffer(p.Call("addSourceBuffer", typ))
+	return wrapSourceBuffer(p.call("addSourceBuffer", typ))
 }
 
 func (p *mediaSourceImpl) RemoveSourceBuffer(sb SourceBuffer) {
-	p.Call("removeSourceBuffer", JSValue(sb))
+	p.call("removeSourceBuffer", JSValue(sb))
 }
 
 func (p *mediaSourceImpl) EndOfStream(err ...EndOfStreamError) {
 	switch len(err) {
 	case 0:
-		p.Call("endOfStream")
+		p.call("endOfStream")
 	default:
-		p.Call("endOfStream", string(err[0]))
+		p.call("endOfStream", string(err[0]))
 	}
 }
 
 func (p *mediaSourceImpl) SetLiveSeekableRange(start float64, end float64) {
-	p.Call("setLiveSeekableRange", start, end)
+	p.call("setLiveSeekableRange", start, end)
 }
 
 func (p *mediaSourceImpl) ClearLiveSeekableRange() {
-	p.Call("clearLiveSeekableRange")
+	p.call("clearLiveSeekableRange")
 }
 
 func (p *mediaSourceImpl) IsTypeSupported(string) bool { // static
-	return p.Call("isTypeSupported").Bool()
+	return p.call("isTypeSupported").toBool()
 }
 
 // -------------8<---------------------------------------
@@ -2788,7 +2788,7 @@ type sourceBufferListImpl struct {
 }
 
 func wrapSourceBufferList(v Value) SourceBufferList {
-	if v.Valid() {
+	if v.valid() {
 		return &sourceBufferListImpl{
 			eventTargetImpl: newEventTargetImpl(v),
 		}
@@ -2797,7 +2797,7 @@ func wrapSourceBufferList(v Value) SourceBufferList {
 }
 
 func (p *sourceBufferListImpl) Length() uint {
-	return uint(p.Get("length").Int())
+	return uint(p.get("length").toInt())
 }
 
 func (p *sourceBufferListImpl) OnAddSourceBuffer(fn func(Event)) EventHandler {
@@ -2809,7 +2809,7 @@ func (p *sourceBufferListImpl) OnRemoveSourceBuffer(fn func(Event)) EventHandler
 }
 
 func (p *sourceBufferListImpl) Item(index uint) SourceBuffer { // getter
-	return wrapSourceBuffer(p.Call("SourceBuffer", index))
+	return wrapSourceBuffer(p.call("SourceBuffer", index))
 }
 
 // -------------8<---------------------------------------

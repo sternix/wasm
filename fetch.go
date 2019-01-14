@@ -191,20 +191,20 @@ type RequestInit struct {
 }
 
 func (p RequestInit) toJSObject() Value {
-	o := jsObject.New()
-	o.Set("method", p.Method)
-	o.Set("headers", JSValue(p.Headers))
-	o.Set("body", JSValue(p.Body))
-	o.Set("referrer", p.Referrer)
-	o.Set("referrerPolicy", string(p.ReferrerPolicy))
-	o.Set("mode", string(p.Mode))
-	o.Set("credentials", string(p.Credentials))
-	o.Set("cache", string(p.Cache))
-	o.Set("redirect", string(p.Redirect))
-	o.Set("integrity", p.Integrity)
-	o.Set("keepalive", p.Keepalive)
-	o.Set("signal", JSValue(p.Signal))
-	// o.Set("window", p.Window)
+	o := jsObject.jsNew()
+	o.set("method", p.Method)
+	o.set("headers", JSValue(p.Headers))
+	o.set("body", JSValue(p.Body))
+	o.set("referrer", p.Referrer)
+	o.set("referrerPolicy", string(p.ReferrerPolicy))
+	o.set("mode", string(p.Mode))
+	o.set("credentials", string(p.Credentials))
+	o.set("cache", string(p.Cache))
+	o.set("redirect", string(p.Redirect))
+	o.set("integrity", p.Integrity)
+	o.set("keepalive", p.Keepalive)
+	o.set("signal", JSValue(p.Signal))
+	// o.set("window", p.Window)
 	return o
 }
 
@@ -217,9 +217,9 @@ type ResponseInit struct {
 }
 
 func (p ResponseInit) toJSObject() Value {
-	o := jsObject.New()
-	o.Set("status", p.Status)
-	o.Set("statusText", p.StatusText)
-	o.Set("headers", JSValue(p.Headers))
+	o := jsObject.jsNew()
+	o.set("status", p.Status)
+	o.set("statusText", p.StatusText)
+	o.set("headers", JSValue(p.Headers))
 	return o
 }
