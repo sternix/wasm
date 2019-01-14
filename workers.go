@@ -83,7 +83,7 @@ type (
 
 	// https://w3c.github.io/workers/#navigatorconcurrenthardware
 	NavigatorConcurrentHardware interface {
-		HardwareConcurrency() int
+		HardwareConcurrency() uint
 	}
 
 	// https://w3c.github.io/workers/#workernavigator

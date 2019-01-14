@@ -1360,28 +1360,28 @@ func wrapHTMLVideoElement(v Value) HTMLVideoElement {
 	return nil
 }
 
-func (p *htmlVideoElementImpl) Width() int {
-	return p.get("width").toInt()
+func (p *htmlVideoElementImpl) Width() uint {
+	return p.get("width").toUint()
 }
 
-func (p *htmlVideoElementImpl) SetWidth(w int) {
+func (p *htmlVideoElementImpl) SetWidth(w uint) {
 	p.set("width", w)
 }
 
-func (p *htmlVideoElementImpl) Height() int {
-	return p.get("height").toInt()
+func (p *htmlVideoElementImpl) Height() uint {
+	return p.get("height").toUint()
 }
 
-func (p *htmlVideoElementImpl) SetHeight(h int) {
+func (p *htmlVideoElementImpl) SetHeight(h uint) {
 	p.set("height", h)
 }
 
-func (p *htmlVideoElementImpl) VideoWidth() int {
-	return p.get("videoWidth").toInt()
+func (p *htmlVideoElementImpl) VideoWidth() uint {
+	return p.get("videoWidth").toUint()
 }
 
-func (p *htmlVideoElementImpl) VideoHeight() int {
-	return p.get("videoHeight").toInt()
+func (p *htmlVideoElementImpl) VideoHeight() uint {
+	return p.get("videoHeight").toUint()
 }
 
 func (p *htmlVideoElementImpl) Poster() string {
@@ -1481,7 +1481,7 @@ func (p *htmlTrackElementImpl) SetDefault(b bool) {
 }
 
 func (p *htmlTrackElementImpl) ReadyState() HTMLTrackElementReadyState {
-	return HTMLTrackElementReadyState(p.get("readyState").toInt())
+	return HTMLTrackElementReadyState(p.get("readyState").toUint16())
 }
 
 func (p *htmlTrackElementImpl) Track() TextTrack {

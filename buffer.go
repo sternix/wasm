@@ -158,7 +158,7 @@ func (p *dataViewImpl) Int8() int8 {
 }
 
 func (p *dataViewImpl) Uint8() uint8 {
-	return uint8(p.call("getUint8").toInt())
+	return uint8(p.call("getUint8").toUint16())
 }
 
 func (p *dataViewImpl) Int16() int16 {
@@ -166,7 +166,7 @@ func (p *dataViewImpl) Int16() int16 {
 }
 
 func (p *dataViewImpl) Uint16() uint16 {
-	return uint16(p.call("getUint16").toInt())
+	return p.call("getUint16").toUint16()
 }
 
 func (p *dataViewImpl) Int32() int32 {
@@ -174,11 +174,11 @@ func (p *dataViewImpl) Int32() int32 {
 }
 
 func (p *dataViewImpl) Uint32() uint32 {
-	return uint32(p.call("getUint32").toInt())
+	return uint32(p.call("getUint32").toUint())
 }
 
 func (p *dataViewImpl) Float32() float32 {
-	return float32(p.call("getFloat32").toFloat64())
+	return p.call("getFloat32").toFloat32()
 }
 
 func (p *dataViewImpl) Float64() float64 {

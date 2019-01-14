@@ -684,11 +684,11 @@ func (p *rangeImpl) CommonAncestorContainer() Node {
 	return wrapAsNode(p.get("commonAncestorContainer"))
 }
 
-func (p *rangeImpl) SetStart(node Node, offset int) {
+func (p *rangeImpl) SetStart(node Node, offset uint) {
 	p.call("setStart", JSValue(node), offset)
 }
 
-func (p *rangeImpl) SetEnd(node Node, offset int) {
+func (p *rangeImpl) SetEnd(node Node, offset uint) {
 	p.call("setEnd", JSValue(node), offset)
 }
 
@@ -726,7 +726,7 @@ func (p *rangeImpl) SelectNodeContents(node Node) {
 }
 
 func (p *rangeImpl) CompareBoundaryPoints(how RangeCompare, source Range) int {
-	return p.call("compareBoundaryPoints", int(how), JSValue(source)).toInt()
+	return p.call("compareBoundaryPoints", uint16(how), JSValue(source)).toInt()
 }
 
 func (p *rangeImpl) DeleteContents() {
@@ -757,11 +757,11 @@ func (p *rangeImpl) Detach() {
 	p.call("detach")
 }
 
-func (p *rangeImpl) IsPointInRange(node Node, offset int) bool {
+func (p *rangeImpl) IsPointInRange(node Node, offset uint) bool {
 	return p.call("isPointInRange", JSValue(node), offset).toBool()
 }
 
-func (p *rangeImpl) ComparePoint(node Node, offset int) int {
+func (p *rangeImpl) ComparePoint(node Node, offset uint) int {
 	return p.call("comparePoint", JSValue(node), offset).toInt()
 }
 
@@ -986,23 +986,23 @@ func (p *characterDataImpl) Length() uint {
 	return p.get("length").toUint()
 }
 
-func (p *characterDataImpl) Substring(offset uint, count uint) string {
+func (p *characterDataImpl) SubstringData(offset uint, count uint) string {
 	return p.call("substringData", offset, count).toString()
 }
 
-func (p *characterDataImpl) Append(data string) {
+func (p *characterDataImpl) AppendData(data string) {
 	p.call("appendData", data)
 }
 
-func (p *characterDataImpl) Insert(offset int, data string) {
+func (p *characterDataImpl) InsertData(offset uint, data string) {
 	p.call("insertData", offset, data)
 }
 
-func (p *characterDataImpl) Delete(offset int, count int) {
+func (p *characterDataImpl) DeleteData(offset uint, count uint) {
 	p.call("deleteData", offset, count)
 }
 
-func (p *characterDataImpl) Replace(offset int, count int, data string) {
+func (p *characterDataImpl) ReplaceData(offset uint, count uint, data string) {
 	p.call("replaceData", offset, count, data)
 }
 

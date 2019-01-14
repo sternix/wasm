@@ -313,12 +313,12 @@ type (
 	HTMLVideoElement interface {
 		HTMLMediaElement
 
-		Width() int
-		SetWidth(int)
-		Height() int
-		SetHeight(int)
-		VideoWidth() int
-		VideoHeight() int
+		Width() uint
+		SetWidth(uint)
+		Height() uint
+		SetHeight(uint)
+		VideoWidth() uint
+		VideoHeight() uint
 		Poster() string
 		SetPoster(string)
 	}
@@ -689,7 +689,7 @@ const (
 	CanPlayTypeResultProbably CanPlayTypeResult = "probably"
 )
 
-type HTMLTrackElementReadyState int
+type HTMLTrackElementReadyState uint16
 
 const (
 	HTMLTrackElementReadyStateNone    HTMLTrackElementReadyState = 0

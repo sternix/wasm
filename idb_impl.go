@@ -111,12 +111,12 @@ func wrapIDBVersionChangeEvent(v Value) IDBVersionChangeEvent {
 	return nil
 }
 
-func (p *idbVersionChangeEventImpl) OldVersion() int {
-	return p.get("oldVersion").toInt()
+func (p *idbVersionChangeEventImpl) OldVersion() uint {
+	return p.get("oldVersion").toUint()
 }
 
-func (p *idbVersionChangeEventImpl) NewVersion() int {
-	return p.get("newVersion").toInt()
+func (p *idbVersionChangeEventImpl) NewVersion() uint {
+	return p.get("newVersion").toUint()
 }
 
 // -------------8<---------------------------------------
@@ -169,8 +169,8 @@ func (p *idbDatabaseImpl) Name() string {
 	return p.get("name").toString()
 }
 
-func (p *idbDatabaseImpl) Version() int {
-	return p.get("version").toInt()
+func (p *idbDatabaseImpl) Version() uint {
+	return p.get("version").toUint()
 }
 
 func (p *idbDatabaseImpl) ObjectStoreNames() []string {
@@ -236,7 +236,7 @@ func wrapIDBObjectStore(v Value) IDBObjectStore {
 }
 
 func (p *idbObjectStoreImpl) Name() string {
-	return p.Value.get("name").toString()
+	return p.get("name").toString()
 }
 
 func (p *idbObjectStoreImpl) SetName(name string) {
@@ -244,19 +244,19 @@ func (p *idbObjectStoreImpl) SetName(name string) {
 }
 
 func (p *idbObjectStoreImpl) KeyPath() string {
-	return p.Value.get("keyPath").toString()
+	return p.get("keyPath").toString()
 }
 
 func (p *idbObjectStoreImpl) IndexNames() []string {
-	return domStringListToSlice(p.Value.get("indexNames"))
+	return domStringListToSlice(p.get("indexNames"))
 }
 
 func (p *idbObjectStoreImpl) Transaction() IDBTransaction {
-	return wrapIDBTransaction(p.Value.get("transaction"))
+	return wrapIDBTransaction(p.get("transaction"))
 }
 
 func (p *idbObjectStoreImpl) AutoIncrement() bool {
-	return p.Value.get("autoIncrement").toBool()
+	return p.get("autoIncrement").toBool()
 }
 
 func (p *idbObjectStoreImpl) Put(value interface{}, key ...interface{}) IDBRequest {
@@ -296,10 +296,10 @@ func (p *idbObjectStoreImpl) Key(query interface{}) IDBRequest {
 func (p *idbObjectStoreImpl) All(args ...interface{}) IDBRequest {
 	switch len(args) {
 	case 1:
-		return wrapIDBRequest(p.call("getAll", args[0]))
+		return wrapIDBRequest(p.call("getAll", JSValue(args[0])))
 	case 2:
-		if count, ok := args[1].(int); ok {
-			return wrapIDBRequest(p.call("getAll", args[0], count))
+		if count, ok := args[1].(uint); ok {
+			return wrapIDBRequest(p.call("getAll", JSValue(args[0]), count))
 		}
 	}
 
@@ -309,10 +309,10 @@ func (p *idbObjectStoreImpl) All(args ...interface{}) IDBRequest {
 func (p *idbObjectStoreImpl) AllKeys(args ...interface{}) IDBRequest {
 	switch len(args) {
 	case 1:
-		return wrapIDBRequest(p.call("getAllKeys", args[0]))
+		return wrapIDBRequest(p.call("getAllKeys", JSValue(args[0])))
 	case 2:
-		if count, ok := args[1].(int); ok {
-			return wrapIDBRequest(p.call("getAllKeys", args[0], count))
+		if count, ok := args[1].(uint); ok {
+			return wrapIDBRequest(p.call("getAllKeys", JSValue(args[0]), count))
 		}
 	}
 
@@ -324,17 +324,17 @@ func (p *idbObjectStoreImpl) Count(query ...interface{}) IDBRequest {
 	case 0:
 		return wrapIDBRequest(p.call("count"))
 	default:
-		return wrapIDBRequest(p.call("count", query[0]))
+		return wrapIDBRequest(p.call("count", JSValue(query[0])))
 	}
 }
 
 func (p *idbObjectStoreImpl) OpenCursor(args ...interface{}) IDBRequest {
 	switch len(args) {
 	case 1:
-		return wrapIDBRequest(p.call("openCursor", args[0]))
+		return wrapIDBRequest(p.call("openCursor", JSValue(args[0])))
 	case 2:
 		if direction, ok := args[1].(IDBCursorDirection); ok {
-			return wrapIDBRequest(p.call("openCursor", args[0], string(direction)))
+			return wrapIDBRequest(p.call("openCursor", JSValue(args[0]), string(direction)))
 		}
 	}
 
@@ -344,10 +344,10 @@ func (p *idbObjectStoreImpl) OpenCursor(args ...interface{}) IDBRequest {
 func (p *idbObjectStoreImpl) OpenKeyCursor(args ...interface{}) IDBRequest {
 	switch len(args) {
 	case 1:
-		return wrapIDBRequest(p.call("openKeyCursor", args[0]))
+		return wrapIDBRequest(p.call("openKeyCursor", JSValue(args[0])))
 	case 2:
 		if direction, ok := args[1].(IDBCursorDirection); ok {
-			return wrapIDBRequest(p.call("openKeyCursor", args[0], string(direction)))
+			return wrapIDBRequest(p.call("openKeyCursor", JSValue(args[0]), string(direction)))
 		}
 	}
 
@@ -387,7 +387,7 @@ func wrapIDBIndex(v Value) IDBIndex {
 }
 
 func (p *idbIndexImpl) Name() string {
-	return p.Value.get("name").toString()
+	return p.get("name").toString()
 }
 
 func (p *idbIndexImpl) SetName(name string) {
@@ -395,19 +395,19 @@ func (p *idbIndexImpl) SetName(name string) {
 }
 
 func (p *idbIndexImpl) ObjectStore() IDBObjectStore {
-	return wrapIDBObjectStore(p.Value.get("objectStore"))
+	return wrapIDBObjectStore(p.get("objectStore"))
 }
 
 func (p *idbIndexImpl) KeyPath() string {
-	return p.Value.get("keyPath").toString()
+	return p.get("keyPath").toString()
 }
 
 func (p *idbIndexImpl) MultiEntry() bool {
-	return p.Value.get("multiEntry").toBool()
+	return p.get("multiEntry").toBool()
 }
 
 func (p *idbIndexImpl) Unique() bool {
-	return p.Value.get("unique").toBool()
+	return p.get("unique").toBool()
 }
 
 func (p *idbIndexImpl) Get(query interface{}) IDBRequest {
@@ -589,7 +589,7 @@ func (p *idbCursorImpl) PrimaryKey() interface{} {
 	return Wrap(p.get("primaryKey"))
 }
 
-func (p *idbCursorImpl) Advance(count int) {
+func (p *idbCursorImpl) Advance(count uint) {
 	p.call("advance", count)
 }
 

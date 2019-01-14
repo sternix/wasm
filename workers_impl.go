@@ -302,8 +302,8 @@ func newNavigatorConcurrentHardwareImpl(v Value) *navigatorConcurrentHardwareImp
 	return nil
 }
 
-func (p *navigatorConcurrentHardwareImpl) HardwareConcurrency() int {
-	return p.get("hardwareConcurrency").toInt()
+func (p *navigatorConcurrentHardwareImpl) HardwareConcurrency() uint {
+	return p.get("hardwareConcurrency").toUint()
 }
 
 // -------------8<---------------------------------------

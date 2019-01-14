@@ -218,8 +218,7 @@ type (
 		Item(uint) Element
 		NamedItem(string) HTMLOptionElement
 		Add(HTMLElement, ...interface{})
-		// NOTE: Overload ChildNode.Remove() method
-		RemoveByIndex(int) // remove(long)
+		RemoveByIndex(int)
 		Set(uint, HTMLOptionElement)
 		SelectedOptions() []HTMLOptionElement
 		SelectedIndex() int

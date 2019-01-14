@@ -151,8 +151,8 @@ type (
 		AbstractRange
 
 		CommonAncestorContainer() Node
-		SetStart(Node, int)
-		SetEnd(Node, int)
+		SetStart(Node, uint)
+		SetEnd(Node, uint)
 		SetStartBefore(Node)
 		SetStartAfter(Node)
 		SetEndBefore(Node)
@@ -168,8 +168,8 @@ type (
 		SurroundContents(Node)
 		CloneRange() Range
 		Detach()
-		IsPointInRange(Node, int) bool
-		ComparePoint(Node, int) int
+		IsPointInRange(Node, uint) bool
+		ComparePoint(Node, uint) int
 		IntersectsNode(Node) bool
 
 		// https://drafts.csswg.org/cssom-view/#extensions-to-the-range-interface
@@ -231,11 +231,11 @@ type (
 		Data() string
 		SetData(string)
 		Length() uint
-		Substring(uint, uint) string
-		Append(string)
-		Insert(int, string)
-		Delete(int, int)
-		Replace(int, int, string)
+		SubstringData(uint, uint) string
+		AppendData(string)
+		InsertData(uint, string)
+		DeleteData(uint, uint)
+		ReplaceData(uint, uint, string)
 	}
 
 	// https://dom.spec.whatwg.org/#documenttype
@@ -566,7 +566,7 @@ const (
 	ShadowRootModeClosed ShadowRootMode = "closed"
 )
 
-type RangeCompare int
+type RangeCompare uint16
 
 const (
 	RangeCompareStartToStart RangeCompare = 0

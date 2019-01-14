@@ -217,12 +217,12 @@ func (p *progressEventImpl) LengthComputable() bool {
 	return p.get("lengthComputable").toBool()
 }
 
-func (p *progressEventImpl) Loaded() int {
-	return p.get("loaded").toInt()
+func (p *progressEventImpl) Loaded() uint {
+	return p.get("loaded").toUint()
 }
 
-func (p *progressEventImpl) Total() int {
-	return p.get("total").toInt()
+func (p *progressEventImpl) Total() uint {
+	return p.get("total").toUint()
 }
 
 // -------------8<---------------------------------------

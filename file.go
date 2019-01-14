@@ -56,8 +56,8 @@ type (
 		Event
 
 		LengthComputable() bool
-		Loaded() int
-		Total() int
+		Loaded() uint
+		Total() uint
 	}
 )
 
@@ -113,8 +113,8 @@ type ProgressEventInit struct {
 	EventInit
 
 	LengthComputable bool
-	Loaded           int
-	Total            int
+	Loaded           uint
+	Total            uint
 }
 
 func (p ProgressEventInit) toJSObject() Value {

@@ -31,8 +31,8 @@ type (
 	IDBVersionChangeEvent interface {
 		Event
 
-		OldVersion() int
-		NewVersion() int
+		OldVersion() uint
+		NewVersion() uint
 	}
 
 	// https://www.w3.org/TR/IndexedDB/#idbfactory
@@ -47,7 +47,7 @@ type (
 		EventTarget
 
 		Name() string
-		Version() int
+		Version() uint
 		ObjectStoreNames() []string
 		Transaction([]string, ...IDBTransactionMode) IDBTransaction
 		Close()
@@ -119,7 +119,7 @@ type (
 		Direction() IDBCursorDirection
 		Key() interface{}
 		PrimaryKey() interface{}
-		Advance(int)
+		Advance(uint)
 		Continue(...interface{})
 		ContinuePrimaryKey(interface{}, interface{})
 		Update(interface{}) IDBRequest
@@ -183,8 +183,8 @@ const (
 
 // https://www.w3.org/TR/IndexedDB/#dictdef-idbversionchangeeventinit
 type IDBVersionChangeEventInit struct {
-	OldVersion int
-	NewVersion int // default null
+	OldVersion uint
+	NewVersion uint // default null
 }
 
 func (p IDBVersionChangeEventInit) toJSObject() Value {
