@@ -95,8 +95,8 @@ type (
 		SetFormNoValidate(bool)
 		FormTarget() string
 		SetFormTarget(string)
-		Height() int
-		SetHeight(int)
+		Height() uint
+		SetHeight(uint)
 		Indeterminate() bool
 		SetIndeterminate(bool)
 		List() HTMLElement
@@ -120,8 +120,8 @@ type (
 		SetReadOnly(bool)
 		Required() bool
 		SetRequired(bool)
-		Size() int
-		SetSize(int)
+		Size() uint
+		SetSize(uint)
 		Src() string
 		SetSrc(string)
 		Step() string
@@ -136,8 +136,8 @@ type (
 		SetValueAsDate(time.Time)
 		ValueAsNumber() float64
 		SetValueAsNumber(float64)
-		Width() int
-		SetWidth(int)
+		Width() uint
+		SetWidth(uint)
 		StepUp(...int)
 		StepDown(...int)
 		WillValidate() bool
@@ -148,14 +148,14 @@ type (
 		SetCustomValidity(string)
 		Labels() []Node
 		Select()
-		SelectionStart() int
-		SetSelectionStart(int)
-		SelectionEnd() int
-		SetSelectionEnd(int)
+		SelectionStart() uint
+		SetSelectionStart(uint)
+		SelectionEnd() uint
+		SetSelectionEnd(uint)
 		SelectionDirection() string
 		SetSelectionDirection(string)
 		SetRangeText(string, ...interface{})
-		SetSelectionRange(int, int, ...string)
+		SetSelectionRange(uint, uint, ...string)
 	}
 
 	// https://www.w3.org/TR/html52/sec-forms.html#htmlbuttonelement
@@ -209,18 +209,18 @@ type (
 		SetName(string)
 		Required() bool
 		SetRequired(bool)
-		Size() int
-		SetSize(int)
+		Size() uint
+		SetSize(uint)
 		Type() string
 		Options() HTMLOptionsCollection
-		Length() int
-		SetLength(int)
-		Item(int) Element
+		Length() uint
+		SetLength(uint)
+		Item(uint) Element
 		NamedItem(string) HTMLOptionElement
 		Add(HTMLElement, ...interface{})
 		// NOTE: Overload ChildNode.Remove() method
 		RemoveByIndex(int) // remove(long)
-		SetByIndex(int, HTMLOptionElement)
+		Set(uint, HTMLOptionElement)
 		SelectedOptions() []HTMLOptionElement
 		SelectedIndex() int
 		SetSelectedIndex(int)
@@ -241,8 +241,7 @@ type (
 	HTMLOptionsCollection interface {
 		HTMLCollection
 
-		//Length() int
-		//Set(int, HTMLOptionElement)
+		//Set(uint, HTMLOptionElement)
 		Add(HTMLElement, ...interface{})
 		Remove(int)
 		SelectedIndex() int
@@ -302,8 +301,8 @@ type (
 		SetAutocomplete(string)
 		Autofocus() bool
 		SetAutofocus(bool)
-		Cols() int
-		SetCols(int)
+		Cols() uint
+		SetCols(uint)
 		DirName() string
 		SetDirName(string)
 		Disabled() bool
@@ -321,8 +320,8 @@ type (
 		SetReadOnly(bool)
 		Required() bool
 		SetRequired(bool)
-		Rows() int
-		SetRows(int)
+		Rows() uint
+		SetRows(uint)
 		Wrap() string
 		SetWrap(string)
 		Type() string
@@ -330,7 +329,7 @@ type (
 		SetDefaultValue(string)
 		Value() string
 		SetValue(string)
-		TextLength() int
+		TextLength() uint
 		WillValidate() bool
 		Validity() ValidityState
 		ValidationMessage() string
@@ -339,14 +338,14 @@ type (
 		SetCustomValidity(string)
 		Labels() []Node
 		Select()
-		SelectionStart() int
-		SetSelectionStart(int)
-		SelectionEnd() int
-		SetSelectionEnd(int)
+		SelectionStart() uint
+		SetSelectionStart(uint)
+		SelectionEnd() uint
+		SetSelectionEnd(uint)
 		SelectionDirection() string
 		SetSelectionDirection(string)
 		SetRangeText(string, ...interface{})
-		SetSelectionRange(int, int, ...string)
+		SetSelectionRange(uint, uint, ...string)
 	}
 
 	// https://www.w3.org/TR/html52/sec-forms.html#htmloutputelement

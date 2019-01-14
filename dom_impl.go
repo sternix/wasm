@@ -272,7 +272,7 @@ func (p *documentImpl) Head() HTMLHeadElement {
 func (p *documentImpl) Images() []HTMLImageElement {
 	if c := wrapHTMLCollection(p.get("images")); c != nil && c.Length() > 0 {
 		var ret []HTMLImageElement
-		for i := 0; i < c.Length(); i++ {
+		for i := uint(0); i < c.Length(); i++ {
 			if img, ok := c.Item(i).(HTMLImageElement); ok {
 				ret = append(ret, img)
 			}
@@ -285,7 +285,7 @@ func (p *documentImpl) Images() []HTMLImageElement {
 func (p *documentImpl) Embeds() []HTMLEmbedElement {
 	if c := wrapHTMLCollection(p.get("embeds")); c != nil && c.Length() > 0 {
 		var ret []HTMLEmbedElement
-		for i := 0; i < c.Length(); i++ {
+		for i := uint(0); i < c.Length(); i++ {
 			if embed, ok := c.Item(i).(HTMLEmbedElement); ok {
 				ret = append(ret, embed)
 			}
@@ -308,7 +308,7 @@ func (p *documentImpl) Links() []HTMLElement {
 func (p *documentImpl) Forms() []HTMLFormElement {
 	if c := wrapHTMLCollection(p.get("form")); c != nil && c.Length() > 0 {
 		var ret []HTMLFormElement
-		for i := 0; i < c.Length(); i++ {
+		for i := uint(0); i < c.Length(); i++ {
 			if el, ok := c.Item(i).(HTMLFormElement); ok {
 				ret = append(ret, el)
 			}
@@ -321,7 +321,7 @@ func (p *documentImpl) Forms() []HTMLFormElement {
 func (p *documentImpl) Scripts() []HTMLScriptElement {
 	if c := wrapHTMLCollection(p.get("scripts")); c != nil && c.Length() > 0 {
 		var ret []HTMLScriptElement
-		for i := 0; i < c.Length(); i++ {
+		for i := uint(0); i < c.Length(); i++ {
 			if el, ok := c.Item(i).(HTMLScriptElement); ok {
 				ret = append(ret, el)
 			}
@@ -868,10 +868,6 @@ func (p *processingInstructionImpl) Target() string {
 	return p.get("target").toString()
 }
 
-func (p *processingInstructionImpl) Length() int {
-	return p.characterDataImpl.Length()
-}
-
 // -------------8<---------------------------------------
 
 type commentImpl struct {
@@ -950,10 +946,6 @@ func (p *textImpl) WholeText() string {
 	return p.get("wholeText").toString()
 }
 
-func (p *textImpl) Length() int {
-	return p.get("length").toInt()
-}
-
 // -------------8<---------------------------------------
 
 type characterDataImpl struct {
@@ -990,11 +982,11 @@ func (p *characterDataImpl) SetData(data string) {
 	p.set("data", data)
 }
 
-func (p *characterDataImpl) Length() int {
-	return p.get("length").toInt()
+func (p *characterDataImpl) Length() uint {
+	return p.get("length").toUint()
 }
 
-func (p *characterDataImpl) Substring(offset int, count int) string {
+func (p *characterDataImpl) Substring(offset uint, count uint) string {
 	return p.call("substringData", offset, count).toString()
 }
 
@@ -1585,11 +1577,11 @@ func wrapDOMTokenList(v Value) DOMTokenList {
 	return nil
 }
 
-func (p *domTokenListImpl) Length() int {
-	return p.get("length").toInt()
+func (p *domTokenListImpl) Length() uint {
+	return p.get("length").toUint()
 }
 
-func (p *domTokenListImpl) Item(index int) string {
+func (p *domTokenListImpl) Item(index uint) string {
 	return p.get("item").toString()
 }
 
@@ -1673,11 +1665,11 @@ func wrapNamedNodeMap(v Value) NamedNodeMap {
 	return nil
 }
 
-func (p *namedNodeMapImpl) Length() int {
-	return p.get("length").toInt()
+func (p *namedNodeMapImpl) Length() uint {
+	return p.get("length").toUint()
 }
 
-func (p *namedNodeMapImpl) Item(index int) Attr {
+func (p *namedNodeMapImpl) Item(index uint) Attr {
 	return wrapAttr(p.call("item", index))
 }
 
@@ -1770,11 +1762,11 @@ func newHTMLCollectionImpl(v Value) *htmlCollectionImpl {
 	return nil
 }
 
-func (p *htmlCollectionImpl) Length() int {
-	return p.get("length").toInt()
+func (p *htmlCollectionImpl) Length() uint {
+	return p.get("length").toUint()
 }
 
-func (p *htmlCollectionImpl) Item(index int) Element {
+func (p *htmlCollectionImpl) Item(index uint) Element {
 	return wrapAsElement(p.call("item", index))
 }
 
@@ -2121,12 +2113,12 @@ func newNodeListImpl(v Value) *nodeListImpl {
 	return nil
 }
 
-func (p *nodeListImpl) Item(index int) Node {
+func (p *nodeListImpl) Item(index uint) Node {
 	return wrapAsNode(p.call("item", index))
 }
 
-func (p *nodeListImpl) Length() int {
-	return p.get("length").toInt()
+func (p *nodeListImpl) Length() uint {
+	return p.get("length").toUint()
 }
 
 func (p *nodeListImpl) Items() []Node {

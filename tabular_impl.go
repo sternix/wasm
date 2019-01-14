@@ -77,7 +77,7 @@ func (p *htmlTableElementImpl) DeleteTFoot() {
 func (p *htmlTableElementImpl) TBodies() []HTMLTableSectionElement {
 	if bodies := wrapHTMLCollection(p.get("tBodies")); bodies != nil && bodies.Length() > 0 {
 		var ret []HTMLTableSectionElement
-		for i := 0; i < bodies.Length(); i++ {
+		for i := uint(0); i < bodies.Length(); i++ {
 			if r, ok := bodies.Item(i).(HTMLTableSectionElement); ok {
 				ret = append(ret, r)
 			}
@@ -95,7 +95,7 @@ func (p *htmlTableElementImpl) CreateTBody() HTMLTableSectionElement {
 func (p *htmlTableElementImpl) Rows() []HTMLTableRowElement {
 	if rows := wrapHTMLCollection(p.get("rows")); rows != nil && rows.Length() > 0 {
 		var ret []HTMLTableRowElement
-		for i := 0; i < rows.Length(); i++ {
+		for i := uint(0); i < rows.Length(); i++ {
 			if r, ok := rows.Item(i).(HTMLTableRowElement); ok {
 				ret = append(ret, r)
 			}
@@ -152,7 +152,7 @@ func wrapHTMLTableSectionElement(v Value) HTMLTableSectionElement {
 func (p *htmlTableSectionElementImpl) Rows() []HTMLTableRowElement {
 	if rows := wrapHTMLCollection(p.get("rows")); rows != nil && rows.Length() > 0 {
 		var ret []HTMLTableRowElement
-		for i := 0; i < rows.Length(); i++ {
+		for i := uint(0); i < rows.Length(); i++ {
 			if r, ok := rows.Item(i).(HTMLTableRowElement); ok {
 				ret = append(ret, r)
 			}
@@ -201,7 +201,7 @@ func (p *htmlTableRowElementImpl) SectionRowIndex() int {
 func (p *htmlTableRowElementImpl) Cells() []HTMLTableCellElement {
 	if cells := wrapHTMLCollection(p.get("cells")); cells != nil && cells.Length() > 0 {
 		var ret []HTMLTableCellElement
-		for i := 0; i < cells.Length(); i++ {
+		for i := uint(0); i < cells.Length(); i++ {
 			if c, ok := cells.Item(i).(HTMLTableCellElement); ok {
 				ret = append(ret, c)
 			}

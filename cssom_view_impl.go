@@ -214,11 +214,11 @@ func wrapCSSPseudoElementList(v Value) CSSPseudoElementList {
 	return nil
 }
 
-func (p *cssPseudoElementListImpl) Length() int {
-	return p.get("length").toInt()
+func (p *cssPseudoElementListImpl) Length() uint {
+	return p.get("length").toUint()
 }
 
-func (p *cssPseudoElementListImpl) Item(index int) CSSPseudoElement {
+func (p *cssPseudoElementListImpl) Item(index uint) CSSPseudoElement {
 	return wrapCSSPseudoElement(p.call("item", index))
 }
 

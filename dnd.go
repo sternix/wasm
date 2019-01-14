@@ -20,11 +20,11 @@ type (
 
 	// https://www.w3.org/TR/html52/editing.html#datatransferitemlist
 	DataTransferItemList interface {
-		Length() int
-		Index(int) DataTransferItem // Get
+		Length() uint
+		Index(uint) DataTransferItem // Get
 		Add(string, string) DataTransferItem
 		AddFile(File) DataTransferItem
-		Remove(int)
+		Remove(uint)
 		Clear()
 	}
 

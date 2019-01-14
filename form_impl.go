@@ -386,11 +386,11 @@ func (p *htmlInputElementImpl) SetFormTarget(ft string) {
 	p.set("formTarget", ft)
 }
 
-func (p *htmlInputElementImpl) Height() int {
-	return p.get("height").toInt()
+func (p *htmlInputElementImpl) Height() uint {
+	return p.get("height").toUint()
 }
 
-func (p *htmlInputElementImpl) SetHeight(h int) {
+func (p *htmlInputElementImpl) SetHeight(h uint) {
 	p.set("height", h)
 }
 
@@ -486,11 +486,11 @@ func (p *htmlInputElementImpl) SetRequired(b bool) {
 	p.set("_required", b)
 }
 
-func (p *htmlInputElementImpl) Size() int {
-	return p.get("size").toInt()
+func (p *htmlInputElementImpl) Size() uint {
+	return p.get("size").toUint()
 }
 
-func (p *htmlInputElementImpl) SetSize(s int) {
+func (p *htmlInputElementImpl) SetSize(s uint) {
 	p.set("size", s)
 }
 
@@ -554,11 +554,11 @@ func (p *htmlInputElementImpl) SetValueAsNumber(n float64) {
 	p.set("valueAsNumber", n)
 }
 
-func (p *htmlInputElementImpl) Width() int {
-	return p.get("width").toInt()
+func (p *htmlInputElementImpl) Width() uint {
+	return p.get("width").toUint()
 }
 
-func (p *htmlInputElementImpl) SetWidth(w int) {
+func (p *htmlInputElementImpl) SetWidth(w uint) {
 	p.set("width", w)
 }
 
@@ -612,19 +612,19 @@ func (p *htmlInputElementImpl) Select() {
 	p.call("select")
 }
 
-func (p *htmlInputElementImpl) SelectionStart() int {
-	return p.get("selectionStart").toInt()
+func (p *htmlInputElementImpl) SelectionStart() uint {
+	return p.get("selectionStart").toUint()
 }
 
-func (p *htmlInputElementImpl) SetSelectionStart(se int) {
+func (p *htmlInputElementImpl) SetSelectionStart(se uint) {
 	p.set("selectionStart", se)
 }
 
-func (p *htmlInputElementImpl) SelectionEnd() int {
-	return p.get("selectionEnd").toInt()
+func (p *htmlInputElementImpl) SelectionEnd() uint {
+	return p.get("selectionEnd").toUint()
 }
 
-func (p *htmlInputElementImpl) SetSelectionEnd(se int) {
+func (p *htmlInputElementImpl) SetSelectionEnd(se uint) {
 	p.set("selectionEnd", se)
 }
 
@@ -641,14 +641,14 @@ func (p *htmlInputElementImpl) SetRangeText(r string, args ...interface{}) {
 	case 0:
 		p.call("setRangeText", r)
 	case 2:
-		if start, ok := args[0].(int); ok {
-			if end, ok := args[1].(int); ok {
+		if start, ok := args[0].(uint); ok {
+			if end, ok := args[1].(uint); ok {
 				p.call("setRangeText", r, start, end)
 			}
 		}
 	case 3:
-		if start, ok := args[0].(int); ok {
-			if end, ok := args[1].(int); ok {
+		if start, ok := args[0].(uint); ok {
+			if end, ok := args[1].(uint); ok {
 				if selectionMode, ok := args[2].(SelectionMode); ok {
 					p.call("setRangeText", r, start, end, string(selectionMode))
 				}
@@ -657,7 +657,7 @@ func (p *htmlInputElementImpl) SetRangeText(r string, args ...interface{}) {
 	}
 }
 
-func (p *htmlInputElementImpl) SetSelectionRange(start int, end int, direction ...string) {
+func (p *htmlInputElementImpl) SetSelectionRange(start uint, end uint, direction ...string) {
 	switch len(direction) {
 	case 0:
 		p.call("setSelectionRange", start, end)
@@ -879,11 +879,11 @@ func (p *htmlSelectElementImpl) SetRequired(b bool) {
 	p.set("_required", b)
 }
 
-func (p *htmlSelectElementImpl) Size() int {
-	return p.get("size").toInt()
+func (p *htmlSelectElementImpl) Size() uint {
+	return p.get("size").toUint()
 }
 
-func (p *htmlSelectElementImpl) SetSize(s int) {
+func (p *htmlSelectElementImpl) SetSize(s uint) {
 	p.set("size", s)
 }
 
@@ -895,15 +895,15 @@ func (p *htmlSelectElementImpl) Options() HTMLOptionsCollection {
 	return wrapHTMLOptionsCollection(p.get("options"))
 }
 
-func (p *htmlSelectElementImpl) Length() int {
-	return p.get("length").toInt()
+func (p *htmlSelectElementImpl) Length() uint {
+	return p.get("length").toUint()
 }
 
-func (p *htmlSelectElementImpl) SetLength(l int) {
+func (p *htmlSelectElementImpl) SetLength(l uint) {
 	p.set("length", l)
 }
 
-func (p *htmlSelectElementImpl) Item(index int) Element {
+func (p *htmlSelectElementImpl) Item(index uint) Element {
 	return wrapAsElement(p.call("item", index))
 }
 
@@ -929,7 +929,7 @@ func (p *htmlSelectElementImpl) RemoveByIndex(index int) {
 	p.call("remove", index)
 }
 
-func (p *htmlSelectElementImpl) SetByIndex(index int, option HTMLOptionElement) {
+func (p *htmlSelectElementImpl) Set(index uint, option HTMLOptionElement) {
 	// TODO
 	// which method ??
 	//  setter void (unsigned long index, HTMLOptionElement? option);
@@ -998,12 +998,12 @@ func wrapHTMLOptionsCollection(v Value) HTMLOptionsCollection {
 	return nil
 }
 
-func (p *htmlOptionsCollectionImpl) Length() int {
-	return p.get("length").toInt()
+func (p *htmlOptionsCollectionImpl) Length() uint {
+	return p.get("length").toUint()
 }
 
 /* TODO setter
-func (p *htmlOptionsCollectionImpl) Set(index int,option HTMLOptionElement) {
+func (p *htmlOptionsCollectionImpl) Set(index uint,option HTMLOptionElement) {
 	p.call("")
 }
 */
@@ -1222,11 +1222,11 @@ func (p *htmlTextAreaElementImpl) SetAutofocus(b bool) {
 	p.set("autofocus", b)
 }
 
-func (p *htmlTextAreaElementImpl) Cols() int {
-	return p.get("cols").toInt()
+func (p *htmlTextAreaElementImpl) Cols() uint {
+	return p.get("cols").toUint()
 }
 
-func (p *htmlTextAreaElementImpl) SetCols(c int) {
+func (p *htmlTextAreaElementImpl) SetCols(c uint) {
 	p.set("cols", c)
 }
 
@@ -1298,11 +1298,11 @@ func (p *htmlTextAreaElementImpl) SetRequired(b bool) {
 	p.set("_required", b)
 }
 
-func (p *htmlTextAreaElementImpl) Rows() int {
-	return p.get("rows").toInt()
+func (p *htmlTextAreaElementImpl) Rows() uint {
+	return p.get("rows").toUint()
 }
 
-func (p *htmlTextAreaElementImpl) SetRows(r int) {
+func (p *htmlTextAreaElementImpl) SetRows(r uint) {
 	p.set("rows", r)
 }
 
@@ -1334,8 +1334,8 @@ func (p *htmlTextAreaElementImpl) SetValue(v string) {
 	p.set("value", v)
 }
 
-func (p *htmlTextAreaElementImpl) TextLength() int {
-	return p.get("textLength").toInt()
+func (p *htmlTextAreaElementImpl) TextLength() uint {
+	return p.get("textLength").toUint()
 }
 
 func (p *htmlTextAreaElementImpl) WillValidate() bool {
@@ -1370,19 +1370,19 @@ func (p *htmlTextAreaElementImpl) Select() {
 	p.call("select")
 }
 
-func (p *htmlTextAreaElementImpl) SelectionStart() int {
-	return p.get("selectionStart").toInt()
+func (p *htmlTextAreaElementImpl) SelectionStart() uint {
+	return p.get("selectionStart").toUint()
 }
 
-func (p *htmlTextAreaElementImpl) SetSelectionStart(ss int) {
+func (p *htmlTextAreaElementImpl) SetSelectionStart(ss uint) {
 	p.set("selectionStart", ss)
 }
 
-func (p *htmlTextAreaElementImpl) SelectionEnd() int {
-	return p.get("selectionEnd").toInt()
+func (p *htmlTextAreaElementImpl) SelectionEnd() uint {
+	return p.get("selectionEnd").toUint()
 }
 
-func (p *htmlTextAreaElementImpl) SetSelectionEnd(se int) {
+func (p *htmlTextAreaElementImpl) SetSelectionEnd(se uint) {
 	p.set("selectionEnd", se)
 }
 
@@ -1399,14 +1399,14 @@ func (p *htmlTextAreaElementImpl) SetRangeText(r string, args ...interface{}) {
 	case 0:
 		p.call("setRangeText", r)
 	case 2:
-		if start, ok := args[0].(int); ok {
-			if end, ok := args[1].(int); ok {
+		if start, ok := args[0].(uint); ok {
+			if end, ok := args[1].(uint); ok {
 				p.call("setRangeText", r, start, end)
 			}
 		}
 	case 3:
-		if start, ok := args[0].(int); ok {
-			if end, ok := args[1].(int); ok {
+		if start, ok := args[0].(uint); ok {
+			if end, ok := args[1].(uint); ok {
 				if selectionMode, ok := args[2].(SelectionMode); ok {
 					p.call("setRangeText", r, start, end, string(selectionMode))
 				}
@@ -1415,7 +1415,7 @@ func (p *htmlTextAreaElementImpl) SetRangeText(r string, args ...interface{}) {
 	}
 }
 
-func (p *htmlTextAreaElementImpl) SetSelectionRange(start int, end int, direction ...string) {
+func (p *htmlTextAreaElementImpl) SetSelectionRange(start uint, end uint, direction ...string) {
 	switch len(direction) {
 	case 0:
 		p.call("setSelectionRange", start, end)

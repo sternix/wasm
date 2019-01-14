@@ -195,7 +195,7 @@ func (p *documentOrShadowRootImpl) FullscreenElement() Element {
 func (p *documentOrShadowRootImpl) StyleSheets() []CSSStyleSheet {
 	if list := wrapStyleSheetList(p.get("styleSheets")); list != nil && list.Length() > 0 {
 		ret := make([]CSSStyleSheet, list.Length())
-		for i := 0; i < list.Length(); i++ {
+		for i := uint(0); i < list.Length(); i++ {
 			ret[i] = list.Item(i)
 		}
 		return ret

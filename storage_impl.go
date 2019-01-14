@@ -43,11 +43,11 @@ func (p *storageImpl) Clear() {
 	p.call("clear")
 }
 
-func (p *storageImpl) Length() int {
-	return p.call("length").toInt()
+func (p *storageImpl) Length() uint {
+	return p.call("length").toUint()
 }
 
-func (p *storageImpl) Key(i int) string {
+func (p *storageImpl) Key(i uint) string {
 	return p.call("key", i).toString()
 }
 

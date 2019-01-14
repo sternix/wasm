@@ -1566,11 +1566,11 @@ func wrapTextTrackCueList(v Value) TextTrackCueList {
 	return nil
 }
 
-func (p *textTrackCueListImpl) Length() int {
-	return p.get("length").toInt()
+func (p *textTrackCueListImpl) Length() uint {
+	return p.get("length").toUint()
 }
 
-func (p *textTrackCueListImpl) Item(index int) TextTrackCue {
+func (p *textTrackCueListImpl) Item(index uint) TextTrackCue {
 	return wrapTextTrackCue(p.call("item", index))
 }
 
@@ -1672,7 +1672,7 @@ func (p *htmlMapElementImpl) SetName(name string) {
 func (p *htmlMapElementImpl) Areas() []HTMLAreaElement {
 	if c := wrapHTMLCollection(p.get("areas")); c != nil && c.Length() > 0 {
 		var ret []HTMLAreaElement
-		for i := 0; i < c.Length(); i++ {
+		for i := uint(0); i < c.Length(); i++ {
 			if el, ok := c.Item(i).(HTMLAreaElement); ok {
 				ret = append(ret, el)
 			}
@@ -2023,11 +2023,11 @@ func wrapAudioTrackList(v Value) AudioTrackList {
 	return nil
 }
 
-func (p *audioTrackListImpl) Length() int {
-	return p.get("length").toInt()
+func (p *audioTrackListImpl) Length() uint {
+	return p.get("length").toUint()
 }
 
-func (p *audioTrackListImpl) Item(index int) AudioTrack {
+func (p *audioTrackListImpl) Item(index uint) AudioTrack {
 	return wrapAudioTrack(p.call("item", index))
 }
 
@@ -2101,11 +2101,11 @@ func wrapVideoTrackList(v Value) VideoTrackList {
 	return nil
 }
 
-func (p *videoTrackListImpl) Length() int {
-	return p.get("length").toInt()
+func (p *videoTrackListImpl) Length() uint {
+	return p.get("length").toUint()
 }
 
-func (p *videoTrackListImpl) Item(index int) VideoTrack {
+func (p *videoTrackListImpl) Item(index uint) VideoTrack {
 	return wrapVideoTrack(p.call("item", index))
 }
 
@@ -2183,11 +2183,11 @@ func wrapTextTrackList(v Value) TextTrackList {
 	return nil
 }
 
-func (p *textTrackListImpl) Length() int {
-	return p.get("length").toInt()
+func (p *textTrackListImpl) Length() uint {
+	return p.get("length").toUint()
 }
 
-func (p *textTrackListImpl) Item(index int) TextTrack {
+func (p *textTrackListImpl) Item(index uint) TextTrack {
 	return wrapTextTrack(p.call("item", index))
 }
 
@@ -2222,15 +2222,15 @@ func wrapTimeRanges(v Value) TimeRanges {
 	return nil
 }
 
-func (p *timeRangesImpl) Length() int {
-	return p.get("length").toInt()
+func (p *timeRangesImpl) Length() uint {
+	return p.get("length").toUint()
 }
 
-func (p *timeRangesImpl) Start(index int) float64 {
+func (p *timeRangesImpl) Start(index uint) float64 {
 	return p.call("start", index).toFloat64()
 }
 
-func (p *timeRangesImpl) End(index int) float64 {
+func (p *timeRangesImpl) End(index uint) float64 {
 	return p.call("end", index).toFloat64()
 }
 
@@ -2797,7 +2797,7 @@ func wrapSourceBufferList(v Value) SourceBufferList {
 }
 
 func (p *sourceBufferListImpl) Length() uint {
-	return uint(p.get("length").toInt())
+	return p.get("length").toUint()
 }
 
 func (p *sourceBufferListImpl) OnAddSourceBuffer(fn func(Event)) EventHandler {

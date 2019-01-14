@@ -6,8 +6,8 @@ type (
 
 	// https://www.w3.org/TR/webstorage/#storage-0
 	Storage interface {
-		Length() int
-		Key(int) string
+		Length() uint
+		Key(uint) string
 		Item(string) string
 		SetItem(string, string)
 		RemoveItem(string)

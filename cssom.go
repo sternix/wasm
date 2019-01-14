@@ -9,8 +9,8 @@ type (
 	MediaList interface {
 		MediaText() string
 		SetMediaText(string)
-		Length() int
-		Item(int) string
+		Length() uint
+		Item(uint) string
 		AppendMedium(string)
 		DeleteMedium(string)
 	}
@@ -53,14 +53,14 @@ type (
 
 	// https://drafts.csswg.org/cssom/#stylesheetlist
 	StyleSheetList interface {
-		Item(int) CSSStyleSheet
-		Length() int
+		Item(uint) CSSStyleSheet
+		Length() uint
 	}
 
 	// https://drafts.csswg.org/cssom/#cssrulelist
 	CSSRuleList interface {
-		Item(int) CSSRule
-		Length() int
+		Item(uint) CSSRule
+		Length() uint
 	}
 
 	// https://drafts.csswg.org/cssom/#cssstylerule
@@ -121,8 +121,8 @@ type (
 
 		CSSText() string
 		SetCSSText(string)
-		Length() int
-		Item(int) string
+		Length() uint
+		Item(uint) string
 		PropertyValue(string) string
 		PropertyPriority(string) string
 		SetProperty(string, string, ...string)

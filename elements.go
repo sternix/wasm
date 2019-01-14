@@ -366,8 +366,8 @@ type (
 
 	// https://www.w3.org/TR/html52/semantics-embedded-content.html#texttrackcuelist
 	TextTrackCueList interface {
-		Length() int
-		Item(int) TextTrackCue
+		Length() uint
+		Item(uint) TextTrackCue
 		CueById(string) TextTrackCue
 	}
 
@@ -481,8 +481,8 @@ type (
 	AudioTrackList interface {
 		EventTarget
 
-		Length() int
-		Item(int) AudioTrack
+		Length() uint
+		Item(uint) AudioTrack
 		TrackById(string) AudioTrack
 		OnChange(func(Event)) EventHandler
 		OnAddTrack(func(Event)) EventHandler
@@ -503,8 +503,8 @@ type (
 	VideoTrackList interface {
 		EventTarget
 
-		Length() int
-		Item(int) VideoTrack
+		Length() uint
+		Item(uint) VideoTrack
 		TrackById(string) VideoTrack
 		SelectedIndex() int
 		OnChange(func(Event)) EventHandler
@@ -526,8 +526,8 @@ type (
 	TextTrackList interface {
 		EventTarget
 
-		Length() int
-		Item(int) TextTrack
+		Length() uint
+		Item(uint) TextTrack
 		TrackById(string) TextTrack
 		OnChange(func(Event)) EventHandler
 		OnAddTrack(func(Event)) EventHandler
@@ -536,9 +536,9 @@ type (
 
 	// https://www.w3.org/TR/html52/semantics-embedded-content.html#timeranges
 	TimeRanges interface {
-		Length() int
-		Start(int) float64
-		End(int) float64
+		Length() uint
+		Start(uint) float64
+		End(uint) float64
 	}
 
 	// https://www.w3.org/TR/html52/semantics-embedded-content.html#mediaerror

@@ -32,7 +32,7 @@ type (
 		Focus()
 		Blur()
 		Frames() WindowProxy
-		Length() int
+		Length() uint
 		Top() WindowProxy
 		Opener() WindowProxy
 		Parent() WindowProxy
@@ -107,7 +107,7 @@ type (
 
 	// https://www.w3.org/TR/html52/browsers.html#history
 	History interface {
-		Length() int
+		Length() uint
 		ScrollRestoration() ScrollRestorationType
 		SetScrollRestoration(ScrollRestorationType)
 		State() interface{}

@@ -81,11 +81,11 @@ func wrapDataTransferItemList(v Value) DataTransferItemList {
 	return nil
 }
 
-func (p *dataTransferItemListImpl) Length() int {
-	return p.get("length").toInt()
+func (p *dataTransferItemListImpl) Length() uint {
+	return p.get("length").toUint()
 }
 
-func (p *dataTransferItemListImpl) Index(index int) DataTransferItem {
+func (p *dataTransferItemListImpl) Index(index uint) DataTransferItem {
 	return wrapDataTransferItem(p.call("DataTransferItem", index))
 }
 
@@ -97,7 +97,7 @@ func (p *dataTransferItemListImpl) AddFile(data File) DataTransferItem {
 	return wrapDataTransferItem(p.call("add", JSValue(data)))
 }
 
-func (p *dataTransferItemListImpl) Remove(index int) {
+func (p *dataTransferItemListImpl) Remove(index uint) {
 	p.call("remove", index)
 }
 

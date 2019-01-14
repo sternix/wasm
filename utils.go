@@ -291,7 +291,7 @@ func toFloat64Slice(v Value) []float64 {
 func htmlCollectionToElementSlice(v Value) []Element {
 	if c := wrapHTMLCollection(v); c != nil && c.Length() > 0 {
 		ret := make([]Element, c.Length())
-		for i := 0; i < c.Length(); i++ {
+		for i := uint(0); i < c.Length(); i++ {
 			ret[i] = c.Item(i)
 		}
 		return ret
@@ -304,7 +304,7 @@ func htmlCollectionToElementSlice(v Value) []Element {
 func htmlCollectionToHTMLElementSlice(v Value) []HTMLElement {
 	if c := wrapHTMLCollection(v); c != nil && c.Length() > 0 {
 		var ret []HTMLElement
-		for i := 0; i < c.Length(); i++ {
+		for i := uint(0); i < c.Length(); i++ {
 			if el, ok := c.Item(i).(HTMLElement); ok {
 				ret = append(ret, el)
 			}
@@ -319,7 +319,7 @@ func htmlCollectionToHTMLElementSlice(v Value) []HTMLElement {
 func htmlCollectionToHTMLOptionElementSlice(v Value) []HTMLOptionElement {
 	if c := wrapHTMLCollection(v); c != nil && c.Length() > 0 {
 		var ret []HTMLOptionElement
-		for i := 0; i < c.Length(); i++ {
+		for i := uint(0); i < c.Length(); i++ {
 			if el, ok := c.Item(i).(HTMLOptionElement); ok {
 				ret = append(ret, el)
 			}

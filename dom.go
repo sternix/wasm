@@ -230,8 +230,8 @@ type (
 
 		Data() string
 		SetData(string)
-		Length() int
-		Substring(int, int) string
+		Length() uint
+		Substring(uint, uint) string
 		Append(string)
 		Insert(int, string)
 		Delete(int, int)
@@ -384,8 +384,8 @@ type (
 
 	// https://dom.spec.whatwg.org/#domtokenlist
 	DOMTokenList interface {
-		Length() int
-		Item(int) string
+		Length() uint
+		Item(uint) string
 		Contains(string) bool
 		Add(...string)
 		Remove(...string)
@@ -400,8 +400,8 @@ type (
 
 	//https://dom.spec.whatwg.org/#namednodemap
 	NamedNodeMap interface {
-		Length() int
-		Item(int) Attr
+		Length() uint
+		Item(uint) Attr
 		NamedItem(string) Attr
 		NamedItemNS(string, string) Attr
 		SetNamedItem(Attr) Attr
@@ -413,6 +413,7 @@ type (
 	// https://dom.spec.whatwg.org/#attr
 	Attr interface {
 		Node
+
 		NamespaceURI() string
 		Prefix() string
 		LocalName() string
@@ -424,8 +425,8 @@ type (
 
 	// https://dom.spec.whatwg.org/#htmlcollection
 	HTMLCollection interface {
-		Length() int
-		Item(int) Element
+		Length() uint
+		Item(uint) Element
 		NamedItem(string) Element
 	}
 
@@ -513,8 +514,8 @@ type (
 
 	// https://dom.spec.whatwg.org/#nodelist
 	NodeList interface {
-		Item(int) Node
-		Length() int
+		Item(uint) Node
+		Length() uint
 		Items() []Node
 	}
 

@@ -69,7 +69,7 @@ type (
 			Name() string
 			Description() string
 			Filename() string
-			Length() int
+			Length() uint
 			Item(int) MimeType
 			NamedItem(string) MimeType
 		}
@@ -78,7 +78,7 @@ type (
 	// https://html.spec.whatwg.org/multipage/system-state.html#mimetypearray
 	/*
 		MimeTypeArray interface {
-			Length() int
+			Length() uint
 			Item(int) MimeType
 			NamedItem() MimeType
 		}
@@ -88,7 +88,7 @@ type (
 	/*
 		PluginArray interface {
 			Refresh(...bool)
-			Length() int
+			Length() uint
 			Item(int) Plugin
 			NamedItem(string) Plugin
 		}

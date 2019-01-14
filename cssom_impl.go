@@ -105,11 +105,11 @@ func (p *mediaListImpl) SetMediaText(text string) {
 	p.set("mediaText", text)
 }
 
-func (p *mediaListImpl) Length() int {
-	return p.get("length").toInt()
+func (p *mediaListImpl) Length() uint {
+	return p.get("length").toUint()
 }
 
-func (p *mediaListImpl) Item(index int) string {
+func (p *mediaListImpl) Item(index uint) string {
 	return p.call("item", index).toString()
 }
 
@@ -143,7 +143,7 @@ func (p *cssStyleSheetImpl) OwnerRule() CSSRule {
 func (p *cssStyleSheetImpl) CSSRules() []CSSRule {
 	if list := wrapCSSRuleList(p.get("cssRules")); list != nil && list.Length() > 0 {
 		ret := make([]CSSRule, list.Length())
-		for i := 0; i < list.Length(); i++ {
+		for i := uint(0); i < list.Length(); i++ {
 			ret[i] = list.Item(i)
 		}
 		return ret
@@ -187,7 +187,7 @@ func newCSSRuleImpl(v Value) *cssRuleImpl {
 }
 
 func (p *cssRuleImpl) Type() CSSRuleType {
-	return CSSRuleType(uint(p.get("type").toInt()))
+	return CSSRuleType(p.get("type").toUint())
 }
 
 func (p *cssRuleImpl) CSSText() string {
@@ -221,12 +221,12 @@ func wrapStyleSheetList(v Value) StyleSheetList {
 	return nil
 }
 
-func (p *styleSheetListImpl) Item(index int) CSSStyleSheet {
+func (p *styleSheetListImpl) Item(index uint) CSSStyleSheet {
 	return wrapCSSStyleSheet(p.call("item", index))
 }
 
-func (p *styleSheetListImpl) Length() int {
-	return p.get("length").toInt()
+func (p *styleSheetListImpl) Length() uint {
+	return p.get("length").toUint()
 }
 
 // -------------8<---------------------------------------
@@ -244,12 +244,12 @@ func wrapCSSRuleList(v Value) CSSRuleList {
 	return nil
 }
 
-func (p *cssRuleList) Item(index int) CSSRule {
+func (p *cssRuleList) Item(index uint) CSSRule {
 	return wrapCSSRule(p.call("item", index))
 }
 
-func (p *cssRuleList) Length() int {
-	return p.get("length").toInt()
+func (p *cssRuleList) Length() uint {
+	return p.get("length").toUint()
 }
 
 // -------------8<---------------------------------------
@@ -331,7 +331,7 @@ func newCSSGroupingRuleImpl(v Value) *cssGroupingRuleImpl {
 func (p *cssGroupingRuleImpl) CSSRules() []CSSRule {
 	if list := wrapCSSRuleList(p.get("cssRules")); list != nil && list.Length() > 0 {
 		ret := make([]CSSRule, list.Length())
-		for i := 0; i < list.Length(); i++ {
+		for i := uint(0); i < list.Length(); i++ {
 			ret[i] = list.Item(i)
 		}
 		return ret
@@ -451,11 +451,11 @@ func (p *cssStyleDeclarationImpl) SetCSSText(text string) {
 	p.set("cssText", text)
 }
 
-func (p *cssStyleDeclarationImpl) Length() int {
-	return p.get("length").toInt()
+func (p *cssStyleDeclarationImpl) Length() uint {
+	return p.get("length").toUint()
 }
 
-func (p *cssStyleDeclarationImpl) Item(index int) string {
+func (p *cssStyleDeclarationImpl) Item(index uint) string {
 	return p.call("item", index).toString()
 }
 

@@ -160,8 +160,8 @@ func (p *windowImpl) Frames() WindowProxy {
 	return wrapWindowProxy(p.get("frames"))
 }
 
-func (p *windowImpl) Length() int {
-	return p.get("length").toInt()
+func (p *windowImpl) Length() uint {
+	return p.get("length").toUint()
 }
 
 func (p *windowImpl) Top() WindowProxy {
@@ -395,7 +395,7 @@ func (p *windowImpl) PseudoElements(elt Element, typ string) []CSSPseudoElement 
 	l := wrapCSSPseudoElementList(p.call("getPseudoElements", JSValue(elt), typ))
 	if l != nil && l.Length() > 0 {
 		ret := make([]CSSPseudoElement, l.Length())
-		for i := range ret {
+		for i := uint(0); i < uint(len(ret)); i++ {
 			ret[i] = l.Item(i)
 		}
 		return ret
@@ -500,8 +500,8 @@ func wrapHistory(v Value) History {
 	return nil
 }
 
-func (p *historyImpl) Length() int {
-	return p.get("length").toInt()
+func (p *historyImpl) Length() uint {
+	return p.get("length").toUint()
 }
 
 func (p *historyImpl) ScrollRestoration() ScrollRestorationType {

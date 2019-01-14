@@ -64,8 +64,8 @@ type (
 
 	// https://drafts.csswg.org/css-pseudo-4/#csspseudoelementlist
 	CSSPseudoElementList interface {
-		Length() int
-		Item(int) CSSPseudoElement
+		Length() uint
+		Item(uint) CSSPseudoElement
 		ByType(string) CSSPseudoElement
 	}
 )
