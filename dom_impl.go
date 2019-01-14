@@ -608,7 +608,7 @@ func wrapNodeFilter(v Value) NodeFilter {
 }
 
 func (p *nodeFilterImpl) AcceptNode(node Node) NodeFilterResult {
-	return NodeFilterResult(p.call("acceptNode", JSValue(node)).toInt())
+	return NodeFilterResult(p.call("acceptNode", JSValue(node)).toUint16())
 }
 
 // -------------8<---------------------------------------

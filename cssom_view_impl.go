@@ -110,8 +110,8 @@ func (p *caretPositionImpl) OffsetNode() Node {
 	return wrapAsNode(p.get("offsetNode"))
 }
 
-func (p *caretPositionImpl) Offset() int {
-	return p.get("offset").toInt()
+func (p *caretPositionImpl) Offset() uint {
+	return p.get("offset").toUint()
 }
 
 func (p *caretPositionImpl) ClientRect() DOMRect {

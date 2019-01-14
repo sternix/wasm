@@ -342,7 +342,7 @@ func uint8ArrayToByteSlice(v Value) []byte {
 
 // -------------8<---------------------------------------
 
-type DOMError int
+type DOMError uint16
 
 const (
 	ErrIndexSize             DOMError = 1

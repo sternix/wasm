@@ -35,7 +35,7 @@ type (
 	// https://drafts.csswg.org/cssom-view/#caretposition
 	CaretPosition interface {
 		OffsetNode() Node
-		Offset() int
+		Offset() uint
 		ClientRect() DOMRect
 	}
 

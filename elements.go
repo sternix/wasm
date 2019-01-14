@@ -202,12 +202,12 @@ type (
 		SetLongDesc(string)
 		IsMap() bool
 		SetIsMap(bool)
-		Width() int
-		SetWidth(int)
-		Height() int
-		SetHeight(int)
-		NaturalWidth() int
-		NaturalHeight() int
+		Width() uint
+		SetWidth(uint)
+		Height() uint
+		SetHeight(uint)
+		NaturalWidth() uint
+		NaturalHeight() uint
 		Complete() bool
 		CurrentSrc() string
 		ReferrerPolicy() string
@@ -653,17 +653,17 @@ const (
 	MediaStreamTrackStateEnded MediaStreamTrackState = "ended"
 )
 
-type MediaReadyState int
+type MediaReadyState uint16
 
 const (
-	MediaReadyStateNothing     MediaReadyState = 0
-	MediaReadyStateMetadata    MediaReadyState = 1
-	MediaReadyStateCurrentData MediaReadyState = 2
-	MediaReadyStateFutureData  MediaReadyState = 3
-	MediaReadyStateEnoughData  MediaReadyState = 4
+	MediaReadyStateHaveNothing     MediaReadyState = 0
+	MediaReadyStateHaveMetadata    MediaReadyState = 1
+	MediaReadyStateHaveCurrentData MediaReadyState = 2
+	MediaReadyStateHaveFutureData  MediaReadyState = 3
+	MediaReadyStateHaveEnoughData  MediaReadyState = 4
 )
 
-type MediaNetworkState int
+type MediaNetworkState uint16
 
 const (
 	MediaNetworkStateEmpty    MediaNetworkState = 0

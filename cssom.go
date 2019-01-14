@@ -143,12 +143,18 @@ func CSSEscape(ident string) string {
 type CSSRuleType uint
 
 const (
-	CSSRuleTypeStyle     CSSRuleType = 1
-	CSSRuleTypeCharset   CSSRuleType = 2
-	CSSRuleTypeImport    CSSRuleType = 3
-	CSSRuleTypeMedia     CSSRuleType = 4
-	CSSRuleTypeFontFace  CSSRuleType = 5
-	CSSRuleTypePage      CSSRuleType = 6
-	CSSRuleTypeMargin    CSSRuleType = 9
-	CSSRuleTypeNamespace CSSRuleType = 10
+	CSSRuleTypeStyle                CSSRuleType = 1
+	CSSRuleTypeCharset              CSSRuleType = 2
+	CSSRuleTypeImport               CSSRuleType = 3
+	CSSRuleTypeMedia                CSSRuleType = 4
+	CSSRuleTypeFontFace             CSSRuleType = 5
+	CSSRuleTypePage                 CSSRuleType = 6
+	CSSRuleTypeKeyframesRule        CSSRuleType = 7
+	CSSRuleTypeKeyframeRule         CSSRuleType = 8
+	CSSRuleTypeMargin               CSSRuleType = 9
+	CSSRuleTypeNamespace            CSSRuleType = 10
+	CSSRuleTypeCounterStyleRule     CSSRuleType = 11
+	CSSRuleTypeSupportsRule         CSSRuleType = 12
+	CSSRuleTypeDocumentRule         CSSRuleType = 13
+	CSSRuleTypeFontFeatureValueRule CSSRuleType = 14
 )

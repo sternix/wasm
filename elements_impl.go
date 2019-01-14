@@ -923,28 +923,28 @@ func (p *htmlImageElementImpl) SetIsMap(b bool) {
 	p.set("isMap", b)
 }
 
-func (p *htmlImageElementImpl) Width() int {
-	return p.get("width").toInt()
+func (p *htmlImageElementImpl) Width() uint {
+	return p.get("width").toUint()
 }
 
-func (p *htmlImageElementImpl) SetWidth(w int) {
+func (p *htmlImageElementImpl) SetWidth(w uint) {
 	p.set("width", w)
 }
 
-func (p *htmlImageElementImpl) Height() int {
-	return p.get("height").toInt()
+func (p *htmlImageElementImpl) Height() uint {
+	return p.get("height").toUint()
 }
 
-func (p *htmlImageElementImpl) SetHeight(h int) {
+func (p *htmlImageElementImpl) SetHeight(h uint) {
 	p.set("height", h)
 }
 
-func (p *htmlImageElementImpl) NaturalWidth() int {
-	return p.get("naturalWidth").toInt()
+func (p *htmlImageElementImpl) NaturalWidth() uint {
+	return p.get("naturalWidth").toUint()
 }
 
-func (p *htmlImageElementImpl) NaturalHeight() int {
-	return p.get("naturalHeight").toInt()
+func (p *htmlImageElementImpl) NaturalHeight() uint {
+	return p.get("naturalHeight").toUint()
 }
 
 func (p *htmlImageElementImpl) Complete() bool {
@@ -1846,7 +1846,7 @@ func (p *htmlMediaElementImpl) SetCrossOrigin(co string) {
 }
 
 func (p *htmlMediaElementImpl) NetworkState() MediaNetworkState {
-	return MediaNetworkState(p.get("networkState").toInt())
+	return MediaNetworkState(p.get("networkState").toUint16())
 }
 
 func (p *htmlMediaElementImpl) Preload() string {
@@ -1870,7 +1870,7 @@ func (p *htmlMediaElementImpl) CanPlayType(typ string) CanPlayTypeResult {
 }
 
 func (p *htmlMediaElementImpl) ReadyState() MediaReadyState {
-	return MediaReadyState(p.get("readyState").toInt())
+	return MediaReadyState(p.get("readyState").toUint16())
 }
 
 func (p *htmlMediaElementImpl) Seeking() bool {

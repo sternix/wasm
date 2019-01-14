@@ -141,7 +141,7 @@ func wrapPositionError(v Value) PositionError {
 }
 
 func (p *positionErrorImpl) Code() PositionErrorCode {
-	return PositionErrorCode(p.get("code").toInt())
+	return PositionErrorCode(p.get("code").toUint())
 }
 
 func (p *positionErrorImpl) Message() string {

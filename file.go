@@ -11,7 +11,7 @@ type (
 
 	// https://www.w3.org/TR/FileAPI/#dfn-Blob
 	Blob interface {
-		Size() int
+		Size() uint
 		Type() string
 		Slice(...interface{}) Blob
 	}

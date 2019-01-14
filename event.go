@@ -263,14 +263,13 @@ type (
 		IsComposing() bool
 	}
 
-	// https://www.w3.org/TR/uievents/#keyboardevent-keyboardevent
+	// https://www.w3.org/TR/uievents/#keyboardevent
 	KeyboardEvent interface {
 		UIEvent
 
 		Key() string
 		Code() string
-		Location() int
-
+		Location() KeyLocationCode
 		CtrlKey() bool
 		ShiftKey() bool
 		AltKey() bool
@@ -332,16 +331,16 @@ const (
 	WheelEventDeltaModePage  WheelEventDeltaMode = 0x02
 )
 
-type KeyboardEvenLocation int
+type KeyLocationCode uint
 
 const (
-	KeyboardEvenLocationStandard KeyboardEvenLocation = 0x00
-	KeyboardEvenLocationLeft     KeyboardEvenLocation = 0x01
-	KeyboardEvenLocationRight    KeyboardEvenLocation = 0x02
-	KeyboardEvenLocationNumpad   KeyboardEvenLocation = 0x03
+	KeyLocationCodeStandard KeyLocationCode = 0x00
+	KeyLocationCodeLeft     KeyLocationCode = 0x01
+	KeyLocationCodeRight    KeyLocationCode = 0x02
+	KeyLocationCodeNumpad   KeyLocationCode = 0x03
 )
 
-type EventPhase int
+type EventPhase uint16
 
 const (
 	EventPhaseNone      EventPhase = 0
@@ -528,7 +527,7 @@ type KeyboardEventInit struct {
 
 	Key         string
 	Code        string
-	Location    int
+	Location    KeyLocationCode
 	Repeat      bool
 	IsComposing bool
 }
@@ -537,7 +536,7 @@ func (p KeyboardEventInit) toJSObject() Value {
 	o := p.EventModifierInit.toJSObject()
 	o.set("key", p.Key)
 	o.set("code", p.Code)
-	o.set("location", p.Location)
+	o.set("location", uint(p.Location))
 	o.set("repeat", p.Repeat)
 	o.set("isComposing", p.IsComposing)
 	return o

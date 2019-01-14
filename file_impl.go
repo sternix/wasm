@@ -44,8 +44,8 @@ func wrapBlob(v Value) Blob {
 	return nil
 }
 
-func (p *blobImpl) Size() int {
-	return p.get("size").toInt()
+func (p *blobImpl) Size() uint {
+	return p.get("size").toUint()
 }
 
 func (p *blobImpl) Type() string {

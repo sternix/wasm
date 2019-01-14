@@ -155,8 +155,8 @@ func (p *closeEventImpl) WasClean() bool {
 	return p.get("wasClean").toBool()
 }
 
-func (p *closeEventImpl) Code() int {
-	return p.get("code").toInt()
+func (p *closeEventImpl) Code() uint16 {
+	return p.get("code").toUint16()
 }
 
 func (p *closeEventImpl) Reason() string {

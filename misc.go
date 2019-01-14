@@ -54,7 +54,7 @@ func (p *domExceptionImpl) Message() string {
 }
 
 func (p *domExceptionImpl) Code() DOMError {
-	return DOMError(p.get("code").toInt())
+	return DOMError(p.get("code").toUint16())
 }
 
 func (p *domExceptionImpl) Error() string {

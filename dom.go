@@ -575,7 +575,8 @@ const (
 	RangeCompareEndToStart   RangeCompare = 3
 )
 
-type NodeFilterResult int
+// https://dom.spec.whatwg.org/#interface-nodefilter
+type NodeFilterResult uint16
 
 const (
 	NodeFilterResultAccept NodeFilterResult = 1
@@ -583,6 +584,7 @@ const (
 	NodeFilterResultSkip   NodeFilterResult = 3
 )
 
+// https://dom.spec.whatwg.org/#interface-nodefilter
 type NodeFilterShow uint
 
 const (
@@ -591,11 +593,14 @@ const (
 	NodeFilterShowAttribute             NodeFilterShow = 0x2
 	NodeFilterShowText                  NodeFilterShow = 0x4
 	NodeFilterShowCDATASection          NodeFilterShow = 0x8
+	NodeFilterShowEntityReference       NodeFilterShow = 0x10
+	NodeFilterShowEntity                NodeFilterShow = 0x20
 	NodeFilterShowProcessingInstruction NodeFilterShow = 0x40
 	NodeFilterShowComment               NodeFilterShow = 0x80
 	NodeFilterShowDocument              NodeFilterShow = 0x100
 	NodeFilterShowDocumentType          NodeFilterShow = 0x200
-	NodeFilterShowFragment              NodeFilterShow = 0x400
+	NodeFilterShowDocumentFragment      NodeFilterShow = 0x400
+	NodeFilterShowNotation              NodeFilterShow = 0x800
 )
 
 // https://www.w3.org/TR/DOM-Parsing/

@@ -223,7 +223,7 @@ func (p *eventImpl) ComposedPath() []EventTarget {
 }
 
 func (p *eventImpl) EventPhase() EventPhase {
-	return EventPhase(p.get("eventPhase").toInt())
+	return EventPhase(p.get("eventPhase").toUint16())
 }
 
 func (p *eventImpl) StopPropagation() {
@@ -1312,8 +1312,8 @@ func (p *keyboardEventImpl) Code() string {
 	return p.get("code").toString()
 }
 
-func (p *keyboardEventImpl) Location() int {
-	return p.get("location").toInt()
+func (p *keyboardEventImpl) Location() KeyLocationCode {
+	return KeyLocationCode(p.get("location").toUint())
 }
 
 func (p *keyboardEventImpl) CtrlKey() bool {

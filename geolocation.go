@@ -40,7 +40,7 @@ type (
 	}
 )
 
-type PositionErrorCode int
+type PositionErrorCode uint
 
 const (
 	PositionErrorCodePermissionDenied    PositionErrorCode = 1

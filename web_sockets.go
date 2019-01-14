@@ -27,7 +27,7 @@ type (
 		Event
 
 		WasClean() bool
-		Code() int
+		Code() uint16
 		Reason() string
 	}
 )
@@ -52,8 +52,8 @@ const (
 
 // https://html.spec.whatwg.org/multipage/web-sockets.html#closeeventinit
 type CloseEventInit struct {
-	WasClean bool //false
-	Code     int  // 0
+	WasClean bool   //false
+	Code     uint16 // 0
 	Reason   string
 }
 
