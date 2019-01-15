@@ -3,6 +3,7 @@
 package wasm
 
 import (
+	"syscall/js"
 	"time"
 )
 
@@ -19,6 +20,8 @@ type (
 	EventTarget interface {
 		On(string, func(Event)) EventHandler
 		DispatchEvent(Event) bool
+
+		JSValue() js.Value
 	}
 
 	// https://dom.spec.whatwg.org/#event
@@ -37,6 +40,8 @@ type (
 		Composed() bool
 		IsTrusted() bool
 		TimeStamp() time.Time
+
+		JSValue() js.Value
 	}
 
 	// https://dom.spec.whatwg.org/#customevent

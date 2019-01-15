@@ -181,18 +181,15 @@ func (p *htmlCanvasElementImpl) ContextWebGL(attrs ...WebGLContextAttributes) We
 			v = p.call("getContext", "experimental-webgl")
 		}
 
-		if !v.valid() {
-			return nil
-		}
 	default:
 		v = p.call("getContext", "webgl", attrs[0].toJSObject())
 		if !v.valid() {
 			v = p.call("getContext", "experimental-webgl", attrs[0].toJSObject())
 		}
+	}
 
-		if !v.valid() {
-			return nil
-		}
+	if !v.valid() {
+		return nil
 	}
 
 	return wrapWebGLRenderingContext(v)

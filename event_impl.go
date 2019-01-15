@@ -144,6 +144,10 @@ type eventTargetImpl struct {
 	Value
 }
 
+func NewEventTarget() EventTarget {
+	return wrapEventTarget(jsGlobal.get("EventTarget"))
+}
+
 func wrapEventTarget(v Value) EventTarget {
 	if p := newEventTargetImpl(v); p != nil {
 		return p

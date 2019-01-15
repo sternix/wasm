@@ -67,6 +67,7 @@ func main() {
 	if err != nil {
 		log.Fatal("styles.txt file not found")
 	}
+	defer f.Close()
 
 	scanner := bufio.NewScanner(f)
 	for scanner.Scan() {
