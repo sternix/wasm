@@ -4,6 +4,7 @@ package wasm
 
 import (
 	"fmt"
+	"syscall/js"
 	"time"
 )
 
@@ -961,11 +962,9 @@ func (p *windowOrWorkerGlobalScopeImpl) IndexedDB() IDBFactory {
 
 func (p *windowOrWorkerGlobalScopeImpl) Fetch(input RequestInfo, ri ...RequestInit) func() (Response, error) {
 	return func() (Response, error) {
-		var in Value
+		var in js.Value
 		switch x := input.(type) {
-		case string:
-			in = ValueOf(x)
-		case Request:
+		case string, Request:
 			in = JSValue(x)
 		default:
 			return nil, fmt.Errorf("Wrong parameter type for RequestInfo")

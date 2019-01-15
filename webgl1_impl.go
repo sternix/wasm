@@ -261,8 +261,8 @@ func (p *webGLRenderingContextBaseImpl) GetSupportedExtensions() []string {
 	return stringSequenceToSlice(p.call("getSupportedExtensions"))
 }
 
-func (p *webGLRenderingContextBaseImpl) GetExtension(string) interface{} {
-	return Wrap(p.call("getExtension"))
+func (p *webGLRenderingContextBaseImpl) GetExtension(name string) interface{} {
+	return Wrap(p.call("getExtension", name))
 }
 
 func (p *webGLRenderingContextBaseImpl) ActiveTexture(texture GLenum) {
@@ -278,22 +278,11 @@ func (p *webGLRenderingContextBaseImpl) BindAttribLocation(program WebGLProgram,
 }
 
 func (p *webGLRenderingContextBaseImpl) BindBuffer(target GLenum, buffer WebGLBuffer) {
-	var b Value
-	if buffer != nil {
-		b = JSValue(buffer)
-	} else {
-		b = jsNull
-	}
-
-	p.call("bindBuffer", uint(target), b)
+	p.call("bindBuffer", uint(target), JSValue(buffer))
 }
 
 func (p *webGLRenderingContextBaseImpl) BindFramebuffer(target GLenum, framebuffer WebGLFramebuffer) {
-	if framebuffer != nil {
-		p.call("bindFramebuffer", uint(target), JSValue(framebuffer))
-	} else {
-		p.call("bindFramebuffer", uint(target), js.Null())
-	}
+	p.call("bindFramebuffer", uint(target), JSValue(framebuffer))
 }
 
 func (p *webGLRenderingContextBaseImpl) BindRenderbuffer(target GLenum, renderbuffer WebGLRenderbuffer) {
@@ -676,11 +665,7 @@ func (p *webGLRenderingContextBaseImpl) StencilOpSeparate(face, fail, zfail, zpa
 }
 
 func (p *webGLRenderingContextBaseImpl) TexImage2DBuffer(target GLenum, level int, internalFormat int, width int, height int, border int, format GLenum, typ GLenum, pixels ArrayBufferView) {
-	if pixels != nil {
-		p.call("texImage2D", uint(target), level, internalFormat, width, height, border, uint(format), uint(typ), JSValue(pixels))
-	} else {
-		p.call("texImage2D", uint(target), level, internalFormat, width, height, border, uint(format), uint(typ), nil)
-	}
+	p.call("texImage2D", uint(target), level, internalFormat, width, height, border, uint(format), uint(typ), JSValue(pixels))
 }
 
 func (p *webGLRenderingContextBaseImpl) TexImage2DSource(target GLenum, level int, internalFormat int, format GLenum, typ GLenum, source TexImageSource) {

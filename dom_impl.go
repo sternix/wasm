@@ -365,9 +365,9 @@ func (p *documentImpl) Close() {
 
 func (p *documentImpl) Write(text ...string) {
 	if len(text) > 0 {
-		var params []interface{}
-		for _, v := range text {
-			params = append(params, v)
+		params := make([]interface{}, len(text))
+		for i, v := range text {
+			params[i] = v
 		}
 		p.call("write", params...)
 	}
@@ -375,9 +375,9 @@ func (p *documentImpl) Write(text ...string) {
 
 func (p *documentImpl) WriteLn(text ...string) {
 	if len(text) > 0 {
-		var params []interface{}
-		for _, v := range text {
-			params = append(params, v)
+		params := make([]interface{}, len(text))
+		for i, v := range text {
+			params[i] = v
 		}
 		p.call("writeln", params...)
 	}
@@ -449,16 +449,14 @@ func (p *documentImpl) ElementFromPoint(x float64, y float64) Element {
 }
 
 func (p *documentImpl) ElementsFromPoint(x float64, y float64) []Element {
-	var ret []Element
-
-	sl := p.call("elementsFromPoint", x, y).toSlice()
-	if sl != nil {
-		for _, v := range sl {
-			ret = append(ret, wrapAsElement(v))
+	if sl := p.call("elementsFromPoint", x, y).toSlice(); sl != nil {
+		ret := make([]Element, len(sl))
+		for i, v := range sl {
+			ret[i] = wrapAsElement(v)
 		}
+		return ret
 	}
-
-	return ret
+	return nil
 }
 
 func (p *documentImpl) CaretPositionFromPoint(x float64, y float64) CaretPosition {
@@ -771,9 +769,9 @@ func (p *rangeImpl) IntersectsNode(node Node) bool {
 
 func (p *rangeImpl) ClientRects() []DOMRect {
 	if rects := p.call("getClientRects").toSlice(); rects != nil {
-		var ret []DOMRect
-		for _, rect := range rects {
-			ret = append(ret, wrapDOMRect(rect))
+		ret := make([]DOMRect, len(rects))
+		for i, rect := range rects {
+			ret[i] = wrapDOMRect(rect)
 		}
 		return ret
 	}
@@ -1372,9 +1370,9 @@ func (p *elementImpl) ElementsByClassName(names string) []Element {
 
 func (p *elementImpl) ClientRects() []DOMRect {
 	if rects := p.call("getClientRects").toSlice(); rects != nil {
-		var ret []DOMRect
-		for _, rect := range rects {
-			ret = append(ret, wrapDOMRect(rect))
+		ret := make([]DOMRect, len(rects))
+		for i, rect := range rects {
+			ret[i] = wrapDOMRect(rect)
 		}
 		return ret
 	}
@@ -1591,9 +1589,9 @@ func (p *domTokenListImpl) Contains(token string) bool {
 
 func (p *domTokenListImpl) Add(tokens ...string) {
 	if len(tokens) > 0 {
-		var params []interface{}
-		for _, v := range tokens {
-			params = append(params, v)
+		params := make([]interface{}, len(tokens))
+		for i, v := range tokens {
+			params[i] = v
 		}
 		p.call("add", params...)
 	}
@@ -1601,9 +1599,9 @@ func (p *domTokenListImpl) Add(tokens ...string) {
 
 func (p *domTokenListImpl) Remove(tokens ...string) {
 	if len(tokens) > 0 {
-		var params []interface{}
-		for _, v := range tokens {
-			params = append(params, v)
+		params := make([]interface{}, len(tokens))
+		for i, v := range tokens {
+			params[i] = v
 		}
 		p.call("remove", params...)
 	}
@@ -1855,9 +1853,9 @@ func (p *mutationObserverImpl) Disconnect() {
 
 func (p *mutationObserverImpl) TakeRecords() []MutationRecord {
 	if s := p.call("takeRecords").toSlice(); s != nil {
-		var ret []MutationRecord
-		for _, v := range s {
-			ret = append(ret, wrapMutationRecord(v))
+		ret := make([]MutationRecord, len(s))
+		for i, v := range s {
+			ret[i] = wrapMutationRecord(v)
 		}
 		return ret
 	}

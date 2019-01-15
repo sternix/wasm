@@ -2,6 +2,10 @@
 
 package wasm
 
+import (
+	"syscall/js"
+)
+
 // -------------8<---------------------------------------
 
 func NewDOMPoint(dpi ...DOMPointInit) DOMPoint {
@@ -70,11 +74,9 @@ func DOMQuadFromQuad(other ...DOMQuadInit) DOMQuad {
 // TODO: check this
 func NewDOMMatrixReadOnly(numberSequence []float64) DOMMatrixReadOnly {
 	if jsDOMMatrixReadOnly := jsGlobal.get("DOMMatrixReadOnly"); jsDOMMatrixReadOnly.valid() {
-		var param []interface{}
-		for _, n := range numberSequence {
-			param = append(param, n)
-		}
-		return wrapDOMMatrixReadOnly(jsDOMMatrixReadOnly.jsNew(param))
+		ta := js.TypedArrayOf(numberSequence)
+		defer ta.Release()
+		return wrapDOMMatrixReadOnly(jsDOMMatrixReadOnly.jsNew(ta))
 	}
 	return nil
 }
@@ -82,11 +84,9 @@ func NewDOMMatrixReadOnly(numberSequence []float64) DOMMatrixReadOnly {
 // TODO: check this
 func NewDOMMatrix(numberSequence []float64) DOMMatrix {
 	if jsDOMMatrix := jsGlobal.get("DOMMatrix"); jsDOMMatrix.valid() {
-		var param []interface{}
-		for _, n := range numberSequence {
-			param = append(param, n)
-		}
-		return wrapDOMMatrix(jsDOMMatrix.jsNew(param))
+		ta := js.TypedArrayOf(numberSequence)
+		defer ta.Release()
+		return wrapDOMMatrix(jsDOMMatrix.jsNew(ta))
 	}
 	return nil
 }

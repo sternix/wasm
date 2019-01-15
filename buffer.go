@@ -106,11 +106,7 @@ func (p *arrayBufferImpl) ByteLength() int {
 }
 
 func (p *arrayBufferImpl) IsView(arg interface{}) bool {
-	if v := JSValue(arg); v != jsNull {
-		return p.call("isView", v).toBool()
-	}
-
-	return false
+	return p.call("isView", arg).toBool()
 }
 
 func (p *arrayBufferImpl) Slice(begin int, end ...int) ArrayBuffer {

@@ -124,7 +124,7 @@ type htmlCanvasElementImpl struct {
 	*htmlElementImpl
 }
 
-func NewHTMLCanvasElement(size ...int) HTMLCanvasElement {
+func NewHTMLCanvasElement(size ...uint) HTMLCanvasElement {
 	if el := CurrentDocument().CreateElement("canvas"); el != nil {
 		if canvas, ok := el.(HTMLCanvasElement); ok {
 			if len(size) == 2 {
@@ -146,19 +146,19 @@ func wrapHTMLCanvasElement(v Value) HTMLCanvasElement {
 	return nil
 }
 
-func (p *htmlCanvasElementImpl) Width() int {
-	return p.get("width").toInt()
+func (p *htmlCanvasElementImpl) Width() uint {
+	return p.get("width").toUint()
 }
 
-func (p *htmlCanvasElementImpl) SetWidth(w int) {
+func (p *htmlCanvasElementImpl) SetWidth(w uint) {
 	p.set("width", w)
 }
 
-func (p *htmlCanvasElementImpl) Height() int {
-	return p.get("height").toInt()
+func (p *htmlCanvasElementImpl) Height() uint {
+	return p.get("height").toUint()
 }
 
-func (p *htmlCanvasElementImpl) SetHeight(h int) {
+func (p *htmlCanvasElementImpl) SetHeight(h uint) {
 	p.set("height", h)
 }
 

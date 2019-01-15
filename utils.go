@@ -13,17 +13,11 @@ import (
 var (
 	errUnsupporttedType = errors.New("Unsupported Type")
 	errInvalidType      = errors.New("Invalid Type")
-	jsArray             = jsGlobal.get("Array")
-	//jsObject            = jsGlobal.get("Object")
-	//jsTypeFunc          = jsObject.get("prototype").get("toString")
-	//jsTypeFunc = jsGlobal.get("Object").get("prototype").get("toString")
-	jsDate        = jsGlobal.get("Date")
-	jsWindowProxy = jsGlobal
-	jsMessagePort = jsGlobal.get("MessagePort")
-	jsUint8Array  = jsGlobal.get("Uint8Array")
-	//jsUint8ClampedArray = jsGlobal.get("Uint8ClampedArray")
-	//jsBufferSource      = jsGlobal.get("BufferSource") --> typedef
-	jsJSON = jsGlobal.get("JSON")
+	jsDate              = jsGlobal.get("Date")
+	jsWindowProxy       = jsGlobal
+	jsMessagePort       = jsGlobal.get("MessagePort")
+	jsUint8Array        = jsGlobal.get("Uint8Array")
+	jsJSON              = jsGlobal.get("JSON")
 )
 
 // -------------8<---------------------------------------

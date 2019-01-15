@@ -136,7 +136,7 @@ func (p *messageEventImpl) Source() MessageEventSource {
 	if v := p.get("source"); v.valid() {
 		if v.instanceOf(jsWindowProxy) {
 			return wrapWindowProxy(v)
-		} else if v.instanceOf(jsMessagePort) {
+		} else if v.instanceOf(jsMessagePort) { // TODO remove from util
 			return wrapMessagePort(v)
 		} /* TODO: ServiceWorker  else if v.InstanceOf(jsServiceWorker) {
 			return wrapServiceWorker(v)

@@ -38,10 +38,10 @@ type (
 	// https://www.w3.org/TR/html52/semantics-scripting.html#htmlcanvaselement
 	HTMLCanvasElement interface {
 		HTMLElement
-		Width() int
-		SetWidth(int)
-		Height() int
-		SetHeight(int)
+		Width() uint
+		SetWidth(uint)
+		Height() uint
+		SetHeight(uint)
 		Context2D(...CanvasRenderingContext2DSettings) CanvasRenderingContext2D
 		ContextWebGL(attrs ...WebGLContextAttributes) WebGLRenderingContext
 		ProbablySupportsContext(string, ...interface{}) bool

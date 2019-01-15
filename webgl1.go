@@ -2,10 +2,16 @@
 
 package wasm
 
+import (
+	"syscall/js"
+)
+
 // https://www.khronos.org/registry/webgl/specs/latest/1.0/
 
 type (
-	WebGLObject interface{}
+	WebGLObject interface {
+		js.Wrapper
+	}
 
 	WebGLBuffer interface {
 		WebGLObject

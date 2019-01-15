@@ -44,11 +44,11 @@ func NewMediaStream(args ...interface{}) MediaStream {
 			case MediaStream:
 				return wrapMediaStream(jsMediaStream.jsNew(JSValue(x)))
 			case []MediaStreamTrack:
-				var s []Value
-				for _, m := range x {
-					s = append(s, JSValue(m))
+				a := jsArray.jsNew()
+				for i, m := range x {
+					a.setIndex(i, JSValue(m))
 				}
-				return wrapMediaStream(jsMediaStream.jsNew(sliceToJsArray(s)))
+				return wrapMediaStream(jsMediaStream.jsNew(a.JSValue()))
 			}
 		}
 	}
@@ -79,9 +79,8 @@ func wrapHTMLBodyElement(v Value) HTMLBodyElement {
 			htmlElementImpl: newHTMLElementImpl(v),
 			Value:           v,
 		}
-
-		hbi.eventTargetImpl = hbi.htmlElementImpl.eventTargetImpl
-		hbi.windowEventHandlersImpl = newWindowEventHandlersImpl(hbi.eventTargetImpl)
+		//hbi.eventTargetImpl = hbi.htmlElementImpl.eventTargetImpl
+		//hbi.windowEventHandlersImpl = newWindowEventHandlersImpl(hbi.eventTargetImpl)
 		return hbi
 	}
 	return nil

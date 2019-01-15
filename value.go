@@ -5,10 +5,12 @@ package wasm
 import (
 	"reflect"
 	"syscall/js"
+	"unsafe"
 )
 
 var (
-	jsObject    = Value{js.Global().Get("Object")}
+	jsObject    = jsGlobal.get("Object")
+	jsArray     = jsGlobal.get("Array")
 	jsTypeFunc  = jsObject.get("prototype").get("toString")
 	jsGlobal    = Value{js.Global()}
 	jsNull      = Value{js.Null()}
@@ -149,7 +151,7 @@ func (p Value) toSlice() []Value {
 // taken from https://go-review.googlesource.com/c/go/+/150917/
 // modified as standalone func
 func await(v Value) (result Value, ok bool) {
-	if v.jsValue.Type() != TypeObject || v.get("then").jsValue.Type() != TypeFunction {
+	if v.jsValue.Type() != js.TypeObject || v.get("then").jsValue.Type() != js.TypeFunction {
 		return v, true
 
 	}
@@ -179,8 +181,17 @@ func await(v Value) (result Value, ok bool) {
 
 // -------------8<---------------------------------------
 
-func ValueOf(x interface{}) Value {
-	return Value{js.ValueOf(x)}
+func ValueOf(x interface{}) (js.Value, bool) {
+	switch x := x.(type) {
+	case js.Value: // should precede Wrapper to avoid a loop
+		return x, true
+	case js.Wrapper:
+		return x.JSValue(), true
+	case nil, bool, int, int8, int16, int32, int64, uint, uint8, uint16, uint32, uint64, uintptr, unsafe.Pointer, float32, float64, string, []interface{}, map[string]interface{}:
+		return js.ValueOf(x), true
+	default:
+		return js.Null(), false
+	}
 }
 
 // -------------8<---------------------------------------
@@ -193,17 +204,17 @@ func Equal(x interface{}, y interface{}) bool {
 
 // returns interface types underlying Value
 // it excepts Value is embedded in struct
-func JSValue(o interface{}) Value {
+func JSValue(o interface{}) js.Value {
 	if o != nil {
-		if ta, ok := o.(js.Wrapper); ok {
-			return Value{ta.JSValue()}
+		if v, ok := ValueOf(o); ok {
+			return v
 		}
 
 		if v, ok := reflect.ValueOf(o).Elem().FieldByName("Value").Interface().(Value); ok {
-			return v
+			return v.JSValue()
 		}
 	}
-	return jsNull
+	return js.Null()
 }
 
 // -------------8<---------------------------------------
