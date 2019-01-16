@@ -10,7 +10,7 @@ func NewWorker(scriptURL string, wo ...WorkerOptions) Worker {
 		case 0:
 			return wrapWorker(jsWorker.jsNew(scriptURL))
 		default:
-			return wrapWorker(jsWorker.jsNew(scriptURL, wo[0].toJSObject()))
+			return wrapWorker(jsWorker.jsNew(scriptURL, wo[0].JSValue()))
 		}
 	}
 	return nil

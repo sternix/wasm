@@ -32,7 +32,7 @@ func (p *geolocationImpl) CurrentPosition(cb PositionCallback, args ...interface
 	case 2:
 		if peCb, ok := args[0].(PositionErrorCallback); ok {
 			if po, ok := args[1].(PositionOptions); ok {
-				p.call("getCurrentPosition", cb.jsCallback(), peCb.jsCallback(), po.toJSObject())
+				p.call("getCurrentPosition", cb.jsCallback(), peCb.jsCallback(), po.JSValue())
 			}
 		}
 	}
@@ -47,7 +47,7 @@ func (p *geolocationImpl) WatchPosition(cb PositionCallback, args ...interface{}
 	case 2:
 		if peCb, ok := args[0].(PositionErrorCallback); ok {
 			if po, ok := args[1].(PositionOptions); ok {
-				return p.call("watchPosition", cb.jsCallback(), peCb.jsCallback(), po.toJSObject()).toInt()
+				return p.call("watchPosition", cb.jsCallback(), peCb.jsCallback(), po.JSValue()).toInt()
 			}
 		}
 	}

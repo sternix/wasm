@@ -4,7 +4,6 @@ package wasm
 
 import (
 	"errors"
-	"syscall/js"
 	"time"
 )
 
@@ -22,61 +21,61 @@ var (
 
 // -------------8<---------------------------------------
 // TODO
-func sliceToJsArray(slc interface{}) Value {
+func sliceToJsArray(slc interface{}) jsValue {
 	switch x := slc.(type) {
 	case []string:
-		arr := jsArray.jsNew(len(x))
+		arr := jsArray.New(len(x))
 		for i, s := range x {
-			arr.setIndex(i, s)
+			arr.SetIndex(i, s)
 		}
 		return arr
 	case []float64:
-		arr := jsArray.jsNew(len(x))
+		arr := jsArray.New(len(x))
 		for i, s := range x {
-			arr.setIndex(i, s)
+			arr.SetIndex(i, s)
 		}
 		return arr
 	case []int:
-		arr := jsArray.jsNew(len(x))
+		arr := jsArray.New(len(x))
 		for i, s := range x {
-			arr.setIndex(i, s)
+			arr.SetIndex(i, s)
 		}
 		return arr
 	case []uint:
-		arr := jsArray.jsNew(len(x))
+		arr := jsArray.New(len(x))
 		for i, s := range x {
-			arr.setIndex(i, s)
+			arr.SetIndex(i, s)
 		}
 		return arr
 	case []byte:
-		arr := jsArray.jsNew(len(x))
+		arr := jsArray.New(len(x))
 		for i, s := range x {
-			arr.setIndex(i, s)
+			arr.SetIndex(i, s)
 		}
 		return arr
 	case []Value:
-		arr := jsArray.jsNew(len(x))
+		arr := jsArray.New(len(x))
 		for i, s := range x {
-			arr.setIndex(i, s)
+			arr.SetIndex(i, s)
 		}
 		return arr
 	case []bool:
-		arr := jsArray.jsNew(len(x))
+		arr := jsArray.New(len(x))
 		for i, b := range x {
-			arr.setIndex(i, b)
+			arr.SetIndex(i, b)
 		}
 		return arr
 	case []Touch:
-		arr := jsArray.jsNew(len(x))
+		arr := jsArray.New(len(x))
 		for i, t := range x {
-			arr.setIndex(i, JSValue(t))
+			arr.SetIndex(i, JSValueOf(t))
 		}
 		return arr
 
 	case []MessagePort:
-		arr := jsArray.jsNew(len(x))
+		arr := jsArray.New(len(x))
 		for i, t := range x {
-			arr.setIndex(i, JSValue(t))
+			arr.SetIndex(i, JSValueOf(t))
 		}
 		return arr
 	default:
@@ -189,7 +188,7 @@ func fileListToSlice(v Value) []File {
 
 func keys(v Value) []string {
 	if v.valid() {
-		a := jsObject.call("keys", v)
+		a := Value{jsObject.Call("keys", v)}
 		ret := make([]string, a.length())
 		for i := range ret {
 			ret[i] = a.index(i).toString()
@@ -321,17 +320,6 @@ func htmlCollectionToHTMLOptionElementSlice(v Value) []HTMLOptionElement {
 		return ret
 	}
 	return nil
-}
-
-// -------------8<---------------------------------------
-
-func uint8ArrayToByteSlice(v Value) []byte {
-	jsa := jsUint8Array.jsNew(v)
-	ret := make([]byte, jsa.get("byteLength").toInt())
-	ta := js.TypedArrayOf(ret)
-	ta.Call("set", jsa)
-	ta.Release()
-	return ret
 }
 
 // -------------8<---------------------------------------

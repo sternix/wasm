@@ -38,7 +38,7 @@ func (p *dataTransferImpl) Items() DataTransferItemList {
 }
 
 func (p *dataTransferImpl) SetDragImage(image Element, x int, y int) {
-	p.call("setDragImage", JSValue(image), x, y)
+	p.call("setDragImage", JSValueOf(image), x, y)
 }
 
 func (p *dataTransferImpl) Types() []string {
@@ -94,7 +94,7 @@ func (p *dataTransferItemListImpl) Add(data string, typ string) DataTransferItem
 }
 
 func (p *dataTransferItemListImpl) AddFile(data File) DataTransferItem {
-	return wrapDataTransferItem(p.call("add", JSValue(data)))
+	return wrapDataTransferItem(p.call("add", JSValueOf(data)))
 }
 
 func (p *dataTransferItemListImpl) Remove(index uint) {
@@ -163,7 +163,7 @@ func NewDragEvent(typ string, dei ...DragEventInit) DragEvent {
 		case 0:
 			return wrapDragEvent(jsDragEvent.jsNew(typ))
 		default:
-			return wrapDragEvent(jsDragEvent.jsNew(typ, dei[0].toJSObject()))
+			return wrapDragEvent(jsDragEvent.jsNew(typ, dei[0].JSValue()))
 		}
 	}
 	return nil

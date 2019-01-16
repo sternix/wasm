@@ -145,34 +145,34 @@ func (p *geometryUtilsImpl) BoxQuads(options ...BoxQuadOptions) []DOMQuad {
 	case 0:
 		return domQuadArrayToSlice(p.call("getBoxQuads"))
 	default:
-		return domQuadArrayToSlice(p.call("getBoxQuads", options[0].toJSObject()))
+		return domQuadArrayToSlice(p.call("getBoxQuads", options[0].JSValue()))
 	}
 }
 
 func (p *geometryUtilsImpl) ConvertQuadFromNode(quad DOMQuadInit, from GeometryNode, options ...ConvertCoordinateOptions) DOMQuad {
 	switch len(options) {
 	case 0:
-		return wrapDOMQuad(p.call("convertQuadFromNode", quad.toJSObject(), JSValue(from)))
+		return wrapDOMQuad(p.call("convertQuadFromNode", quad.JSValue(), JSValueOf(from)))
 	default:
-		return wrapDOMQuad(p.call("convertQuadFromNode", quad.toJSObject(), JSValue(from), options[0].toJSObject()))
+		return wrapDOMQuad(p.call("convertQuadFromNode", quad.JSValue(), JSValueOf(from), options[0].JSValue()))
 	}
 }
 
 func (p *geometryUtilsImpl) ConvertRectFromNode(rect DOMRectReadOnly, from GeometryNode, options ...ConvertCoordinateOptions) DOMQuad {
 	switch len(options) {
 	case 0:
-		return wrapDOMQuad(p.call("convertRectFromNode", JSValue(rect), JSValue(from)))
+		return wrapDOMQuad(p.call("convertRectFromNode", JSValueOf(rect), JSValueOf(from)))
 	default:
-		return wrapDOMQuad(p.call("convertRectFromNode", JSValue(rect), JSValue(from), options[0].toJSObject()))
+		return wrapDOMQuad(p.call("convertRectFromNode", JSValueOf(rect), JSValueOf(from), options[0].JSValue()))
 	}
 }
 
 func (p *geometryUtilsImpl) ConvertPointFromNode(point DOMPointInit, from GeometryNode, options ...ConvertCoordinateOptions) DOMPoint {
 	switch len(options) {
 	case 0:
-		return wrapDOMPoint(p.call("convertPointFromNode", point.toJSObject(), JSValue(from)))
+		return wrapDOMPoint(p.call("convertPointFromNode", point.JSValue(), JSValueOf(from)))
 	default:
-		return wrapDOMPoint(p.call("convertPointFromNode", point.toJSObject(), JSValue(from), options[0].toJSObject()))
+		return wrapDOMPoint(p.call("convertPointFromNode", point.JSValue(), JSValueOf(from), options[0].JSValue()))
 	}
 }
 
@@ -234,6 +234,6 @@ func NewMediaQueryListEvent(typ string, eventInitDict ...MediaQueryListEventInit
 	case 0:
 		return wrapMediaQueryListEvent(jsMQLE.jsNew(typ))
 	default:
-		return wrapMediaQueryListEvent(jsMQLE.jsNew(typ, eventInitDict[0].toJSObject()))
+		return wrapMediaQueryListEvent(jsMQLE.jsNew(typ, eventInitDict[0].JSValue()))
 	}
 }

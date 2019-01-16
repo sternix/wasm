@@ -31,7 +31,7 @@ func (p *htmlTableElementImpl) Caption() HTMLTableCaptionElement {
 }
 
 func (p *htmlTableElementImpl) SetCaption(caption HTMLTableCaptionElement) {
-	p.set("caption", JSValue(caption))
+	p.set("caption", JSValueOf(caption))
 }
 
 func (p *htmlTableElementImpl) CreateCaption() HTMLTableCaptionElement {
@@ -47,7 +47,7 @@ func (p *htmlTableElementImpl) THead() HTMLTableSectionElement {
 }
 
 func (p *htmlTableElementImpl) SetTHead(section HTMLTableSectionElement) {
-	p.set("tHead", JSValue(section))
+	p.set("tHead", JSValueOf(section))
 }
 
 func (p *htmlTableElementImpl) CreateTHead() HTMLTableSectionElement {
@@ -63,7 +63,7 @@ func (p *htmlTableElementImpl) TFoot() HTMLTableSectionElement {
 }
 
 func (p *htmlTableElementImpl) SetTFoot(section HTMLTableSectionElement) {
-	p.set("tFoot", JSValue(section))
+	p.set("tFoot", JSValueOf(section))
 }
 
 func (p *htmlTableElementImpl) CreateTFoot() HTMLTableSectionElement {

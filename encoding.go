@@ -1,8 +1,7 @@
 // +build js,wasm
 
-package wasm
-
 // https://encoding.spec.whatwg.org/#idl-index
+package wasm
 
 type (
 	TextDecoderCommon interface {
@@ -49,10 +48,10 @@ type TextDecoderOptions struct {
 	IgnoreBOM bool
 }
 
-func (p TextDecoderOptions) toJSObject() Value {
-	o := jsObject.jsNew()
-	o.set("fatal", p.Fatal)
-	o.set("ignoreBOM", p.IgnoreBOM)
+func (p TextDecoderOptions) JSValue() jsValue {
+	o := jsObject.New()
+	o.Set("fatal", p.Fatal)
+	o.Set("ignoreBOM", p.IgnoreBOM)
 	return o
 }
 
@@ -62,8 +61,8 @@ type TextDecodeOptions struct {
 	Stream bool
 }
 
-func (p TextDecodeOptions) toJSObject() Value {
-	o := jsObject.jsNew()
-	o.set("stream", p.Stream)
+func (p TextDecodeOptions) JSValue() jsValue {
+	o := jsObject.New()
+	o.Set("stream", p.Stream)
 	return o
 }

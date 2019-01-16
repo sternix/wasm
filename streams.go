@@ -65,11 +65,11 @@ type PipeToOptions struct {
 	PreventCancel bool
 }
 
-func (p PipeToOptions) toJSObject() Value {
-	o := jsObject.jsNew()
-	o.set("preventClose", p.PreventClose)
-	o.set("preventAbort", p.PreventAbort)
-	o.set("preventCancel", p.PreventCancel)
+func (p PipeToOptions) JSValue() jsValue {
+	o := jsObject.New()
+	o.Set("preventClose", p.PreventClose)
+	o.Set("preventAbort", p.PreventAbort)
+	o.Set("preventCancel", p.PreventCancel)
 	return o
 }
 
@@ -80,9 +80,9 @@ type TransformStream struct {
 	Writable WritableStream
 }
 
-func (p TransformStream) toJSObject() Value {
-	o := jsObject.jsNew()
-	o.set("writable", JSValue(p.Readable))
-	o.set("readable", JSValue(p.Writable))
+func (p TransformStream) JSValue() jsValue {
+	o := jsObject.New()
+	o.Set("writable", JSValueOf(p.Readable))
+	o.Set("readable", JSValueOf(p.Writable))
 	return o
 }

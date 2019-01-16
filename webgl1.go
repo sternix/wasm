@@ -1,16 +1,11 @@
 // +build js,wasm
 
-package wasm
-
-import (
-	"syscall/js"
-)
-
 // https://www.khronos.org/registry/webgl/specs/latest/1.0/
+package wasm
 
 type (
 	WebGLObject interface {
-		js.Wrapper
+		jsWrapper
 	}
 
 	WebGLBuffer interface {
@@ -231,15 +226,15 @@ type WebGLContextAttributes struct {
 	FailIfMajorPerformanceCaveat bool
 }
 
-func (p WebGLContextAttributes) toJSObject() Value {
-	o := jsObject.jsNew()
-	o.set("alpha", p.Alpha)
-	o.set("depth", p.Depth)
-	o.set("stencil", p.Stencil)
-	o.set("antialias", p.Antialias)
-	o.set("premultipliedAlpha", p.PremultipliedAlpha)
-	o.set("preserveDrawingBuffer", p.PreserveDrawingBuffer)
-	o.set("powerPreference", p.PowerPreference)
-	o.set("failIfMajorPerformanceCaveat", p.FailIfMajorPerformanceCaveat)
+func (p WebGLContextAttributes) JSValue() jsValue {
+	o := jsObject.New()
+	o.Set("alpha", p.Alpha)
+	o.Set("depth", p.Depth)
+	o.Set("stencil", p.Stencil)
+	o.Set("antialias", p.Antialias)
+	o.Set("premultipliedAlpha", p.PremultipliedAlpha)
+	o.Set("preserveDrawingBuffer", p.PreserveDrawingBuffer)
+	o.Set("powerPreference", p.PowerPreference)
+	o.Set("failIfMajorPerformanceCaveat", p.FailIfMajorPerformanceCaveat)
 	return o
 }

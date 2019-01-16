@@ -57,10 +57,10 @@ type CloseEventInit struct {
 	Reason   string
 }
 
-func (p CloseEventInit) toJSObject() Value {
-	o := jsObject.jsNew()
-	o.set("wasClean", p.WasClean)
-	o.set("code", p.Code)
-	o.set("reason", p.Reason)
+func (p CloseEventInit) JSValue() jsValue {
+	o := jsObject.New()
+	o.Set("wasClean", p.WasClean)
+	o.Set("code", p.Code)
+	o.Set("reason", p.Reason)
 	return o
 }

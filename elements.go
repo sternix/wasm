@@ -761,23 +761,23 @@ type MediaTrackCapabilities struct {
 	GroupId          string
 }
 
-func (p MediaTrackCapabilities) toJSObject() Value {
-	o := jsObject.jsNew()
-	o.set("width", p.Width.toJSObject())
-	o.set("height", p.Heigth.toJSObject())
-	o.set("aspectRatio", p.AspectRatio.toJSObject())
-	o.set("frameRate", p.FrameRate.toJSObject())
-	o.set("facingMode", sliceToJsArray(p.FacingMode))
-	o.set("volume", p.Volume.toJSObject())
-	o.set("sampleRate", p.SampleRate.toJSObject())
-	o.set("sampleSize", p.SampleSize.toJSObject())
-	o.set("echoCancellation", sliceToJsArray(p.EchoCancellation))
-	o.set("autoGainControl", sliceToJsArray(p.AutoGainControl))
-	o.set("noiseSuppression", sliceToJsArray(p.NoiseSuppression))
-	o.set("latency", p.Latency.toJSObject())
-	o.set("channelCount", p.ChannelCount.toJSObject())
-	o.set("deviceId", p.DeviceId)
-	o.set("groupId", p.GroupId)
+func (p MediaTrackCapabilities) JSValue() jsValue {
+	o := jsObject.New()
+	o.Set("width", p.Width.JSValue())
+	o.Set("height", p.Heigth.JSValue())
+	o.Set("aspectRatio", p.AspectRatio.JSValue())
+	o.Set("frameRate", p.FrameRate.JSValue())
+	o.Set("facingMode", sliceToJsArray(p.FacingMode))
+	o.Set("volume", p.Volume.JSValue())
+	o.Set("sampleRate", p.SampleRate.JSValue())
+	o.Set("sampleSize", p.SampleSize.JSValue())
+	o.Set("echoCancellation", sliceToJsArray(p.EchoCancellation))
+	o.Set("autoGainControl", sliceToJsArray(p.AutoGainControl))
+	o.Set("noiseSuppression", sliceToJsArray(p.NoiseSuppression))
+	o.Set("latency", p.Latency.JSValue())
+	o.Set("channelCount", p.ChannelCount.JSValue())
+	o.Set("deviceId", p.DeviceId)
+	o.Set("groupId", p.GroupId)
 	return o
 }
 
@@ -802,23 +802,23 @@ type MediaTrackConstraintSet struct {
 	GroupId          ConstrainDOMString
 }
 
-func (p MediaTrackConstraintSet) toJSObject() Value {
-	o := jsObject.jsNew()
-	o.set("width", p.Width.toJSObject())
-	o.set("height", p.Height.toJSObject())
-	o.set("aspectRatio", p.AspectRatio.toJSObject())
-	o.set("frameRate", p.FrameRate.toJSObject())
-	o.set("facingMode", p.FacingMode.toJSObject())
-	o.set("volume", p.Volume.toJSObject())
-	o.set("sampleRate", p.SampleRate.toJSObject())
-	o.set("sampleSize", p.SampleSize.toJSObject())
-	o.set("echoCancellation", p.EchoCancellation.toJSObject())
-	o.set("autoGainControl", p.AutoGainControl.toJSObject())
-	o.set("noiseSuppression", p.NoiseSuppression.toJSObject())
-	o.set("latency", p.Latency.toJSObject())
-	o.set("channelCount", p.ChannelCount.toJSObject())
-	o.set("deviceId", p.DeviceId.toJSObject())
-	o.set("groupId", p.GroupId.toJSObject())
+func (p MediaTrackConstraintSet) JSValue() jsValue {
+	o := jsObject.New()
+	o.Set("width", p.Width.JSValue())
+	o.Set("height", p.Height.JSValue())
+	o.Set("aspectRatio", p.AspectRatio.JSValue())
+	o.Set("frameRate", p.FrameRate.JSValue())
+	o.Set("facingMode", p.FacingMode.JSValue())
+	o.Set("volume", p.Volume.JSValue())
+	o.Set("sampleRate", p.SampleRate.JSValue())
+	o.Set("sampleSize", p.SampleSize.JSValue())
+	o.Set("echoCancellation", p.EchoCancellation.JSValue())
+	o.Set("autoGainControl", p.AutoGainControl.JSValue())
+	o.Set("noiseSuppression", p.NoiseSuppression.JSValue())
+	o.Set("latency", p.Latency.JSValue())
+	o.Set("channelCount", p.ChannelCount.JSValue())
+	o.Set("deviceId", p.DeviceId.JSValue())
+	o.Set("groupId", p.GroupId.JSValue())
 	return o
 }
 
@@ -843,23 +843,23 @@ type MediaTrackSettings struct {
 	GroupId          string
 }
 
-func (p MediaTrackSettings) toJSObject() Value {
-	o := jsObject.jsNew()
-	o.set("width", p.Width)
-	o.set("height", p.Height)
-	o.set("aspectRatio", p.AspectRatio)
-	o.set("frameRate", p.FrameRate)
-	o.set("facingMode", p.FacingMode)
-	o.set("volume", p.Volume)
-	o.set("sampleRate", p.SampleRate)
-	o.set("sampleSize", p.SampleSize)
-	o.set("echoCancellation", p.EchoCancellation)
-	o.set("autoGainControl", p.AutoGainControl)
-	o.set("noiseSuppression", p.NoiseSuppression)
-	o.set("latency", p.Latency)
-	o.set("channelCount", p.ChannelCount)
-	o.set("deviceId", p.DeviceId)
-	o.set("groupId", p.GroupId)
+func (p MediaTrackSettings) JSValue() jsValue {
+	o := jsObject.New()
+	o.Set("width", p.Width)
+	o.Set("height", p.Height)
+	o.Set("aspectRatio", p.AspectRatio)
+	o.Set("frameRate", p.FrameRate)
+	o.Set("facingMode", p.FacingMode)
+	o.Set("volume", p.Volume)
+	o.Set("sampleRate", p.SampleRate)
+	o.Set("sampleSize", p.SampleSize)
+	o.Set("echoCancellation", p.EchoCancellation)
+	o.Set("autoGainControl", p.AutoGainControl)
+	o.Set("noiseSuppression", p.NoiseSuppression)
+	o.Set("latency", p.Latency)
+	o.Set("channelCount", p.ChannelCount)
+	o.Set("deviceId", p.DeviceId)
+	o.Set("groupId", p.GroupId)
 	return o
 }
 
@@ -871,10 +871,10 @@ type LongRange struct {
 	Min int
 }
 
-func (p LongRange) toJSObject() Value {
-	o := jsObject.jsNew()
-	o.set("max", p.Max)
-	o.set("min", p.Min)
+func (p LongRange) JSValue() jsValue {
+	o := jsObject.New()
+	o.Set("max", p.Max)
+	o.Set("min", p.Min)
 	return o
 }
 
@@ -886,10 +886,10 @@ type DoubleRange struct {
 	Min float64
 }
 
-func (p DoubleRange) toJSObject() Value {
-	o := jsObject.jsNew()
-	o.set("max", p.Max)
-	o.set("min", p.Min)
+func (p DoubleRange) JSValue() jsValue {
+	o := jsObject.New()
+	o.Set("max", p.Max)
+	o.Set("min", p.Min)
 	return o
 }
 
@@ -903,10 +903,10 @@ type ConstrainLongRange struct {
 	Ideal int
 }
 
-func (p ConstrainLongRange) toJSObject() Value {
-	o := p.LongRange.toJSObject()
-	o.set("exact", p.Exact)
-	o.set("ideal", p.Ideal)
+func (p ConstrainLongRange) JSValue() jsValue {
+	o := p.LongRange.JSValue()
+	o.Set("exact", p.Exact)
+	o.Set("ideal", p.Ideal)
 	return o
 }
 
@@ -925,10 +925,10 @@ type ConstrainDoubleRange struct {
 	Ideal float64
 }
 
-func (p ConstrainDoubleRange) toJSObject() Value {
-	o := p.DoubleRange.toJSObject()
-	o.set("exact", p.Exact)
-	o.set("ideal", p.Ideal)
+func (p ConstrainDoubleRange) JSValue() jsValue {
+	o := p.DoubleRange.JSValue()
+	o.Set("exact", p.Exact)
+	o.Set("ideal", p.Ideal)
 	return o
 }
 
@@ -948,10 +948,10 @@ type ConstrainDOMStringParameters struct {
 	Ideal string
 }
 
-func (p ConstrainDOMStringParameters) toJSObject() Value {
-	o := jsObject.jsNew()
-	o.set("exact", p.Exact)
-	o.set("ideal", p.Ideal)
+func (p ConstrainDOMStringParameters) JSValue() jsValue {
+	o := jsObject.New()
+	o.Set("exact", p.Exact)
+	o.Set("ideal", p.Ideal)
 	return o
 }
 
@@ -971,10 +971,10 @@ type ConstrainBooleanParameters struct {
 	Ideal bool
 }
 
-func (p ConstrainBooleanParameters) toJSObject() Value {
-	o := jsObject.jsNew()
-	o.set("exact", p.Exact)
-	o.set("ideal", p.Ideal)
+func (p ConstrainBooleanParameters) JSValue() jsValue {
+	o := jsObject.New()
+	o.Set("exact", p.Exact)
+	o.Set("ideal", p.Ideal)
 	return o
 }
 

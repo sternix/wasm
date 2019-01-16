@@ -914,13 +914,13 @@ func (p *htmlSelectElementImpl) NamedItem(name string) HTMLOptionElement {
 func (p *htmlSelectElementImpl) Add(element HTMLElement, before ...interface{}) {
 	switch len(before) {
 	case 0:
-		p.call("add", JSValue(element))
+		p.call("add", JSValueOf(element))
 	default:
 		switch x := before[0].(type) {
 		case HTMLElement:
-			p.call("add", JSValue(element), JSValue(x))
+			p.call("add", JSValueOf(element), JSValueOf(x))
 		case int:
-			p.call("add", JSValue(element), x)
+			p.call("add", JSValueOf(element), x)
 		}
 	}
 }
@@ -1011,13 +1011,13 @@ func (p *htmlOptionsCollectionImpl) Set(index uint,option HTMLOptionElement) {
 func (p *htmlOptionsCollectionImpl) Add(element HTMLElement, before ...interface{}) {
 	switch len(before) {
 	case 0:
-		p.call("add", JSValue(element))
+		p.call("add", JSValueOf(element))
 	default:
 		switch x := before[0].(type) {
 		case HTMLElement:
-			p.call("add", JSValue(element), JSValue(x))
+			p.call("add", JSValueOf(element), JSValueOf(x))
 		case int:
-			p.call("add", JSValue(element), x)
+			p.call("add", JSValueOf(element), x)
 		}
 	}
 }

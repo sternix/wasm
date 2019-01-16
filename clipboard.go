@@ -1,8 +1,7 @@
 // +build js,wasm
 
-package wasm
-
 // https://w3c.github.io/clipboard-apis/#idl-index
+package wasm
 
 type (
 	ClipboardEvent interface {
@@ -29,9 +28,9 @@ type ClipboardPermissionDescriptor struct {
 	AllowWithoutGesture bool
 }
 
-func (p ClipboardPermissionDescriptor) toJSObject() Value {
-	o := p.PermissionDescriptor.toJSObject()
-	o.set("allowWithoutGesture", p.AllowWithoutGesture)
+func (p ClipboardPermissionDescriptor) JSValue() jsValue {
+	o := p.PermissionDescriptor.JSValue()
+	o.Set("allowWithoutGesture", p.AllowWithoutGesture)
 	return o
 }
 
@@ -43,9 +42,9 @@ type ClipboardEventInit struct {
 	ClipboardData DataTransfer
 }
 
-func (p ClipboardEventInit) toJSObject() Value {
-	o := p.EventInit.toJSObject()
-	o.set("clipboardData", JSValue(p.ClipboardData))
+func (p ClipboardEventInit) JSValue() jsValue {
+	o := p.EventInit.JSValue()
+	o.Set("clipboardData", JSValueOf(p.ClipboardData))
 	return o
 }
 

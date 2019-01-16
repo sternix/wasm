@@ -1,5 +1,6 @@
 // +build js,wasm
 
+// https://w3c.github.io/workers/
 package wasm
 
 type (
@@ -125,10 +126,10 @@ type WorkerOptions struct {
 	Name        string
 }
 
-func (p WorkerOptions) toJSObject() Value {
-	o := jsObject.jsNew()
-	o.set("type", string(p.Type))
-	o.set("credentials", string(p.Credentials))
-	o.set("name", p.Name)
+func (p WorkerOptions) JSValue() jsValue {
+	o := jsObject.New()
+	o.Set("type", string(p.Type))
+	o.Set("credentials", string(p.Credentials))
+	o.Set("name", p.Name)
 	return o
 }

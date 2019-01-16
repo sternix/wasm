@@ -79,7 +79,7 @@ func (p *canvasRenderingContext2DImpl) SetStrokeStyle(style interface{}) {
 	case string:
 		p.set("strokeStyle", x)
 	case CanvasGradient, CanvasPattern:
-		p.set("strokeStyle", JSValue(x))
+		p.set("strokeStyle", JSValueOf(x))
 	}
 }
 
@@ -93,7 +93,7 @@ func (p *canvasRenderingContext2DImpl) SetFillStyle(style interface{}) {
 	case string:
 		p.set("fillStyle", x)
 	case CanvasGradient, CanvasPattern:
-		p.set("fillStyle", JSValue(x))
+		p.set("fillStyle", JSValueOf(x))
 	}
 }
 
@@ -106,7 +106,7 @@ func (p *canvasRenderingContext2DImpl) CreateRadialGradient(x0 float64, y0 float
 }
 
 func (p *canvasRenderingContext2DImpl) CreatePattern(image CanvasImageSource, repetition string) {
-	p.call("createPattern", JSValue(image), repetition)
+	p.call("createPattern", JSValueOf(image), repetition)
 }
 
 func (p *canvasRenderingContext2DImpl) ShadowOffsetX() float64 {
@@ -166,7 +166,7 @@ func (p *canvasRenderingContext2DImpl) Stroke() {
 }
 
 func (p *canvasRenderingContext2DImpl) DrawFocusIfNeeded(elm Element) {
-	p.call("drawFocusIfNeeded", JSValue(elm))
+	p.call("drawFocusIfNeeded", JSValueOf(elm))
 }
 
 func (p *canvasRenderingContext2DImpl) Clip() {
@@ -202,16 +202,16 @@ func (p *canvasRenderingContext2DImpl) MeasureText(text string) TextMetrics {
 func (p *canvasRenderingContext2DImpl) DrawImage(image CanvasImageSource, args ...float64) {
 	switch len(args) {
 	case 2:
-		p.call("drawImage", JSValue(image), args[0], args[1])
+		p.call("drawImage", JSValueOf(image), args[0], args[1])
 	case 4:
-		p.call("drawImage", JSValue(image), args[0], args[1], args[2], args[3])
+		p.call("drawImage", JSValueOf(image), args[0], args[1], args[2], args[3])
 	case 8:
-		p.call("drawImage", JSValue(image), args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7])
+		p.call("drawImage", JSValueOf(image), args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7])
 	}
 }
 
 func (p *canvasRenderingContext2DImpl) AddHitRegion(options HitRegionOptions) {
-	p.call("addHitRegion", options.toJSObject())
+	p.call("addHitRegion", options.JSValue())
 }
 
 func (p *canvasRenderingContext2DImpl) RemoveHitRegion(id string) {
@@ -227,7 +227,7 @@ func (p *canvasRenderingContext2DImpl) CreateImageData(sw float64, sh float64) I
 }
 
 func (p *canvasRenderingContext2DImpl) CreateImageDataFromImageData(imageData ImageData) ImageData {
-	return wrapImageData(p.call("createImageData", JSValue(imageData)))
+	return wrapImageData(p.call("createImageData", JSValueOf(imageData)))
 }
 
 func (p *canvasRenderingContext2DImpl) ImageData(sx float64, sy float64, sw float64, sh float64) ImageData {
@@ -235,11 +235,11 @@ func (p *canvasRenderingContext2DImpl) ImageData(sx float64, sy float64, sw floa
 }
 
 func (p *canvasRenderingContext2DImpl) PutImageData(imageData ImageData, dx float64, dy float64) {
-	p.call("putImageData", JSValue(imageData), dx, dy)
+	p.call("putImageData", JSValueOf(imageData), dx, dy)
 }
 
 func (p *canvasRenderingContext2DImpl) PutImageDataDirty(imageData ImageData, dx float64, dy float64, dirtyX float64, dirtyY float64, dirtyWidth float64, dirtyHeight float64) {
-	p.call("putImageData", JSValue(imageData), dx, dy, dirtyX, dirtyY, dirtyWidth, dirtyHeight)
+	p.call("putImageData", JSValueOf(imageData), dx, dy, dirtyX, dirtyY, dirtyWidth, dirtyHeight)
 }
 
 // -------------8<---------------------------------------

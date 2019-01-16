@@ -2,10 +2,6 @@
 
 package wasm
 
-import (
-	"syscall/js"
-)
-
 // -------------8<---------------------------------------
 
 func NewWebSocket(url string, protocols ...string) WebSocket {
@@ -28,7 +24,7 @@ func NewCloseEvent(typ string, cei ...CloseEventInit) CloseEvent {
 		case 0:
 			return wrapCloseEvent(jsCloseEvent.jsNew(typ))
 		default:
-			return wrapCloseEvent(jsCloseEvent.jsNew(typ, cei[0].toJSObject()))
+			return wrapCloseEvent(jsCloseEvent.jsNew(typ, cei[0].JSValue()))
 		}
 	}
 	return nil
@@ -127,12 +123,12 @@ func (p *webSocketImpl) Send(typ interface{}) {
 	case string:
 		p.call("send", x)
 	case []byte:
-		ta := js.TypedArrayOf(x)
+		ta := jsTypedArrayOf(x)
 		blob := NewBlob(ta)
-		p.call("send", JSValue(blob))
+		p.call("send", JSValueOf(blob))
 		ta.Release()
 	case Blob, ArrayBuffer, ArrayBufferView:
-		p.call("send", JSValue(x))
+		p.call("send", JSValueOf(x))
 	}
 }
 

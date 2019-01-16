@@ -124,7 +124,7 @@ func (p *touchEventImpl) ShiftKey() bool {
 
 func NewTouch(ti TouchInit) Touch {
 	if jsTouch := jsGlobal.get("Touch"); jsTouch.valid() {
-		return wrapTouch(jsTouch.jsNew(ti.toJSObject()))
+		return wrapTouch(jsTouch.jsNew(ti.JSValue()))
 	}
 	return nil
 }
@@ -135,7 +135,7 @@ func NewTouchEvent(typ string, tei ...TouchEventInit) TouchEvent {
 		case 0:
 			return wrapTouchEvent(jsTouchEvent.jsNew(typ))
 		default:
-			return wrapTouchEvent(jsTouchEvent.jsNew(typ, tei[0].toJSObject()))
+			return wrapTouchEvent(jsTouchEvent.jsNew(typ, tei[0].JSValue()))
 		}
 	}
 	return nil

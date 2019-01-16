@@ -187,10 +187,10 @@ type IDBVersionChangeEventInit struct {
 	NewVersion uint // default null
 }
 
-func (p IDBVersionChangeEventInit) toJSObject() Value {
-	o := jsObject.jsNew()
-	o.set("oldVersion", p.OldVersion)
-	o.set("newVersion", p.NewVersion)
+func (p IDBVersionChangeEventInit) JSValue() jsValue {
+	o := jsObject.New()
+	o.Set("oldVersion", p.OldVersion)
+	o.Set("newVersion", p.NewVersion)
 	return o
 }
 
@@ -202,10 +202,10 @@ type IDBObjectStoreParameters struct {
 	AutoIncrement bool
 }
 
-func (p IDBObjectStoreParameters) toJSObject() Value {
-	o := jsObject.jsNew()
-	o.set("keyPath", sliceToJsArray(p.KeyPath))
-	o.set("autoIncrement", p.AutoIncrement)
+func (p IDBObjectStoreParameters) JSValue() jsValue {
+	o := jsObject.New()
+	o.Set("keyPath", sliceToJsArray(p.KeyPath))
+	o.Set("autoIncrement", p.AutoIncrement)
 	return o
 }
 
@@ -217,9 +217,9 @@ type IDBIndexParameters struct {
 	MultiEntry bool
 }
 
-func (p IDBIndexParameters) toJSObject() Value {
-	o := jsObject.jsNew()
-	o.set("unique", p.Unique)
-	o.set("multiEntry", p.MultiEntry)
+func (p IDBIndexParameters) JSValue() jsValue {
+	o := jsObject.New()
+	o.Set("unique", p.Unique)
+	o.Set("multiEntry", p.MultiEntry)
 	return o
 }

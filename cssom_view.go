@@ -1,8 +1,7 @@
 // +build js,wasm
 
-package wasm
-
 // https://drafts.csswg.org/cssom-view/
+package wasm
 
 type (
 	// https://drafts.csswg.org/cssom-view/#screen
@@ -108,10 +107,10 @@ type ScrollOptions struct {
 	Behavior ScrollBehavior // default auto
 }
 
-func (p ScrollOptions) toJSObject() Value {
-	o := jsObject.jsNew()
+func (p ScrollOptions) JSValue() jsValue {
+	o := jsObject.New()
 	if p.Behavior != "" && p.Behavior != ScrollBehaviorAuto {
-		o.set("behavior", string(p.Behavior))
+		o.Set("behavior", string(p.Behavior))
 	}
 	return o
 }
@@ -126,10 +125,10 @@ type ScrollToOptions struct {
 	Top  float64
 }
 
-func (p ScrollToOptions) toJSObject() Value {
-	o := p.ScrollOptions.toJSObject()
-	o.set("left", p.Left)
-	o.set("top", p.Top)
+func (p ScrollToOptions) JSValue() jsValue {
+	o := p.ScrollOptions.JSValue()
+	o.Set("left", p.Left)
+	o.Set("top", p.Top)
 	return o
 }
 
@@ -143,13 +142,13 @@ type ScrollIntoViewOptions struct {
 	Inline ScrollLogicalPosition // default "nearest"
 }
 
-func (p ScrollIntoViewOptions) toJSObject() Value {
-	o := p.ScrollOptions.toJSObject()
+func (p ScrollIntoViewOptions) JSValue() jsValue {
+	o := p.ScrollOptions.JSValue()
 	if p.Block != "" && p.Block != ScrollLogicalPositionStart {
-		o.set("block", string(p.Block))
+		o.Set("block", string(p.Block))
 	}
 	if p.Inline != "" && p.Inline != ScrollLogicalPositionNearest {
-		o.set("inline", string(p.Inline))
+		o.Set("inline", string(p.Inline))
 	}
 	return o
 }
@@ -164,10 +163,10 @@ type MediaQueryListEventInit struct {
 	Matches bool
 }
 
-func (p MediaQueryListEventInit) toJSObject() Value {
-	o := p.EventInit.toJSObject()
-	o.set("media", p.Media)
-	o.set("matches", p.Matches)
+func (p MediaQueryListEventInit) JSValue() jsValue {
+	o := p.EventInit.JSValue()
+	o.Set("media", p.Media)
+	o.Set("matches", p.Matches)
 	return o
 }
 
@@ -179,10 +178,10 @@ type BoxQuadOptions struct {
 	RelativeTo GeometryNode
 }
 
-func (p BoxQuadOptions) toJSObject() Value {
-	o := jsObject.jsNew()
-	o.set("box", string(p.Box))
-	o.set("relativeTo", JSValue(p.RelativeTo))
+func (p BoxQuadOptions) JSValue() jsValue {
+	o := jsObject.New()
+	o.Set("box", string(p.Box))
+	o.Set("relativeTo", JSValueOf(p.RelativeTo))
 	return o
 }
 
@@ -194,14 +193,14 @@ type ConvertCoordinateOptions struct {
 	ToBox   CSSBoxType // default "border"
 }
 
-func (p ConvertCoordinateOptions) toJSObject() Value {
-	o := jsObject.jsNew()
+func (p ConvertCoordinateOptions) JSValue() jsValue {
+	o := jsObject.New()
 	if p.FromBox != "" && p.FromBox != CSSBoxTypeBorder {
-		o.set("fromBox", string(p.FromBox))
+		o.Set("fromBox", string(p.FromBox))
 	}
 
 	if p.ToBox != "" && p.ToBox != CSSBoxTypeBorder {
-		o.set("toBox", string(p.ToBox))
+		o.Set("toBox", string(p.ToBox))
 	}
 	return o
 }

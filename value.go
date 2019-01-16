@@ -8,13 +8,19 @@ import (
 	"unsafe"
 )
 
+type (
+	jsValue      = js.Value
+	jsWrapper    = js.Wrapper
+	jsTypedArray = js.TypedArray
+)
+
 var (
-	jsObject    = jsGlobal.get("Object")
-	jsArray     = jsGlobal.get("Array")
-	jsTypeFunc  = jsObject.get("prototype").get("toString")
+	jsObject    = js.Global().Get("Object")
+	jsArray     = js.Global().Get("Array")
+	jsTypeFunc  = jsObject.Get("prototype").Get("toString")
 	jsGlobal    = Value{js.Global()}
-	jsNull      = Value{js.Null()}
-	jsUndefined = Value{js.Undefined()}
+	jsNull      = js.Null()
+	jsUndefined = js.Undefined()
 )
 
 const (
@@ -28,12 +34,16 @@ const (
 	TypeFunction  = js.TypeFunction
 )
 
+func jsTypedArrayOf(slice interface{}) jsTypedArray {
+	return js.TypedArrayOf(slice)
+}
+
 type Value struct {
-	jsValue js.Value
+	jsValue jsValue
 }
 
 func (p Value) valid() bool {
-	if p == jsNull || p == jsUndefined {
+	if p.jsValue == jsNull || p.jsValue == jsUndefined {
 		return false
 	}
 	return true
@@ -85,8 +95,8 @@ func (p Value) JSValue() js.Value {
 }
 
 func (p Value) jsType() string {
-	if p.jsValue.Type() == TypeObject {
-		str := jsTypeFunc.call("call", p.jsValue).toString()
+	if p.jsValue.Type() == js.TypeObject {
+		str := jsTypeFunc.Call("call", p.jsValue).String()
 		return str[8 : len(str)-1]
 	}
 
@@ -181,40 +191,26 @@ func await(v Value) (result Value, ok bool) {
 
 // -------------8<---------------------------------------
 
-func ValueOf(x interface{}) (js.Value, bool) {
+func JSValueOf(x interface{}) jsValue {
 	switch x := x.(type) {
-	case js.Value: // should precede Wrapper to avoid a loop
-		return x, true
-	case js.Wrapper:
-		return x.JSValue(), true
+	case jsValue: // should precede Wrapper to avoid a loop
+		return x
+	case jsWrapper:
+		return x.JSValue()
 	case nil, bool, int, int8, int16, int32, int64, uint, uint8, uint16, uint32, uint64, uintptr, unsafe.Pointer, float32, float64, string, []interface{}, map[string]interface{}:
-		return js.ValueOf(x), true
-	default:
-		return js.Null(), false
+		return js.ValueOf(x)
+	default: // if type has embedded Value field
+		if v, ok := reflect.ValueOf(x).Elem().FieldByName("Value").Interface().(Value); ok {
+			return v.JSValue()
+		}
+		return jsNull
 	}
 }
 
 // -------------8<---------------------------------------
 
 func Equal(x interface{}, y interface{}) bool {
-	return JSValue(x) == JSValue(y)
-}
-
-// -------------8<---------------------------------------
-
-// returns interface types underlying Value
-// it excepts Value is embedded in struct
-func JSValue(o interface{}) js.Value {
-	if o != nil {
-		if v, ok := ValueOf(o); ok {
-			return v
-		}
-
-		if v, ok := reflect.ValueOf(o).Elem().FieldByName("Value").Interface().(Value); ok {
-			return v.JSValue()
-		}
-	}
-	return js.Null()
+	return JSValueOf(x) == JSValueOf(y)
 }
 
 // -------------8<---------------------------------------
@@ -239,6 +235,17 @@ func FuncOf(fn func(this Value, args []Value) interface{}) Func {
 		return fn(fxThis, fxArgs)
 	}
 	return Func{js.FuncOf(fx)}
+}
+
+// -------------8<---------------------------------------
+
+func uint8ArrayToByteSlice(v Value) []byte {
+	jsa := jsUint8Array.jsNew(v)
+	ret := make([]byte, jsa.get("byteLength").toInt())
+	ta := js.TypedArrayOf(ret)
+	ta.Call("set", jsa)
+	ta.Release()
+	return ret
 }
 
 // -------------8<---------------------------------------

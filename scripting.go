@@ -54,8 +54,8 @@ type CanvasRenderingContext2DSettings struct {
 	Alpha bool // default true
 }
 
-func (p CanvasRenderingContext2DSettings) toJSObject() Value {
-	o := jsObject.jsNew()
-	o.set("alpha", p.Alpha)
+func (p CanvasRenderingContext2DSettings) JSValue() jsValue {
+	o := jsObject.New()
+	o.Set("alpha", p.Alpha)
 	return o
 }

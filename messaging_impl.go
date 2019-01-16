@@ -200,7 +200,7 @@ func (p *messageEventImpl) InitMessageEvent(typ string, args ...interface{}) {
 				if origin, ok := args[3].(string); ok {
 					if lastEventId, ok := args[4].(string); ok {
 						if source, ok := args[5].(MessageEventSource); ok {
-							p.call("initMessageEvent", typ, bubbles, cancelable, args[2], origin, lastEventId, JSValue(source))
+							p.call("initMessageEvent", typ, bubbles, cancelable, args[2], origin, lastEventId, JSValueOf(source))
 						}
 					}
 				}

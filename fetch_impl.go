@@ -297,7 +297,7 @@ func NewFormData(form ...HTMLFormElement) FormData {
 		case 0:
 			return wrapFormData(jsFormData.jsNew())
 		default:
-			return wrapFormData(jsFormData.jsNew(JSValue(form[0])))
+			return wrapFormData(jsFormData.jsNew(JSValueOf(form[0])))
 		}
 	}
 	return nil
@@ -319,9 +319,9 @@ func (p *formDataImpl) Append(name string, value interface{}, filename ...string
 	case Blob:
 		switch len(filename) {
 		case 0:
-			p.call("append", JSValue(x))
+			p.call("append", JSValueOf(x))
 		default:
-			p.call("append", JSValue(x), filename[0])
+			p.call("append", JSValueOf(x), filename[0])
 		}
 	}
 }
@@ -358,9 +358,9 @@ func (p *formDataImpl) Set(name string, value interface{}, filename ...string) {
 	case Blob:
 		switch len(filename) {
 		case 0:
-			p.call("set", JSValue(x))
+			p.call("set", JSValueOf(x))
 		default:
-			p.call("set", JSValue(x), filename[0])
+			p.call("set", JSValueOf(x), filename[0])
 		}
 	}
 }
@@ -399,7 +399,7 @@ func NewRequest(info RequestInfo, ri ...RequestInit) Request {
 		case 0:
 			return wrapRequest(request.jsNew(info))
 		default:
-			return wrapRequest(request.jsNew(info, ri[0].toJSObject()))
+			return wrapRequest(request.jsNew(info, ri[0].JSValue()))
 		}
 	}
 	return nil
@@ -429,7 +429,7 @@ func NewResponse(args ...interface{}) Response {
 		case 2:
 			if body, ok := args[0].(BodyInit); ok {
 				if ri, ok := args[1].(ResponseInit); ok {
-					return wrapResponse(response.jsNew(body, ri.toJSObject()))
+					return wrapResponse(response.jsNew(body, ri.JSValue()))
 				}
 			}
 		}

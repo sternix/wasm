@@ -8,7 +8,7 @@ func NewPopStateEvent(typ string, p ...PopStateEventInit) PopStateEvent {
 	jsPopStateEvent := jsGlobal.get("PopStateEvent")
 	if jsPopStateEvent.valid() {
 		if len(p) > 0 {
-			return wrapPopStateEvent(jsPopStateEvent.jsNew(typ, p[0].toJSObject()))
+			return wrapPopStateEvent(jsPopStateEvent.jsNew(typ, p[0].JSValue()))
 		}
 
 		return wrapPopStateEvent(jsPopStateEvent.jsNew(typ))
@@ -23,7 +23,7 @@ func NewHashChangeEvent(typ string, p ...HashChangeEventInit) HashChangeEvent {
 		case 0:
 			return wrapHashChangeEvent(jsHashChangeEvent.jsNew(typ))
 		default:
-			return wrapHashChangeEvent(jsHashChangeEvent.jsNew(typ, p[0].toJSObject()))
+			return wrapHashChangeEvent(jsHashChangeEvent.jsNew(typ, p[0].JSValue()))
 		}
 	}
 	return nil
@@ -35,7 +35,7 @@ func NewPageTransitionEvent(typ string, p ...PageTransitionEventInit) PageTransi
 		case 0:
 			return wrapPageTransitionEvent(jsPageTransitionEvent.jsNew(typ))
 		default:
-			return wrapPageTransitionEvent(jsPageTransitionEvent.jsNew(typ, p[0].toJSObject()))
+			return wrapPageTransitionEvent(jsPageTransitionEvent.jsNew(typ, p[0].JSValue()))
 		}
 	}
 	return nil
@@ -314,7 +314,7 @@ func (p *windowImpl) Scroll(args ...interface{}) {
 		p.call("scroll")
 	case 1:
 		if options, ok := args[0].(ScrollToOptions); ok {
-			p.call("scroll", options.toJSObject())
+			p.call("scroll", options.JSValue())
 		}
 	case 2:
 		if x, ok := args[0].(float64); ok {
@@ -331,7 +331,7 @@ func (p *windowImpl) ScrollTo(args ...interface{}) {
 		p.call("scrollTo")
 	case 1:
 		if options, ok := args[0].(ScrollToOptions); ok {
-			p.call("scrollTo", options.toJSObject())
+			p.call("scrollTo", options.JSValue())
 		}
 	case 2:
 		if x, ok := args[0].(float64); ok {
@@ -348,7 +348,7 @@ func (p *windowImpl) ScrollBy(args ...interface{}) {
 		p.call("scrollBy")
 	case 1:
 		if options, ok := args[0].(ScrollToOptions); ok {
-			p.call("scrollBy", options.toJSObject())
+			p.call("scrollBy", options.JSValue())
 		}
 	case 2:
 		if x, ok := args[0].(float64); ok {
@@ -392,7 +392,7 @@ func (p *windowImpl) ComputedStyle(Element, ...string) CSSStyleDeclaration {
 }
 
 func (p *windowImpl) PseudoElements(elt Element, typ string) []CSSPseudoElement {
-	l := wrapCSSPseudoElementList(p.call("getPseudoElements", JSValue(elt), typ))
+	l := wrapCSSPseudoElementList(p.call("getPseudoElements", JSValueOf(elt), typ))
 	if l != nil && l.Length() > 0 {
 		ret := make([]CSSPseudoElement, l.Length())
 		for i := uint(0); i < uint(len(ret)); i++ {

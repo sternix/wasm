@@ -4,7 +4,6 @@ package wasm
 
 import (
 	"fmt"
-	"syscall/js"
 	"time"
 )
 
@@ -16,7 +15,7 @@ func NewEvent(typ string, ei ...EventInit) Event {
 		case 0:
 			return wrapEvent(jsEvent.jsNew(typ))
 		default:
-			return wrapEvent(jsEvent.jsNew(typ, ei[0].toJSObject()))
+			return wrapEvent(jsEvent.jsNew(typ, ei[0].JSValue()))
 		}
 	}
 	return nil
@@ -28,7 +27,7 @@ func NewCustomEvent(typ string, cei ...CustomEventInit) CustomEvent {
 		case 0:
 			return wrapCustomEvent(jsCustomEvent.jsNew(typ))
 		default:
-			return wrapCustomEvent(jsCustomEvent.jsNew(typ, cei[0].toJSObject()))
+			return wrapCustomEvent(jsCustomEvent.jsNew(typ, cei[0].JSValue()))
 		}
 	}
 	return nil
@@ -40,7 +39,7 @@ func NewFocusEvent(typ string, ini ...FocusEventInit) FocusEvent {
 		case 0:
 			return wrapFocusEvent(jsFocusEvent.jsNew(typ))
 		default:
-			return wrapFocusEvent(jsFocusEvent.jsNew(typ, ini[0].toJSObject()))
+			return wrapFocusEvent(jsFocusEvent.jsNew(typ, ini[0].JSValue()))
 		}
 	}
 	return nil
@@ -52,7 +51,7 @@ func NewMouseEvent(typ string, ini ...MouseEventInit) MouseEvent {
 		case 0:
 			return wrapMouseEvent(jsMouseEvent.jsNew(typ))
 		default:
-			return wrapMouseEvent(jsMouseEvent.jsNew(typ, ini[0].toJSObject()))
+			return wrapMouseEvent(jsMouseEvent.jsNew(typ, ini[0].JSValue()))
 		}
 	}
 	return nil
@@ -64,7 +63,7 @@ func NewWheelEvent(typ string, ini ...WheelEventInit) WheelEvent {
 		case 0:
 			return wrapWheelEvent(jsWheelEvent.jsNew(typ))
 		default:
-			return wrapWheelEvent(jsWheelEvent.jsNew(typ, ini[0].toJSObject()))
+			return wrapWheelEvent(jsWheelEvent.jsNew(typ, ini[0].JSValue()))
 		}
 	}
 	return nil
@@ -76,7 +75,7 @@ func NewInputEvent(typ string, ini ...InputEventInit) InputEvent {
 		case 0:
 			return wrapInputEvent(jsInputEvent.jsNew(typ))
 		default:
-			return wrapInputEvent(jsInputEvent.jsNew(typ, ini[0].toJSObject()))
+			return wrapInputEvent(jsInputEvent.jsNew(typ, ini[0].JSValue()))
 		}
 	}
 	return nil
@@ -88,7 +87,7 @@ func NewKeyboardEvent(typ string, ini ...KeyboardEventInit) KeyboardEvent {
 		case 0:
 			return wrapKeyboardEvent(jsKeyboardEvent.jsNew(typ))
 		default:
-			return wrapKeyboardEvent(jsKeyboardEvent.jsNew(typ, ini[0].toJSObject()))
+			return wrapKeyboardEvent(jsKeyboardEvent.jsNew(typ, ini[0].JSValue()))
 		}
 	}
 	return nil
@@ -100,7 +99,7 @@ func NewErrorEvent(typ string, eei ...ErrorEventInit) ErrorEvent {
 		case 0:
 			return wrapErrorEvent(jsErrorEvent.jsNew(typ))
 		default:
-			return wrapErrorEvent(jsErrorEvent.jsNew(typ, eei[0].toJSObject()))
+			return wrapErrorEvent(jsErrorEvent.jsNew(typ, eei[0].JSValue()))
 		}
 	}
 	return nil
@@ -179,7 +178,7 @@ func (p *eventTargetImpl) On(event string, fn func(ev Event)) EventHandler {
 }
 
 func (p *eventTargetImpl) DispatchEvent(e Event) bool {
-	return p.call("dispatchEvent", JSValue(e)).toBool()
+	return p.call("dispatchEvent", JSValueOf(e)).toBool()
 }
 
 // -------------8<---------------------------------------
@@ -921,9 +920,9 @@ func (p *windowOrWorkerGlobalScopeImpl) CreateImageBitmap(image ImageBitmapSourc
 
 		switch len(options) {
 		case 0:
-			result, ok = await(p.call("createImageBitmap", JSValue(image)))
+			result, ok = await(p.call("createImageBitmap", JSValueOf(image)))
 		default:
-			result, ok = await(p.call("createImageBitmap", JSValue(image), options[0].toJSObject()))
+			result, ok = await(p.call("createImageBitmap", JSValueOf(image), options[0].JSValue()))
 		}
 
 		if ok {
@@ -943,9 +942,9 @@ func (p *windowOrWorkerGlobalScopeImpl) CreateImageBitmapWithSize(image ImageBit
 
 		switch len(options) {
 		case 0:
-			result, ok = await(p.call("createImageBitmap", JSValue(image), sx, sy, sw, sh))
+			result, ok = await(p.call("createImageBitmap", JSValueOf(image), sx, sy, sw, sh))
 		default:
-			result, ok = await(p.call("createImageBitmap", JSValue(image), sx, sy, sw, sh, options[0].toJSObject()))
+			result, ok = await(p.call("createImageBitmap", JSValueOf(image), sx, sy, sw, sh, options[0].JSValue()))
 		}
 
 		if ok {
@@ -962,10 +961,10 @@ func (p *windowOrWorkerGlobalScopeImpl) IndexedDB() IDBFactory {
 
 func (p *windowOrWorkerGlobalScopeImpl) Fetch(input RequestInfo, ri ...RequestInit) func() (Response, error) {
 	return func() (Response, error) {
-		var in js.Value
+		var in jsValue
 		switch x := input.(type) {
 		case string, Request:
-			in = JSValue(x)
+			in = JSValueOf(x)
 		default:
 			return nil, fmt.Errorf("Wrong parameter type for RequestInfo")
 		}
@@ -979,7 +978,7 @@ func (p *windowOrWorkerGlobalScopeImpl) Fetch(input RequestInfo, ri ...RequestIn
 		case 0:
 			result, ok = await(p.call("fetch", in))
 		default:
-			result, ok = await(p.call("fetch", in, ri[0].toJSObject()))
+			result, ok = await(p.call("fetch", in, ri[0].JSValue()))
 		}
 
 		if ok {
@@ -1413,7 +1412,7 @@ func NewTransitionEvent(typ string, tei ...TransitionEventInit) TransitionEvent 
 		case 0:
 			return wrapTransitionEvent(jsTe.jsNew(typ))
 		default:
-			return wrapTransitionEvent(jsTe.jsNew(typ, tei[0].toJSObject()))
+			return wrapTransitionEvent(jsTe.jsNew(typ, tei[0].JSValue()))
 		}
 	}
 	return nil
@@ -1452,7 +1451,7 @@ func NewPointerEvent(typ string, pei ...PointerEventInit) PointerEvent {
 		case 0:
 			return wrapPointerEvent(jsPe.jsNew(typ))
 		default:
-			return wrapPointerEvent(jsPe.jsNew(typ, pei[0].toJSObject()))
+			return wrapPointerEvent(jsPe.jsNew(typ, pei[0].JSValue()))
 		}
 	}
 	return nil

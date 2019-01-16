@@ -63,12 +63,12 @@ type MessageEventInit struct {
 	Ports       []MessagePort
 }
 
-func (p MessageEventInit) toJSObject() Value {
-	o := p.EventInit.toJSObject()
-	o.set("data", p.Data)
-	o.set("origin", p.Origin)
-	o.set("lastEventId", p.LastEventId)
-	o.set("source", JSValue(p.Source))
-	o.set("ports", sliceToJsArray(p.Ports))
+func (p MessageEventInit) JSValue() jsValue {
+	o := p.EventInit.JSValue()
+	o.Set("data", p.Data)
+	o.Set("origin", p.Origin)
+	o.Set("lastEventId", p.LastEventId)
+	o.Set("source", JSValueOf(p.Source))
+	o.Set("ports", sliceToJsArray(p.Ports))
 	return o
 }

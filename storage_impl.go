@@ -10,7 +10,7 @@ func NewStorageEvent(typ string, sei ...StorageEventInit) StorageEvent {
 		case 0:
 			return wrapStorageEvent(jsStorageEvent.jsNew(typ))
 		default:
-			return wrapStorageEvent(jsStorageEvent.jsNew(typ, sei[0].toJSObject()))
+			return wrapStorageEvent(jsStorageEvent.jsNew(typ, sei[0].JSValue()))
 		}
 	}
 	return nil

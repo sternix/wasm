@@ -27,14 +27,14 @@ func (p *htmlSlotElementImpl) SetName(name string) {
 
 func (p *htmlSlotElementImpl) AssignedNodes(options ...AssignedNodesOptions) []Node {
 	if len(options) > 0 {
-		return nodeListToSlice(p.call("assignedNodes", options[0].toJSObject()))
+		return nodeListToSlice(p.call("assignedNodes", options[0].JSValue()))
 	}
 	return nodeListToSlice(p.call("assignedNodes"))
 }
 
 func (p *htmlSlotElementImpl) AssignedElements(options ...AssignedNodesOptions) []Element {
 	if len(options) > 0 {
-		return elementArrayToSlice(p.call("assignedElements", options[0].toJSObject()))
+		return elementArrayToSlice(p.call("assignedElements", options[0].JSValue()))
 	}
 	return elementArrayToSlice(p.call("assignedElements"))
 }
@@ -76,7 +76,7 @@ func (p *htmlOrSVGElementImpl) SetTabIndex(index int) {
 
 func (p *htmlOrSVGElementImpl) Focus(options ...FocusOptions) {
 	if len(options) > 0 {
-		p.call("focus", options[0].toJSObject())
+		p.call("focus", options[0].JSValue())
 	} else {
 		p.call("focus")
 	}

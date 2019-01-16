@@ -125,7 +125,7 @@ func (p *childNodeImpl) Before(nodes ...interface{}) {
 	for _, node := range nodes {
 		switch x := node.(type) {
 		case Node:
-			params = append(params, JSValue(x))
+			params = append(params, JSValueOf(x))
 		case string:
 			params = append(params, x)
 		}
@@ -140,7 +140,7 @@ func (p *childNodeImpl) After(nodes ...interface{}) {
 	for _, node := range nodes {
 		switch x := node.(type) {
 		case Node:
-			params = append(params, JSValue(x))
+			params = append(params, JSValueOf(x))
 		case string:
 			params = append(params, x)
 		}
@@ -156,7 +156,7 @@ func (p *childNodeImpl) ReplaceWith(nodes ...interface{}) {
 	for _, node := range nodes {
 		switch x := node.(type) {
 		case Node:
-			params = append(params, JSValue(x))
+			params = append(params, JSValueOf(x))
 		case string:
 			params = append(params, x)
 		}
@@ -271,7 +271,7 @@ func (p *parentNodeImpl) Prepend(nodes ...interface{}) {
 		case string:
 			params = append(params, x)
 		case Node:
-			params = append(params, JSValue(x))
+			params = append(params, JSValueOf(x))
 		}
 	}
 
@@ -287,7 +287,7 @@ func (p *parentNodeImpl) Append(nodes ...interface{}) {
 		case string:
 			params = append(params, x)
 		case Node:
-			params = append(params, JSValue(x))
+			params = append(params, JSValueOf(x))
 		}
 	}
 	if len(params) > 0 {
@@ -309,9 +309,9 @@ type FullscreenOptions struct {
 	NavigationUI FullscreenNavigationUI
 }
 
-func (p FullscreenOptions) toJSObject() Value {
-	o := jsObject.jsNew()
-	o.set("navigationUI", string(p.NavigationUI))
+func (p FullscreenOptions) JSValue() jsValue {
+	o := jsObject.New()
+	o.Set("navigationUI", string(p.NavigationUI))
 	return o
 }
 

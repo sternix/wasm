@@ -49,12 +49,12 @@ type StorageEventInit struct {
 	StorageArea Storage
 }
 
-func (p StorageEventInit) toJSObject() Value {
-	o := p.EventInit.toJSObject()
-	o.set("key", p.Key)
-	o.set("oldValue", p.OldValue)
-	o.set("newValue", p.NewValue)
-	o.set("url", p.Url)
-	o.set("storageArea", JSValue(p.StorageArea))
+func (p StorageEventInit) JSValue() jsValue {
+	o := p.EventInit.JSValue()
+	o.Set("key", p.Key)
+	o.Set("oldValue", p.OldValue)
+	o.Set("newValue", p.NewValue)
+	o.Set("url", p.Url)
+	o.Set("storageArea", JSValueOf(p.StorageArea))
 	return o
 }

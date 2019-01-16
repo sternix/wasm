@@ -42,11 +42,11 @@ func NewMediaStream(args ...interface{}) MediaStream {
 		default:
 			switch x := args[0].(type) {
 			case MediaStream:
-				return wrapMediaStream(jsMediaStream.jsNew(JSValue(x)))
+				return wrapMediaStream(jsMediaStream.jsNew(JSValueOf(x)))
 			case []MediaStreamTrack:
-				a := jsArray.jsNew()
+				a := jsArray.New()
 				for i, m := range x {
-					a.setIndex(i, JSValue(m))
+					a.SetIndex(i, JSValueOf(m))
 				}
 				return wrapMediaStream(jsMediaStream.jsNew(a.JSValue()))
 			}
@@ -1539,11 +1539,11 @@ func (p *textTrackImpl) ActiveCues() TextTrackCueList {
 }
 
 func (p *textTrackImpl) AddCue(cue TextTrackCue) {
-	p.call("addCue", JSValue(cue))
+	p.call("addCue", JSValueOf(cue))
 }
 
 func (p *textTrackImpl) RemoveCue(cue TextTrackCue) {
-	p.call("removeCue", JSValue(cue))
+	p.call("removeCue", JSValueOf(cue))
 }
 
 func (p *textTrackImpl) OnCueChange(fn func(Event)) EventHandler {
@@ -1829,7 +1829,7 @@ func (p *htmlMediaElementImpl) SrcObject() MediaProvider {
 }
 
 func (p *htmlMediaElementImpl) SetSrcObject(provider MediaProvider) {
-	p.set("srcObject", JSValue(provider))
+	p.set("srcObject", JSValueOf(provider))
 }
 
 func (p *htmlMediaElementImpl) CurrentSrc() string {
@@ -2324,11 +2324,11 @@ func (p *mediaStreamImpl) TrackById(id string) MediaStreamTrack {
 }
 
 func (p *mediaStreamImpl) AddTrack(track MediaStreamTrack) {
-	p.call("addTrack", JSValue(track))
+	p.call("addTrack", JSValueOf(track))
 }
 
 func (p *mediaStreamImpl) RemoveTrack(track MediaStreamTrack) {
-	p.call("removeTrack", JSValue(track))
+	p.call("removeTrack", JSValueOf(track))
 }
 
 func (p *mediaStreamImpl) Clone() MediaStream {
@@ -2471,7 +2471,7 @@ func (p *mediaStreamTrackImpl) ApplyConstraints(constraints ...MediaTrackConstra
 		case 0:
 			res, ok = await(p.call("applyConstraints"))
 		default:
-			res, ok = await(p.call("applyConstraints", constraints[0].toJSObject()))
+			res, ok = await(p.call("applyConstraints", constraints[0].JSValue()))
 		}
 
 		if ok {
@@ -2693,7 +2693,7 @@ func (p *sourceBufferImpl) OnAbort(fn func(Event)) EventHandler {
 }
 
 func (p *sourceBufferImpl) AppendBuffer(buffer BufferSource) {
-	p.call("appendBuffer", JSValue(buffer))
+	p.call("appendBuffer", JSValueOf(buffer))
 }
 
 func (p *sourceBufferImpl) Abort() {
@@ -2756,7 +2756,7 @@ func (p *mediaSourceImpl) AddSourceBuffer(typ string) SourceBuffer {
 }
 
 func (p *mediaSourceImpl) RemoveSourceBuffer(sb SourceBuffer) {
-	p.call("removeSourceBuffer", JSValue(sb))
+	p.call("removeSourceBuffer", JSValueOf(sb))
 }
 
 func (p *mediaSourceImpl) EndOfStream(err ...EndOfStreamError) {

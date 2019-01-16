@@ -121,10 +121,10 @@ type HitRegionOptions struct {
 	Control Element
 }
 
-func (p HitRegionOptions) toJSObject() Value {
-	o := jsObject.jsNew()
-	o.set("id", p.Id)
-	o.set("control", JSValue(p.Control))
+func (p HitRegionOptions) JSValue() jsValue {
+	o := jsObject.New()
+	o.Set("id", p.Id)
+	o.Set("control", JSValueOf(p.Control))
 	return o
 }
 

@@ -105,7 +105,7 @@ func (p *documentImpl) CreateElement(localName string, options ...ElementCreatio
 	case 0:
 		return wrapAsElement(p.call("createElement", localName))
 	default:
-		return wrapAsElement(p.call("createElement", localName, options[0].toJSObject()))
+		return wrapAsElement(p.call("createElement", localName, options[0].JSValue()))
 	}
 }
 
@@ -114,7 +114,7 @@ func (p *documentImpl) CreateElementNS(namespace string, qualifiedName string, o
 	case 0:
 		return wrapAsElement(p.call("createElementNS", namespace, qualifiedName))
 	default:
-		return wrapAsElement(p.call("createElementNS", namespace, qualifiedName, options[0].toJSObject()))
+		return wrapAsElement(p.call("createElementNS", namespace, qualifiedName, options[0].JSValue()))
 	}
 }
 
@@ -141,14 +141,14 @@ func (p *documentImpl) CreateProcessingInstruction(target string, data string) P
 func (p *documentImpl) ImportNode(node Node, deep ...bool) Node {
 	switch len(deep) {
 	case 0:
-		return wrapAsNode(p.call("importNode", JSValue(node)))
+		return wrapAsNode(p.call("importNode", JSValueOf(node)))
 	default:
-		return wrapAsNode(p.call("importNode", JSValue(node), deep[0]))
+		return wrapAsNode(p.call("importNode", JSValueOf(node), deep[0]))
 	}
 }
 
 func (p *documentImpl) AdoptNode(node Node) Node {
-	return wrapAsNode(p.call("adoptNode", JSValue(node)))
+	return wrapAsNode(p.call("adoptNode", JSValueOf(node)))
 }
 
 func (p *documentImpl) CreateAttribute(localName string) Attr {
@@ -166,18 +166,18 @@ func (p *documentImpl) CreateRange() Range {
 func (p *documentImpl) CreateNodeIterator(node Node, whatToShow NodeFilterShow, filter ...NodeFilter) NodeIterator {
 	switch len(filter) {
 	case 0:
-		return wrapNodeIterator(p.call("createNodeIterator", JSValue(node), uint(whatToShow)))
+		return wrapNodeIterator(p.call("createNodeIterator", JSValueOf(node), uint(whatToShow)))
 	default:
-		return wrapNodeIterator(p.call("createNodeIterator", JSValue(node), uint(whatToShow), JSValue(filter[0])))
+		return wrapNodeIterator(p.call("createNodeIterator", JSValueOf(node), uint(whatToShow), JSValueOf(filter[0])))
 	}
 }
 
 func (p *documentImpl) CreateTreeWalker(node Node, whatToShow NodeFilterShow, filter ...NodeFilter) TreeWalker {
 	switch len(filter) {
 	case 0:
-		return wrapTreeWalker(p.call("createTreeWalker", JSValue(node), uint(whatToShow)))
+		return wrapTreeWalker(p.call("createTreeWalker", JSValueOf(node), uint(whatToShow)))
 	default:
-		return wrapTreeWalker(p.call("createTreeWalker", JSValue(node), uint(whatToShow), JSValue(filter[0])))
+		return wrapTreeWalker(p.call("createTreeWalker", JSValueOf(node), uint(whatToShow), JSValueOf(filter[0])))
 	}
 }
 
@@ -262,7 +262,7 @@ func (p *documentImpl) Body() HTMLBodyElement {
 }
 
 func (p *documentImpl) SetBody(body HTMLBodyElement) {
-	p.set("body", JSValue(body))
+	p.set("body", JSValueOf(body))
 }
 
 func (p *documentImpl) Head() HTMLHeadElement {
@@ -501,7 +501,7 @@ func (p *domImplementationImpl) CreateDocument(namespace string, qualifiedName s
 	case 0:
 		return wrapXMLDocument(p.call("createDocument", namespace, qualifiedName))
 	default:
-		return wrapXMLDocument(p.call("createDocument", namespace, qualifiedName, JSValue(doctype[0])))
+		return wrapXMLDocument(p.call("createDocument", namespace, qualifiedName, JSValueOf(doctype[0])))
 	}
 }
 
@@ -559,7 +559,7 @@ func (p *treeWalkerImpl) CurrentNode() Node {
 }
 
 func (p *treeWalkerImpl) SetCurrentNode(node Node) {
-	p.set("currentNode", JSValue(node))
+	p.set("currentNode", JSValueOf(node))
 }
 
 func (p *treeWalkerImpl) ParentNode() Node {
@@ -606,7 +606,7 @@ func wrapNodeFilter(v Value) NodeFilter {
 }
 
 func (p *nodeFilterImpl) AcceptNode(node Node) NodeFilterResult {
-	return NodeFilterResult(p.call("acceptNode", JSValue(node)).toUint16())
+	return NodeFilterResult(p.call("acceptNode", JSValueOf(node)).toUint16())
 }
 
 // -------------8<---------------------------------------
@@ -683,27 +683,27 @@ func (p *rangeImpl) CommonAncestorContainer() Node {
 }
 
 func (p *rangeImpl) SetStart(node Node, offset uint) {
-	p.call("setStart", JSValue(node), offset)
+	p.call("setStart", JSValueOf(node), offset)
 }
 
 func (p *rangeImpl) SetEnd(node Node, offset uint) {
-	p.call("setEnd", JSValue(node), offset)
+	p.call("setEnd", JSValueOf(node), offset)
 }
 
 func (p *rangeImpl) SetStartBefore(node Node) {
-	p.call("setStartBefore", JSValue(node))
+	p.call("setStartBefore", JSValueOf(node))
 }
 
 func (p *rangeImpl) SetStartAfter(node Node) {
-	p.call("setStartAfter", JSValue(node))
+	p.call("setStartAfter", JSValueOf(node))
 }
 
 func (p *rangeImpl) SetEndBefore(node Node) {
-	p.call("setEndBefore", JSValue(node))
+	p.call("setEndBefore", JSValueOf(node))
 }
 
 func (p *rangeImpl) SetEndAfter(node Node) {
-	p.call("setEndAfter", JSValue(node))
+	p.call("setEndAfter", JSValueOf(node))
 }
 
 func (p *rangeImpl) Collapse(toStart ...bool) {
@@ -716,15 +716,15 @@ func (p *rangeImpl) Collapse(toStart ...bool) {
 }
 
 func (p *rangeImpl) SelectNode(node Node) {
-	p.call("selectNode", JSValue(node))
+	p.call("selectNode", JSValueOf(node))
 }
 
 func (p *rangeImpl) SelectNodeContents(node Node) {
-	p.call("selectNodeContents", JSValue(node))
+	p.call("selectNodeContents", JSValueOf(node))
 }
 
 func (p *rangeImpl) CompareBoundaryPoints(how RangeCompare, source Range) int {
-	return p.call("compareBoundaryPoints", uint16(how), JSValue(source)).toInt()
+	return p.call("compareBoundaryPoints", uint16(how), JSValueOf(source)).toInt()
 }
 
 func (p *rangeImpl) DeleteContents() {
@@ -740,11 +740,11 @@ func (p *rangeImpl) CloneContents() DocumentFragment {
 }
 
 func (p *rangeImpl) InsertNode(node Node) {
-	p.call("insertNode", JSValue(node))
+	p.call("insertNode", JSValueOf(node))
 }
 
 func (p *rangeImpl) SurroundContents(newParent Node) {
-	p.call("surroundContents", JSValue(newParent))
+	p.call("surroundContents", JSValueOf(newParent))
 }
 
 func (p *rangeImpl) CloneRange() Range {
@@ -756,15 +756,15 @@ func (p *rangeImpl) Detach() {
 }
 
 func (p *rangeImpl) IsPointInRange(node Node, offset uint) bool {
-	return p.call("isPointInRange", JSValue(node), offset).toBool()
+	return p.call("isPointInRange", JSValueOf(node), offset).toBool()
 }
 
 func (p *rangeImpl) ComparePoint(node Node, offset uint) int {
-	return p.call("comparePoint", JSValue(node), offset).toInt()
+	return p.call("comparePoint", JSValueOf(node), offset).toInt()
 }
 
 func (p *rangeImpl) IntersectsNode(node Node) bool {
-	return p.call("intersectsNode", JSValue(node)).toBool()
+	return p.call("intersectsNode", JSValueOf(node)).toBool()
 }
 
 func (p *rangeImpl) ClientRects() []DOMRect {
@@ -1079,7 +1079,7 @@ func (p *nodeImpl) OwnerDocument() Document {
 
 func (p *nodeImpl) RootNode(options ...RootNodeOptions) Node {
 	if len(options) > 0 {
-		return wrapAsNode(p.call("getRootNode", options[0].toJSObject()))
+		return wrapAsNode(p.call("getRootNode", options[0].JSValue()))
 	}
 
 	return wrapAsNode(p.call("getRootNode"))
@@ -1145,19 +1145,19 @@ func (p *nodeImpl) CloneNode(deep ...bool) Node {
 }
 
 func (p *nodeImpl) IsEqualNode(otherNode Node) bool {
-	return p.call("isEqualNode", JSValue(otherNode)).toBool()
+	return p.call("isEqualNode", JSValueOf(otherNode)).toBool()
 }
 
 func (p *nodeImpl) IsSameNode(otherNode Node) bool {
-	return p.call("isSameNode", JSValue(otherNode)).toBool()
+	return p.call("isSameNode", JSValueOf(otherNode)).toBool()
 }
 
 func (p *nodeImpl) CompareDocumentPosition(other Node) DocumentPosition {
-	return DocumentPosition(p.call("compareDocumentPosition", JSValue(other)).toInt())
+	return DocumentPosition(p.call("compareDocumentPosition", JSValueOf(other)).toInt())
 }
 
 func (p *nodeImpl) Contains(other Node) bool {
-	return p.call("contains", JSValue(other)).toBool()
+	return p.call("contains", JSValueOf(other)).toBool()
 }
 
 func (p *nodeImpl) LookupPrefix(namespace string) string {
@@ -1174,21 +1174,21 @@ func (p *nodeImpl) IsDefaultNamespace(namespace string) bool {
 
 func (p *nodeImpl) InsertBefore(node Node, child Node) Node {
 	if child != nil {
-		return wrapAsNode(p.call("insertBefore", JSValue(node), JSValue(child)))
+		return wrapAsNode(p.call("insertBefore", JSValueOf(node), JSValueOf(child)))
 	}
-	return wrapAsNode(p.call("insertBefore", JSValue(node)))
+	return wrapAsNode(p.call("insertBefore", JSValueOf(node)))
 }
 
 func (p *nodeImpl) AppendChild(node Node) Node {
-	return wrapAsNode(p.call("appendChild", JSValue(node)))
+	return wrapAsNode(p.call("appendChild", JSValueOf(node)))
 }
 
 func (p *nodeImpl) ReplaceChild(node Node, child Node) Node {
-	return wrapAsNode(p.call("replaceChild", JSValue(node), JSValue(child)))
+	return wrapAsNode(p.call("replaceChild", JSValueOf(node), JSValueOf(child)))
 }
 
 func (p *nodeImpl) RemoveChild(child Node) Node {
-	return wrapAsNode(p.call("removeChild", JSValue(child)))
+	return wrapAsNode(p.call("removeChild", JSValueOf(child)))
 }
 
 // -------------8<---------------------------------------
@@ -1329,19 +1329,19 @@ func (p *elementImpl) AttributeNodeNS(namespace string, name string) Attr {
 }
 
 func (p *elementImpl) SetAttributeNode(attr Attr) Attr {
-	return wrapAttr(p.call("setAttributeNode", JSValue(attr)))
+	return wrapAttr(p.call("setAttributeNode", JSValueOf(attr)))
 }
 
 func (p *elementImpl) SetAttributeNodeNS(attr Attr) Attr {
-	return wrapAttr(p.call("setAttributeNodeNS", JSValue(attr)))
+	return wrapAttr(p.call("setAttributeNodeNS", JSValueOf(attr)))
 }
 
 func (p *elementImpl) RemoveAttributeNode(attr Attr) Attr {
-	return wrapAttr(p.call("removeAttributeNode", JSValue(attr)))
+	return wrapAttr(p.call("removeAttributeNode", JSValueOf(attr)))
 }
 
 func (p *elementImpl) AttachShadow(si ShadowRootInit) ShadowRoot {
-	return wrapShadowRoot(p.call("attachShadow", si.toJSObject()))
+	return wrapShadowRoot(p.call("attachShadow", si.JSValue()))
 }
 
 func (p *elementImpl) ShadowRoot() ShadowRoot {
@@ -1392,21 +1392,21 @@ func (p *elementImpl) ScrollIntoView(arg ...interface{}) {
 		case bool:
 			p.call("scrollIntoView", x)
 		case ScrollIntoViewOptions:
-			p.call("scrollIntoView", x.toJSObject())
+			p.call("scrollIntoView", x.JSValue())
 		}
 	}
 }
 
 func (p *elementImpl) Scroll(options ScrollToOptions) {
-	p.call("scroll", options.toJSObject())
+	p.call("scroll", options.JSValue())
 }
 
 func (p *elementImpl) ScrollTo(options ScrollToOptions) {
-	p.call("scrollTo", options.toJSObject())
+	p.call("scrollTo", options.JSValue())
 }
 
 func (p *elementImpl) ScrollBy(options ScrollToOptions) {
-	p.call("scrollBy", options.toJSObject())
+	p.call("scrollBy", options.JSValue())
 }
 
 func (p *elementImpl) ScrollTop() float64 {
@@ -1680,11 +1680,11 @@ func (p *namedNodeMapImpl) NamedItemNS(namespace string, name string) Attr {
 }
 
 func (p *namedNodeMapImpl) SetNamedItem(attr Attr) Attr {
-	return wrapAttr(p.call("setNamedItem", JSValue(attr)))
+	return wrapAttr(p.call("setNamedItem", JSValueOf(attr)))
 }
 
 func (p *namedNodeMapImpl) SetNamedItemNS(attr Attr) Attr {
-	return wrapAttr(p.call("setNamedItemNS", JSValue(attr)))
+	return wrapAttr(p.call("setNamedItemNS", JSValueOf(attr)))
 }
 
 func (p *namedNodeMapImpl) RemoveNamedItem(name string) Attr {
@@ -1841,9 +1841,9 @@ func wrapMutationObserver(v Value) MutationObserver {
 func (p *mutationObserverImpl) Observe(target Node, options ...MutationObserverInit) {
 	switch len(options) {
 	case 0:
-		p.call("observe", JSValue(target))
+		p.call("observe", JSValueOf(target))
 	default:
-		p.call("observe", JSValue(target), options[0].toJSObject())
+		p.call("observe", JSValueOf(target), options[0].JSValue())
 	}
 }
 
@@ -2158,7 +2158,7 @@ func newXMLSerializerImpl(v Value) XMLSerializer {
 }
 
 func (p *xmlSerializerImpl) SerializeToString(node Node) string {
-	return p.call("serializeToString", JSValue(node)).toString()
+	return p.call("serializeToString", JSValueOf(node)).toString()
 }
 
 // -------------8<---------------------------------------

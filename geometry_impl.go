@@ -2,10 +2,6 @@
 
 package wasm
 
-import (
-	"syscall/js"
-)
-
 // -------------8<---------------------------------------
 
 func NewDOMPoint(dpi ...DOMPointInit) DOMPoint {
@@ -14,7 +10,7 @@ func NewDOMPoint(dpi ...DOMPointInit) DOMPoint {
 		case 0:
 			return wrapDOMPoint(jsDOMPoint.jsNew())
 		default:
-			return wrapDOMPoint(jsDOMPoint.jsNew(dpi[0].toJSObject()))
+			return wrapDOMPoint(jsDOMPoint.jsNew(dpi[0].JSValue()))
 		}
 	}
 	return nil
@@ -47,7 +43,7 @@ func NewDOMQuad(dri ...DOMRectInit) DOMQuad {
 		case 0:
 			return wrapDOMQuad(jsDOMQuad.jsNew())
 		default:
-			return wrapDOMQuad(jsDOMQuad.jsNew(dri[0].toJSObject()))
+			return wrapDOMQuad(jsDOMQuad.jsNew(dri[0].JSValue()))
 		}
 	}
 	return nil
@@ -58,7 +54,7 @@ func DOMQuadFromRect(other ...DOMRectInit) DOMQuad {
 	case 0:
 		return wrapDOMQuad(jsGlobal.invoke("DOMQuad.fromRect"))
 	default:
-		return wrapDOMQuad(jsGlobal.invoke("DOMQuad.fromRect", other[0].toJSObject()))
+		return wrapDOMQuad(jsGlobal.invoke("DOMQuad.fromRect", other[0].JSValue()))
 	}
 }
 
@@ -67,14 +63,14 @@ func DOMQuadFromQuad(other ...DOMQuadInit) DOMQuad {
 	case 0:
 		return wrapDOMQuad(jsGlobal.invoke("DOMQuad.fromQuad"))
 	default:
-		return wrapDOMQuad(jsGlobal.invoke("DOMQuad.fromQuad", other[0].toJSObject()))
+		return wrapDOMQuad(jsGlobal.invoke("DOMQuad.fromQuad", other[0].JSValue()))
 	}
 }
 
 // TODO: check this
 func NewDOMMatrixReadOnly(numberSequence []float64) DOMMatrixReadOnly {
 	if jsDOMMatrixReadOnly := jsGlobal.get("DOMMatrixReadOnly"); jsDOMMatrixReadOnly.valid() {
-		ta := js.TypedArrayOf(numberSequence)
+		ta := jsTypedArrayOf(numberSequence)
 		defer ta.Release()
 		return wrapDOMMatrixReadOnly(jsDOMMatrixReadOnly.jsNew(ta))
 	}
@@ -84,7 +80,7 @@ func NewDOMMatrixReadOnly(numberSequence []float64) DOMMatrixReadOnly {
 // TODO: check this
 func NewDOMMatrix(numberSequence []float64) DOMMatrix {
 	if jsDOMMatrix := jsGlobal.get("DOMMatrix"); jsDOMMatrix.valid() {
-		ta := js.TypedArrayOf(numberSequence)
+		ta := jsTypedArrayOf(numberSequence)
 		defer ta.Release()
 		return wrapDOMMatrix(jsDOMMatrix.jsNew(ta))
 	}
@@ -130,7 +126,7 @@ func (p *domPointReadOnlyImpl) W() float64 {
 }
 
 func (p *domPointReadOnlyImpl) MatrixTransform(matrix DOMMatrixReadOnly) DOMPoint {
-	return wrapDOMPoint(p.call("matrixTransform", JSValue(matrix)))
+	return wrapDOMPoint(p.call("matrixTransform", JSValueOf(matrix)))
 }
 
 // -------------8<---------------------------------------
@@ -448,7 +444,7 @@ func (p *domMatrixReadOnlyImpl) SkewY(sy float64) DOMMatrix {
 }
 
 func (p *domMatrixReadOnlyImpl) Multiply(other DOMMatrix) DOMMatrix {
-	return wrapDOMMatrix(p.call("multiply", JSValue(other)))
+	return wrapDOMMatrix(p.call("multiply", JSValueOf(other)))
 }
 
 func (p *domMatrixReadOnlyImpl) FlipX() DOMMatrix {
@@ -468,7 +464,7 @@ func (p *domMatrixReadOnlyImpl) TransformPoint(point ...DOMPointInit) DOMPoint {
 	case 0:
 		return wrapDOMPoint(p.call("transformPoint"))
 	default:
-		return wrapDOMPoint(p.call("transformPoint", point[0].toJSObject()))
+		return wrapDOMPoint(p.call("transformPoint", point[0].JSValue()))
 	}
 }
 
@@ -500,11 +496,11 @@ func wrapDOMMatrix(v Value) DOMMatrix {
 }
 
 func (p *domMatrixImpl) MultiplySelf(other DOMMatrix) DOMMatrix {
-	return wrapDOMMatrix(p.call("multiplySelf", JSValue(other)))
+	return wrapDOMMatrix(p.call("multiplySelf", JSValueOf(other)))
 }
 
 func (p *domMatrixImpl) PreMultiplySelf(other DOMMatrix) DOMMatrix {
-	return wrapDOMMatrix(p.call("preMultiplySelf", JSValue(other)))
+	return wrapDOMMatrix(p.call("preMultiplySelf", JSValueOf(other)))
 }
 
 func (p *domMatrixImpl) TranslateSelf(tx float64, ty float64, tz ...float64) DOMMatrix {

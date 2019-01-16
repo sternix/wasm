@@ -61,11 +61,11 @@ func NewDataView(buf ArrayBuffer, args ...int) DataView {
 	if jsDataView := jsGlobal.get("DataView"); jsDataView.valid() {
 		switch len(args) {
 		case 0:
-			return wrapDataView(jsDataView.jsNew(JSValue(buf)))
+			return wrapDataView(jsDataView.jsNew(JSValueOf(buf)))
 		case 1:
-			return wrapDataView(jsDataView.jsNew(JSValue(buf), args[0]))
+			return wrapDataView(jsDataView.jsNew(JSValueOf(buf), args[0]))
 		default:
-			return wrapDataView(jsDataView.jsNew(JSValue(buf), args[0], args[1]))
+			return wrapDataView(jsDataView.jsNew(JSValueOf(buf), args[0], args[1]))
 		}
 	}
 	return nil

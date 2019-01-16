@@ -196,7 +196,7 @@ func (p *idbDatabaseImpl) CreateObjectStore(name string, options ...IDBObjectSto
 	case 0:
 		return wrapIDBObjectStore(p.call("createObjectStore", name))
 	default:
-		return wrapIDBObjectStore(p.call("createObjectStore", name, options[0].toJSObject()))
+		return wrapIDBObjectStore(p.call("createObjectStore", name, options[0].JSValue()))
 	}
 }
 
@@ -296,10 +296,10 @@ func (p *idbObjectStoreImpl) Key(query interface{}) IDBRequest {
 func (p *idbObjectStoreImpl) All(args ...interface{}) IDBRequest {
 	switch len(args) {
 	case 1:
-		return wrapIDBRequest(p.call("getAll", JSValue(args[0])))
+		return wrapIDBRequest(p.call("getAll", JSValueOf(args[0])))
 	case 2:
 		if count, ok := args[1].(uint); ok {
-			return wrapIDBRequest(p.call("getAll", JSValue(args[0]), count))
+			return wrapIDBRequest(p.call("getAll", JSValueOf(args[0]), count))
 		}
 	}
 
@@ -309,10 +309,10 @@ func (p *idbObjectStoreImpl) All(args ...interface{}) IDBRequest {
 func (p *idbObjectStoreImpl) AllKeys(args ...interface{}) IDBRequest {
 	switch len(args) {
 	case 1:
-		return wrapIDBRequest(p.call("getAllKeys", JSValue(args[0])))
+		return wrapIDBRequest(p.call("getAllKeys", JSValueOf(args[0])))
 	case 2:
 		if count, ok := args[1].(uint); ok {
-			return wrapIDBRequest(p.call("getAllKeys", JSValue(args[0]), count))
+			return wrapIDBRequest(p.call("getAllKeys", JSValueOf(args[0]), count))
 		}
 	}
 
@@ -324,17 +324,17 @@ func (p *idbObjectStoreImpl) Count(query ...interface{}) IDBRequest {
 	case 0:
 		return wrapIDBRequest(p.call("count"))
 	default:
-		return wrapIDBRequest(p.call("count", JSValue(query[0])))
+		return wrapIDBRequest(p.call("count", JSValueOf(query[0])))
 	}
 }
 
 func (p *idbObjectStoreImpl) OpenCursor(args ...interface{}) IDBRequest {
 	switch len(args) {
 	case 1:
-		return wrapIDBRequest(p.call("openCursor", JSValue(args[0])))
+		return wrapIDBRequest(p.call("openCursor", JSValueOf(args[0])))
 	case 2:
 		if direction, ok := args[1].(IDBCursorDirection); ok {
-			return wrapIDBRequest(p.call("openCursor", JSValue(args[0]), string(direction)))
+			return wrapIDBRequest(p.call("openCursor", JSValueOf(args[0]), string(direction)))
 		}
 	}
 
@@ -344,10 +344,10 @@ func (p *idbObjectStoreImpl) OpenCursor(args ...interface{}) IDBRequest {
 func (p *idbObjectStoreImpl) OpenKeyCursor(args ...interface{}) IDBRequest {
 	switch len(args) {
 	case 1:
-		return wrapIDBRequest(p.call("openKeyCursor", JSValue(args[0])))
+		return wrapIDBRequest(p.call("openKeyCursor", JSValueOf(args[0])))
 	case 2:
 		if direction, ok := args[1].(IDBCursorDirection); ok {
-			return wrapIDBRequest(p.call("openKeyCursor", JSValue(args[0]), string(direction)))
+			return wrapIDBRequest(p.call("openKeyCursor", JSValueOf(args[0]), string(direction)))
 		}
 	}
 
@@ -363,7 +363,7 @@ func (p *idbObjectStoreImpl) CreateIndex(name string, keyPath string, options ..
 	case 0:
 		return wrapIDBIndex(p.call("createIndex", name, keyPath))
 	default:
-		return wrapIDBIndex(p.call("createIndex", name, keyPath, options[0].toJSObject()))
+		return wrapIDBIndex(p.call("createIndex", name, keyPath, options[0].JSValue()))
 	}
 }
 
@@ -707,7 +707,7 @@ func NewIDBVersionChangeEvent(typ string, vce ...IDBVersionChangeEventInit) IDBV
 		case 0:
 			return wrapIDBVersionChangeEvent(jsIDBVersionChangeEvent.jsNew(typ))
 		default:
-			return wrapIDBVersionChangeEvent(jsIDBVersionChangeEvent.jsNew(typ, vce[0].toJSObject()))
+			return wrapIDBVersionChangeEvent(jsIDBVersionChangeEvent.jsNew(typ, vce[0].JSValue()))
 		}
 	}
 	return nil

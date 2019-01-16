@@ -12,9 +12,9 @@ type PermissionDescriptor struct {
 	Name PermissionName
 }
 
-func (p PermissionDescriptor) toJSObject() Value {
-	o := jsObject.jsNew()
-	o.set("name", string(p.Name))
+func (p PermissionDescriptor) JSValue() jsValue {
+	o := jsObject.New()
+	o.Set("name", string(p.Name))
 	return o
 }
 

@@ -39,7 +39,7 @@ func (p *clipboardImpl) ReadText() func() (string, bool) {
 
 func (p *clipboardImpl) Write(data DataTransfer) func() bool {
 	return func() bool {
-		_, ok := await(p.call("write", JSValue(data)))
+		_, ok := await(p.call("write", JSValueOf(data)))
 		return ok
 	}
 }
@@ -78,7 +78,7 @@ func NewClipboardEvent(typ string, eventInitDict ...ClipboardEventInit) Clipboar
 		case 0:
 			return wrapClipboardEvent(jsClipboardEvent.jsNew(typ))
 		default:
-			return wrapClipboardEvent(jsClipboardEvent.jsNew(typ, eventInitDict[0].toJSObject()))
+			return wrapClipboardEvent(jsClipboardEvent.jsNew(typ, eventInitDict[0].JSValue()))
 		}
 	}
 	return nil

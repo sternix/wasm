@@ -9,7 +9,7 @@ func CreateObjectURL(source interface{}) (string, error) {
 
 	switch x := source.(type) {
 	case File, Blob, MediaSource:
-		return jsURL.call("createObjectURL", JSValue(x)).toString(), nil
+		return jsURL.call("createObjectURL", JSValueOf(x)).toString(), nil
 	default:
 		return "", errInvalidType
 	}

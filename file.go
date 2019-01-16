@@ -85,9 +85,9 @@ type BlobPropertyBag struct {
 	// Endings EndingType `json:"endings"` // default transparent
 }
 
-func (p BlobPropertyBag) toJSObject() Value {
-	o := jsObject.jsNew()
-	o.set("type", p.Type)
+func (p BlobPropertyBag) JSValue() jsValue {
+	o := jsObject.New()
+	o.Set("type", p.Type)
 	return o
 }
 
@@ -100,9 +100,9 @@ type FilePropertyBag struct {
 	LastModified int
 }
 
-func (p FilePropertyBag) toJSObject() Value {
-	o := p.BlobPropertyBag.toJSObject()
-	o.set("lastModified", p.LastModified)
+func (p FilePropertyBag) JSValue() jsValue {
+	o := p.BlobPropertyBag.JSValue()
+	o.Set("lastModified", p.LastModified)
 	return o
 }
 
@@ -117,10 +117,10 @@ type ProgressEventInit struct {
 	Total            uint
 }
 
-func (p ProgressEventInit) toJSObject() Value {
-	o := p.EventInit.toJSObject()
-	o.set("lengthComputable", p.LengthComputable)
-	o.set("loaded", p.Loaded)
-	o.set("total", p.Total)
+func (p ProgressEventInit) JSValue() jsValue {
+	o := p.EventInit.JSValue()
+	o.Set("lengthComputable", p.LengthComputable)
+	o.Set("loaded", p.Loaded)
+	o.Set("total", p.Total)
 	return o
 }

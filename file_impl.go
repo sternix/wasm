@@ -2,10 +2,6 @@
 
 package wasm
 
-import (
-	"syscall/js"
-)
-
 // -------------8<---------------------------------------
 
 type fileImpl struct {
@@ -93,24 +89,24 @@ func wrapFileReader(v Value) FileReader {
 }
 
 func (p *fileReaderImpl) ReadAsArrayBuffer(blob Blob) {
-	p.call("readAsArrayBuffer", JSValue(blob))
+	p.call("readAsArrayBuffer", JSValueOf(blob))
 }
 
 func (p *fileReaderImpl) ReadAsBinaryString(blob Blob) {
-	p.call("readAsBinaryString", JSValue(blob))
+	p.call("readAsBinaryString", JSValueOf(blob))
 }
 
 func (p *fileReaderImpl) ReadAsText(blob Blob, label ...string) {
 	switch len(label) {
 	case 0:
-		p.call("readAsText", JSValue(blob))
+		p.call("readAsText", JSValueOf(blob))
 	default: // 1 or more
-		p.call("readAsText", JSValue(blob), label[0])
+		p.call("readAsText", JSValueOf(blob), label[0])
 	}
 }
 
 func (p *fileReaderImpl) ReadAsDataURL(blob Blob) {
-	p.call("readAsDataURL", JSValue(blob))
+	p.call("readAsDataURL", JSValueOf(blob))
 }
 
 func (p *fileReaderImpl) Abort() {
@@ -178,24 +174,24 @@ func wrapFileReaderSync(v Value) FileReaderSync {
 }
 
 func (p *fileReaderSyncImpl) ReadAsArrayBuffer(blob Blob) ArrayBuffer {
-	return wrapArrayBuffer(p.call("readAsArrayBuffer", JSValue(blob)))
+	return wrapArrayBuffer(p.call("readAsArrayBuffer", JSValueOf(blob)))
 }
 
 func (p *fileReaderSyncImpl) ReadAsBinaryString(blob Blob) string {
-	return p.call("readAsBinaryString", JSValue(blob)).toString()
+	return p.call("readAsBinaryString", JSValueOf(blob)).toString()
 }
 
 func (p *fileReaderSyncImpl) ReadAsText(blob Blob, label ...string) string {
 	switch len(label) {
 	case 0:
-		return p.call("readAsText", JSValue(blob)).toString()
+		return p.call("readAsText", JSValueOf(blob)).toString()
 	default:
-		return p.call("readAsText", JSValue(blob), label[0]).toString()
+		return p.call("readAsText", JSValueOf(blob), label[0]).toString()
 	}
 }
 
 func (p *fileReaderSyncImpl) ReadAsDataURL(blob Blob) string {
-	return p.call("readAsDataURL", JSValue(blob)).toString()
+	return p.call("readAsDataURL", JSValueOf(blob)).toString()
 }
 
 // -------------8<---------------------------------------
@@ -232,16 +228,16 @@ func NewBlob(args ...interface{}) Blob {
 		switch len(args) {
 		case 1:
 			if ar, ok := args[0].([]byte); ok {
-				ta := js.TypedArrayOf(ar)
+				ta := jsTypedArrayOf(ar)
 				defer ta.Release()
 				return wrapBlob(jsBlob.jsNew(ta))
 			}
 		case 2:
 			if ar, ok := args[0].([]byte); ok {
 				if options, ok := args[1].(BlobPropertyBag); ok {
-					ta := js.TypedArrayOf(ar)
+					ta := jsTypedArrayOf(ar)
 					defer ta.Release()
-					return wrapBlob(jsBlob.jsNew(ta, options.toJSObject()))
+					return wrapBlob(jsBlob.jsNew(ta, options.JSValue()))
 				}
 			}
 		}
@@ -253,14 +249,14 @@ func NewBlob(args ...interface{}) Blob {
 
 func NewFile(fileBits []byte, fileName string, options ...FilePropertyBag) File {
 	if jsFile := jsGlobal.get("File"); jsFile.valid() {
-		ta := js.TypedArrayOf(fileBits)
+		ta := jsTypedArrayOf(fileBits)
 		defer ta.Release()
 
 		switch len(options) {
 		case 0:
 			return wrapFile(jsFile.jsNew(ta, fileName))
 		default:
-			return wrapFile(jsFile.jsNew(ta, fileName, options[0].toJSObject()))
+			return wrapFile(jsFile.jsNew(ta, fileName, options[0].JSValue()))
 		}
 	}
 	return nil
@@ -286,7 +282,7 @@ func NewProgressEvent(typ string, pei ...ProgressEventInit) ProgressEvent {
 		case 0:
 			return wrapProgressEvent(jsProgressEvent.jsNew(typ))
 		default:
-			return wrapProgressEvent(jsProgressEvent.jsNew(typ, pei[0].toJSObject()))
+			return wrapProgressEvent(jsProgressEvent.jsNew(typ, pei[0].JSValue()))
 		}
 	}
 	return nil

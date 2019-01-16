@@ -3,7 +3,6 @@
 package wasm
 
 import (
-	"syscall/js"
 	"time"
 )
 
@@ -21,7 +20,7 @@ type (
 		On(string, func(Event)) EventHandler
 		DispatchEvent(Event) bool
 
-		JSValue() js.Value
+		JSValue() jsValue
 	}
 
 	// https://dom.spec.whatwg.org/#event
@@ -41,7 +40,7 @@ type (
 		IsTrusted() bool
 		TimeStamp() time.Time
 
-		JSValue() js.Value
+		JSValue() jsValue
 	}
 
 	// https://dom.spec.whatwg.org/#customevent
@@ -363,11 +362,11 @@ type EventInit struct {
 	Composed   bool
 }
 
-func (p EventInit) toJSObject() Value {
-	o := jsObject.jsNew()
-	o.set("bubbles", p.Bubbles)
-	o.set("cancelable", p.Cancelable)
-	o.set("composed", p.Composed)
+func (p EventInit) JSValue() jsValue {
+	o := jsObject.New()
+	o.Set("bubbles", p.Bubbles)
+	o.Set("cancelable", p.Cancelable)
+	o.Set("composed", p.Composed)
 	return o
 }
 
@@ -380,9 +379,9 @@ type CustomEventInit struct {
 	Detail interface{}
 }
 
-func (p CustomEventInit) toJSObject() Value {
-	o := p.EventInit.toJSObject()
-	o.set("detail", p.Detail)
+func (p CustomEventInit) JSValue() jsValue {
+	o := p.EventInit.JSValue()
+	o.Set("detail", p.Detail)
 	return o
 }
 
@@ -396,10 +395,10 @@ type UIEventInit struct {
 	Detail int
 }
 
-func (p UIEventInit) toJSObject() Value {
-	o := p.EventInit.toJSObject()
-	o.set("view", p.View)
-	o.set("detail", p.Detail)
+func (p UIEventInit) JSValue() jsValue {
+	o := p.EventInit.JSValue()
+	o.Set("view", p.View)
+	o.Set("detail", p.Detail)
 	return o
 }
 
@@ -412,9 +411,9 @@ type FocusEventInit struct {
 	RelatedTarget EventTarget
 }
 
-func (p FocusEventInit) toJSObject() Value {
-	o := p.UIEventInit.toJSObject()
-	o.set("relatedTarget", p.RelatedTarget)
+func (p FocusEventInit) JSValue() jsValue {
+	o := p.UIEventInit.JSValue()
+	o.Set("relatedTarget", p.RelatedTarget)
 	return o
 }
 
@@ -433,15 +432,15 @@ type MouseEventInit struct {
 	RelatedTarget EventTarget
 }
 
-func (p MouseEventInit) toJSObject() Value {
-	o := p.EventModifierInit.toJSObject()
-	o.set("screenX", p.ScreenX)
-	o.set("screenY", p.ScreenY)
-	o.set("clientX", p.ClientX)
-	o.set("clientY", p.ClientY)
-	o.set("button", p.Button)
-	o.set("buttons", p.Buttons)
-	o.set("relatedTarget", JSValue(p.RelatedTarget))
+func (p MouseEventInit) JSValue() jsValue {
+	o := p.EventModifierInit.JSValue()
+	o.Set("screenX", p.ScreenX)
+	o.Set("screenY", p.ScreenY)
+	o.Set("clientX", p.ClientX)
+	o.Set("clientY", p.ClientY)
+	o.Set("button", p.Button)
+	o.Set("buttons", p.Buttons)
+	o.Set("relatedTarget", JSValueOf(p.RelatedTarget))
 	return o
 }
 
@@ -467,22 +466,22 @@ type EventModifierInit struct {
 	ModifierSymbolLock bool
 }
 
-func (p EventModifierInit) toJSObject() Value {
-	o := p.UIEventInit.toJSObject()
-	o.set("ctrlKey", p.CtrlKey)
-	o.set("shiftKey", p.ShiftKey)
-	o.set("altKey", p.AltKey)
-	o.set("metaKey", p.MetaKey)
-	o.set("modifierAltGraph", p.ModifierAltGraph)
-	o.set("modifierCapsLock", p.ModifierCapsLock)
-	o.set("modifierFn", p.ModifierFn)
-	o.set("modifierFnLock", p.ModifierFnLock)
-	o.set("modifierHyper", p.ModifierHyper)
-	o.set("modifierNumLock", p.ModifierNumLock)
-	o.set("modifierScrollLock", p.ModifierScrollLock)
-	o.set("modifierSuper", p.ModifierSuper)
-	o.set("modifierSymbol", p.ModifierSymbol)
-	o.set("modifierSymbolLock", p.ModifierSymbolLock)
+func (p EventModifierInit) JSValue() jsValue {
+	o := p.UIEventInit.JSValue()
+	o.Set("ctrlKey", p.CtrlKey)
+	o.Set("shiftKey", p.ShiftKey)
+	o.Set("altKey", p.AltKey)
+	o.Set("metaKey", p.MetaKey)
+	o.Set("modifierAltGraph", p.ModifierAltGraph)
+	o.Set("modifierCapsLock", p.ModifierCapsLock)
+	o.Set("modifierFn", p.ModifierFn)
+	o.Set("modifierFnLock", p.ModifierFnLock)
+	o.Set("modifierHyper", p.ModifierHyper)
+	o.Set("modifierNumLock", p.ModifierNumLock)
+	o.Set("modifierScrollLock", p.ModifierScrollLock)
+	o.Set("modifierSuper", p.ModifierSuper)
+	o.Set("modifierSymbol", p.ModifierSymbol)
+	o.Set("modifierSymbolLock", p.ModifierSymbolLock)
 	return o
 }
 
@@ -498,12 +497,12 @@ type WheelEventInit struct {
 	DeltaMode WheelEventDeltaMode
 }
 
-func (p WheelEventInit) toJSObject() Value {
-	o := p.MouseEventInit.toJSObject()
-	o.set("deltaX", p.DeltaX)
-	o.set("deltaY", p.DeltaY)
-	o.set("deltaZ", p.DeltaZ)
-	o.set("deltaMode", int(p.DeltaMode))
+func (p WheelEventInit) JSValue() jsValue {
+	o := p.MouseEventInit.JSValue()
+	o.Set("deltaX", p.DeltaX)
+	o.Set("deltaY", p.DeltaY)
+	o.Set("deltaZ", p.DeltaZ)
+	o.Set("deltaMode", int(p.DeltaMode))
 	return o
 }
 
@@ -517,10 +516,10 @@ type InputEventInit struct {
 	IsComposing bool
 }
 
-func (p InputEventInit) toJSObject() Value {
-	o := p.UIEventInit.toJSObject()
-	o.set("data", p.Data)
-	o.set("isComposing", p.IsComposing)
+func (p InputEventInit) JSValue() jsValue {
+	o := p.UIEventInit.JSValue()
+	o.Set("data", p.Data)
+	o.Set("isComposing", p.IsComposing)
 	return o
 }
 
@@ -537,13 +536,13 @@ type KeyboardEventInit struct {
 	IsComposing bool
 }
 
-func (p KeyboardEventInit) toJSObject() Value {
-	o := p.EventModifierInit.toJSObject()
-	o.set("key", p.Key)
-	o.set("code", p.Code)
-	o.set("location", uint(p.Location))
-	o.set("repeat", p.Repeat)
-	o.set("isComposing", p.IsComposing)
+func (p KeyboardEventInit) JSValue() jsValue {
+	o := p.EventModifierInit.JSValue()
+	o.Set("key", p.Key)
+	o.Set("code", p.Code)
+	o.Set("location", uint(p.Location))
+	o.Set("repeat", p.Repeat)
+	o.Set("isComposing", p.IsComposing)
 	return o
 }
 
@@ -556,9 +555,9 @@ type CompositionEventInit struct {
 	Data string
 }
 
-func (p CompositionEventInit) toJSObject() Value {
-	o := p.UIEventInit.toJSObject()
-	o.set("data", p.Data)
+func (p CompositionEventInit) JSValue() jsValue {
+	o := p.UIEventInit.JSValue()
+	o.Set("data", p.Data)
 	return o
 }
 
@@ -575,13 +574,13 @@ type ErrorEventInit struct {
 	Error    string // any
 }
 
-func (p ErrorEventInit) toJSObject() Value {
-	o := p.EventInit.toJSObject()
-	o.set("message", p.Message)
-	o.set("filename", p.Filename)
-	o.set("lineno", p.Lineno)
-	o.set("colno", p.Colno)
-	o.set("error", p.Error)
+func (p ErrorEventInit) JSValue() jsValue {
+	o := p.EventInit.JSValue()
+	o.Set("message", p.Message)
+	o.Set("filename", p.Filename)
+	o.Set("lineno", p.Lineno)
+	o.Set("colno", p.Colno)
+	o.Set("error", p.Error)
 	return o
 }
 
@@ -596,11 +595,11 @@ type TransitionEventInit struct {
 	PseudoElement string
 }
 
-func (p TransitionEventInit) toJSObject() Value {
-	o := p.EventInit.toJSObject()
-	o.set("propertyName", p.PropertyName)
-	o.set("elapsedTime", p.ElapsedTime)
-	o.set("pseudoElement", p.PseudoElement)
+func (p TransitionEventInit) JSValue() jsValue {
+	o := p.EventInit.JSValue()
+	o.Set("propertyName", p.PropertyName)
+	o.Set("elapsedTime", p.ElapsedTime)
+	o.Set("pseudoElement", p.PseudoElement)
 	return o
 }
 
@@ -622,17 +621,17 @@ type PointerEventInit struct {
 	IsPrimary          bool
 }
 
-func (p PointerEventInit) toJSObject() Value {
-	o := p.MouseEventInit.toJSObject()
-	o.set("pointerId", p.PointerId)
-	o.set("width", p.Width)
-	o.set("height", p.Height)
-	o.set("pressure", p.Pressure)
-	o.set("tangentialPressure", p.TangentialPressure)
-	o.set("tiltX", p.TiltX)
-	o.set("tiltY", p.TiltY)
-	o.set("twist", p.Twist)
-	o.set("pointerType", p.PointerType)
-	o.set("isPrimary", p.IsPrimary)
+func (p PointerEventInit) JSValue() jsValue {
+	o := p.MouseEventInit.JSValue()
+	o.Set("pointerId", p.PointerId)
+	o.Set("width", p.Width)
+	o.Set("height", p.Height)
+	o.Set("pressure", p.Pressure)
+	o.Set("tangentialPressure", p.TangentialPressure)
+	o.Set("tiltX", p.TiltX)
+	o.Set("tiltY", p.TiltY)
+	o.Set("twist", p.Twist)
+	o.Set("pointerType", p.PointerType)
+	o.Set("isPrimary", p.IsPrimary)
 	return o
 }
