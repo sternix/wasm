@@ -8,13 +8,20 @@ import (
 )
 
 // https://www.w3.org/TR/WebCryptoAPI/#dfn-AlgorithmIdentifier
+// TODO
 type AlgorithmIdentifier string
 
 // https://heycam.github.io/webidl/#common-DOMTimeStamp
 // typedef unsigned long long DOMTimeStamp;
 
 func NewRTCPeerConnection(configuration ...RTCConfiguration) RTCPeerConnection {
-	return nil
+	jsRTCPeerConnection := jsGlobal.get("RTCPeerConnection")
+	switch len(configuration) {
+	case 0:
+		return wrapRTCPeerConnection(jsRTCPeerConnection.jsNew())
+	default:
+		return wrapRTCPeerConnection(jsRTCPeerConnection.jsNew(configuration[0].JSValue()))
+	}
 }
 
 func NewRTCSessionDescription(descriptionInitDict RTCSessionDescriptionInit) RTCSessionDescription {
@@ -91,7 +98,8 @@ type (
 		OnConnectionStateChange(func(Event)) EventHandler
 
 		// http://w3c.github.io/webrtc-pc/#sec.cert-mgmt
-		GenerateCertificate(AlgorithmIdentifier) func() (RTCCertificate, error) // static
+		//GenerateCertificate(AlgorithmIdentifier) func() (RTCCertificate, error) // static TODO
+		GenerateCertificate(string) func() (RTCCertificate, error) // static
 
 		// http://w3c.github.io/webrtc-pc/#rtp-media-api
 		Senders() []RTCRtpSender
@@ -190,7 +198,7 @@ type (
 		Stats() func() (RTCStatsReport, error)
 
 		// http://w3c.github.io/webrtc-pc/#rtcrtpsender-interface-extensions
-		Dtmf() RTCDTMFSender
+		DTMF() RTCDTMFSender
 	}
 
 	// http://w3c.github.io/webrtc-pc/#dom-rtcrtpreceiver
@@ -627,14 +635,28 @@ type RTCConfiguration struct {
 	IceCandidatePoolSize uint8 // 0
 }
 
+func wrapRTCConfiguration(v Value) RTCConfiguration {
+	c := RTCConfiguration{}
+	if v.valid() {
+		c.IceServers = toRTCIceServerSlice(v.get("iceServers"))
+		c.IceTransportPolicy = RTCIceTransportPolicy(v.get("iceTransportPolicy").toString())
+		c.BundlePolicy = RTCBundlePolicy(v.get("bundlePolicy").toString())
+		c.RTCPMuxPolicy = RTCRtcpMuxPolicy(v.get("rtcpMuxPolicy").toString())
+		c.PeerIdentity = v.get("peerIdentity").toString()
+		c.Certificates = toRTCCertificateSlice(v.get("certificates"))
+		c.IceCandidatePoolSize = v.get("iceCandidatePoolSize").toUint8()
+	}
+	return c
+}
+
 func (p RTCConfiguration) JSValue() jsValue {
 	o := jsObject.New()
-	o.Set("iceServers", p.IceServers) // TODO
+	o.Set("iceServers", ToJSArray(p.IceServers))
 	o.Set("iceTransportPolicy", string(p.IceTransportPolicy))
 	o.Set("bundlePolicy", string(p.BundlePolicy))
 	o.Set("rtcpMuxPolicy", string(p.RTCPMuxPolicy))
 	o.Set("peerIdentity", p.PeerIdentity)
-	o.Set("certificates", p.Certificates) // TODO
+	o.Set("certificates", ToJSArray(p.Certificates))
 	o.Set("iceCandidatePoolSize", p.IceCandidatePoolSize)
 	return o
 }
@@ -712,13 +734,20 @@ func (p RTCCertificateExpiration) JSValue() jsValue {
 // http://w3c.github.io/webrtc-pc/#dom-rtcsessiondescriptioninit
 type RTCSessionDescriptionInit struct {
 	Type RTCSdpType // required
-	Sdp  string     // ""
+	SDP  string     // ""
+}
+
+func wrapRTCSessionDescriptionInit(v Value) RTCSessionDescriptionInit {
+	ret := RTCSessionDescriptionInit{}
+	ret.Type = RTCSdpType(v.get("type").toString())
+	ret.SDP = v.get("sdp").toString()
+	return ret
 }
 
 func (p RTCSessionDescriptionInit) JSValue() jsValue {
 	o := jsObject.New()
 	o.Set("type", string(p.Type))
-	o.Set("sdp", p.Sdp)
+	o.Set("sdp", p.SDP)
 	return o
 }
 
@@ -728,6 +757,17 @@ type RTCIceCandidateInit struct {
 	SdpMid           string
 	SdpMLineIndex    uint16
 	UsernameFragment string
+}
+
+func wrapRTCIceCandidateInit(v Value) RTCIceCandidateInit {
+	i := RTCIceCandidateInit{}
+	if v.valid() {
+		i.Candidate = v.get("candidate").toString()
+		i.SdpMid = v.get("sdpMid").toString()
+		i.SdpMLineIndex = v.get("sdpMLineIndex").toUint16()
+		i.UsernameFragment = v.get("usernameFragment").toString()
+	}
+	return i
 }
 
 func (p RTCIceCandidateInit) JSValue() jsValue {
@@ -1138,4 +1178,27 @@ func (p RTCErrorEventInit) JSValue() jsValue {
 	o := p.EventInit.JSValue()
 	o.Set("error", JSValueOf(p.Error))
 	return o
+}
+
+func wrapRTCIceServer(v Value) RTCIceServer {
+	return RTCIceServer{}
+}
+
+func wrapRTCCertificate(v Value) RTCCertificate {
+	return nil
+}
+func wrapRTCRtpSender(v Value) RTCRtpSender {
+	return nil
+}
+
+func wrapRTCRtpReceiver(v Value) RTCRtpReceiver {
+	return nil
+}
+
+func wrapRTCRtpTransceiver(v Value) RTCRtpTransceiver {
+	return nil
+}
+
+func wrapRTCPeerConnection(v Value) RTCPeerConnection {
+	return nil
 }

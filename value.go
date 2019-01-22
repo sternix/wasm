@@ -78,6 +78,10 @@ func (p Value) toUint16() uint16 {
 	return uint16(p.toFloat64())
 }
 
+func (p Value) toUint8() uint8 {
+	return uint8(p.toFloat64())
+}
+
 func (p Value) toUint() uint {
 	return uint(p.toFloat64())
 }
@@ -154,6 +158,47 @@ func (p Value) toSlice() []Value {
 		return slc
 	}
 	return nil
+}
+
+/*
+func nodeListToSlice(v Value) []Node {
+	if v.valid() && v.length() > 0 {
+		ret := make([]Node, v.length())
+		for i := range ret {
+			ret[i] = wrapAsNode(v.index(i))
+		}
+		return ret
+	}
+	return nil
+}
+
+
+valuePtr := reflect.ValueOf(arrPtr)
+ value := valuePtr.Elem()
+
+ value.Set(reflect.Append(value, reflect.ValueOf(55)))
+ value.Set(reflect.Append(value, reflect.ValueOf(56)))
+ value.Set(reflect.Append(value, reflect.ValueOf(57)))
+
+ fmt.Println(value.Len())
+
+
+*/
+
+// Append's Values to given slice according to wrapfn function
+// expects slice pointer
+func (p Value) AppendToSlice(t interface{}, wrapfn func(v Value) interface{}) {
+	if p.valid() && p.length() > 0 {
+		if rv := reflect.ValueOf(t); rv.Kind() == reflect.Ptr {
+			if slice := rv.Elem(); slice.Kind() == reflect.Slice {
+				for i := 0; i < p.length(); i++ {
+					if item := wrapfn(p.index(i)); item != nil {
+						slice.Set(reflect.Append(slice, reflect.ValueOf(item)))
+					}
+				}
+			}
+		}
+	}
 }
 
 // -------------8<---------------------------------------
@@ -246,6 +291,46 @@ func uint8ArrayToByteSlice(v Value) []byte {
 	ta.Call("set", jsa)
 	ta.Release()
 	return ret
+}
+
+// -------------8<---------------------------------------
+
+// expects a go slice and returns JavaScript Array with the slice values
+func ToJSArray(t interface{}) jsValue {
+	if reflect.TypeOf(t).Kind() == reflect.Slice {
+		slc := reflect.ValueOf(t)
+		l := slc.Len()
+		jsArr := jsArray.New(l)
+		if l > 0 {
+			for i := 0; i < l; i++ {
+				jsArr.SetIndex(i, JSValueOf(slc.Index(i).Interface()))
+			}
+		}
+		return jsArr
+	}
+	return js.Null()
+}
+
+// -------------8<---------------------------------------
+
+var (
+	ifaceSliceValue = reflect.ValueOf([]interface{}{})
+	ifaceSliceType  = ifaceSliceValue.Type()
+	ifaceSliceZero  = reflect.Zero(ifaceSliceType).Interface().([]interface{})
+)
+
+// expects a go slice with any type, returns new []interface{} slice with given slice's values
+func ToIfaceSlice(t interface{}) []interface{} {
+	if v := reflect.ValueOf(t); v.Kind() == reflect.Slice {
+		if l := v.Len(); l > 0 {
+			ifaceSlice := reflect.MakeSlice(ifaceSliceType, l, l)
+			for i := 0; i < l; i++ {
+				ifaceSlice.Index(i).Set(v.Index(i))
+			}
+			return ifaceSlice.Interface().([]interface{})
+		}
+	}
+	return ifaceSliceZero
 }
 
 // -------------8<---------------------------------------

@@ -95,7 +95,7 @@ func (p *consoleImpl) Table(tabularData interface{}, properties ...[]string) {
 	case 0:
 		p.call("table", tabularData)
 	default:
-		p.call("table", tabularData, sliceToJsArray(properties[0]))
+		p.call("table", tabularData, ToJSArray(properties[0]))
 	}
 }
 

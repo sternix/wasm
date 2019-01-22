@@ -9,7 +9,7 @@ type (
 
 		URL() string
 		ReadyState() WebSocketReadyState
-		BufferedAmount() int
+		BufferedAmount() uint
 		OnOpen(func(Event)) EventHandler
 		OnError(func(ErrorEvent)) EventHandler
 		OnClose(func(CloseEvent)) EventHandler
@@ -39,7 +39,7 @@ const (
 	BinaryTypeArrayBuffer BinaryType = "arraybuffer"
 )
 
-type WebSocketReadyState int
+type WebSocketReadyState uint16
 
 const (
 	WebSocketReadyStateConnecting WebSocketReadyState = 0

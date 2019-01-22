@@ -79,8 +79,8 @@ func wrapHTMLBodyElement(v Value) HTMLBodyElement {
 			htmlElementImpl: newHTMLElementImpl(v),
 			Value:           v,
 		}
-		//hbi.eventTargetImpl = hbi.htmlElementImpl.eventTargetImpl
-		//hbi.windowEventHandlersImpl = newWindowEventHandlersImpl(hbi.eventTargetImpl)
+		hbi.eventTargetImpl = hbi.htmlElementImpl.eventTargetImpl
+		hbi.windowEventHandlersImpl = newWindowEventHandlersImpl(hbi.eventTargetImpl)
 		return hbi
 	}
 	return nil

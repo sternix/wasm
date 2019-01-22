@@ -12,7 +12,7 @@ func NewWebSocket(url string, protocols ...string) WebSocket {
 		case 1:
 			return wrapWebSocket(jsWebSocket.jsNew(url, protocols[0]))
 		default:
-			return wrapWebSocket(jsWebSocket.jsNew(url, sliceToJsArray(protocols)))
+			return wrapWebSocket(jsWebSocket.jsNew(url, ToJSArray(protocols)))
 		}
 	}
 	return nil
@@ -50,11 +50,11 @@ func (p *webSocketImpl) URL() string {
 }
 
 func (p *webSocketImpl) ReadyState() WebSocketReadyState {
-	return WebSocketReadyState(p.get("readyState").toInt())
+	return WebSocketReadyState(p.get("readyState").toUint16())
 }
 
-func (p *webSocketImpl) BufferedAmount() int {
-	return p.get("bufferedAmount").toInt()
+func (p *webSocketImpl) BufferedAmount() uint {
+	return p.get("bufferedAmount").toUint()
 }
 
 func (p *webSocketImpl) OnOpen(fn func(Event)) EventHandler {
@@ -90,7 +90,7 @@ func (p *webSocketImpl) Close(args ...interface{}) {
 	case 0:
 		p.call("close")
 	case 1:
-		if code, ok := args[0].(int); ok {
+		if code, ok := args[0].(int); ok { // code is uint16
 			p.call("close", code)
 		}
 	case 2:

@@ -43,7 +43,7 @@ func wrapMessagePort(v Value) MessagePort {
 // TODO optional sequence<object> transfer = [] omitted
 func (p *messagePortImpl) PostMessage(message interface{}) {
 	//XXX: panicable
-	p.call("postMessage", message)
+	p.call("postMessage", JSValueOf(message))
 }
 
 func (p *messagePortImpl) Start() {

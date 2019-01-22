@@ -20,72 +20,6 @@ var (
 )
 
 // -------------8<---------------------------------------
-// TODO
-func sliceToJsArray(slc interface{}) jsValue {
-	switch x := slc.(type) {
-	case []string:
-		arr := jsArray.New(len(x))
-		for i, s := range x {
-			arr.SetIndex(i, s)
-		}
-		return arr
-	case []float64:
-		arr := jsArray.New(len(x))
-		for i, s := range x {
-			arr.SetIndex(i, s)
-		}
-		return arr
-	case []int:
-		arr := jsArray.New(len(x))
-		for i, s := range x {
-			arr.SetIndex(i, s)
-		}
-		return arr
-	case []uint:
-		arr := jsArray.New(len(x))
-		for i, s := range x {
-			arr.SetIndex(i, s)
-		}
-		return arr
-	case []byte:
-		arr := jsArray.New(len(x))
-		for i, s := range x {
-			arr.SetIndex(i, s)
-		}
-		return arr
-	case []Value:
-		arr := jsArray.New(len(x))
-		for i, s := range x {
-			arr.SetIndex(i, s)
-		}
-		return arr
-	case []bool:
-		arr := jsArray.New(len(x))
-		for i, b := range x {
-			arr.SetIndex(i, b)
-		}
-		return arr
-	case []Touch:
-		arr := jsArray.New(len(x))
-		for i, t := range x {
-			arr.SetIndex(i, JSValueOf(t))
-		}
-		return arr
-
-	case []MessagePort:
-		arr := jsArray.New(len(x))
-		for i, t := range x {
-			arr.SetIndex(i, JSValueOf(t))
-		}
-		return arr
-	default:
-		// TODO: remove this when all types ok
-		panic("sliceToJsArray: unregistered type")
-	}
-	//return js.Null()
-}
-
-// -------------8<---------------------------------------
 
 func nodeListToSlice(v Value) []Node {
 	if v.valid() && v.length() > 0 {
@@ -138,6 +72,15 @@ func stringSequenceToSlice(s Value) []string {
 // -------------8<---------------------------------------
 
 func boolSequenceToSlice(s Value) []bool {
+	var slc []bool
+	s.AppendToSlice(&slc, func(v Value) interface{} {
+		return v.toBool()
+	})
+	return slc
+}
+
+/*
+func boolSequenceToSlice(s Value) []bool {
 	if s.valid() && s.length() > 0 {
 		ret := make([]bool, s.length())
 		for i := range ret {
@@ -147,9 +90,19 @@ func boolSequenceToSlice(s Value) []bool {
 	}
 	return nil
 }
+*/
 
 // -------------8<---------------------------------------
 
+func floatSequenceToSlice(s Value) []float64 {
+	var slc []float64
+	s.AppendToSlice(&slc, func(v Value) interface{} {
+		return v.toFloat64()
+	})
+	return slc
+}
+
+/*
 func floatSequenceToSlice(s Value) []float64 {
 	if s.valid() && s.length() > 0 {
 		ret := make([]float64, s.length())
@@ -160,9 +113,19 @@ func floatSequenceToSlice(s Value) []float64 {
 	}
 	return nil
 }
+*/
 
 // -------------8<---------------------------------------
 
+func mutationRecordSequenceToSlice(s Value) []MutationRecord {
+	var slc []MutationRecord
+	s.AppendToSlice(&slc, func(v Value) interface{} {
+		return wrapMutationRecord(v)
+	})
+	return slc
+}
+
+/*
 func mutationRecordSequenceToSlice(v Value) []MutationRecord {
 	if v.valid() && v.length() > 0 {
 		ret := make([]MutationRecord, v.length())
@@ -173,9 +136,19 @@ func mutationRecordSequenceToSlice(v Value) []MutationRecord {
 	}
 	return nil
 }
+*/
 
 // -------------8<---------------------------------------
 
+func fileListToSlice(s Value) []File {
+	var slc []File
+	s.AppendToSlice(&slc, func(v Value) interface{} {
+		return wrapFile(v)
+	})
+	return slc
+}
+
+/*
 func fileListToSlice(v Value) []File {
 	ret := make([]File, v.length())
 	for i := range ret {
@@ -183,6 +156,7 @@ func fileListToSlice(v Value) []File {
 	}
 	return ret
 }
+*/
 
 // -------------8<---------------------------------------
 
@@ -228,6 +202,15 @@ func domTimeStampToTime(ts int) time.Time {
 // -------------8<---------------------------------------
 
 func domStringListToSlice(dsl Value) []string {
+	var slc []string
+	dsl.AppendToSlice(&slc, func(v Value) interface{} {
+		return v.call("item").toString()
+	})
+	return slc
+}
+
+/*
+func domStringListToSlice(dsl Value) []string {
 	if dsl.valid() && dsl.length() > 0 {
 		ret := make([]string, dsl.length())
 		for i := range ret {
@@ -238,9 +221,18 @@ func domStringListToSlice(dsl Value) []string {
 	}
 	return nil
 }
-
+*/
 // -------------8<---------------------------------------
 
+func touchListToSlice(s Value) []Touch {
+	var slc []Touch
+	s.AppendToSlice(&slc, func(v Value) interface{} {
+		return wrapTouch(v)
+	})
+	return slc
+}
+
+/*
 func touchListToSlice(v Value) []Touch {
 	if v.valid() && v.length() > 0 {
 		ret := make([]Touch, v.length())
@@ -251,22 +243,42 @@ func touchListToSlice(v Value) []Touch {
 	}
 	return nil
 }
+*/
 
 // -------------8<---------------------------------------
 
+func toFloat32Slice(s Value) []float32 {
+	var slc []float32
+	s.AppendToSlice(&slc, func(v Value) interface{} {
+		return v.toFloat32()
+	})
+	return slc
+}
+
+/*
 func toFloat32Slice(v Value) []float32 {
 	if v.valid() && v.length() > 0 {
 		ret := make([]float32, v.length())
 		for i := range ret {
-			ret[i] = float32(v.index(i).toFloat64())
+			ret[i] = v.index(i).toFloat32()
 		}
 		return ret
 	}
 	return nil
 }
+*/
 
 // -------------8<---------------------------------------
 
+func toFloat64Slice(s Value) []float64 {
+	var slc []float64
+	s.AppendToSlice(&slc, func(v Value) interface{} {
+		return v.toFloat64()
+	})
+	return slc
+}
+
+/*
 func toFloat64Slice(v Value) []float64 {
 	if v.valid() && v.length() > 0 {
 		ret := make([]float64, v.length())
@@ -278,6 +290,7 @@ func toFloat64Slice(v Value) []float64 {
 	}
 	return nil
 }
+*/
 
 // -------------8<---------------------------------------
 
@@ -316,6 +329,71 @@ func htmlCollectionToHTMLOptionElementSlice(v Value) []HTMLOptionElement {
 			if el, ok := c.Item(i).(HTMLOptionElement); ok {
 				ret = append(ret, el)
 			}
+		}
+		return ret
+	}
+	return nil
+}
+
+// -------------8<---------------------------------------
+
+func toRTCIceServerSlice(v Value) []RTCIceServer {
+	if slc := v.toSlice(); slc != nil {
+		ret := make([]RTCIceServer, len(slc))
+		for i, s := range slc {
+			ret[i] = wrapRTCIceServer(s)
+		}
+		return ret
+	}
+	return nil
+}
+
+// -------------8<---------------------------------------
+
+func toRTCCertificateSlice(v Value) []RTCCertificate {
+	if slc := v.toSlice(); slc != nil {
+		ret := make([]RTCCertificate, len(slc))
+		for i, s := range slc {
+			ret[i] = wrapRTCCertificate(s)
+		}
+		return ret
+	}
+	return nil
+}
+
+// -------------8<---------------------------------------
+
+func toRTCRtpSenderSlice(v Value) []RTCRtpSender {
+	if slc := v.toSlice(); slc != nil {
+		ret := make([]RTCRtpSender, len(slc))
+		for i, s := range slc {
+			ret[i] = wrapRTCRtpSender(s)
+		}
+		return ret
+	}
+	return nil
+}
+
+// -------------8<---------------------------------------
+
+func toRTCRtpReceiverSlice(v Value) []RTCRtpReceiver {
+	if slc := v.toSlice(); slc != nil {
+		ret := make([]RTCRtpReceiver, len(slc))
+		for i, s := range slc {
+			ret[i] = wrapRTCRtpReceiver(s)
+		}
+		return ret
+	}
+	return nil
+}
+
+// -------------8<---------------------------------------
+
+func toRTCRtpTransceiverSlice(v Value) []RTCRtpTransceiver {
+	if slc := v.toSlice(); slc != nil {
+		ret := make([]RTCRtpTransceiver, len(slc))
+		for i, s := range slc {
+			ret[i] = wrapRTCRtpTransceiver(s)
 		}
 		return ret
 	}

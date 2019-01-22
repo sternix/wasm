@@ -75,8 +75,7 @@ type (
 		BlendEquationSeparate(GLenum, GLenum)
 		BlendFunc(GLenum, GLenum)
 		BlendFuncSeparate(GLenum, GLenum, GLenum, GLenum)
-		BufferData(GLenum, int, GLenum)
-		BufferDataSource(GLenum, BufferSource, GLenum)
+		BufferData(GLenum, interface{}, GLenum)
 		BufferSubData(GLenum, int, BufferSource)
 		CheckFramebufferStatus(GLenum) GLenum
 		Clear(GLenum)

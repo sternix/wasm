@@ -65,10 +65,10 @@ type MessageEventInit struct {
 
 func (p MessageEventInit) JSValue() jsValue {
 	o := p.EventInit.JSValue()
-	o.Set("data", p.Data)
+	o.Set("data", JSValueOf(p.Data))
 	o.Set("origin", p.Origin)
 	o.Set("lastEventId", p.LastEventId)
 	o.Set("source", JSValueOf(p.Source))
-	o.Set("ports", sliceToJsArray(p.Ports))
+	o.Set("ports", ToJSArray(p.Ports))
 	return o
 }

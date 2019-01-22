@@ -309,12 +309,8 @@ func (p *webGLRenderingContextBaseImpl) BlendFuncSeparate(srcRGB, dstRGB, srcAlp
 	p.call("blendFuncSeparate", uint(srcRGB), uint(dstRGB), uint(srcAlpha), uint(dstAlpha))
 }
 
-func (p *webGLRenderingContextBaseImpl) BufferData(target GLenum, size int, usage GLenum) {
-	p.call("bufferData", uint(target), size, uint(usage))
-}
-
-func (p *webGLRenderingContextBaseImpl) BufferDataSource(target GLenum, data BufferSource, usage GLenum) {
-	p.call("bufferData", uint(target), JSValueOf(data), uint(usage))
+func (p *webGLRenderingContextBaseImpl) BufferData(target GLenum, sizeOrBufferSource interface{}, usage GLenum) {
+	p.call("bufferData", uint(target), JSValueOf(sizeOrBufferSource), uint(usage))
 }
 
 func (p *webGLRenderingContextBaseImpl) BufferSubData(target GLenum, offset int, data BufferSource) {

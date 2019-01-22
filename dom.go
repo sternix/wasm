@@ -674,7 +674,7 @@ func (p MutationObserverInit) JSValue() jsValue {
 	o.Set("subtree", p.SubTree)
 	o.Set("attributeOldValue", p.AttributeOldValue)
 	o.Set("characterDataOldValue", p.CharacterDataOldValue)
-	o.Set("attributeFilter", sliceToJsArray(p.AttributeFilter))
+	o.Set("attributeFilter", ToJSArray(p.AttributeFilter))
 	return o
 }
 

@@ -98,8 +98,8 @@ type TouchEventInit struct {
 
 func (p TouchEventInit) JSValue() jsValue {
 	o := p.EventModifierInit.JSValue()
-	o.Set("touches", sliceToJsArray(p.Touches))
-	o.Set("targetTouches", sliceToJsArray(p.TargetTouches))
-	o.Set("changedTouches", sliceToJsArray(p.ChangedTouches))
+	o.Set("touches", ToJSArray(p.Touches))
+	o.Set("targetTouches", ToJSArray(p.TargetTouches))
+	o.Set("changedTouches", ToJSArray(p.ChangedTouches))
 	return o
 }

@@ -341,12 +341,12 @@ func (p *documentImpl) CurrentScript() HTMLOrSVGScriptElement {
 
 func (p *documentImpl) Open(args ...string) Document {
 	switch len(args) {
+	case 0:
+		return wrapDocument(p.call("open"))
 	case 1:
 		return wrapDocument(p.call("open", args[0]))
-	case 2:
-		return wrapDocument(p.call("open", args[0], args[1]))
 	default:
-		return wrapDocument(p.call("open"))
+		return wrapDocument(p.call("open", args[0], args[1]))
 	}
 }
 
@@ -364,21 +364,30 @@ func (p *documentImpl) Close() {
 }
 
 func (p *documentImpl) Write(text ...string) {
-	if len(text) > 0 {
-		params := make([]interface{}, len(text))
-		for i, v := range text {
-			params[i] = v
-		}
+	if l := len(text); l > 0 {
+		/*
+			params := make([]interface{}, l)
+			for i, v := range text {
+				params[i] = v
+			}
+		*/
+		params := ToIfaceSlice(text)
 		p.call("write", params...)
 	}
 }
 
 func (p *documentImpl) WriteLn(text ...string) {
-	if len(text) > 0 {
-		params := make([]interface{}, len(text))
-		for i, v := range text {
-			params[i] = v
-		}
+	switch len(text) {
+	case 0:
+		p.call("writeln")
+	default:
+		/*
+			params := make([]interface{}, len(text))
+			for i, v := range text {
+				params[i] = v
+			}
+		*/
+		params := ToIfaceSlice(text)
 		p.call("writeln", params...)
 	}
 }
@@ -449,14 +458,23 @@ func (p *documentImpl) ElementFromPoint(x float64, y float64) Element {
 }
 
 func (p *documentImpl) ElementsFromPoint(x float64, y float64) []Element {
-	if sl := p.call("elementsFromPoint", x, y).toSlice(); sl != nil {
-		ret := make([]Element, len(sl))
-		for i, v := range sl {
-			ret[i] = wrapAsElement(v)
+	var slc []Element
+	s := p.call("elementsFromPoint", x, y)
+	s.AppendToSlice(&slc, func(v Value) interface{} {
+		return wrapAsElement(v)
+	})
+	return slc
+
+	/*
+		if sl := p.call("elementsFromPoint", x, y).toSlice(); sl != nil {
+			ret := make([]Element, len(sl))
+			for i, v := range sl {
+				ret[i] = wrapAsElement(v)
+			}
+			return ret
 		}
-		return ret
-	}
-	return nil
+		return nil
+	*/
 }
 
 func (p *documentImpl) CaretPositionFromPoint(x float64, y float64) CaretPosition {
@@ -768,14 +786,22 @@ func (p *rangeImpl) IntersectsNode(node Node) bool {
 }
 
 func (p *rangeImpl) ClientRects() []DOMRect {
-	if rects := p.call("getClientRects").toSlice(); rects != nil {
-		ret := make([]DOMRect, len(rects))
-		for i, rect := range rects {
-			ret[i] = wrapDOMRect(rect)
+	var slc []DOMRect
+	s := p.call("getClientRects")
+	s.AppendToSlice(&slc, func(v Value) interface{} {
+		return wrapDOMRect(v)
+	})
+	return slc
+	/*
+		if rects := p.call("getClientRects").toSlice(); rects != nil {
+			ret := make([]DOMRect, len(rects))
+			for i, rect := range rects {
+				ret[i] = wrapDOMRect(rect)
+			}
+			return ret
 		}
-		return ret
-	}
-	return nil
+		return nil
+	*/
 }
 
 func (p *rangeImpl) BoundingClientRect() DOMRect {
@@ -1369,14 +1395,22 @@ func (p *elementImpl) ElementsByClassName(names string) []Element {
 }
 
 func (p *elementImpl) ClientRects() []DOMRect {
-	if rects := p.call("getClientRects").toSlice(); rects != nil {
-		ret := make([]DOMRect, len(rects))
-		for i, rect := range rects {
-			ret[i] = wrapDOMRect(rect)
+	var slc []DOMRect
+	s := p.call("getClientRects")
+	s.AppendToSlice(&slc, func(v Value) interface{} {
+		return wrapDOMRect(v)
+	})
+	return slc
+	/*
+		if rects := p.call("getClientRects").toSlice(); rects != nil {
+			ret := make([]DOMRect, len(rects))
+			for i, rect := range rects {
+				ret[i] = wrapDOMRect(rect)
+			}
+			return ret
 		}
-		return ret
-	}
-	return nil
+		return nil
+	*/
 }
 
 func (p *elementImpl) BoundingClientRect() DOMRect {
@@ -1589,20 +1623,26 @@ func (p *domTokenListImpl) Contains(token string) bool {
 
 func (p *domTokenListImpl) Add(tokens ...string) {
 	if len(tokens) > 0 {
-		params := make([]interface{}, len(tokens))
-		for i, v := range tokens {
-			params[i] = v
-		}
+		/*
+			params := make([]interface{}, len(tokens))
+			for i, v := range tokens {
+				params[i] = v
+			}
+		*/
+		params := ToIfaceSlice(tokens)
 		p.call("add", params...)
 	}
 }
 
 func (p *domTokenListImpl) Remove(tokens ...string) {
 	if len(tokens) > 0 {
-		params := make([]interface{}, len(tokens))
-		for i, v := range tokens {
-			params[i] = v
-		}
+		/*
+			params := make([]interface{}, len(tokens))
+			for i, v := range tokens {
+				params[i] = v
+			}
+		*/
+		params := ToIfaceSlice(tokens)
 		p.call("remove", params...)
 	}
 }
@@ -1852,14 +1892,22 @@ func (p *mutationObserverImpl) Disconnect() {
 }
 
 func (p *mutationObserverImpl) TakeRecords() []MutationRecord {
-	if s := p.call("takeRecords").toSlice(); s != nil {
-		ret := make([]MutationRecord, len(s))
-		for i, v := range s {
-			ret[i] = wrapMutationRecord(v)
+	var slc []MutationRecord
+	s := p.call("takeRecords")
+	s.AppendToSlice(&slc, func(v Value) interface{} {
+		return wrapMutationRecord(v)
+	})
+	return slc
+	/*
+		if s := p.call("takeRecords").toSlice(); s != nil {
+			ret := make([]MutationRecord, len(s))
+			for i, v := range s {
+				ret[i] = wrapMutationRecord(v)
+			}
+			return ret
 		}
-		return ret
-	}
-	return nil
+		return nil
+	*/
 }
 
 // -------------8<---------------------------------------
