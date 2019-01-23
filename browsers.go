@@ -43,8 +43,8 @@ type (
 		Confirm(...string) bool
 		Prompt(...string) string // message,default
 		Print()
-		RequestAnimationFrame(FrameRequestCallback) int
-		CancelAnimationFrame(int)
+		RequestAnimationFrame(FrameRequestCallback) uint
+		CancelAnimationFrame(uint)
 
 		// https://drafts.csswg.org/cssom-view/#extensions-to-the-window-interface
 		MatchMedia(string) MediaQueryList

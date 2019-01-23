@@ -524,10 +524,12 @@ func (p *domImplementationImpl) CreateDocument(namespace string, qualifiedName s
 }
 
 func (p *domImplementationImpl) CreateHTMLDocument(title ...string) Document {
-	if len(title) > 0 {
+	switch len(title) {
+	case 0:
+		return wrapDocument(p.call("createHTMLDocument"))
+	default:
 		return wrapDocument(p.call("createHTMLDocument", title[0]))
 	}
-	return wrapDocument(p.call("createHTMLDocument"))
 }
 
 // -------------8<---------------------------------------
@@ -565,7 +567,7 @@ func (p *treeWalkerImpl) Root() Node {
 }
 
 func (p *treeWalkerImpl) WhatToShow() NodeFilterShow {
-	return NodeFilterShow(uint(p.get("whatToShow").toInt()))
+	return NodeFilterShow(uint(p.get("whatToShow").toUint()))
 }
 
 func (p *treeWalkerImpl) Filter() NodeFilter {
@@ -655,7 +657,7 @@ func (p *nodeIteratorImpl) PointerBeforeReferenceNode() bool {
 }
 
 func (p *nodeIteratorImpl) WhatToShow() NodeFilterShow {
-	return NodeFilterShow(uint(p.get("whatToShow").toInt()))
+	return NodeFilterShow(uint(p.get("whatToShow").toUint()))
 }
 
 func (p *nodeIteratorImpl) Filter() NodeFilter {
@@ -838,16 +840,16 @@ func (p *abstractRangeImpl) StartContainer() Node {
 	return wrapAsNode(p.get("startContainer"))
 }
 
-func (p *abstractRangeImpl) StartOffset() int {
-	return p.get("startOffset").toInt()
+func (p *abstractRangeImpl) StartOffset() uint {
+	return p.get("startOffset").toUint()
 }
 
 func (p *abstractRangeImpl) EndContainer() Node {
 	return wrapAsNode(p.get("endContainer"))
 }
 
-func (p *abstractRangeImpl) EndOffset() int {
-	return p.get("endOffset").toInt()
+func (p *abstractRangeImpl) EndOffset() uint {
+	return p.get("endOffset").toUint()
 }
 
 func (p *abstractRangeImpl) Collapsed() bool {
@@ -1104,11 +1106,12 @@ func (p *nodeImpl) OwnerDocument() Document {
 }
 
 func (p *nodeImpl) RootNode(options ...RootNodeOptions) Node {
-	if len(options) > 0 {
+	switch len(options) {
+	case 0:
+		return wrapAsNode(p.call("getRootNode"))
+	default:
 		return wrapAsNode(p.call("getRootNode", options[0].JSValue()))
 	}
-
-	return wrapAsNode(p.call("getRootNode"))
 }
 
 func (p *nodeImpl) ParentNode() Node {
@@ -1164,10 +1167,12 @@ func (p *nodeImpl) Normalize() {
 }
 
 func (p *nodeImpl) CloneNode(deep ...bool) Node {
-	if len(deep) > 0 {
+	switch len(deep) {
+	case 0:
+		return wrapAsNode(p.call("cloneNode"))
+	default:
 		return wrapAsNode(p.call("cloneNode", deep[0]))
 	}
-	return wrapAsNode(p.call("cloneNode"))
 }
 
 func (p *nodeImpl) IsEqualNode(otherNode Node) bool {
@@ -1199,10 +1204,7 @@ func (p *nodeImpl) IsDefaultNamespace(namespace string) bool {
 }
 
 func (p *nodeImpl) InsertBefore(node Node, child Node) Node {
-	if child != nil {
-		return wrapAsNode(p.call("insertBefore", JSValueOf(node), JSValueOf(child)))
-	}
-	return wrapAsNode(p.call("insertBefore", JSValueOf(node)))
+	return wrapAsNode(p.call("insertBefore", JSValueOf(node), JSValueOf(child)))
 }
 
 func (p *nodeImpl) AppendChild(node Node) Node {
@@ -1332,10 +1334,12 @@ func (p *elementImpl) RemoveAttributeNS(namespace string, name string) {
 }
 
 func (p *elementImpl) ToggleAttribute(name string, force ...bool) bool {
-	if len(force) > 0 {
+	switch len(force) {
+	case 0:
+		return p.call("toggleAttribute", name).toBool()
+	default:
 		return p.call("toggleAttribute", name, force[0]).toBool()
 	}
-	return p.call("toggleAttribute", name).toBool()
 }
 
 func (p *elementImpl) HasAttribute(name string) bool {
@@ -2110,15 +2114,15 @@ func wrapDOMStringMap(v Value) DOMStringMap {
 	return nil
 }
 
-func (p *domStringMapImpl) Get(name string) string {
+func (p *domStringMapImpl) DataAttr(name string) string {
 	return p.call("getDataAttr", name).toString()
 }
 
-func (p *domStringMapImpl) Set(name string, value string) {
+func (p *domStringMapImpl) SetDataAttr(name string, value string) {
 	p.call("setDataAttr", name, value)
 }
 
-func (p *domStringMapImpl) Delete(name string) {
+func (p *domStringMapImpl) RemoveDataAttr(name string) {
 	p.call("removeDataAttr", name)
 }
 
@@ -2167,7 +2171,7 @@ func (p *nodeListImpl) Length() uint {
 	return p.get("length").toUint()
 }
 
-func (p *nodeListImpl) Items() []Node {
+func (p *nodeListImpl) Entries() []Node {
 	return nodeListToSlice(p.call("entries"))
 }
 

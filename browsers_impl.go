@@ -5,13 +5,13 @@ package wasm
 // -------------8<---------------------------------------
 
 func NewPopStateEvent(typ string, p ...PopStateEventInit) PopStateEvent {
-	jsPopStateEvent := jsGlobal.get("PopStateEvent")
-	if jsPopStateEvent.valid() {
-		if len(p) > 0 {
+	if jsPopStateEvent := jsGlobal.get("PopStateEvent"); jsPopStateEvent.valid() {
+		switch len(p) {
+		case 0:
+			return wrapPopStateEvent(jsPopStateEvent.jsNew(typ))
+		default:
 			return wrapPopStateEvent(jsPopStateEvent.jsNew(typ, p[0].JSValue()))
 		}
-
-		return wrapPopStateEvent(jsPopStateEvent.jsNew(typ))
 	}
 	return nil
 
@@ -252,11 +252,11 @@ func (p *windowImpl) Print() {
 	p.call("print")
 }
 
-func (p *windowImpl) RequestAnimationFrame(cb FrameRequestCallback) int {
-	return p.call("requestAnimationFrame", cb.jsCallback()).toInt()
+func (p *windowImpl) RequestAnimationFrame(cb FrameRequestCallback) uint {
+	return p.call("requestAnimationFrame", cb.jsCallback()).toUint()
 }
 
-func (p *windowImpl) CancelAnimationFrame(handle int) {
+func (p *windowImpl) CancelAnimationFrame(handle uint) {
 	p.call("cancelAnimationFrame", handle)
 }
 

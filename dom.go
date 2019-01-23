@@ -183,9 +183,9 @@ type (
 	// https://dom.spec.whatwg.org/#abstractrange
 	AbstractRange interface {
 		StartContainer() Node
-		StartOffset() int
+		StartOffset() uint
 		EndContainer() Node
-		EndOffset() int
+		EndOffset() uint
 		Collapsed() bool
 	}
 
@@ -507,16 +507,16 @@ type (
 
 	// https://www.w3.org/TR/html52/dom.html#domstringmap
 	DOMStringMap interface {
-		Get(string) string
-		Set(string, string)
-		Delete(string)
+		DataAttr(string) string
+		SetDataAttr(string, string)
+		RemoveDataAttr(string)
 	}
 
 	// https://dom.spec.whatwg.org/#nodelist
 	NodeList interface {
 		Item(uint) Node
 		Length() uint
-		Items() []Node
+		Entries() []Node
 	}
 
 	// https://www.w3.org/TR/DOM-Parsing/
