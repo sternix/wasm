@@ -1011,16 +1011,160 @@ func (p *rtcDataChannelEventImpl) Channel() RTCDataChannel {
 
 // -------------8<---------------------------------------
 
-func wrapRTCStatsReport(v Value) RTCStatsReport {
-	// TODO
+type rtcDTMFSenderImpl struct {
+	*eventTargetImpl
+}
+
+func wrapRTCDTMFSender(v Value) RTCDTMFSender {
+	if v.valid() {
+		return &rtcDTMFSenderImpl{
+			eventTargetImpl: newEventTargetImpl(v),
+		}
+	}
 	return nil
 }
-func wrapRTCDTMFSender(v Value) RTCDTMFSender {
+
+func (p *rtcDTMFSenderImpl) InsertDTMF(tones string, args ...uint) {
+	switch len(args) {
+	case 0:
+		p.call("insertDTMF", tones)
+	case 1:
+		p.call("insertDTMF", tones, args[0]) // duration
+	case 2:
+		p.call("insertDTMF", tones, args[0], args[1]) // duration, interToneGap
+	}
+}
+
+func (p *rtcDTMFSenderImpl) OnToneChange(fn func(RTCDTMFToneChangeEvent)) EventHandler {
+	return p.On("tonechange", func(e Event) {
+		if ce, ok := e.(RTCDTMFToneChangeEvent); ok {
+			fn(ce)
+		}
+	})
+}
+
+func (p *rtcDTMFSenderImpl) CanInsertDTMF() bool {
+	return p.get("canInsertDTMF").toBool()
+}
+
+func (p *rtcDTMFSenderImpl) ToneBuffer() string {
+	return p.get("toneBuffer").toString()
+}
+
+// -------------8<---------------------------------------
+
+type rtcDTMFToneChangeEventImpl struct {
+	*eventImpl
+}
+
+func wrapRTCDTMFToneChangeEvent(v Value) RTCDTMFToneChangeEvent {
+	if v.valid() {
+		return &rtcDTMFToneChangeEventImpl{
+			eventImpl: newEventImpl(v),
+		}
+	}
+	return nil
+}
+
+func (p *rtcDTMFToneChangeEventImpl) Tone() string {
+	return p.get("tone").toString()
+}
+
+// -------------8<---------------------------------------
+
+type rtcStatsReportImpl struct {
+	Value
+}
+
+func wrapRTCStatsReport(v Value) RTCStatsReport {
 	// TODO
+	// https://www.w3.org/TR/webrtc-stats/
 	return nil
 }
 
 // -------------8<---------------------------------------
+
+type rtcStatsEventImpl struct {
+	*eventImpl
+}
+
+func wrapRTCStatsEvent(v Value) RTCStatsEvent {
+	if v.valid() {
+		return &rtcStatsEventImpl{
+			eventImpl: newEventImpl(v),
+		}
+	}
+	return nil
+}
+
+func (p *rtcStatsEventImpl) Report() RTCStatsReport {
+	return wrapRTCStatsEvent(p.get("report"))
+}
+
 // -------------8<---------------------------------------
+
+type rtcErrorImpl struct {
+	Value
+}
+
+func wrapRTCError(v Value) RTCError {
+	if v.valid() {
+		return &rtcErrorImpl{
+			Value: v,
+		}
+	}
+	return nil
+}
+
+func (p *rtcErrorImpl) ErrorDetail() RTCErrorDetailType {
+	return RTCErrorDetailType(p.get("errorDetail").toString())
+}
+
+func (p *rtcErrorImpl) SDPLineNumber() int {
+	return p.get("sdpLineNumber").toInt()
+}
+
+func (p *rtcErrorImpl) HttpRequestStatusCode() int {
+	return p.get("httpRequestStatusCode").toInt()
+}
+
+func (p *rtcErrorImpl) SCTPCauseCode() int {
+	return p.get("sctpCauseCode").toInt()
+}
+
+func (p *rtcErrorImpl) ReceivedAlert() uint {
+	return p.get("receivedAlert").toUint()
+}
+
+func (p *rtcErrorImpl) SentAlert() uint {
+	return p.get("sentAlert").toUint()
+}
+
+func (p *rtcErrorImpl) Message() string {
+	return p.get("message").toString()
+}
+
+func (p *rtcErrorImpl) Name() string {
+	return p.get("name").toString()
+}
+
 // -------------8<---------------------------------------
+
+type rtcErrorEventImpl struct {
+	*eventImpl
+}
+
+func wrapRTCErrorEvent(v Value) RTCErrorEvent {
+	if v.valid() {
+		return &rtcErrorEventImpl{
+			eventImpl: newEventImpl(v),
+		}
+	}
+	return nil
+}
+
+func (p *rtcErrorEventImpl) Error() RTCError {
+	return wrapRTCError(p.get("error"))
+}
+
 // -------------8<---------------------------------------

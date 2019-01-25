@@ -25,42 +25,82 @@ func NewRTCPeerConnection(configuration ...RTCConfiguration) RTCPeerConnection {
 }
 
 func NewRTCSessionDescription(descriptionInitDict RTCSessionDescriptionInit) RTCSessionDescription {
+	if jsSD := jsGlobal.get("RTCSessionDescription"); jsSD.valid() {
+		return wrapRTCSessionDescription(jsSD.jsNew(descriptionInitDict.JSValue()))
+	}
 	return nil
 }
 
 func NewRTCIceCandidate(candidateInitDict ...RTCIceCandidateInit) RTCIceCandidate {
+	if jsIC := jsGlobal.get("RTCIceCandidate"); jsIC.valid() {
+		switch len(candidateInitDict) {
+		case 0:
+			return wrapRTCIceCandidate(jsIC.jsNew())
+		default:
+			return wrapRTCIceCandidate(jsIC.jsNew(candidateInitDict[0].JSValue()))
+		}
+	}
 	return nil
 }
 
 func NewRTCPeerConnectionIceEvent(typ string, eventInitDict ...RTCPeerConnectionIceEventInit) RTCPeerConnectionIceEvent {
+	if jsIE := jsGlobal.get("RTCPeerConnectionIceEvent"); jsIE.valid() {
+		switch len(eventInitDict) {
+		case 0:
+			return wrapRTCPeerConnectionIceEvent(jsIE.jsNew(typ))
+		default:
+			return wrapRTCPeerConnectionIceEvent(jsIE.jsNew(typ, eventInitDict[0].JSValue()))
+		}
+	}
 	return nil
 }
 
 func NewRTCPeerConnectionIceErrorEvent(typ string, eventInitDict RTCPeerConnectionIceErrorEventInit) RTCPeerConnectionIceErrorEvent {
+	if jsEE := jsGlobal.get("RTCPeerConnectionIceErrorEvent"); jsEE.valid() {
+		return wrapRTCPeerConnectionIceErrorEvent(jsEE.jsNew(typ, eventInitDict.JSValue()))
+	}
 	return nil
 }
 
 func NewRTCTrackEvent(typ string, eventInitDict RTCTrackEventInit) RTCTrackEvent {
+	if jsTE := jsGlobal.get("RTCTrackEvent"); jsTE.valid() {
+		return wrapRTCTrackEvent(jsTE.jsNew(typ, eventInitDict.JSValue()))
+	}
 	return nil
 }
 
 func NewRTCDataChannelEvent(typ string, eventInitDict RTCDataChannelEventInit) RTCDataChannelEvent {
+	if jsCE := jsGlobal.get("RTCDataChannelEvent"); jsCE.valid() {
+		return wrapRTCDataChannelEvent(jsCE.jsNew(typ, eventInitDict.JSValue()))
+	}
 	return nil
 }
 
 func NewRTCDTMFToneChangeEvent(typ string, eventInitDict RTCDTMFToneChangeEventInit) RTCDTMFToneChangeEvent {
+	if jsTCE := jsGlobal.get("RTCDTMFToneChangeEvent"); jsTCE.valid() {
+		return wrapRTCDTMFToneChangeEvent(jsTCE.jsNew(typ, eventInitDict.JSValue()))
+	}
 	return nil
 }
 
 func NewRTCStatsEvent(typ string, eventInitDict RTCStatsEventInit) RTCStatsEvent {
+	if jsSE := jsGlobal.get("RTCStatsEvent"); jsSE.valid() {
+		return wrapRTCStatsEvent(jsSE.jsNew(typ, eventInitDict.JSValue()))
+	}
 	return nil
 }
 
 func NewRTCError(detail RTCErrorDetailType, message string) RTCError {
+	if jsE := jsGlobal.get("RTCError"); jsE.valid() {
+		return wrapRTCError(jsE.jsNew(string(detail), message))
+	}
 	return nil
 }
 
 func NewRTCErrorEvent(typ string, eventInitDict RTCErrorEventInit) RTCErrorEvent {
+	if jsEE := jsGlobal.get("RTCErrorEvent"); jsEE.valid() {
+		return wrapRTCErrorEvent(jsEE.jsNew(typ, eventInitDict.JSValue()))
+	}
 	return nil
 }
 
@@ -327,7 +367,14 @@ type (
 
 	// http://w3c.github.io/webrtc-pc/#dom-rtcstatsreport
 	RTCStatsReport interface {
-		Map() map[string]RTCStats // TODO
+		// TODO https://www.w3.org/TR/webrtc-stats/
+		/*
+			Map() map[string]RTCStats // TODO
+			Get(string) RTCStats
+			Has(string) RTCStats
+			Values() []RTCStats
+			Keys() []string
+		*/
 	}
 
 	// http://w3c.github.io/webrtc-pc/#dom-rtcstatsevent
@@ -340,9 +387,9 @@ type (
 	// http://w3c.github.io/webrtc-pc/#dfn-rtcerror
 	RTCError interface {
 		ErrorDetail() RTCErrorDetailType
-		SDPLineNumber() uint
-		HttpRequestStatusCode() uint
-		SCTPCauseCode() uint
+		SDPLineNumber() int
+		HttpRequestStatusCode() int
+		SCTPCauseCode() int
 		ReceivedAlert() uint
 		SentAlert() uint
 		Message() string
@@ -879,14 +926,11 @@ type RTCRtpSendParameters struct {
 func wrapRTCRtpSendParameters(v Value) RTCRtpSendParameters {
 	p := RTCRtpSendParameters{}
 	if v.valid() {
-		/*
-				TODO
-				p.RTCRtpParameters = wrapRTCRtpParameters(v)
-			p.TransactionId = v.get("transactionId").toString()
-			p.Encodings = encodings
-			p.DegradationPreference
-			p.Priority
-		*/
+		p.RTCRtpParameters = wrapRTCRtpParameters(v)
+		p.TransactionId = v.get("transactionId").toString()
+		p.Encodings = toRTCRtpEncodingParametersSlice(v.get("encodings"))
+		p.DegradationPreference = RTCDegradationPreference(v.get("degradationPreference").toString())
+		p.Priority = RTCPriorityType(v.get("priority").toString())
 	}
 
 	return p
@@ -965,6 +1009,21 @@ type RTCRtpEncodingParameters struct {
 	MaxBitrate            uint
 	MaxFramerate          float64
 	ScaleResolutionDownBy float64
+}
+
+func wrapRTCRtpEncodingParameters(v Value) RTCRtpEncodingParameters {
+	p := RTCRtpEncodingParameters{}
+	if v.valid() {
+		p.RTCRtpCodingParameters = wrapRTCRtpCodingParameters(v)
+		p.CodecPayloadType = v.get("codecPayloadType").toUint8()
+		p.DTX = RTCDtxStatus(v.get("dtx").toString())
+		p.Active = v.get("active").toBool()
+		p.PTime = v.get("ptime").toUint()
+		p.MaxBitrate = v.get("maxBitrate").toUint()
+		p.MaxFramerate = v.get("maxFramerate").toFloat64()
+		p.ScaleResolutionDownBy = v.get("scaleResolutionDownBy").toFloat64()
+	}
+	return p
 }
 
 func (p RTCRtpEncodingParameters) JSValue() jsValue {

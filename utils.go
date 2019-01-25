@@ -506,6 +506,19 @@ func toArrayBufferSlice(v Value) []ArrayBuffer {
 
 // -------------8<---------------------------------------
 
+func toRTCRtpEncodingParametersSlice(v Value) []RTCRtpEncodingParameters {
+	if slc := v.toSlice(); slc != nil {
+		ret := make([]RTCRtpEncodingParameters, len(slc))
+		for i, p := range slc {
+			ret[i] = wrapRTCRtpEncodingParameters(p)
+		}
+		return ret
+	}
+	return nil
+}
+
+// -------------8<---------------------------------------
+
 type DOMError uint16
 
 const (
