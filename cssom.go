@@ -38,8 +38,8 @@ type (
 
 		OwnerRule() CSSRule
 		CSSRules() []CSSRule
-		InsertRule(string, ...int) int
-		DeleteRule(int)
+		InsertRule(string, ...uint) uint
+		DeleteRule(uint)
 	}
 
 	// https://drafts.csswg.org/cssom/#cssrule
@@ -86,8 +86,8 @@ type (
 		CSSRule
 
 		CSSRules() []CSSRule
-		InsertRule(string, ...int) int
-		DeleteRule(int)
+		InsertRule(string, ...uint) uint
+		DeleteRule(uint)
 	}
 
 	// https://drafts.csswg.org/cssom/#csspagerule

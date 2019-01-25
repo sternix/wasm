@@ -151,16 +151,16 @@ func (p *cssStyleSheetImpl) CSSRules() []CSSRule {
 	return nil
 }
 
-func (p *cssStyleSheetImpl) InsertRule(rule string, index ...int) int {
+func (p *cssStyleSheetImpl) InsertRule(rule string, index ...uint) uint {
 	switch len(index) {
 	case 0:
-		return p.call("insertRule", rule).toInt()
+		return p.call("insertRule", rule).toUint()
 	default:
-		return p.call("insertRule", rule, index[0]).toInt()
+		return p.call("insertRule", rule, index[0]).toUint()
 	}
 }
 
-func (p *cssStyleSheetImpl) DeleteRule(index int) {
+func (p *cssStyleSheetImpl) DeleteRule(index uint) {
 	p.call("deleteRule", index)
 }
 
@@ -339,16 +339,16 @@ func (p *cssGroupingRuleImpl) CSSRules() []CSSRule {
 	return nil
 }
 
-func (p *cssGroupingRuleImpl) InsertRule(rule string, index ...int) int {
+func (p *cssGroupingRuleImpl) InsertRule(rule string, index ...uint) uint {
 	switch len(index) {
 	case 0:
-		return p.call("insertRule", rule).toInt()
+		return p.call("insertRule", rule).toUint()
 	default:
-		return p.call("insertRule", rule, index[0]).toInt()
+		return p.call("insertRule", rule, index[0]).toUint()
 	}
 }
 
-func (p *cssGroupingRuleImpl) DeleteRule(index int) {
+func (p *cssGroupingRuleImpl) DeleteRule(index uint) {
 	p.call("deleteRule", index)
 }
 

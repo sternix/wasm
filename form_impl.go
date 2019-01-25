@@ -1108,11 +1108,51 @@ type htmlOptionElementImpl struct {
 	*htmlElementImpl
 }
 
+/*
 func NewHTMLOptionElement() HTMLOptionElement {
 	if el := CurrentDocument().CreateElement("option"); el != nil {
 		if option, ok := el.(HTMLOptionElement); ok {
 			return option
 		}
+	}
+	return nil
+}
+*/
+
+//Named Constructor
+func NewOption(args ...interface{}) HTMLOptionElement {
+	if jsOpt := jsGlobal.get("Option"); jsOpt.valid() {
+		switch len(args) {
+		case 1:
+			if text, ok := args[0].(string); ok {
+				return wrapHTMLOptionElement(jsOpt.jsNew(text))
+			}
+		case 2:
+			if text, ok := args[0].(string); ok {
+				if value, ok := args[1].(string); ok {
+					return wrapHTMLOptionElement(jsOpt.jsNew(text, value))
+				}
+			}
+		case 3:
+			if text, ok := args[0].(string); ok {
+				if value, ok := args[1].(string); ok {
+					if defaultSelected, ok := args[2].(bool); ok {
+						return wrapHTMLOptionElement(jsOpt.jsNew(text, value, defaultSelected))
+					}
+				}
+			}
+		case 4:
+			if text, ok := args[0].(string); ok {
+				if value, ok := args[1].(string); ok {
+					if defaultSelected, ok := args[2].(bool); ok {
+						if selected, ok := args[3].(bool); ok {
+							return wrapHTMLOptionElement(jsOpt.jsNew(text, value, defaultSelected, selected))
+						}
+					}
+				}
+			}
+		}
+		return wrapHTMLOptionElement(jsOpt.jsNew())
 	}
 	return nil
 }

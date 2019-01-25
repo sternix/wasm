@@ -2249,7 +2249,7 @@ func wrapMediaError(v Value) MediaError {
 }
 
 func (p *mediaErrorImpl) Code() MediaErrorCode {
-	return MediaErrorCode(p.get("code").toInt())
+	return MediaErrorCode(p.get("code").toUint16())
 }
 
 // -------------8<---------------------------------------
@@ -2488,26 +2488,25 @@ func (p *mediaStreamTrackImpl) OnOverConstrained(fn func(Event)) EventHandler {
 // -------------8<---------------------------------------
 
 func wrapMediaTrackConstraintSet(v Value) MediaTrackConstraintSet {
+	s := MediaTrackConstraintSet{}
 	if v.valid() {
-		return MediaTrackConstraintSet{
-			Width:            wrapConstrainLong(v.get("width")),
-			Height:           wrapConstrainLong(v.get("height")),
-			AspectRatio:      wrapConstrainDouble(v.get("aspectRatio")),
-			FrameRate:        wrapConstrainDouble(v.get("frameRate")),
-			FacingMode:       wrapConstrainDOMString(v.get("facingMode")),
-			Volume:           wrapConstrainDouble(v.get("volume")),
-			SampleRate:       wrapConstrainLong(v.get("sampleRate")),
-			SampleSize:       wrapConstrainLong(v.get("sampleSize")),
-			EchoCancellation: wrapConstrainBoolean(v.get("echoCancellation")),
-			AutoGainControl:  wrapConstrainBoolean(v.get("autoGainControl")),
-			NoiseSuppression: wrapConstrainBoolean(v.get("noiseSuppression")),
-			Latency:          wrapConstrainDouble(v.get("latency")),
-			ChannelCount:     wrapConstrainLong(v.get("channelCount")),
-			DeviceId:         wrapConstrainDOMString(v.get("deviceId")),
-			GroupId:          wrapConstrainDOMString(v.get("groupId")),
-		}
+		s.Width = wrapConstrainLong(v.get("width"))
+		s.Height = wrapConstrainLong(v.get("height"))
+		s.AspectRatio = wrapConstrainDouble(v.get("aspectRatio"))
+		s.FrameRate = wrapConstrainDouble(v.get("frameRate"))
+		s.FacingMode = wrapConstrainDOMString(v.get("facingMode"))
+		s.Volume = wrapConstrainDouble(v.get("volume"))
+		s.SampleRate = wrapConstrainLong(v.get("sampleRate"))
+		s.SampleSize = wrapConstrainLong(v.get("sampleSize"))
+		s.EchoCancellation = wrapConstrainBoolean(v.get("echoCancellation"))
+		s.AutoGainControl = wrapConstrainBoolean(v.get("autoGainControl"))
+		s.NoiseSuppression = wrapConstrainBoolean(v.get("noiseSuppression"))
+		s.Latency = wrapConstrainDouble(v.get("latency"))
+		s.ChannelCount = wrapConstrainLong(v.get("channelCount"))
+		s.DeviceId = wrapConstrainDOMString(v.get("deviceId"))
+		s.GroupId = wrapConstrainDOMString(v.get("groupId"))
 	}
-	return MediaTrackConstraintSet{}
+	return s
 }
 
 func mediaTrackConstraintsSequenceToSlice(v Value) []MediaTrackConstraintSet {
@@ -2572,37 +2571,53 @@ func wrapConstrainLong(v Value) ConstrainLong {
 
 func wrapConstrainDouble(v Value) ConstrainDouble {
 	if v.valid() {
-		return ConstrainDouble{
-			DoubleRange: wrapDoubleRange(v),
-			Exact:       v.get("exact").toFloat64(),
-			Ideal:       v.get("ideal").toFloat64(),
+		switch v.jsType() {
+		case "double":
+			return v.toFloat64()
+		case "ConstrainDoubleRange": // TODO may be ConstrainDouble
+			return ConstrainDoubleRange{
+				DoubleRange: wrapDoubleRange(v),
+				Exact:       v.get("exact").toFloat64(),
+				Ideal:       v.get("ideal").toFloat64(),
+			}
 		}
 	}
-	return ConstrainDouble{}
+	return nil
 }
 
 // -------------8<---------------------------------------
 
 func wrapConstrainBoolean(v Value) ConstrainBoolean {
 	if v.valid() {
-		return ConstrainBoolean{
-			Exact: v.get("exact").toBool(),
-			Ideal: v.get("ideal").toBool(),
+		switch v.jsType() {
+		case "boolean":
+			return v.toBool()
+		case "ConstrainBooleanParameters": // TODO
+			return ConstrainBooleanParameters{
+				Exact: v.get("exact").toBool(),
+				Ideal: v.get("ideal").toBool(),
+			}
 		}
 	}
-	return ConstrainBoolean{}
+	return nil
 }
 
 // -------------8<---------------------------------------
 
 func wrapConstrainDOMString(v Value) ConstrainDOMString {
 	if v.valid() {
-		return ConstrainDOMString{
-			Exact: v.get("exact").toString(),
-			Ideal: v.get("ideal").toString(),
+		switch v.jsType() {
+		case "string":
+		//case // Sequence // TODO sequence<DOMString> ,
+		// The type name of a sequence type is the concatenation of the type name for T and the string "Sequence".
+		case "ConstrainDOMStringParameters":
+			return ConstrainDOMStringParameters{
+				Exact: v.get("exact").toString(),
+				Ideal: v.get("ideal").toString(),
+			}
 		}
 	}
-	return ConstrainDOMString{}
+	return nil
 }
 
 // -------------8<---------------------------------------

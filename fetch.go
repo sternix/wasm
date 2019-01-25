@@ -5,10 +5,6 @@ package wasm
 // https://fetch.spec.whatwg.org/#idl-index
 
 type (
-
-	// typedef (sequence<sequence<ByteString>> or record<ByteString, ByteString>) HeadersInit;
-	HeadersInit interface{}
-
 	Headers interface {
 		Append(string, string)
 		Delete(string)
@@ -17,9 +13,6 @@ type (
 		Set(string, string)
 		Entries() map[string]string
 	}
-
-	// typedef (Blob or BufferSource or FormData or URLSearchParams or ReadableStream or USVString) BodyInit;
-	BodyInit interface{}
 
 	// https://fetch.spec.whatwg.org/#body
 	Body interface {
@@ -85,8 +78,48 @@ type (
 		Has(string) bool
 		Set(string, interface{}, ...string)
 		Values() []FormDataEntryValue
+
+		JSValue() jsValue
 	}
 )
+
+// https://fetch.spec.whatwg.org/#typedefdef-headersinit
+// typedef (sequence<sequence<ByteString>> or record<ByteString, ByteString>) HeadersInit;
+// TODO
+type HeadersInit interface{}
+
+func headersInitJSValue(p HeadersInit) jsValue {
+	switch x := p.(type) {
+	case nil:
+		return jsNull
+	case []string:
+		return ToJSArray(x)
+	case map[string]string:
+		o := jsObject.New()
+		for k, v := range x {
+			o.Set(k, v)
+		}
+		return o
+	case string: // TODO ???
+		return JSValueOf(x)
+	default:
+		return jsUndefined
+	}
+}
+
+// typedef (Blob or BufferSource or FormData or URLSearchParams or ReadableStream or USVString) BodyInit;
+type BodyInit interface{}
+
+func bodyInitJSValue(p BodyInit) jsValue {
+	switch x := p.(type) {
+	case nil:
+		return jsNull
+	case Blob, BufferSource, FormData, URLSearchParams, ReadableStream, string:
+		return JSValueOf(x)
+	default:
+		return jsUndefined
+	}
+}
 
 type RequestDestination string
 
@@ -193,8 +226,8 @@ type RequestInit struct {
 func (p RequestInit) JSValue() jsValue {
 	o := jsObject.New()
 	o.Set("method", p.Method)
-	o.Set("headers", JSValueOf(p.Headers))
-	o.Set("body", JSValueOf(p.Body))
+	o.Set("headers", headersInitJSValue(p.Headers))
+	o.Set("body", bodyInitJSValue(p.Body))
 	o.Set("referrer", p.Referrer)
 	o.Set("referrerPolicy", string(p.ReferrerPolicy))
 	o.Set("mode", string(p.Mode))
@@ -220,6 +253,6 @@ func (p ResponseInit) JSValue() jsValue {
 	o := jsObject.New()
 	o.Set("status", p.Status)
 	o.Set("statusText", p.StatusText)
-	o.Set("headers", JSValueOf(p.Headers))
+	o.Set("headers", headersInitJSValue(p.Headers))
 	return o
 }

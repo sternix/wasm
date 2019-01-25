@@ -18,6 +18,8 @@ type (
 		PipeThrough(TransformStream, ...PipeToOptions) ReadableStream
 		PipeTo(WritableStream, ...PipeToOptions) Promise // Promise<void>
 		Tee()
+
+		JSValue() jsValue
 	}
 
 	GenericReader interface {

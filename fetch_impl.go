@@ -411,7 +411,7 @@ func NewHeaders(hi ...HeadersInit) Headers {
 		case 0:
 			return wrapHeaders(headers.jsNew())
 		default:
-			return wrapHeaders(headers.jsNew(hi[0]))
+			return wrapHeaders(headers.jsNew(headersInitJSValue(hi[0])))
 		}
 	}
 	return nil
@@ -424,12 +424,12 @@ func NewResponse(args ...interface{}) Response {
 			return wrapResponse(response.jsNew())
 		case 1:
 			if body, ok := args[0].(BodyInit); ok {
-				return wrapResponse(response.jsNew(body))
+				return wrapResponse(response.jsNew(bodyInitJSValue(body)))
 			}
 		case 2:
 			if body, ok := args[0].(BodyInit); ok {
 				if ri, ok := args[1].(ResponseInit); ok {
-					return wrapResponse(response.jsNew(body, ri.JSValue()))
+					return wrapResponse(response.jsNew(bodyInitJSValue(body), ri.JSValue()))
 				}
 			}
 		}

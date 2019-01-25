@@ -682,9 +682,20 @@ type RTCIceServer struct {
 	CredentialType RTCIceCredentialType // "password"
 }
 
+func wrapRTCIceServer(v Value) RTCIceServer {
+	s := RTCIceServer{}
+	if v.valid() {
+		s.URLs = stringSequenceToSlice(v.get("urls"))
+		s.Username = v.get("username").toString()
+		s.Credential = v.get("credential").toString()
+		s.CredentialType = RTCIceCredentialType(v.get("credentialType").toString())
+	}
+	return s
+}
+
 func (p RTCIceServer) JSValue() jsValue {
 	o := jsObject.New()
-	o.Set("urls", p.URLs) // TODO
+	o.Set("urls", ToJSArray(p.URLs))
 	o.Set("username", p.Username)
 	o.Set("credential", p.Credential)
 	o.Set("credentialType", string(p.CredentialType))
@@ -739,8 +750,10 @@ type RTCSessionDescriptionInit struct {
 
 func wrapRTCSessionDescriptionInit(v Value) RTCSessionDescriptionInit {
 	ret := RTCSessionDescriptionInit{}
-	ret.Type = RTCSdpType(v.get("type").toString())
-	ret.SDP = v.get("sdp").toString()
+	if v.valid() {
+		ret.Type = RTCSdpType(v.get("type").toString())
+		ret.SDP = v.get("sdp").toString()
+	}
 	return ret
 }
 
@@ -823,8 +836,8 @@ type RTCRtpTransceiverInit struct {
 func (p RTCRtpTransceiverInit) JSValue() jsValue {
 	o := jsObject.New()
 	o.Set("direction", string(p.Direction))
-	o.Set("streams", nil)       // TODO
-	o.Set("sendEncodings", nil) // TODO
+	o.Set("streams", ToJSArray(p.Streams))
+	o.Set("sendEncodings", ToJSArray(p.SendEncodings))
 	return o
 }
 
@@ -835,11 +848,21 @@ type RTCRtpParameters struct {
 	Codecs           []RTCRtpCodecParameters
 }
 
+func wrapRTCRtpParameters(v Value) RTCRtpParameters {
+	p := RTCRtpParameters{}
+	if v.valid() {
+		p.HeaderExtensions = toRTCRtpHeaderExtensionParametersSlice(v.get("headerExtensions"))
+		p.RTCP = wrapRTCRtcpParameters(v.get("rtcp"))
+		p.Codecs = toRTCRtpCodecParametersSlice(v.get("codecs"))
+	}
+	return p
+}
+
 func (p RTCRtpParameters) JSValue() jsValue {
 	o := jsObject.New()
-	o.Set("headerExtensions", p.HeaderExtensions) // TODO
-	o.Set("rtcp", p.RTCP)
-	o.Set("codecs", p.Codecs) // TODO
+	o.Set("headerExtensions", ToJSArray(p.HeaderExtensions))
+	o.Set("rtcp", p.RTCP.JSValue())
+	o.Set("codecs", ToJSArray(p.Codecs))
 	return o
 }
 
@@ -853,10 +876,26 @@ type RTCRtpSendParameters struct {
 	Priority              RTCPriorityType          // low
 }
 
+func wrapRTCRtpSendParameters(v Value) RTCRtpSendParameters {
+	p := RTCRtpSendParameters{}
+	if v.valid() {
+		/*
+				TODO
+				p.RTCRtpParameters = wrapRTCRtpParameters(v)
+			p.TransactionId = v.get("transactionId").toString()
+			p.Encodings = encodings
+			p.DegradationPreference
+			p.Priority
+		*/
+	}
+
+	return p
+}
+
 func (p RTCRtpSendParameters) JSValue() jsValue {
 	o := p.RTCRtpParameters.JSValue()
 	o.Set("transactionId", p.TransactionId)
-	o.Set("encodings", p.Encodings) // TODO
+	o.Set("encodings", ToJSArray(p.Encodings))
 	o.Set("degradationPreference", string(p.DegradationPreference))
 	o.Set("priority", string(p.Priority))
 	return o
@@ -869,15 +908,31 @@ type RTCRtpReceiveParameters struct {
 	Encodings []RTCRtpDecodingParameters
 }
 
+func wrapRTCRtpReceiveParameters(v Value) RTCRtpReceiveParameters {
+	p := RTCRtpReceiveParameters{}
+	if v.valid() {
+		p.Encodings = toRTCRtpDecodingParametersSlice(v)
+	}
+	return p
+}
+
 func (p RTCRtpReceiveParameters) JSValue() jsValue {
 	o := p.RTCRtpParameters.JSValue()
-	o.Set("encodings", p.Encodings) // TODO
+	o.Set("encodings", ToJSArray(p.Encodings))
 	return o
 }
 
 // http://w3c.github.io/webrtc-pc/#dom-rtcrtpcodingparameters
 type RTCRtpCodingParameters struct {
 	RID string
+}
+
+func wrapRTCRtpCodingParameters(v Value) RTCRtpCodingParameters {
+	p := RTCRtpCodingParameters{}
+	if v.valid() {
+		p.RID = v.get("rid").toString()
+	}
+	return p
 }
 
 func (p RTCRtpCodingParameters) JSValue() jsValue {
@@ -889,6 +944,14 @@ func (p RTCRtpCodingParameters) JSValue() jsValue {
 // http://w3c.github.io/webrtc-pc/#dom-rtcrtpdecodingparameters
 type RTCRtpDecodingParameters struct {
 	RTCRtpCodingParameters
+}
+
+func wrapRTCRtpDecodingParameters(v Value) RTCRtpDecodingParameters {
+	p := RTCRtpDecodingParameters{}
+	if v.valid() {
+		p.RTCRtpCodingParameters = wrapRTCRtpCodingParameters(v)
+	}
+	return p
 }
 
 // http://w3c.github.io/webrtc-pc/#dom-rtcrtpencodingparameters
@@ -922,6 +985,15 @@ type RTCRtcpParameters struct {
 	ReducedSize bool
 }
 
+func wrapRTCRtcpParameters(v Value) RTCRtcpParameters {
+	p := RTCRtcpParameters{}
+	if v.valid() {
+		p.CName = v.get("cname").toString()
+		p.ReducedSize = v.get("reducedSize").toBool()
+	}
+	return p
+}
+
 func (p RTCRtcpParameters) JSValue() jsValue {
 	o := jsObject.New()
 	o.Set("cname", p.CName)
@@ -934,6 +1006,17 @@ type RTCRtpHeaderExtensionParameters struct {
 	URI       string
 	Id        uint16
 	Encrypted bool // false
+}
+
+func wrapRTCRtpHeaderExtensionParameters(v Value) RTCRtpHeaderExtensionParameters {
+	p := RTCRtpHeaderExtensionParameters{}
+	if v.valid() {
+		p.URI = v.get("uri").toString()
+		p.Id = v.get("id").toUint16()
+		p.Encrypted = v.get("encrypted").toBool()
+	}
+
+	return p
 }
 
 func (p RTCRtpHeaderExtensionParameters) JSValue() jsValue {
@@ -953,6 +1036,18 @@ type RTCRtpCodecParameters struct {
 	SDPFmtpLine string
 }
 
+func wrapRTCRtpCodecParameters(v Value) RTCRtpCodecParameters {
+	p := RTCRtpCodecParameters{}
+	if v.valid() {
+		p.PayloadType = v.get("payloadType").toUint8()
+		p.MimeType = v.get("mimeType").toString()
+		p.ClockRate = v.get("clockRate").toUint()
+		p.Channels = v.get("channels").toUint16()
+		p.SDPFmtpLine = v.get("sdpFmtpLine").toString()
+	}
+	return p
+}
+
 func (p RTCRtpCodecParameters) JSValue() jsValue {
 	o := jsObject.New()
 	o.Set("payloadType", p.PayloadType)
@@ -969,19 +1064,39 @@ type RTCRtpCapabilities struct {
 	HeaderExtensions []RTCRtpHeaderExtensionCapability
 }
 
+func wrapRTCRtpCapabilities(v Value) RTCRtpCapabilities {
+	c := RTCRtpCapabilities{}
+	if v.valid() {
+		c.Codecs = toRTCRtpCodecCapabilitySlice(v.get("codecs"))
+		c.HeaderExtensions = toRTCRtpHeaderExtensionCapabilitySlice(v.get("headerExtensions"))
+	}
+	return c
+}
+
 func (p RTCRtpCapabilities) JSValue() jsValue {
 	o := jsObject.New()
-	o.Set("codecs", p.Codecs)                     // TODO
-	o.Set("headerExtensions", p.HeaderExtensions) // TODO
+	o.Set("codecs", ToJSArray(p.Codecs))
+	o.Set("headerExtensions", ToJSArray(p.HeaderExtensions))
 	return o
 }
 
 // http://w3c.github.io/webrtc-pc/#dom-rtcrtpcodeccapability
 type RTCRtpCodecCapability struct {
 	MimeType    string
-	ClockRate   string
+	ClockRate   uint
 	Channels    uint16
 	SDPFmtpLine string
+}
+
+func wrapRTCRtpCodecCapability(v Value) RTCRtpCodecCapability {
+	c := RTCRtpCodecCapability{}
+	if v.valid() {
+		c.MimeType = v.get("mimeType").toString()
+		c.ClockRate = v.get("clockRate").toUint()
+		c.Channels = v.get("channels").toUint16()
+		c.SDPFmtpLine = v.get("sdpFmtpLine").toString()
+	}
+	return c
 }
 
 func (p RTCRtpCodecCapability) JSValue() jsValue {
@@ -998,6 +1113,14 @@ type RTCRtpHeaderExtensionCapability struct {
 	URI string
 }
 
+func wrapRTCRtpHeaderExtensionCapability(v Value) RTCRtpHeaderExtensionCapability {
+	c := RTCRtpHeaderExtensionCapability{}
+	if v.valid() {
+		c.URI = v.get("uri").toString()
+	}
+	return c
+}
+
 func (p RTCRtpHeaderExtensionCapability) JSValue() jsValue {
 	o := jsObject.New()
 	o.Set("uri", p.URI)
@@ -1006,9 +1129,19 @@ func (p RTCRtpHeaderExtensionCapability) JSValue() jsValue {
 
 // http://w3c.github.io/webrtc-pc/#dom-rtcrtpcontributingsource
 type RTCRtpContributingSource struct {
-	Timestamp  float64 // required
+	Timestamp  float64 // required TODO maybe time.Time
 	Source     uint    // required
 	AudioLevel float64
+}
+
+func wrapRTCRtpContributingSource(v Value) RTCRtpContributingSource {
+	s := RTCRtpContributingSource{}
+	if v.valid() {
+		s.Timestamp = v.get("timestamp").toFloat64()
+		s.Source = v.get("source").toUint()
+		s.AudioLevel = v.get("audioLevel").toFloat64()
+	}
+	return s
 }
 
 func (p RTCRtpContributingSource) JSValue() jsValue {
@@ -1026,6 +1159,15 @@ type RTCRtpSynchronizationSource struct {
 	VoiceActivityFlag bool
 }
 
+func wrapRTCRtpSynchronizationSource(v Value) RTCRtpSynchronizationSource {
+	s := RTCRtpSynchronizationSource{}
+	if v.valid() {
+		s.RTCRtpContributingSource = wrapRTCRtpContributingSource(v)
+		s.VoiceActivityFlag = v.get("voiceActivityFlag").toBool()
+	}
+	return s
+}
+
 func (p RTCRtpSynchronizationSource) JSValue() jsValue {
 	o := p.RTCRtpContributingSource.JSValue()
 	o.Set("voiceActivityFlag", p.VoiceActivityFlag)
@@ -1036,6 +1178,15 @@ func (p RTCRtpSynchronizationSource) JSValue() jsValue {
 type RTCDtlsFingerprint struct {
 	Algorithm string
 	Value     string
+}
+
+func wrapRTCDtlsFingerprint(v Value) RTCDtlsFingerprint {
+	ret := RTCDtlsFingerprint{}
+	if v.valid() {
+		ret.Algorithm = v.get("algorithm").toString()
+		ret.Value = v.get("value").toString()
+	}
+	return ret
 }
 
 func (p RTCDtlsFingerprint) JSValue() jsValue {
@@ -1051,6 +1202,15 @@ type RTCIceParameters struct {
 	Password         string
 }
 
+func wrapRTCIceParameters(v Value) RTCIceParameters {
+	p := RTCIceParameters{}
+	if v.valid() {
+		p.UsernameFragment = v.get("usernameFragment").toString()
+		p.Password = v.get("password").toString()
+	}
+	return p
+}
+
 func (p RTCIceParameters) JSValue() jsValue {
 	o := jsObject.New()
 	o.Set("usernameFragment", p.UsernameFragment)
@@ -1062,6 +1222,15 @@ func (p RTCIceParameters) JSValue() jsValue {
 type RTCIceCandidatePair struct {
 	Local  RTCIceCandidate
 	Remote RTCIceCandidate
+}
+
+func wrapRTCIceCandidatePair(v Value) RTCIceCandidatePair {
+	p := RTCIceCandidatePair{}
+	if v.valid() {
+		p.Local = wrapRTCIceCandidate(v.get("local"))
+		p.Remote = wrapRTCIceCandidate(v.get("remote"))
+	}
+	return p
 }
 
 func (p RTCIceCandidatePair) JSValue() jsValue {
@@ -1085,7 +1254,7 @@ func (p RTCTrackEventInit) JSValue() jsValue {
 	o := p.EventInit.JSValue()
 	o.Set("receiver", JSValueOf(p.Receiver))
 	o.Set("track", JSValueOf(p.Track))
-	o.Set("streams", p.Streams) // TODO to js Array
+	o.Set("streams", ToJSArray(p.Streams))
 	o.Set("transceiver", JSValueOf(p.Transceiver))
 	return o
 }
@@ -1180,13 +1349,11 @@ func (p RTCErrorEventInit) JSValue() jsValue {
 	return o
 }
 
+/*
 func wrapRTCIceServer(v Value) RTCIceServer {
 	return RTCIceServer{}
 }
 
-func wrapRTCCertificate(v Value) RTCCertificate {
-	return nil
-}
 func wrapRTCRtpSender(v Value) RTCRtpSender {
 	return nil
 }
@@ -1202,3 +1369,4 @@ func wrapRTCRtpTransceiver(v Value) RTCRtpTransceiver {
 func wrapRTCPeerConnection(v Value) RTCPeerConnection {
 	return nil
 }
+*/

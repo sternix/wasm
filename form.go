@@ -284,14 +284,6 @@ type (
 		Index() int
 	}
 
-	// for NewOption
-	OptionParams struct {
-		Text            string
-		Value           string
-		DefaultSelected bool
-		Selected        bool
-	}
-
 	// https://www.w3.org/TR/html52/sec-forms.html#htmltextareaelement
 	HTMLTextAreaElement interface {
 		HTMLElement
@@ -436,8 +428,3 @@ const (
 	SelectionModeEnd      SelectionMode = "end"
 	SelectionModePreserve SelectionMode = "preserve"
 )
-
-// https://www.w3.org/TR/html52/sec-forms.html#htmloptionelement
-func NewOption(...OptionParams) HTMLOptionElement {
-	return nil
-}

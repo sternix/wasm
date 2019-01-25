@@ -1264,8 +1264,8 @@ func (p *wheelEventImpl) DeltaZ() float64 {
 	return p.get("deltaZ").toFloat64()
 }
 
-func (p *wheelEventImpl) DeltaMode() WheelEventDeltaMode {
-	return WheelEventDeltaMode(p.get("deltaMode").toInt())
+func (p *wheelEventImpl) DeltaMode() DeltaModeCode {
+	return DeltaModeCode(p.get("deltaMode").toUint())
 }
 
 // -------------8<---------------------------------------

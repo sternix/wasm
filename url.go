@@ -41,6 +41,8 @@ type (
 		Sort()
 		String() string
 
+		JSValue() jsValue
+
 		// TODO
 		// iterable
 	}

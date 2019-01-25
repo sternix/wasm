@@ -452,7 +452,9 @@ type (
 
 	// https://www.w3.org/TR/html52/dom.html#typedefdef-htmlorsvgscriptelement
 	// typedef (HTMLScriptElement or SVGScriptElement) HTMLOrSVGScriptElement;
-	HTMLOrSVGScriptElement interface{}
+	HTMLOrSVGScriptElement interface {
+		JSValue() jsValue
+	}
 
 	// https://html.spec.whatwg.org/multipage/dom.html#htmlelement
 	HTMLUnknownElement interface {

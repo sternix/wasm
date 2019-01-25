@@ -10,8 +10,8 @@ type (
 		AvailHeight() int
 		Width() int
 		Height() int
-		ColorDepth() int
-		PixelDepth() int
+		ColorDepth() uint
+		PixelDepth() uint
 	}
 
 	// https://drafts.csswg.org/cssom-view/#mediaquerylist
@@ -43,7 +43,9 @@ type (
 
 	// typedef (Text or Element or CSSPseudoElement or Document) GeometryNode;
 	// https://drafts.csswg.org/cssom-view/#typedefdef-geometrynode
-	GeometryNode interface{}
+	GeometryNode interface {
+		JSValue() jsValue
+	}
 
 	// https://drafts.csswg.org/cssom-view/#geometryutils
 	GeometryUtils interface {

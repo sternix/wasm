@@ -79,7 +79,7 @@ func (p *positionImpl) Coords() Coordinates {
 }
 
 func (p *positionImpl) Timestamp() time.Time {
-	return domTimeStampToTime(p.get("timestamp").toInt())
+	return domTimeStampToTime(p.get("timestamp").toUint64())
 }
 
 // -------------8<---------------------------------------

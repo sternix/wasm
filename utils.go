@@ -195,7 +195,7 @@ func jsDateToTime(v Value) time.Time {
 // -------------8<---------------------------------------
 // https://heycam.github.io/webidl/#DOMTimeStamp
 
-func domTimeStampToTime(ts int) time.Time {
+func domTimeStampToTime(ts uint64) time.Time {
 	return time.Unix(0, int64(ts)*int64(time.Millisecond))
 }
 
@@ -394,6 +394,110 @@ func toRTCRtpTransceiverSlice(v Value) []RTCRtpTransceiver {
 		ret := make([]RTCRtpTransceiver, len(slc))
 		for i, s := range slc {
 			ret[i] = wrapRTCRtpTransceiver(s)
+		}
+		return ret
+	}
+	return nil
+}
+
+// -------------8<---------------------------------------
+
+func toRTCRtpCodecCapabilitySlice(v Value) []RTCRtpCodecCapability {
+	if slc := v.toSlice(); slc != nil {
+		ret := make([]RTCRtpCodecCapability, len(slc))
+		for i, c := range slc {
+			ret[i] = wrapRTCRtpCodecCapability(c)
+		}
+		return ret
+	}
+	return nil
+}
+
+// -------------8<---------------------------------------
+
+func toRTCRtpHeaderExtensionCapabilitySlice(v Value) []RTCRtpHeaderExtensionCapability {
+	if slc := v.toSlice(); slc != nil {
+		ret := make([]RTCRtpHeaderExtensionCapability, len(slc))
+		for i, c := range slc {
+			ret[i] = wrapRTCRtpHeaderExtensionCapability(c)
+		}
+		return ret
+	}
+	return nil
+}
+
+// -------------8<---------------------------------------
+
+func toRTCRtpHeaderExtensionParametersSlice(v Value) []RTCRtpHeaderExtensionParameters {
+	if slc := v.toSlice(); slc != nil {
+		ret := make([]RTCRtpHeaderExtensionParameters, len(slc))
+		for i, p := range slc {
+			ret[i] = wrapRTCRtpHeaderExtensionParameters(p)
+		}
+		return ret
+	}
+	return nil
+}
+
+// -------------8<---------------------------------------
+
+func toRTCRtpCodecParametersSlice(v Value) []RTCRtpCodecParameters {
+	if slc := v.toSlice(); slc != nil {
+		ret := make([]RTCRtpCodecParameters, len(slc))
+		for i, p := range slc {
+			ret[i] = wrapRTCRtpCodecParameters(p)
+		}
+		return ret
+	}
+	return nil
+}
+
+// -------------8<---------------------------------------
+
+func toRTCRtpContributingSourceSlice(v Value) []RTCRtpContributingSource {
+	if slc := v.toSlice(); slc != nil {
+		ret := make([]RTCRtpContributingSource, len(slc))
+		for i, s := range slc {
+			ret[i] = wrapRTCRtpContributingSource(s)
+		}
+		return ret
+	}
+	return nil
+}
+
+// -------------8<---------------------------------------
+
+func toRTCRtpDecodingParametersSlice(v Value) []RTCRtpDecodingParameters {
+	if slc := v.toSlice(); slc != nil {
+		ret := make([]RTCRtpDecodingParameters, len(slc))
+		for i, p := range slc {
+			ret[i] = wrapRTCRtpDecodingParameters(p)
+		}
+		return ret
+	}
+	return nil
+}
+
+// -------------8<---------------------------------------
+
+func toRTCRtpSynchronizationSourceSlice(v Value) []RTCRtpSynchronizationSource {
+	if slc := v.toSlice(); slc != nil {
+		ret := make([]RTCRtpSynchronizationSource, len(slc))
+		for i, s := range slc {
+			ret[i] = wrapRTCRtpSynchronizationSource(s)
+		}
+		return ret
+	}
+	return nil
+}
+
+// -------------8<---------------------------------------
+
+func toArrayBufferSlice(v Value) []ArrayBuffer {
+	if slc := v.toSlice(); slc != nil {
+		ret := make([]ArrayBuffer, len(slc))
+		for i, a := range slc {
+			ret[i] = wrapArrayBuffer(a)
 		}
 		return ret
 	}

@@ -4,8 +4,8 @@ package wasm
 
 type (
 	// https://heycam.github.io/webidl/#BufferSource
-	BufferSource interface {
-	}
+	// typedef (ArrayBufferView or ArrayBuffer) BufferSource;
+	BufferSource interface{}
 
 	// https://heycam.github.io/webidl/#ArrayBufferView
 	ArrayBufferView interface {
@@ -15,7 +15,7 @@ type (
 	ArrayBuffer interface {
 		ByteLength() int
 		IsView(arg interface{}) bool
-		Slice(int, ...int) ArrayBuffer
+		Slice(int, ...int) ArrayBuffer // TODO maybe uint
 		ToByteSlice() []byte
 	}
 

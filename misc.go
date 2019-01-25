@@ -66,6 +66,7 @@ func (p *domExceptionImpl) Error() string {
 // it wraps known types
 // TODO remove mixins and non js types
 // TODO Array types
+// TODO ByteString
 func Wrap(v Value) interface{} {
 	switch v.jsValue.Type() {
 	case TypeUndefined, TypeNull, TypeSymbol, TypeFunction:

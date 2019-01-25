@@ -3,8 +3,11 @@
 package wasm
 
 type (
+	// https://www.w3.org/TR/2dcontext/#canvasimagesource
 	// typedef (HTMLImageElement or HTMLVideoElement or HTMLCanvasElement) CanvasImageSource;
-	CanvasImageSource interface{}
+	CanvasImageSource interface {
+		JSValue() jsValue
+	}
 
 	// https://www.w3.org/TR/2dcontext/#canvasrenderingcontext2d
 	CanvasRenderingContext2D interface {

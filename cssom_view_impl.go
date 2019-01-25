@@ -33,12 +33,12 @@ func (p *screenImpl) Height() int {
 	return p.get("height").toInt()
 }
 
-func (p *screenImpl) ColorDepth() int {
-	return p.get("colorDepth").toInt()
+func (p *screenImpl) ColorDepth() uint {
+	return p.get("colorDepth").toUint()
 }
 
-func (p *screenImpl) PixelDepth() int {
-	return p.get("pixelDepth").toInt()
+func (p *screenImpl) PixelDepth() uint {
+	return p.get("pixelDepth").toUint()
 }
 
 // -------------8<---------------------------------------

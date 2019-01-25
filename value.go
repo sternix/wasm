@@ -70,6 +70,14 @@ func (p Value) toFloat64() float64 {
 	return 0.0
 }
 
+func (p Value) toInt64() int64 {
+	return int64(p.toFloat64())
+}
+
+func (p Value) toUint64() uint64 {
+	return uint64(p.toFloat64())
+}
+
 func (p Value) toInt() int {
 	return int(p.toFloat64())
 }

@@ -14,6 +14,8 @@ type (
 		Size() uint
 		Type() string
 		Slice(...interface{}) Blob
+
+		JSValue() jsValue
 	}
 
 	// https://www.w3.org/TR/FileAPI/#typedefdef-blobpart

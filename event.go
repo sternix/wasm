@@ -256,7 +256,7 @@ type (
 		DeltaX() float64
 		DeltaY() float64
 		DeltaZ() float64
-		DeltaMode() WheelEventDeltaMode
+		DeltaMode() DeltaModeCode
 	}
 
 	// https://www.w3.org/TR/uievents/#inputevent
@@ -327,12 +327,12 @@ type (
 	}
 )
 
-type WheelEventDeltaMode int
+type DeltaModeCode uint
 
 const (
-	WheelEventDeltaModePixel WheelEventDeltaMode = 0x00
-	WheelEventDeltaModeLine  WheelEventDeltaMode = 0x01
-	WheelEventDeltaModePage  WheelEventDeltaMode = 0x02
+	DeltaModeCodePixel DeltaModeCode = 0x00
+	DeltaModeCodeLine  DeltaModeCode = 0x01
+	DeltaModeCodePage  DeltaModeCode = 0x02
 )
 
 type KeyLocationCode uint
@@ -494,7 +494,7 @@ type WheelEventInit struct {
 	DeltaX    float64
 	DeltaY    float64
 	DeltaZ    float64
-	DeltaMode WheelEventDeltaMode
+	DeltaMode DeltaModeCode
 }
 
 func (p WheelEventInit) JSValue() jsValue {
@@ -502,7 +502,7 @@ func (p WheelEventInit) JSValue() jsValue {
 	o.Set("deltaX", p.DeltaX)
 	o.Set("deltaY", p.DeltaY)
 	o.Set("deltaZ", p.DeltaZ)
-	o.Set("deltaMode", int(p.DeltaMode))
+	o.Set("deltaMode", uint(p.DeltaMode))
 	return o
 }
 

@@ -548,7 +548,9 @@ type (
 
 	// https://www.w3.org/TR/html52/semantics-embedded-content.html#typedefdef-mediaprovider
 	// typedef (MediaStream or MediaSource or Blob) MediaProvider;
-	MediaProvider interface{}
+	MediaProvider interface {
+		JSValue() jsValue
+	}
 
 	// https://www.w3.org/TR/media-source/#idl-def-mediasource
 	MediaSource interface {
@@ -672,7 +674,7 @@ const (
 	MediaNetworkStateNoSource MediaNetworkState = 3
 )
 
-type MediaErrorCode int
+type MediaErrorCode uint16
 
 const (
 	MediaErrorCodeAborted         MediaErrorCode = 1
@@ -806,19 +808,19 @@ func (p MediaTrackConstraintSet) JSValue() jsValue {
 	o := jsObject.New()
 	o.Set("width", p.Width.JSValue())
 	o.Set("height", p.Height.JSValue())
-	o.Set("aspectRatio", p.AspectRatio.JSValue())
-	o.Set("frameRate", p.FrameRate.JSValue())
-	o.Set("facingMode", p.FacingMode.JSValue())
-	o.Set("volume", p.Volume.JSValue())
+	o.Set("aspectRatio", constrainDoubleJSValue(p.AspectRatio))
+	o.Set("frameRate", constrainDoubleJSValue(p.FrameRate))
+	o.Set("facingMode", constrainDOMStringJSValue(p.FacingMode))
+	o.Set("volume", constrainDoubleJSValue(p.Volume))
 	o.Set("sampleRate", p.SampleRate.JSValue())
 	o.Set("sampleSize", p.SampleSize.JSValue())
-	o.Set("echoCancellation", p.EchoCancellation.JSValue())
-	o.Set("autoGainControl", p.AutoGainControl.JSValue())
-	o.Set("noiseSuppression", p.NoiseSuppression.JSValue())
-	o.Set("latency", p.Latency.JSValue())
+	o.Set("echoCancellation", constrainBooleanJSValue(p.EchoCancellation))
+	o.Set("autoGainControl", constrainBooleanJSValue(p.AutoGainControl))
+	o.Set("noiseSuppression", constrainBooleanJSValue(p.NoiseSuppression))
+	o.Set("latency", constrainDoubleJSValue(p.Latency))
 	o.Set("channelCount", p.ChannelCount.JSValue())
-	o.Set("deviceId", p.DeviceId.JSValue())
-	o.Set("groupId", p.GroupId.JSValue())
+	o.Set("deviceId", constrainDOMStringJSValue(p.DeviceId))
+	o.Set("groupId", constrainDOMStringJSValue(p.GroupId))
 	return o
 }
 
@@ -925,6 +927,17 @@ type ConstrainDoubleRange struct {
 	Ideal float64
 }
 
+func wrapConstrainDoubleRange(v Value) ConstrainDoubleRange {
+	d := ConstrainDoubleRange{}
+	if v.valid() {
+		d.DoubleRange = wrapDoubleRange(v)
+		d.Exact = v.get("exact").toFloat64()
+		d.Ideal = v.get("ideal").toFloat64()
+	}
+	return d
+
+}
+
 func (p ConstrainDoubleRange) JSValue() jsValue {
 	o := p.DoubleRange.JSValue()
 	o.Set("exact", p.Exact)
@@ -935,10 +948,21 @@ func (p ConstrainDoubleRange) JSValue() jsValue {
 // -------------8<---------------------------------------
 
 // https://www.w3.org/TR/mediacapture-streams/#dom-constraindouble
-/*
-typedef (double or ConstrainDoubleRange) ConstrainDouble;
-*/
-type ConstrainDouble = ConstrainDoubleRange
+// typedef (double or ConstrainDoubleRange) ConstrainDouble;
+type ConstrainDouble interface{}
+
+func constrainDoubleJSValue(p ConstrainDouble) jsValue {
+	switch x := p.(type) {
+	case nil:
+		return jsNull
+	case float64:
+		return JSValueOf(x)
+	case ConstrainDoubleRange:
+		return x.JSValue()
+	default:
+		return jsUndefined
+	}
+}
 
 // -------------8<---------------------------------------
 
@@ -958,10 +982,23 @@ func (p ConstrainDOMStringParameters) JSValue() jsValue {
 // -------------8<---------------------------------------
 
 // https://www.w3.org/TR/mediacapture-streams/#dom-constraindomstring
-/*
-typedef (DOMString or sequence<DOMString> or ConstrainDOMStringParameters) ConstrainDOMString;
-*/
-type ConstrainDOMString = ConstrainDOMStringParameters
+// typedef (DOMString or sequence<DOMString> or ConstrainDOMStringParameters) ConstrainDOMString;
+type ConstrainDOMString interface{}
+
+func constrainDOMStringJSValue(p ConstrainDOMString) jsValue {
+	switch x := p.(type) {
+	case nil:
+		return jsNull
+	case string:
+		return JSValueOf(x)
+	case []string:
+		return ToJSArray(x)
+	case ConstrainDOMStringParameters:
+		return x.JSValue()
+	default:
+		return jsUndefined
+	}
+}
 
 // -------------8<---------------------------------------
 
@@ -981,10 +1018,21 @@ func (p ConstrainBooleanParameters) JSValue() jsValue {
 // -------------8<---------------------------------------
 
 // https://www.w3.org/TR/mediacapture-streams/#dom-constrainboolean
-/*
-typedef (boolean or ConstrainBooleanParameters) ConstrainBoolean;
-*/
-type ConstrainBoolean = ConstrainBooleanParameters
+// typedef (boolean or ConstrainBooleanParameters) ConstrainBoolean;
+type ConstrainBoolean interface{}
+
+func constrainBooleanJSValue(p ConstrainBoolean) jsValue {
+	switch x := p.(type) {
+	case nil:
+		return jsNull
+	case bool:
+		return JSValueOf(x)
+	case ConstrainBooleanParameters:
+		return x.JSValue()
+	default:
+		return jsUndefined
+	}
+}
 
 // -------------8<---------------------------------------
 
