@@ -519,6 +519,19 @@ func toRTCRtpEncodingParametersSlice(v Value) []RTCRtpEncodingParameters {
 
 // -------------8<---------------------------------------
 
+func mediaTrackConstraintsSequenceToSlice(v Value) []MediaTrackConstraintSet {
+	if v.valid() {
+		ret := make([]MediaTrackConstraintSet, v.length())
+		for i := range ret {
+			ret[i] = wrapMediaTrackConstraintSet(v.index(i))
+		}
+		return ret
+	}
+	return nil
+}
+
+// -------------8<---------------------------------------
+
 type DOMError uint16
 
 const (

@@ -606,55 +606,9 @@ type (
 		Abort()
 		Remove(float64, float64)
 	}
-
-	// https://www.w3.org/TR/mediacapture-streams/#idl-def-mediastream
-	MediaStream interface {
-		EventTarget
-
-		Id() string
-		AudioTracks() []MediaStreamTrack
-		VideoTracks() []MediaStreamTrack
-		Tracks() []MediaStreamTrack
-		TrackById(string) MediaStreamTrack
-		AddTrack(MediaStreamTrack)
-		RemoveTrack(MediaStreamTrack)
-		Clone() MediaStream
-		Active() bool
-		OnAddTrack(func(Event)) EventHandler
-		OnRemoveTrack(func(Event)) EventHandler
-	}
-
-	// https://www.w3.org/TR/mediacapture-streams/#media-stream-track-interface-definition
-	MediaStreamTrack interface {
-		EventTarget
-
-		Kind() string
-		Id() string
-		Label() string
-		Enabled() bool
-		SetEnabled(bool)
-		Muted() bool
-		OnMute(func(Event)) EventHandler
-		OnUnMute(func(Event)) EventHandler
-		ReadyState() MediaStreamTrackState
-		OnEnded(func(Event)) EventHandler
-		Clone() MediaStreamTrack
-		Stop()
-		Capabilities() MediaTrackCapabilities
-		Constraints() MediaTrackConstraints
-		Settings() MediaTrackSettings
-		ApplyConstraints(...MediaTrackConstraints) func() error
-		OnOverConstrained(func(Event)) EventHandler
-	}
 )
 
-type MediaStreamTrackState string
-
-const (
-	MediaStreamTrackStateLive  MediaStreamTrackState = "live"
-	MediaStreamTrackStateEnded MediaStreamTrackState = "ended"
-)
-
+// https://www.w3.org/TR/html52/semantics-embedded-content.html#htmlmediaelement
 type MediaReadyState uint16
 
 const (
@@ -665,6 +619,7 @@ const (
 	MediaReadyStateHaveEnoughData  MediaReadyState = 4
 )
 
+// https://www.w3.org/TR/html52/semantics-embedded-content.html#htmlmediaelement
 type MediaNetworkState uint16
 
 const (
@@ -674,6 +629,7 @@ const (
 	MediaNetworkStateNoSource MediaNetworkState = 3
 )
 
+// https://www.w3.org/TR/html52/semantics-embedded-content.html#mediaerror
 type MediaErrorCode uint16
 
 const (
@@ -683,6 +639,7 @@ const (
 	MediaErrorCodeSrcNotSupported MediaErrorCode = 4
 )
 
+// https://www.w3.org/TR/html52/semantics-embedded-content.html#enumdef-canplaytyperesult
 type CanPlayTypeResult string
 
 const (
@@ -691,6 +648,7 @@ const (
 	CanPlayTypeResultProbably CanPlayTypeResult = "probably"
 )
 
+// https://www.w3.org/TR/html52/semantics-embedded-content.html#htmltrackelement
 type HTMLTrackElementReadyState uint16
 
 const (
@@ -700,6 +658,7 @@ const (
 	HTMLTrackElementReadyStateError   HTMLTrackElementReadyState = 3
 )
 
+// https://www.w3.org/TR/html52/semantics-embedded-content.html#enumdef-texttrackkind
 type TextTrackKind string
 
 const (
@@ -710,6 +669,7 @@ const (
 	TextTrackKindMetada       TextTrackKind = "metadata"
 )
 
+// https://www.w3.org/TR/html52/semantics-embedded-content.html#enumdef-texttrackmode
 type TextTrackMode string
 
 const (
@@ -718,321 +678,22 @@ const (
 	TextTrackModeShowing  TextTrackMode = "showing"
 )
 
-type MediaSourceReadyState string
+// https://www.w3.org/TR/media-source/#idl-def-readystate
+type ReadyState string
 
 const (
-	MediaSourceReadyStateClosed MediaSourceReadyState = "closed"
-	MediaSourceReadyStateOpen   MediaSourceReadyState = "open"
-	MediaSourceReadyStateEnded  MediaSourceReadyState = "ended"
+	ReadyStateClosed ReadyState = "closed"
+	ReadyStateOpen   ReadyState = "open"
+	ReadyStateEnded  ReadyState = "ended"
 )
 
+// https://www.w3.org/TR/media-source/#idl-def-appendmode
 type AppendMode string
 
 const (
 	AppendModeSegments AppendMode = "segments"
 	AppendModeSequence AppendMode = "sequence"
 )
-
-// -------------8<---------------------------------------
-
-// https://www.w3.org/TR/mediacapture-streams/#dom-mediatrackconstraints
-type MediaTrackConstraints struct {
-	MediaTrackConstraintSet
-
-	Advanced []MediaTrackConstraintSet
-}
-
-// -------------8<---------------------------------------
-
-// https://www.w3.org/TR/mediacapture-streams/#dom-mediatrackcapabilities
-type MediaTrackCapabilities struct {
-	Width            LongRange
-	Heigth           LongRange
-	AspectRatio      DoubleRange
-	FrameRate        DoubleRange
-	FacingMode       []string
-	Volume           DoubleRange
-	SampleRate       LongRange
-	SampleSize       LongRange
-	EchoCancellation []bool
-	AutoGainControl  []bool
-	NoiseSuppression []bool
-	Latency          DoubleRange
-	ChannelCount     LongRange
-	DeviceId         string
-	GroupId          string
-}
-
-func (p MediaTrackCapabilities) JSValue() jsValue {
-	o := jsObject.New()
-	o.Set("width", p.Width.JSValue())
-	o.Set("height", p.Heigth.JSValue())
-	o.Set("aspectRatio", p.AspectRatio.JSValue())
-	o.Set("frameRate", p.FrameRate.JSValue())
-	o.Set("facingMode", ToJSArray(p.FacingMode))
-	o.Set("volume", p.Volume.JSValue())
-	o.Set("sampleRate", p.SampleRate.JSValue())
-	o.Set("sampleSize", p.SampleSize.JSValue())
-	o.Set("echoCancellation", ToJSArray(p.EchoCancellation))
-	o.Set("autoGainControl", ToJSArray(p.AutoGainControl))
-	o.Set("noiseSuppression", ToJSArray(p.NoiseSuppression))
-	o.Set("latency", p.Latency.JSValue())
-	o.Set("channelCount", p.ChannelCount.JSValue())
-	o.Set("deviceId", p.DeviceId)
-	o.Set("groupId", p.GroupId)
-	return o
-}
-
-// -------------8<---------------------------------------
-
-// https://www.w3.org/TR/mediacapture-streams/#dom-mediatrackconstraintset
-type MediaTrackConstraintSet struct {
-	Width            ConstrainLong
-	Height           ConstrainLong
-	AspectRatio      ConstrainDouble
-	FrameRate        ConstrainDouble
-	FacingMode       ConstrainDOMString
-	Volume           ConstrainDouble
-	SampleRate       ConstrainLong
-	SampleSize       ConstrainLong
-	EchoCancellation ConstrainBoolean
-	AutoGainControl  ConstrainBoolean
-	NoiseSuppression ConstrainBoolean
-	Latency          ConstrainDouble
-	ChannelCount     ConstrainLong
-	DeviceId         ConstrainDOMString
-	GroupId          ConstrainDOMString
-}
-
-func (p MediaTrackConstraintSet) JSValue() jsValue {
-	o := jsObject.New()
-	o.Set("width", p.Width.JSValue())
-	o.Set("height", p.Height.JSValue())
-	o.Set("aspectRatio", constrainDoubleJSValue(p.AspectRatio))
-	o.Set("frameRate", constrainDoubleJSValue(p.FrameRate))
-	o.Set("facingMode", constrainDOMStringJSValue(p.FacingMode))
-	o.Set("volume", constrainDoubleJSValue(p.Volume))
-	o.Set("sampleRate", p.SampleRate.JSValue())
-	o.Set("sampleSize", p.SampleSize.JSValue())
-	o.Set("echoCancellation", constrainBooleanJSValue(p.EchoCancellation))
-	o.Set("autoGainControl", constrainBooleanJSValue(p.AutoGainControl))
-	o.Set("noiseSuppression", constrainBooleanJSValue(p.NoiseSuppression))
-	o.Set("latency", constrainDoubleJSValue(p.Latency))
-	o.Set("channelCount", p.ChannelCount.JSValue())
-	o.Set("deviceId", constrainDOMStringJSValue(p.DeviceId))
-	o.Set("groupId", constrainDOMStringJSValue(p.GroupId))
-	return o
-}
-
-// -------------8<---------------------------------------
-
-// https://www.w3.org/TR/mediacapture-streams/#dom-mediatracksettings
-type MediaTrackSettings struct {
-	Width            int
-	Height           int
-	AspectRatio      float64
-	FrameRate        float64
-	FacingMode       string
-	Volume           float64
-	SampleRate       int
-	SampleSize       int
-	EchoCancellation bool
-	AutoGainControl  bool
-	NoiseSuppression bool
-	Latency          float64
-	ChannelCount     int
-	DeviceId         string
-	GroupId          string
-}
-
-func (p MediaTrackSettings) JSValue() jsValue {
-	o := jsObject.New()
-	o.Set("width", p.Width)
-	o.Set("height", p.Height)
-	o.Set("aspectRatio", p.AspectRatio)
-	o.Set("frameRate", p.FrameRate)
-	o.Set("facingMode", p.FacingMode)
-	o.Set("volume", p.Volume)
-	o.Set("sampleRate", p.SampleRate)
-	o.Set("sampleSize", p.SampleSize)
-	o.Set("echoCancellation", p.EchoCancellation)
-	o.Set("autoGainControl", p.AutoGainControl)
-	o.Set("noiseSuppression", p.NoiseSuppression)
-	o.Set("latency", p.Latency)
-	o.Set("channelCount", p.ChannelCount)
-	o.Set("deviceId", p.DeviceId)
-	o.Set("groupId", p.GroupId)
-	return o
-}
-
-// -------------8<---------------------------------------
-
-// https://www.w3.org/TR/mediacapture-streams/#dom-longrange
-type LongRange struct {
-	Max int
-	Min int
-}
-
-func (p LongRange) JSValue() jsValue {
-	o := jsObject.New()
-	o.Set("max", p.Max)
-	o.Set("min", p.Min)
-	return o
-}
-
-// -------------8<---------------------------------------
-
-// https://www.w3.org/TR/mediacapture-streams/#dom-doublerange
-type DoubleRange struct {
-	Max float64
-	Min float64
-}
-
-func (p DoubleRange) JSValue() jsValue {
-	o := jsObject.New()
-	o.Set("max", p.Max)
-	o.Set("min", p.Min)
-	return o
-}
-
-// -------------8<---------------------------------------
-
-// https://www.w3.org/TR/mediacapture-streams/#dom-constrainlongrange
-type ConstrainLongRange struct {
-	LongRange
-
-	Exact int
-	Ideal int
-}
-
-func (p ConstrainLongRange) JSValue() jsValue {
-	o := p.LongRange.JSValue()
-	o.Set("exact", p.Exact)
-	o.Set("ideal", p.Ideal)
-	return o
-}
-
-// -------------8<---------------------------------------
-
-// https://www.w3.org/TR/mediacapture-streams/#dom-constrainlong
-type ConstrainLong ConstrainLongRange
-
-// -------------8<---------------------------------------
-
-// https://www.w3.org/TR/mediacapture-streams/#dom-constraindoublerange
-type ConstrainDoubleRange struct {
-	DoubleRange
-
-	Exact float64
-	Ideal float64
-}
-
-func wrapConstrainDoubleRange(v Value) ConstrainDoubleRange {
-	d := ConstrainDoubleRange{}
-	if v.valid() {
-		d.DoubleRange = wrapDoubleRange(v)
-		d.Exact = v.get("exact").toFloat64()
-		d.Ideal = v.get("ideal").toFloat64()
-	}
-	return d
-
-}
-
-func (p ConstrainDoubleRange) JSValue() jsValue {
-	o := p.DoubleRange.JSValue()
-	o.Set("exact", p.Exact)
-	o.Set("ideal", p.Ideal)
-	return o
-}
-
-// -------------8<---------------------------------------
-
-// https://www.w3.org/TR/mediacapture-streams/#dom-constraindouble
-// typedef (double or ConstrainDoubleRange) ConstrainDouble;
-type ConstrainDouble interface{}
-
-func constrainDoubleJSValue(p ConstrainDouble) jsValue {
-	switch x := p.(type) {
-	case nil:
-		return jsNull
-	case float64:
-		return JSValueOf(x)
-	case ConstrainDoubleRange:
-		return x.JSValue()
-	default:
-		return jsUndefined
-	}
-}
-
-// -------------8<---------------------------------------
-
-// https://www.w3.org/TR/mediacapture-streams/#dom-constraindomstringparameters
-type ConstrainDOMStringParameters struct {
-	Exact string
-	Ideal string
-}
-
-func (p ConstrainDOMStringParameters) JSValue() jsValue {
-	o := jsObject.New()
-	o.Set("exact", p.Exact)
-	o.Set("ideal", p.Ideal)
-	return o
-}
-
-// -------------8<---------------------------------------
-
-// https://www.w3.org/TR/mediacapture-streams/#dom-constraindomstring
-// typedef (DOMString or sequence<DOMString> or ConstrainDOMStringParameters) ConstrainDOMString;
-type ConstrainDOMString interface{}
-
-func constrainDOMStringJSValue(p ConstrainDOMString) jsValue {
-	switch x := p.(type) {
-	case nil:
-		return jsNull
-	case string:
-		return JSValueOf(x)
-	case []string:
-		return ToJSArray(x)
-	case ConstrainDOMStringParameters:
-		return x.JSValue()
-	default:
-		return jsUndefined
-	}
-}
-
-// -------------8<---------------------------------------
-
-// https://www.w3.org/TR/mediacapture-streams/#dom-constrainbooleanparameters
-type ConstrainBooleanParameters struct {
-	Exact bool
-	Ideal bool
-}
-
-func (p ConstrainBooleanParameters) JSValue() jsValue {
-	o := jsObject.New()
-	o.Set("exact", p.Exact)
-	o.Set("ideal", p.Ideal)
-	return o
-}
-
-// -------------8<---------------------------------------
-
-// https://www.w3.org/TR/mediacapture-streams/#dom-constrainboolean
-// typedef (boolean or ConstrainBooleanParameters) ConstrainBoolean;
-type ConstrainBoolean interface{}
-
-func constrainBooleanJSValue(p ConstrainBoolean) jsValue {
-	switch x := p.(type) {
-	case nil:
-		return jsNull
-	case bool:
-		return JSValueOf(x)
-	case ConstrainBooleanParameters:
-		return x.JSValue()
-	default:
-		return jsUndefined
-	}
-}
 
 // -------------8<---------------------------------------
 
@@ -1044,12 +705,4 @@ const (
 	EndOfStreamErrorDecode  EndOfStreamError = "decode"
 )
 
-// https://www.w3.org/TR/media-source/#idl-def-readystate
-
-type ReadyState string
-
-const (
-	ReadyStateClosed ReadyState = "closed"
-	ReadyStateOpen   ReadyState = "open"
-	ReadyStateEnded  ReadyState = "ended"
-)
+// -------------8<---------------------------------------
