@@ -1,5 +1,6 @@
 // +build js,wasm
 
+// https://www.w3.org/TR/IndexedDB
 package wasm
 
 type (
@@ -37,9 +38,9 @@ type (
 
 	// https://www.w3.org/TR/IndexedDB/#idbfactory
 	IDBFactory interface {
-		Open(string, ...int) IDBOpenDBRequest
+		Open(string, ...uint) IDBOpenDBRequest
 		DeleteDatabase(string) IDBOpenDBRequest
-		Cmp(interface{}, interface{}) int
+		Cmp(interface{}, interface{}) int16
 	}
 
 	// https://www.w3.org/TR/IndexedDB/#idbdatabase

@@ -134,7 +134,7 @@ func wrapIDBFactory(v Value) IDBFactory {
 	return nil
 }
 
-func (p *idbFactoryImpl) Open(name string, version ...int) IDBOpenDBRequest {
+func (p *idbFactoryImpl) Open(name string, version ...uint) IDBOpenDBRequest {
 	if len(version) > 0 {
 		return wrapIDBOpenDBRequest(p.call("open", name, version[0]))
 	}
@@ -146,8 +146,8 @@ func (p *idbFactoryImpl) DeleteDatabase(name string) IDBOpenDBRequest {
 	return wrapIDBOpenDBRequest(p.call("deleteDatabase", name))
 }
 
-func (p *idbFactoryImpl) Cmp(first interface{}, second interface{}) int {
-	return p.call("cmp", first, second).toInt()
+func (p *idbFactoryImpl) Cmp(first interface{}, second interface{}) int16 {
+	return p.call("cmp", first, second).toInt16()
 }
 
 // -------------8<---------------------------------------

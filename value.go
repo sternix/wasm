@@ -86,6 +86,10 @@ func (p Value) toUint16() uint16 {
 	return uint16(p.toFloat64())
 }
 
+func (p Value) toInt16() int16 {
+	return int16(p.toFloat64())
+}
+
 func (p Value) toUint8() uint8 {
 	return uint8(p.toFloat64())
 }
