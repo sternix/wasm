@@ -519,6 +519,19 @@ func toRTCRtpEncodingParametersSlice(v Value) []RTCRtpEncodingParameters {
 
 // -------------8<---------------------------------------
 
+func toMediaDeviceInfoSlice(v Value) []MediaDeviceInfo {
+	if slc := v.toSlice(); slc != nil {
+		ret := make([]MediaDeviceInfo, len(slc))
+		for i, p := range slc {
+			ret[i] = wrapMediaDeviceInfo(p)
+		}
+		return ret
+	}
+	return nil
+}
+
+// -------------8<---------------------------------------
+
 func mediaTrackConstraintsSequenceToSlice(v Value) []MediaTrackConstraintSet {
 	if v.valid() {
 		ret := make([]MediaTrackConstraintSet, v.length())

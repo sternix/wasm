@@ -20,6 +20,9 @@ type (
 
 		// https://www.w3.org/TR/pointerevents/#extensions-to-the-navigator-interface
 		MaxTouchPoints() int
+
+		// https://w3c.github.io/mediacapture-main/#navigator-interface-extensions
+		MediaDevices() MediaDevices
 	}
 
 	// https://www.w3.org/TR/html52/webappapis.html#navigatorid

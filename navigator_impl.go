@@ -41,6 +41,10 @@ func (p *navigatorImpl) MaxTouchPoints() int {
 	return p.get("maxTouchPoints").toInt()
 }
 
+func (p *navigatorImpl) MediaDevices() MediaDevices {
+	return wrapMediaDevices(p.get("mediaDevices"))
+}
+
 // -------------8<---------------------------------------
 
 var _ NavigatorID = &navigatorIDImpl{}

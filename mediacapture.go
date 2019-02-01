@@ -48,7 +48,7 @@ type (
 	MediaDevices interface {
 		EventTarget
 
-		OnDeviceChange() EventHandler
+		OnDeviceChange(func(Event)) EventHandler
 		EnumerateDevices() func() ([]MediaDeviceInfo, error)
 
 		// https://w3c.github.io/mediacapture-main/#mediadevices-interface-extensions
@@ -62,7 +62,7 @@ type (
 		Kind() MediaDeviceKind
 		Label() string
 		GroupId() string
-		ToJSON() []string
+		ToJSON() string
 	}
 
 	// https://w3c.github.io/mediacapture-main/#dom-inputdeviceinfo
@@ -617,6 +617,29 @@ type MediaTrackSupportedConstraints struct {
 	ChannelCount     bool
 	DeviceId         bool
 	GroupId          bool
+}
+
+func wrapMediaTrackSupportedConstraints(v Value) MediaTrackSupportedConstraints {
+	c := MediaTrackSupportedConstraints{}
+	if v.valid() {
+		c.Width = v.get("width").toBool()
+		c.Height = v.get("height").toBool()
+		c.AspectRatio = v.get("aspectRatio").toBool()
+		c.FrameRate = v.get("frameRate").toBool()
+		c.FacingMode = v.get("facingMode").toBool()
+		c.ResizeMode = v.get("resizeMode").toBool()
+		c.Volume = v.get("volume").toBool()
+		c.SampleRate = v.get("sampleRate").toBool()
+		c.SampleSize = v.get("sampleSize").toBool()
+		c.EchoCancellation = v.get("echoCancellation").toBool()
+		c.AutoGainControl = v.get("autoGainControl").toBool()
+		c.NoiseSuppression = v.get("noiseSuppression").toBool()
+		c.Latency = v.get("latency").toBool()
+		c.ChannelCount = v.get("channelCount").toBool()
+		c.DeviceId = v.get("deviceId").toBool()
+		c.GroupId = v.get("groupId").toBool()
+	}
+	return c
 }
 
 func (p MediaTrackSupportedConstraints) JSValue() jsValue {

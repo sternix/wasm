@@ -204,3 +204,119 @@ func (p *mediaStreamTrackImpl) OnOverConstrained(fn func(Event)) EventHandler {
 }
 
 // -------------8<---------------------------------------
+
+type mediaDevicesImpl struct {
+	*eventTargetImpl
+}
+
+func wrapMediaDevices(v Value) MediaDevices {
+	if v.valid() {
+		return &mediaDevicesImpl{
+			eventTargetImpl: newEventTargetImpl(v),
+		}
+	}
+	return nil
+}
+
+func (p *mediaDevicesImpl) OnDeviceChange(fn func(Event)) EventHandler {
+	return p.On("devicechange", fn)
+}
+
+func (p *mediaDevicesImpl) EnumerateDevices() func() ([]MediaDeviceInfo, error) {
+	return func() ([]MediaDeviceInfo, error) {
+		result, ok := await(p.call("enumerateDevices"))
+		if ok {
+			return toMediaDeviceInfoSlice(result), nil
+		}
+		return nil, wrapDOMException(result)
+	}
+}
+
+func (p *mediaDevicesImpl) SupportedConstraints() MediaTrackSupportedConstraints {
+	return wrapMediaTrackSupportedConstraints(p.call("getSupportedConstraints"))
+}
+
+func (p *mediaDevicesImpl) UserMedia(constraints ...MediaStreamConstraints) func() (MediaStream, error) {
+	return func() (MediaStream, error) {
+		var (
+			result Value
+			ok     bool
+		)
+
+		switch len(constraints) {
+		case 0:
+			result, ok = await(p.call("getUserMedia"))
+		default:
+			result, ok = await(p.call("getUserMedia", constraints[0].JSValue()))
+		}
+
+		if ok {
+			return wrapMediaStream(result), nil
+		}
+
+		return nil, wrapDOMException(result)
+	}
+}
+
+// -------------8<---------------------------------------
+
+type mediaDeviceInfoImpl struct {
+	Value
+}
+
+func newMediaDeviceInfoImpl(v Value) *mediaDeviceInfoImpl {
+	if v.valid() {
+		return &mediaDeviceInfoImpl{
+			Value: v,
+		}
+	}
+	return nil
+}
+
+func wrapMediaDeviceInfo(v Value) MediaDeviceInfo {
+	if ret := newMediaDeviceInfoImpl(v); ret != nil {
+		return ret
+	}
+	return nil
+}
+
+func (p *mediaDeviceInfoImpl) DeviceId() string {
+	return p.get("deviceId").toString()
+}
+
+func (p *mediaDeviceInfoImpl) Kind() MediaDeviceKind {
+	return MediaDeviceKind(p.get("kind").toString())
+}
+
+func (p *mediaDeviceInfoImpl) Label() string {
+	return p.get("label").toString()
+}
+
+func (p *mediaDeviceInfoImpl) GroupId() string {
+	return p.get("groupId").toString()
+}
+
+func (p *mediaDeviceInfoImpl) ToJSON() string {
+	return jsJSON.call("stringify", p.call("toJSON")).toString()
+}
+
+// -------------8<---------------------------------------
+
+type inputDeviceInfoImpl struct {
+	*mediaDeviceInfoImpl
+}
+
+func wrapInputDeviceInfo(v Value) InputDeviceInfo {
+	if v.valid() {
+		return &inputDeviceInfoImpl{
+			mediaDeviceInfoImpl: newMediaDeviceInfoImpl(v),
+		}
+	}
+	return nil
+}
+
+func (p *inputDeviceInfoImpl) Capabilities() MediaTrackCapabilities {
+	return wrapMediaTrackCapabilities(p.call("getCapabilities"))
+}
+
+// -------------8<---------------------------------------
