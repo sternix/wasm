@@ -7,11 +7,13 @@ import (
 )
 
 var (
-	doneCh          chan bool = make(chan bool)
-	windowOnce      sync.Once
-	docOnce         sync.Once
-	currentWindow   Window
-	currentDocument Document
+	doneCh           chan bool = make(chan bool)
+	windowOnce       sync.Once
+	docOnce          sync.Once
+	navOnce          sync.Once
+	currentWindow    Window
+	currentDocument  Document
+	currentNavigator Navigator
 )
 
 func Loop() {
@@ -42,6 +44,15 @@ func CurrentDocument() Document {
 		}
 	})
 	return currentDocument
+}
+
+func CurrentNavigator() Navigator {
+	navOnce.Do(func() {
+		if currentNavigator == nil {
+			currentNavigator = CurrentWindow().Navigator()
+		}
+	})
+	return currentNavigator
 }
 
 func SessionStorage() Storage {

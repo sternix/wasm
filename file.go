@@ -31,7 +31,7 @@ type (
 		ReadAsText(Blob, ...string)
 		ReadAsDataURL(Blob)
 		Abort()
-		ReadyState() FileReaderState
+		ReadyState() FileReaderReadyState
 
 		// File or Blob data
 		Result() []byte // (DOMString or ArrayBuffer)? , if result is string convert to []byte
@@ -70,12 +70,12 @@ const (
 	EndingTypeNative      EndingType = "native"
 )
 
-type FileReaderState uint
+type FileReaderReadyState uint16
 
 const (
-	FileReaderStateEmpty   FileReaderState = 0
-	FileReaderStateLoading FileReaderState = 1
-	FileReaderStateDone    FileReaderState = 2
+	FileReaderReadyStateEmpty   FileReaderReadyState = 0
+	FileReaderReadyStateLoading FileReaderReadyState = 1
+	FileReaderReadyStateDone    FileReaderReadyState = 2
 )
 
 // -------------8<---------------------------------------

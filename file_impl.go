@@ -113,8 +113,8 @@ func (p *fileReaderImpl) Abort() {
 	p.call("abort")
 }
 
-func (p *fileReaderImpl) ReadyState() FileReaderState {
-	return FileReaderState(p.get("readyState").toInt())
+func (p *fileReaderImpl) ReadyState() FileReaderReadyState {
+	return FileReaderReadyState(p.get("readyState").toUint16())
 }
 
 // TODO
