@@ -3,12 +3,6 @@
 package wasm
 
 type (
-	// https://www.w3.org/TR/FileAPI/#dfn-file
-	File interface {
-		Name() string
-		LastModified() int
-	}
-
 	// https://www.w3.org/TR/FileAPI/#dfn-Blob
 	Blob interface {
 		Size() uint
@@ -16,6 +10,14 @@ type (
 		Slice(...interface{}) Blob
 
 		JSValue() jsValue
+	}
+
+	// https://www.w3.org/TR/FileAPI/#dfn-file
+	File interface {
+		Blob
+
+		Name() string
+		LastModified() int
 	}
 
 	// https://www.w3.org/TR/FileAPI/#typedefdef-blobpart

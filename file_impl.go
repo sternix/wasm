@@ -5,13 +5,13 @@ package wasm
 // -------------8<---------------------------------------
 
 type fileImpl struct {
-	Value
+	*blobImpl
 }
 
 func wrapFile(v Value) File {
 	if v.valid() {
 		return &fileImpl{
-			Value: v,
+			newBlobImpl(v),
 		}
 	}
 	return nil
@@ -31,11 +31,18 @@ type blobImpl struct {
 	Value
 }
 
-func wrapBlob(v Value) Blob {
+func newBlobImpl(v Value) *blobImpl {
 	if v.valid() {
 		return &blobImpl{
 			Value: v,
 		}
+	}
+	return nil
+}
+
+func wrapBlob(v Value) Blob {
+	if ret := newBlobImpl(v); ret != nil {
+		return ret
 	}
 	return nil
 }
