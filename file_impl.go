@@ -141,28 +141,52 @@ func (p *fileReaderImpl) Error() DOMException {
 	return wrapDOMException(p.get("error"))
 }
 
-func (p *fileReaderImpl) OnLoadStart(fn func(Event)) EventHandler {
-	return p.On("loadstart", fn)
+func (p *fileReaderImpl) OnLoadStart(fn func(ProgressEvent)) EventHandler {
+	return p.On("loadstart", func(e Event) {
+		if pe, ok := e.(ProgressEvent); ok {
+			fn(pe)
+		}
+	})
 }
 
-func (p *fileReaderImpl) OnProgress(fn func(Event)) EventHandler {
-	return p.On("progress", fn)
+func (p *fileReaderImpl) OnProgress(fn func(ProgressEvent)) EventHandler {
+	return p.On("progress", func(e Event) {
+		if pe, ok := e.(ProgressEvent); ok {
+			fn(pe)
+		}
+	})
 }
 
-func (p *fileReaderImpl) OnLoad(fn func(Event)) EventHandler {
-	return p.On("load", fn)
+func (p *fileReaderImpl) OnLoad(fn func(ProgressEvent)) EventHandler {
+	return p.On("load", func(e Event) {
+		if pe, ok := e.(ProgressEvent); ok {
+			fn(pe)
+		}
+	})
 }
 
-func (p *fileReaderImpl) OnAbort(fn func(Event)) EventHandler {
-	return p.On("abort", fn)
+func (p *fileReaderImpl) OnAbort(fn func(ProgressEvent)) EventHandler {
+	return p.On("abort", func(e Event) {
+		if pe, ok := e.(ProgressEvent); ok {
+			fn(pe)
+		}
+	})
 }
 
-func (p *fileReaderImpl) OnError(fn func(Event)) EventHandler {
-	return p.On("error", fn)
+func (p *fileReaderImpl) OnError(fn func(ProgressEvent)) EventHandler {
+	return p.On("error", func(e Event) {
+		if pe, ok := e.(ProgressEvent); ok {
+			fn(pe)
+		}
+	})
 }
 
-func (p *fileReaderImpl) OnLoadEnd(fn func(Event)) EventHandler {
-	return p.On("loadend", fn)
+func (p *fileReaderImpl) OnLoadEnd(fn func(ProgressEvent)) EventHandler {
+	return p.On("loadend", func(e Event) {
+		if pe, ok := e.(ProgressEvent); ok {
+			fn(pe)
+		}
+	})
 }
 
 // -------------8<---------------------------------------

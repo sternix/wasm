@@ -39,12 +39,12 @@ type (
 		Result() []byte // (DOMString or ArrayBuffer)? , if result is string convert to []byte
 		Error() DOMException
 
-		OnLoadStart(func(Event)) EventHandler
-		OnProgress(func(Event)) EventHandler
-		OnLoad(func(Event)) EventHandler
-		OnAbort(func(Event)) EventHandler
-		OnError(func(Event)) EventHandler
-		OnLoadEnd(func(Event)) EventHandler
+		OnLoadStart(func(ProgressEvent)) EventHandler
+		OnProgress(func(ProgressEvent)) EventHandler
+		OnLoad(func(ProgressEvent)) EventHandler
+		OnAbort(func(ProgressEvent)) EventHandler
+		OnError(func(ProgressEvent)) EventHandler
+		OnLoadEnd(func(ProgressEvent)) EventHandler
 	}
 
 	// https://www.w3.org/TR/FileAPI/#dfn-FileReaderSync
