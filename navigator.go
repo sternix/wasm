@@ -23,6 +23,9 @@ type (
 
 		// https://w3c.github.io/mediacapture-main/#navigator-interface-extensions
 		MediaDevices() MediaDevices
+
+		// https://w3c.github.io/permissions/#navigator-and-workernavigator-extension
+		Permissions() Permissions
 	}
 
 	// https://www.w3.org/TR/html52/webappapis.html#navigatorid

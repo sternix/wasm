@@ -45,6 +45,10 @@ func (p *navigatorImpl) MediaDevices() MediaDevices {
 	return wrapMediaDevices(p.get("mediaDevices"))
 }
 
+func (p *navigatorImpl) Permissions() Permissions {
+	return wrapPermissions(p.get("permissions"))
+}
+
 // -------------8<---------------------------------------
 
 var _ NavigatorID = &navigatorIDImpl{}

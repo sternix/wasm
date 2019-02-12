@@ -93,6 +93,9 @@ type (
 		NavigatorLanguage
 		NavigatorOnLine
 		NavigatorConcurrentHardware
+
+		// https://w3c.github.io/permissions/#navigator-and-workernavigator-extension
+		Permissions() Permissions
 	}
 
 	// https://w3c.github.io/workers/#workerlocation
@@ -128,8 +131,16 @@ type WorkerOptions struct {
 
 func (p WorkerOptions) JSValue() jsValue {
 	o := jsObject.New()
+	if p.Type == "" {
+		p.Type = WorkerTypeClassic
+	}
 	o.Set("type", string(p.Type))
+
+	if p.Credentials == "" {
+		p.Credentials = RequestCredentialsOmit
+	}
 	o.Set("credentials", string(p.Credentials))
+
 	o.Set("name", p.Name)
 	return o
 }

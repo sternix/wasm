@@ -207,6 +207,7 @@ const (
 
 // -------------8<---------------------------------------
 
+// https://fetch.spec.whatwg.org/#requestinit
 type RequestInit struct {
 	Method         string
 	Headers        HeadersInit

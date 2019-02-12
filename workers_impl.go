@@ -313,6 +313,7 @@ type workerNavigatorImpl struct {
 	*navigatorLanguageImpl
 	*navigatorOnLineImpl
 	*navigatorConcurrentHardwareImpl
+	Value
 }
 
 func wrapWorkerNavigator(v Value) WorkerNavigator {
@@ -322,9 +323,14 @@ func wrapWorkerNavigator(v Value) WorkerNavigator {
 			navigatorLanguageImpl:           newNavigatorLanguageImpl(v),
 			navigatorOnLineImpl:             newNavigatorOnLineImpl(v),
 			navigatorConcurrentHardwareImpl: newNavigatorConcurrentHardwareImpl(v),
+			Value:                           v,
 		}
 	}
 	return nil
+}
+
+func (p *workerNavigatorImpl) Permissions() Permissions {
+	return wrapPermissions(p.get("permissions"))
 }
 
 // -------------8<---------------------------------------

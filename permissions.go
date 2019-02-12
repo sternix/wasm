@@ -1,20 +1,55 @@
 // +build js,wasm
 
+// https://w3c.github.io/permissions/#idl-index
 package wasm
 
-// https://w3c.github.io/permissions/#idl-index
+type (
+	PermissionStatus interface {
+		EventTarget
 
-/*
-TODO
-*/
+		State() PermissionState
+		OnChange(func(Event)) EventHandler
+	}
 
-type PermissionDescriptor struct {
-	Name PermissionName
+	Permissions interface {
+		Query(PermissionDescriptor) func() (PermissionStatus, error)
+	}
+
+	PermissionDescriptor interface {
+		Name() PermissionName
+		JSValue() jsValue
+	}
+
+	PushPermissionDescriptor interface {
+		PermissionDescriptor
+
+		UserVisibleOnly() bool
+	}
+
+	MidiPermissionDescriptor interface {
+		PermissionDescriptor
+
+		Sysex() bool
+	}
+
+	DevicePermissionDescriptor interface {
+		PermissionDescriptor
+
+		DeviceId() string
+	}
+)
+
+type PermissionSetParameters struct {
+	Descriptor PermissionDescriptor
+	State      PermissionState
+	OneRealm   bool
 }
 
-func (p PermissionDescriptor) JSValue() jsValue {
+func (p PermissionSetParameters) JSValue() jsValue {
 	o := jsObject.New()
-	o.Set("name", string(p.Name))
+	o.Set("descriptor", p.Descriptor.JSValue())
+	o.Set("state", string(p.State))
+	o.Set("oneRealm", p.OneRealm)
 	return o
 }
 
@@ -29,6 +64,7 @@ const (
 	PermissionNameMicrophone         PermissionName = "microphone"
 	PermissionNameSpeaker            PermissionName = "speaker"
 	PermissionNameDeviceInfo         PermissionName = "device-info"
+	PermissionNameBackgroundFetch    PermissionName = "background-fetch"
 	PermissionNameBackgroundSync     PermissionName = "background-sync"
 	PermissionNameBluetooth          PermissionName = "bluetooth"
 	PermissionNamePersistentStorage  PermissionName = "persistent-storage"
@@ -36,4 +72,14 @@ const (
 	PermissionNameAccelerometer      PermissionName = "accelerometer"
 	PermissionNameGyroscope          PermissionName = "gyroscope"
 	PermissionNameMagnetometer       PermissionName = "magnetometer"
+	PermissionNameClipboard          PermissionName = "clipboard"
+	PermissionNameDisplay            PermissionName = "display"
+)
+
+type PermissionState string
+
+const (
+	PermissionStateGranted PermissionState = "granted"
+	PermissionStateDenied  PermissionState = "denied"
+	PermissionStatePrompt  PermissionState = "prompt"
 )
