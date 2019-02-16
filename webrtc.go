@@ -647,30 +647,6 @@ const (
 	RTCErrorDetailTypeHardwareEncoderError        RTCErrorDetailType = "hardware-encoder-error"
 )
 
-// https://www.w3.org/TR/webrtc-stats/#dom-rtcstatstype
-
-type RTCStatsType string
-
-const (
-	RTCStatsTypeCodec             RTCStatsType = "codec"
-	RTCStatsTypeInboundRtp        RTCStatsType = "inbound-rtp"
-	RTCStatsTypeOutboundRtp       RTCStatsType = "outbound-rtp"
-	RTCStatsTypeRemoteInboundRtp  RTCStatsType = "remote-inbound-rtp"
-	RTCStatsTypeRemoteOutboundRtp RTCStatsType = "remote-outbound-rtp"
-	RTCStatsTypeCSRC              RTCStatsType = "csrc"
-	RTCStatsTypePeerConnection    RTCStatsType = "peer-connection"
-	RTCStatsTypeDataChannel       RTCStatsType = "data-channel"
-	RTCStatsTypeStream            RTCStatsType = "stream"
-	RTCStatsTypeTrack             RTCStatsType = "track"
-	RTCStatsTypeSender            RTCStatsType = "sender"
-	RTCStatsTypeReceiver          RTCStatsType = "receiver"
-	RTCStatsTypeTransport         RTCStatsType = "transport"
-	RTCStatsTypeCandidatePair     RTCStatsType = "candidate-pair"
-	RTCStatsTypeLocalCandidate    RTCStatsType = "local-candidate"
-	RTCStatsTypeRemoteCandidate   RTCStatsType = "remote-candidate"
-	RTCStatsTypeCertificate       RTCStatsType = "certificate"
-)
-
 // http://w3c.github.io/webrtc-pc/#dom-rtcconfiguration
 type RTCConfiguration struct {
 	IceServers           []RTCIceServer
@@ -1364,21 +1340,6 @@ type RTCDTMFToneChangeEventInit struct {
 func (p RTCDTMFToneChangeEventInit) JSValue() jsValue {
 	o := p.EventInit.JSValue()
 	o.Set("tone", p.Tone)
-	return o
-}
-
-// http://w3c.github.io/webrtc-pc/#dom-rtcstats
-type RTCStats struct {
-	Timestamp float64      // required
-	Type      RTCStatsType // required
-	Id        string       // required
-}
-
-func (p RTCStats) JSValue() jsValue {
-	o := jsObject.New()
-	o.Set("timestamp", p.Timestamp)
-	o.Set("type", string(p.Type))
-	o.Set("id", p.Id)
 	return o
 }
 
