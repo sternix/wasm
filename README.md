@@ -5,7 +5,7 @@ Golang wasm library for browser based applications
 
 Golang's WebAssembly port is EXPERIMENTAL thus this project
 
-Requires Go 1.12 (now in rc1)
+Requires Go 1.12
 
 ### Examples
 
